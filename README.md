@@ -5,6 +5,10 @@ used as template for future projects needing `Android and iOS` implementation.
 
 ## Diagrams and Flowchart
 
+### Entity Relationship Diagram
+
+![Entity Relationship Diagram](./docs/erd.png)
+
 ### Flowchart
 
 ![Flowchart](./docs/flowchart.png)
@@ -26,7 +30,7 @@ used as template for future projects needing `Android and iOS` implementation.
 
 - [x] Flowchart
 - [x] UI Wireframe
-- [ ] Entity Relationship Diagram
+- [x] Entity Relationship Diagram
 - [ ] User App
     - [ ] Android App
     - [ ] iOS App
