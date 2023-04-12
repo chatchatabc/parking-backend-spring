@@ -9,6 +9,9 @@ used as template for future projects needing `Android and iOS` implementation.
 
 ![Flowchart](./docs/flowchart.png)
 
+### UI Wireframe
+![UI Wireframe](./docs/ui-wireframe.png)
+
 ## Goals
 
 - Parking Demo
@@ -22,6 +25,7 @@ used as template for future projects needing `Android and iOS` implementation.
 ## TODOs
 
 - [x] Flowchart
+- [x] UI Wireframe
 - [ ] Entity Relationship Diagram
 - [ ] User App
     - [ ] Android App
