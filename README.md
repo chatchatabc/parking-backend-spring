@@ -3,6 +3,12 @@
 This repository showcases a demo using `Kotlin Multiplatform Mobile` and `Kotlin Spring Boot`. This demo can also be
 used as template for future projects needing `Android and iOS` implementation.
 
+## Diagrams and Flowchart
+
+### Flowchart
+
+![Flowchart](./docs/flowchart.png)
+
 ## Goals
 
 - Parking Demo
@@ -12,3 +18,14 @@ used as template for future projects needing `Android and iOS` implementation.
 - Spring Boot Backend
     - User Authentication
     - Parking Sensor Registration
+
+## TODOs
+
+- [x] Flowchart
+- [ ] Entity Relationship Diagram
+- [ ] User App
+    - [ ] Android App
+    - [ ] iOS App
+- [ ] Parking Owner App
+    - [ ] Android App
+    - [ ] iOS App
