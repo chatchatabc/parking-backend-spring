@@ -42,7 +42,8 @@ used as template for future projects needing `Android and iOS` implementation.
     - [x] Owner Registration
     - [x] Authentication
     - [ ] Logout (just delete token?)
-    - [ ] Vehicle API
+    - [x] Vehicle API
+    - [ ] Parking Lot API
     - [ ] Invoicing API
     - [ ] Scanning of QR Code
     - [ ] Real Time Map

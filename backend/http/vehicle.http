@@ -6,3 +6,7 @@ Content-Type: application/json
 {
   "plateNumber": "1234"
 }
+
+### Get Vehicles
+GET {{address}}/api/vehicle/get
+Authorization: Bearer {{token}}
