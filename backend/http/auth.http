@@ -14,8 +14,7 @@ Content-Type: application/json
 {
   "email": "test@gmail.com",
   "username": "test",
-  "password": "123",
-  "plateNumber": "1234"
+  "password": "123"
 }
 
 ### User Login

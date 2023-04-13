@@ -27,9 +27,6 @@ open class User : UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private lateinit var password: String
 
-    @Column
-    open var plateNumber: String? = null
-
     @CreationTimestamp
     open lateinit var createdAt: Date
 
