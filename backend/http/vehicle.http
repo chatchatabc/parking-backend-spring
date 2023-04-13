@@ -1,0 +1,8 @@
+### Vehicle Register
+POST {{address}}/api/vehicle/register
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "plateNumber": "1234"
+}
