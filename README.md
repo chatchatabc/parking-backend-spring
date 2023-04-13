@@ -37,3 +37,11 @@ used as template for future projects needing `Android and iOS` implementation.
 - [ ] Parking Owner App
     - [ ] Android App
     - [ ] iOS App
+- [ ] Spring Boot Backend
+    - [x] User Registration
+    - [x] Owner Registration
+    - [ ] Authentication
+    - [ ] Logout
+    - [ ] Invoicing
+    - [ ] Scanning of QR Code
+    - [ ] Real Time Map
