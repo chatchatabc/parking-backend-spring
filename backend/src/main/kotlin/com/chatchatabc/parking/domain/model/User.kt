@@ -42,6 +42,9 @@ open class User : UserDetails {
     )
     open var roles: MutableList<Role> = mutableListOf()
 
+    @OneToMany(mappedBy = "user")
+    open var vehicles: MutableList<Vehicle> = mutableListOf()
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return this.roles.stream().map { role -> role as GrantedAuthority }.toList().toMutableList()
     }
