@@ -39,6 +39,10 @@ class SecurityConfig (
                 it.requestMatchers("/api/parking-lot/get").authenticated()
                 it.requestMatchers("/api/parking-lot/**").hasAnyRole("PARKING_OWNER")
 
+                // Invoice API
+                it.requestMatchers("/api/invoice/get").authenticated()
+                it.requestMatchers("/api/invoice/**").hasAnyRole("PARKING_OWNER")
+
                 // Authenticated access to user routes
                 it.requestMatchers("/api/user/**").authenticated()
 
