@@ -47,26 +47,38 @@ open class User : UserDetails {
     }
 
     override fun getPassword(): String {
-        TODO("Not yet implemented")
+        return this.password
+    }
+
+    open fun setPassword(newPassword: String) {
+        this.password = newPassword
     }
 
     override fun getUsername(): String {
-        TODO("Not yet implemented")
+        return this.username
+    }
+
+    open fun setUsername(newUsername: String) {
+        this.username = newUsername
     }
 
     override fun isAccountNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        // TODO: Implement Logic
+        return true
     }
 
     override fun isAccountNonLocked(): Boolean {
-        TODO("Not yet implemented")
+        // TODO: Implement Logic
+        return true
     }
 
     override fun isCredentialsNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        // TODO: Implement Logic
+        return true
     }
 
     override fun isEnabled(): Boolean {
-        TODO("Not yet implemented")
+        // TODO: Implement Logic
+        return true
     }
 }
