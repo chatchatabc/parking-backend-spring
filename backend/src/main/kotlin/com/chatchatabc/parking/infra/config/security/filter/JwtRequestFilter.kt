@@ -36,6 +36,12 @@ class JwtRequestFilter(
         val token: String = header.substring(7)
         val user = jwtService.validateTokenAndGetUser(token)
 
+        if (user == null) {
+            filterChain.doFilter(request, response)
+            logRequest(request, response)
+            return
+        }
+
         val authentication = UsernamePasswordAuthenticationToken(
             user,
             null,

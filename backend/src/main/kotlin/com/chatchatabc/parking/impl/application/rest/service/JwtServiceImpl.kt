@@ -36,7 +36,7 @@ class JwtServiceImpl (
     /**
      * Validate Token and Get User
      */
-    override fun validateTokenAndGetUser(token: String): User {
+    override fun validateTokenAndGetUser(token: String): User? {
         return try {
             val subject = verifier.verify(token).subject
             val user = userRepository.findById(subject)
@@ -45,7 +45,7 @@ class JwtServiceImpl (
             }
             user.get()
         } catch (e: Exception) {
-            throw Exception("Invalid Token")
+            return null;
         }
     }
 }
