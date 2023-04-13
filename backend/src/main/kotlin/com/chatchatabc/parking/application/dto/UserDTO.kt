@@ -5,7 +5,8 @@ import com.chatchatabc.parking.domain.model.User
 data class UserRegisterRequest(
     val email: String,
     val username: String,
-    val password: String
+    val password: String,
+    val plateNumber: String?
 )
 
 data class UserLoginRequest(

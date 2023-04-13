@@ -40,8 +40,8 @@ used as template for future projects needing `Android and iOS` implementation.
 - [ ] Spring Boot Backend
     - [x] User Registration
     - [x] Owner Registration
-    - [ ] Authentication
-    - [ ] Logout
+    - [x] Authentication
+    - [ ] Logout (just delete token?)
     - [ ] Invoicing
     - [ ] Scanning of QR Code
     - [ ] Real Time Map
