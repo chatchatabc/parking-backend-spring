@@ -44,6 +44,6 @@ used as template for future projects needing `Android and iOS` implementation.
     - [ ] Logout (just delete token?)
     - [x] Vehicle API
     - [x] Parking Lot API
-    - [ ] Invoicing API
+    - [x] Invoicing API
     - [ ] Scanning of QR Code
     - [ ] Real Time Map
