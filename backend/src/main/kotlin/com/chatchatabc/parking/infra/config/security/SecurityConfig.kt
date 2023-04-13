@@ -32,6 +32,9 @@ class SecurityConfig (
                 // Allow access to /api/auth
                 it.requestMatchers("/api/auth/**").permitAll()
 
+                // Vehicle API
+                it.requestMatchers("/api/vehicle/**").authenticated()
+
                 // Authenticated access to user routes
                 it.requestMatchers("/api/user/**").authenticated()
 
