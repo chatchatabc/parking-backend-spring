@@ -3,6 +3,7 @@ package com.chatchatabc.parking.application.rest
 import com.chatchatabc.parking.application.dto.ErrorContent
 import com.chatchatabc.parking.application.dto.VehicleRegisterRequest
 import com.chatchatabc.parking.application.dto.VehicleResponse
+import com.chatchatabc.parking.application.dto.VehicleUpdateRequest
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.UserRepository
@@ -50,9 +51,28 @@ class VehicleController(
             val createdVehicle = vehicleService.register(principal.id, vehicle)
             ResponseEntity.ok().body(VehicleResponse(createdVehicle, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(VehicleResponse(null, ErrorContent("Vehicle Register Error", e.message ?: "Unknown Error")))
+        }
+    }
+
+    /**
+     * Update a vehicle's information
+     */
+    @PutMapping("/update/{vehicleId}")
+    fun update(
+        @RequestBody request: VehicleUpdateRequest,
+        @PathVariable vehicleId: String
+    ): ResponseEntity<VehicleResponse> {
+        return try {
+            // Get Principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val vehicle = mapper.map(request, Vehicle::class.java)
+            val updatedVehicle = vehicleService.update(principal.id, vehicleId, vehicle)
+            ResponseEntity.ok().body(VehicleResponse(updatedVehicle, null))
+        } catch (e: Exception) {
+            ResponseEntity.badRequest()
+                .body(VehicleResponse(null, ErrorContent("Vehicle Update Error", e.message ?: "Unknown Error")))
         }
     }
 }

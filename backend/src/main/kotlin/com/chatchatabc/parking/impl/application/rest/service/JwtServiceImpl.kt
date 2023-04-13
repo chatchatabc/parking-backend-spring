@@ -45,7 +45,7 @@ class JwtServiceImpl (
             }
             user.get()
         } catch (e: Exception) {
-            return null;
+            return null
         }
     }
 }

@@ -1,3 +1,7 @@
+### Get Vehicles
+GET {{address}}/api/vehicle/get
+Authorization: Bearer {{token}}
+
 ### Vehicle Register
 POST {{address}}/api/vehicle/register
 Authorization: Bearer {{token}}
@@ -7,6 +11,11 @@ Content-Type: application/json
   "plateNumber": "1234"
 }
 
-### Get Vehicles
-GET {{address}}/api/vehicle/get
+### Update Vehicle
+PUT {{address}}/api/vehicle/update/0a6465d1-a716-4444-b032-aca483b1185d
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "plateNumber": "12345"
+}
