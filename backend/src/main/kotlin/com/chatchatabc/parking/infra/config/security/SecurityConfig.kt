@@ -35,6 +35,10 @@ class SecurityConfig (
                 // Vehicle API
                 it.requestMatchers("/api/vehicle/**").authenticated()
 
+                // Parking Lot API
+                it.requestMatchers("/api/parking-lot/get").authenticated()
+                it.requestMatchers("/api/parking-lot/**").hasAnyRole("PARKING_OWNER")
+
                 // Authenticated access to user routes
                 it.requestMatchers("/api/user/**").authenticated()
 
