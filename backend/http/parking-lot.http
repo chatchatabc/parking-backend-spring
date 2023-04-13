@@ -1,0 +1,27 @@
+### Get Parking Lots
+GET {{address}}/api/parking-lot/get
+Authorization: Bearer {{token}}
+
+### Create Parking Lot
+POST {{address}}/api/parking-lot/register
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Parking Lot 1",
+  "rate": "10000.00",
+  "location": "Philippines",
+  "capacity": 10
+}
+
+### Update Parking Lot
+PUT {{address}}/api/parking-lot/update/9772e5e5-3cca-4fa7-ad26-45823d638a4b
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Parking Lot 2",
+  "rate": "11000.00",
+  "location": "China",
+  "capacity": 15
+}

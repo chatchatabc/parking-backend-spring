@@ -43,7 +43,7 @@ used as template for future projects needing `Android and iOS` implementation.
     - [x] Authentication
     - [ ] Logout (just delete token?)
     - [x] Vehicle API
-    - [ ] Parking Lot API
+    - [x] Parking Lot API
     - [ ] Invoicing API
     - [ ] Scanning of QR Code
     - [ ] Real Time Map
