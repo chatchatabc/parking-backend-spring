@@ -42,6 +42,10 @@ open class User : UserDetails {
     )
     open var roles: MutableList<Role> = mutableListOf()
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner")
+    open var parkingLots: MutableList<ParkingLot> = mutableListOf()
+
     @OneToMany(mappedBy = "user")
     open var vehicles: MutableList<Vehicle> = mutableListOf()
 
