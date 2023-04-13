@@ -8,9 +8,10 @@ import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-class UserServiceImpl (
+class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val roleRepository: RoleRepository
@@ -31,7 +32,19 @@ class UserServiceImpl (
     /**
      * Load user by username for Login
      */
-    override fun loadUserByUsername(username: String?): UserDetails {
-        TODO("Not yet implemented")
+    override fun loadUserByUsername(username: String): UserDetails {
+        val user: Optional<User> = userRepository.findByUsername(username)
+        if (user.isEmpty) {
+            throw Exception("User not found")
+        }
+        return org.springframework.security.core.userdetails.User(
+            user.get().username,
+            user.get().password,
+            user.get().isEnabled,
+            user.get().isAccountNonExpired,
+            user.get().isCredentialsNonExpired,
+            user.get().isAccountNonLocked,
+            user.get().authorities
+        )
     }
 }
