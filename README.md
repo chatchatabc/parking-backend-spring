@@ -18,13 +18,13 @@ used as template for future projects needing `Android and iOS` implementation.
 
 ## Goals
 
-- Parking Demo
-    - One instance acting as parking sensor
-    - One instance acting as user
+- Two Apps
+    - User App
+    - Parking Owner App
+- QR Code Scanning
+- Invoicing
 - Real Time Map
 - Spring Boot Backend
-    - User Authentication
-    - Parking Sensor Registration
 
 ## TODOs
 
