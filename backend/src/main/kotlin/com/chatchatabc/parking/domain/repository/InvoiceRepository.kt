@@ -30,4 +30,10 @@ interface InvoiceRepository : JpaRepository<Invoice, String> {
      */
     @Query("SELECT i FROM Invoice i WHERE i.parkingLot = ?1")
     fun findAllByParkingLot(parkingLot: ParkingLot, pageable: Pageable): Page<Invoice>
+
+    /**
+     * Find all active invoices by parking lot and by vehicle
+     */
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot = ?1 AND i.vehicle = ?2 AND i.endAt IS NULL")
+    fun countActiveInvoicesByVehicle(parkingLotId: String, vehicle: Vehicle): Long
 }

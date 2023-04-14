@@ -25,7 +25,11 @@ class InvoiceServiceImpl(
     override fun createInvoice(parkingLotId: String, vehicleId: String): Invoice {
         val parkingLot = parkingLotRepository.findById(parkingLotId).get()
         val vehicle = vehicleRepository.findById(vehicleId).get()
-        // TODO: Check if vehicle has active invoice on this parking lot
+        // Check if vehicle has active invoice on this parking lot and return an error
+        val activeInvoices = invoiceRepository.countActiveInvoicesByVehicle(parkingLotId, vehicle)
+        if (activeInvoices > 0) {
+            throw Exception("Vehicle has active invoice on this parking lot")
+        }
         val invoice = Invoice().apply {
             this.parkingLot = parkingLot
             this.vehicle = vehicle
