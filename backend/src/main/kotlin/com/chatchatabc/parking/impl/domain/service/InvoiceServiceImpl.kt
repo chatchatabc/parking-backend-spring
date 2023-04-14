@@ -5,6 +5,8 @@ import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.nats.client.Connection
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -12,8 +14,11 @@ import java.util.*
 class InvoiceServiceImpl(
     private val parkingLotRepository: ParkingLotRepository,
     private val vehicleRepository: VehicleRepository,
-    private val invoiceRepository: InvoiceRepository
+    private val invoiceRepository: InvoiceRepository,
+    private val natsConnection: Connection
 ) : InvoiceService {
+    private val objectMapper = ObjectMapper()
+
     /**
      * Create an invoice
      */
@@ -27,7 +32,14 @@ class InvoiceServiceImpl(
             this.rate = parkingLot.rate
             this.startAt = Date()
         }
-        return invoiceRepository.save(invoice)
+        val savedInvoice = invoiceRepository.save(invoice)
+        // Reduce parking lot capacity
+        parkingLot.capacity -= 1
+        parkingLotRepository.save(parkingLot)
+        // Nats publish event
+        val jsonMessage = objectMapper.writeValueAsString(parkingLot)
+        natsConnection.publish("parking-lots", jsonMessage.toByteArray(Charsets.UTF_8))
+        return savedInvoice
     }
 
     /**
@@ -41,7 +53,14 @@ class InvoiceServiceImpl(
         val duration = invoice.endAt!!.time - invoice.startAt!!.time
         val hours = duration / (1000 * 60 * 60)
         invoice.total = invoice.rate * hours.toBigDecimal()
-        return invoiceRepository.save(invoice)
+        val savedInvoice = invoiceRepository.save(invoice)
+        // Update parkingLot capacity
+        parkingLot.capacity += 1
+        parkingLotRepository.save(parkingLot)
+        // Nats publish event
+        val jsonMessage = objectMapper.writeValueAsString(parkingLot)
+        natsConnection.publish("parking-lots", jsonMessage.toByteArray(Charsets.UTF_8))
+        return savedInvoice
     }
 
     /**

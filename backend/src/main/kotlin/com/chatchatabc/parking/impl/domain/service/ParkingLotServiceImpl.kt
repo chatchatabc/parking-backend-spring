@@ -4,13 +4,18 @@ import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.nats.client.Connection
 import org.springframework.stereotype.Service
 
 @Service
 class ParkingLotServiceImpl(
     private val userRepository: UserRepository,
-    private val parkingLotRepository: ParkingLotRepository
+    private val parkingLotRepository: ParkingLotRepository,
+    private val natsConnection: Connection
 ) : ParkingLotService {
+    private val objectMapper = ObjectMapper()
+
     /**
      * Register a parking lot
      */
@@ -43,6 +48,10 @@ class ParkingLotServiceImpl(
         if (newParkingLotInfo.location != null) {
             parkingLot.location = newParkingLotInfo.location
         }
+
+        // Nats publish event
+        val jsonMessage = objectMapper.writeValueAsString(parkingLot)
+        natsConnection.publish("parking-lots", jsonMessage.toByteArray(Charsets.UTF_8))
 
         return parkingLotRepository.save(parkingLot)
     }
