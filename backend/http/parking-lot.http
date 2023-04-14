@@ -6,6 +6,10 @@ Authorization: Bearer {{token}}
 GET {{address}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
 Authorization: Bearer {{token}}
 
+### Get my parking lots
+GET {{address}}/api/parking-lot/get-mine
+Authorization: Bearer {{token}}
+
 ### Create Parking Lot
 POST {{address}}/api/parking-lot/register
 Authorization: Bearer {{token}}

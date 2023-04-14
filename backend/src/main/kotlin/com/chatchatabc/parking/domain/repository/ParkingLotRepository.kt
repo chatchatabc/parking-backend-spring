@@ -2,6 +2,8 @@ package com.chatchatabc.parking.domain.repository
 
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -27,4 +29,10 @@ interface ParkingLotRepository : JpaRepository<ParkingLot, String> {
      */
     @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot.id = ?1 AND i.endAt IS NULL")
     fun countActiveInvoices(parkingLotId: String): Int
+
+    /**
+     * Find all parking lots by owner
+     */
+    @Query("SELECT p FROM ParkingLot p WHERE p.owner = ?1")
+    fun findAllByOwner(owner: User, pageable: Pageable): Page<ParkingLot>
 }

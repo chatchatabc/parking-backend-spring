@@ -7,8 +7,11 @@ import com.chatchatabc.parking.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import org.modelmapper.ModelMapper
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -17,7 +20,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
-    private val parkingLotRepository: ParkingLotRepository
+    private val parkingLotRepository: ParkingLotRepository,
+    private val userRepository: UserRepository
 ) {
     private val mapper = ModelMapper()
 
@@ -41,6 +45,23 @@ class ParkingLotController(
                     ErrorContent("Get Parking By ID Error", e.message ?: "Unknown Error")
                 )
             )
+        }
+    }
+
+    /**
+     * Get Parking Lots By Owner
+     */
+    @GetMapping("/get-mine")
+    fun getByOwner(
+        pageable: Pageable
+    ): ResponseEntity<Page<ParkingLot>> {
+        return try {
+            // Get Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val owner = userRepository.findById(principal.id).get()
+            return ResponseEntity.ok(parkingLotRepository.findAllByOwner(owner, pageable))
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(null)
         }
     }
 
