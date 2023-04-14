@@ -13,6 +13,15 @@ services:
       - postgres-db:/data/postgres
     ports:
       - "5432:5432"
+  nats-server:
+    container_name: nats_parking_abc
+    image: nats:latest
+    command: "-c /etc/nats/nats.conf -DV"
+    ports:
+      - "4222:4222"
+      - "8080:8080"
+    volumes:
+      - ./config/:/etc/nats
 
 
 volumes:
