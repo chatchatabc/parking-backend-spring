@@ -45,8 +45,11 @@ class ParkingLotServiceImpl(
             parkingLot.capacity = newParkingLotInfo.capacity
             // TODO: get active invoices and update available slots
         }
-        if (newParkingLotInfo.location != null) {
-            parkingLot.location = newParkingLotInfo.location
+        if (newParkingLotInfo.latitude != null) {
+            parkingLot.latitude = newParkingLotInfo.latitude
+        }
+        if (newParkingLotInfo.longitude != null) {
+            parkingLot.longitude = newParkingLotInfo.longitude
         }
 
         // Nats publish event

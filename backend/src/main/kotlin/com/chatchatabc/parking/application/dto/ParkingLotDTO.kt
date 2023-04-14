@@ -6,15 +6,17 @@ import java.math.BigDecimal
 data class ParkingLotCreateRequest(
     val name: String,
     val rate: BigDecimal,
-    val location: String,
+    val latitude: Double,
+    val longitude: Double,
     val capacity: Int
 )
 
 data class ParkingLotUpdateRequest(
-    val name: String,
-    val rate: BigDecimal,
-    val location: String,
-    val capacity: Int
+    val name: String?,
+    val rate: BigDecimal?,
+    val latitude: Double?,
+    val longitude: Double?,
+    val capacity: Int?
 )
 
 data class ParkingLotResponse(

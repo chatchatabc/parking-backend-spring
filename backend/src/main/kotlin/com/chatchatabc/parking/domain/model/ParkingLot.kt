@@ -31,8 +31,11 @@ open class ParkingLot {
     @Column
     open var availableSlots: Int = 0
 
-    @Column(columnDefinition = "TEXT")
-    open lateinit var location: String
+    @Column
+    open var latitude: Double = 0.0
+
+    @Column
+    open var longitude: Double = 0.0
 
     @CreationTimestamp
     open lateinit var createdAt: Date
