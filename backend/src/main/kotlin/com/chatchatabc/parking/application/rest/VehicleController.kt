@@ -25,7 +25,9 @@ class VehicleController(
 ) {
     private val mapper = ModelMapper()
 
-    // TODO: Get all vehicles of a user with pagination
+    /**
+     * Get all vehicles of a user with pagination
+     */
     @GetMapping("/get")
     fun get(
         pageable: Pageable
