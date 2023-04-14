@@ -27,8 +27,14 @@ class VehicleServiceImpl (
         val user = userRepository.findById(userId).get()
         val vehicle = vehicleRepository.findByIdAndUser(vehicleId, user).get()
 
+        if (newVehicleInfo.name != null) {
+            vehicle.name = newVehicleInfo.name
+        }
         if (newVehicleInfo.plateNumber != null) {
             vehicle.plateNumber = newVehicleInfo.plateNumber
+        }
+        if (newVehicleInfo.type != null) {
+            vehicle.type = newVehicleInfo.type
         }
 
         return vehicleRepository.save(vehicle)

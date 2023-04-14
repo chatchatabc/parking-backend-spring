@@ -15,8 +15,14 @@ open class Vehicle {
     @GeneratedValue(strategy = GenerationType.UUID)
     open lateinit var id: String
 
+    @Column
+    open lateinit var name: String
+
     @Column(unique = true)
     open lateinit var plateNumber: String
+
+    @Column
+    open var type: Int = 0
 
     @JsonIgnore
     @ManyToOne

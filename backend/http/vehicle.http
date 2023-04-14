@@ -8,14 +8,18 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "plateNumber": "1234"
+  "name": "car",
+  "plateNumber": "1234",
+  "type": 0
 }
 
 ### Update Vehicle
-PUT {{address}}/api/vehicle/update/0a6465d1-a716-4444-b032-aca483b1185d
+PUT {{address}}/api/vehicle/update/877e08e3-f834-400b-969c-3d87056ec601
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "plateNumber": "12345"
+  "name": "motor",
+  "plateNumber": "12345",
+  "type": 1
 }

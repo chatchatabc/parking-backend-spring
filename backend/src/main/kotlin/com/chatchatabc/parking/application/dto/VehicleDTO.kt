@@ -3,11 +3,15 @@ package com.chatchatabc.parking.application.dto
 import com.chatchatabc.parking.domain.model.Vehicle
 
 data class VehicleRegisterRequest(
-    val plateNumber: String
+    val name: String,
+    val plateNumber: String,
+    val type: Int
 )
 
 data class VehicleUpdateRequest(
-    val plateNumber: String?
+    val name: String?,
+    val plateNumber: String?,
+    val type: Int?
 )
 
 data class VehicleResponse(
