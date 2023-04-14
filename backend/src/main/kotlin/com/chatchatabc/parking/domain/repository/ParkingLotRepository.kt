@@ -21,4 +21,10 @@ interface ParkingLotRepository : JpaRepository<ParkingLot, String> {
      */
     @Query("SELECT p FROM ParkingLot p WHERE (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
     fun findByDistance(longitude: Double, latitude: Double, distance: Double): List<ParkingLot>
+
+    /**
+     * Count active invoices for a parking lot
+     */
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot.id = ?1 AND i.endAt IS NULL")
+    fun countActiveInvoices(parkingLotId: String): Int
 }

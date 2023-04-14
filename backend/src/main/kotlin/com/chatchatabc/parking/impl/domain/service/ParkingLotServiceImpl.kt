@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 class ParkingLotServiceImpl(
     private val userRepository: UserRepository,
     private val parkingLotRepository: ParkingLotRepository,
+    private val invoiceRepository: ParkingLotRepository,
     private val natsConnection: Connection
 ) : ParkingLotService {
     private val objectMapper = ObjectMapper()
@@ -43,7 +44,9 @@ class ParkingLotServiceImpl(
         }
         if (newParkingLotInfo.capacity != null) {
             parkingLot.capacity = newParkingLotInfo.capacity
-            // TODO: get active invoices and update available slots
+            // Get active invoices and update available slots to accommodate new capacity
+            val activeInvoices = invoiceRepository.countActiveInvoices(parkingLotId)
+            parkingLot.availableSlots = newParkingLotInfo.capacity - activeInvoices
         }
         if (newParkingLotInfo.latitude != null) {
             parkingLot.latitude = newParkingLotInfo.latitude
