@@ -7,7 +7,7 @@ interface JedisService {
     /**
      * Set key-value to Redis
      */
-    fun set(key: String, value: String)
+    fun set(key: String, value: String, ttl: Long?)
 
     /**
      * Get value from Redis

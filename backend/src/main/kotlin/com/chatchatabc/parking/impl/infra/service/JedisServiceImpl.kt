@@ -16,10 +16,14 @@ class JedisServiceImpl (
     /**
      * Set key-value to Redis
      */
-    override fun set(key: String, value: String) {
+    override fun set(key: String, value: String, ttl: Long?) {
         // TODO: Fix this with Jedis Pool
         val jedis = Jedis(host, port.toInt())
-        jedis.set(key, value)
+        if (ttl != null) {
+            jedis.setex(key, ttl, value)
+        } else {
+            jedis.set(key, value)
+        }
         jedis.close()
     }
 
