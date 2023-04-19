@@ -13,10 +13,6 @@ used as template for future projects needing `Android and iOS` implementation.
 
 ![Flowchart](./docs/flowchart.png)
 
-### UI Wireframe
-
-![UI Wireframe](./docs/ui-wireframe.png)
-
 ## Goals
 
 - Two Apps
