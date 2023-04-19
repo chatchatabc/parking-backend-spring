@@ -17,7 +17,12 @@ data class UserParkingPhoneLoginRequest(
     val phone: String
 )
 
-data class UserParkingPhoneLoginResponse(
+data class UserPhoneLoginRequest(
+    val username: String,
+    val phone: String
+)
+
+data class UserPhoneLoginResponse(
     val error: ErrorContent?
 )
 
