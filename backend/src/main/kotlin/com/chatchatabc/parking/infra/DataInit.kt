@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.infra
 
+import com.chatchatabc.parking.domain.service.ParkingRoleService
 import com.chatchatabc.parking.domain.service.RoleService
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
@@ -8,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class DataInit(
-    private val roleService: RoleService
+    private val roleService: RoleService,
+    private val parkingRoleService: ParkingRoleService
 ) : CommandLineRunner {
     private val log = LoggerFactory.getLogger(DataInit::class.java)
 
@@ -19,6 +21,7 @@ class DataInit(
     override fun run(vararg args: String?) {
         log.info("Initializing data...")
         roleService.initRoles()
+        parkingRoleService.initRoles()
         log.info("Data initialized.")
     }
 }
