@@ -29,7 +29,7 @@ open class File {
     open lateinit var mimetype: String
 
     @Column
-    open var order: Int = 0
+    open var fileOrder: Int = 0
 
     @CreationTimestamp
     open lateinit var createdAt: Date
