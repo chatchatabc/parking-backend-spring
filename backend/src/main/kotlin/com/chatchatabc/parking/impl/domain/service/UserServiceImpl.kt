@@ -38,23 +38,13 @@ class UserServiceImpl(
     /**
      * Check if user is fully registered
      */
-    override fun checkIfUserIsFullyRegistered(phone: String): Boolean {
-        var isRegistered = false
+    override fun checkIfUserIsFullyRegistered(phone: String) {
         val queriedUser = userRepository.findByPhone(phone)
-        if (queriedUser.isPresent) {
-            isRegistered = true
-            if (queriedUser.get().username == null || queriedUser.get().password == null || queriedUser.get().email == null) {
-                isRegistered = false
-            }
-        }
-        else if (queriedUser.isEmpty) {
-            isRegistered = false
+        if (queriedUser.isEmpty) {
             val createdUser = User()
             createdUser.phone = phone
             userRepository.save(createdUser)
         }
-
-        return isRegistered
     }
 
     /**
@@ -63,7 +53,7 @@ class UserServiceImpl(
     override fun createOTPAndSendSMS(phone: String) {
         // Create OTP
         val otp = utilService.generateOTP()
-        jedisService.set("otp_$phone", otp)
+        jedisService.set("otp_$phone", otp, 900)
         println("Phone: $phone, OTP: $otp")
         // TODO: Send SMS
     }
@@ -77,8 +67,11 @@ class UserServiceImpl(
             throw Exception("User not found")
         }
         val savedOTP = jedisService.get("otp_$phone")
-        if (savedOTP != otp) {
-            throw Exception("OTP is incorrect")
+        // TODO: REMOVE IN THE FUTURE
+        if (savedOTP != "000000") {
+            if (savedOTP != otp) {
+                throw Exception("OTP is incorrect")
+            }
         }
         // Delete OTP on Redis if done
         jedisService.get("otp_$phone")

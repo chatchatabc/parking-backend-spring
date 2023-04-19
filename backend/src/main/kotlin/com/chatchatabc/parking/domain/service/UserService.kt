@@ -15,7 +15,7 @@ interface UserService : UserDetailsService {
     /**
      * Check if user is fully registered
      */
-    fun checkIfUserIsFullyRegistered(phone: String): Boolean
+    fun checkIfUserIsFullyRegistered(phone: String)
 
     /**
      * Create OTP and send via SMS
