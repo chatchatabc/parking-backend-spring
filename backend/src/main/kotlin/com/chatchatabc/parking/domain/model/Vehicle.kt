@@ -26,8 +26,8 @@ open class Vehicle {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    open lateinit var user: User
+    @JoinColumn(name = "owner_id")
+    open lateinit var owner: User
 
     @CreationTimestamp
     open lateinit var createdAt: Date
