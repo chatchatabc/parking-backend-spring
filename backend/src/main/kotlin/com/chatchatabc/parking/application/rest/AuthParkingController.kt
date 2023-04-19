@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -55,10 +54,5 @@ class AuthParkingController(
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(UserResponse(null, ErrorContent("OTP Verify Error", e.message ?: "Unknown Error")))
         }
-    }
-
-    @PutMapping("/update")
-    fun updateProfile() {
-
     }
 }
