@@ -26,4 +26,9 @@ interface UserService : UserDetailsService {
      * Verify if OTP and Phone is correct
      */
     fun parkingVerifyOTP(phone: String, otp: String): User
+
+    /**
+     * Update user
+     */
+    fun updateUser(userId: String, username: String?, email: String?, firstName: String?, lastName: String?): User
 }

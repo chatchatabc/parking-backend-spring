@@ -85,6 +85,37 @@ class UserServiceImpl(
     }
 
     /**
+     * Update user
+     */
+    override fun updateUser(
+        userId: String,
+        username: String?,
+        email: String?,
+        firstName: String?,
+        lastName: String?
+    ): User {
+        val queriedUser = userRepository.findById(userId)
+        if (queriedUser.isEmpty) {
+            throw Exception("User not found")
+        }
+
+        // Apply changes
+        if (username != null) {
+            queriedUser.get().setUsername(username)
+        }
+        if (email != null) {
+            queriedUser.get().email = email
+        }
+        if (firstName != null) {
+            queriedUser.get().firstName = firstName
+        }
+        if (lastName != null) {
+            queriedUser.get().lastName = lastName
+        }
+        return userRepository.save(queriedUser.get())
+    }
+
+    /**
      * Load user by username for Login
      */
     override fun loadUserByUsername(username: String): UserDetails {
