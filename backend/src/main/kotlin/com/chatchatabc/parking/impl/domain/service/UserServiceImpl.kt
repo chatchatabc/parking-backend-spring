@@ -82,7 +82,11 @@ class UserServiceImpl(
         }
         // Delete OTP on Redis if done
         jedisService.get("otp_$phone")
+        // TODO: Need to update this date? Value could be present already
         queriedUser.get().phoneVerifiedAt = Date()
+        // Add Parking Manager Role to User
+        val role = roleRepository.findByName(RoleNames.ROLE_PARKING_MANAGER.name)
+        queriedUser.get().roles.add(role.get())
         userRepository.save(queriedUser.get())
         return queriedUser.get()
     }
