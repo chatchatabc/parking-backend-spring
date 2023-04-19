@@ -22,8 +22,17 @@ open class ParkingLot {
     @Column
     open lateinit var name: String
 
-    @Column(columnDefinition = "DECIMAL(10,2)")
-    open lateinit var rate: BigDecimal
+    @Column
+    open var latitude: Double = 0.0
+
+    @Column
+    open var longitude: Double = 0.0
+
+    @Column
+    open var address: String? = null
+
+    @Column
+    open var description: String? = null
 
     @Column
     open var capacity: Int = 0
@@ -32,10 +41,13 @@ open class ParkingLot {
     open var availableSlots: Int = 0
 
     @Column
-    open var latitude: Double = 0.0
+    open var businessHourStart: Date? = null
 
     @Column
-    open var longitude: Double = 0.0
+    open var businessHourEnd: Date? = null
+
+    @Column
+    open var operatingFlag: Int = 0
 
     @CreationTimestamp
     open lateinit var createdAt: Date
