@@ -18,6 +18,11 @@ interface UserService : UserDetailsService {
     fun checkIfUserIsFullyRegistered(phone: String)
 
     /**
+     * Check if user is fully registered w/ username
+     */
+    fun checkIfUserIsFullyRegistered(phone: String, username: String)
+
+    /**
      * Create OTP and send via SMS
      */
     fun createOTPAndSendSMS(phone: String)

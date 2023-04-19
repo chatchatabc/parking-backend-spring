@@ -48,6 +48,23 @@ class UserServiceImpl(
     }
 
     /**
+     * Check if user is fully registered w/ username
+     */
+    override fun checkIfUserIsFullyRegistered(phone: String, username: String) {
+        val queriedUser = userRepository.findByPhone(phone)
+        if (queriedUser.isEmpty) {
+            val createdUser = User()
+            createdUser.phone = phone
+            createdUser.setUsername(username)
+            userRepository.save(createdUser)
+        } else {
+            if (queriedUser.get().username != username) {
+                throw Exception("Username is incorrect")
+            }
+        }
+    }
+
+    /**
      * Create OTP and send via SMS
      */
     override fun createOTPAndSendSMS(phone: String) {
