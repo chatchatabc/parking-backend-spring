@@ -27,11 +27,26 @@ open class User : UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private lateinit var password: String
 
+    @Column(unique = true)
+    open lateinit var phone: String
+
+    @Column
+    open var firstName: String? = null
+
+    @Column
+    open var lastName: String? = null
+
+    @Column
+    open var flag: Int = 0
+
     @CreationTimestamp
     open lateinit var createdAt: Date
 
     @UpdateTimestamp
     open lateinit var updatedAt: Date
+
+    @Column
+    open var verifiedAt: Date? = null
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
