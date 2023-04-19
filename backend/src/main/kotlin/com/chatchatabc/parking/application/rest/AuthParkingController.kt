@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -26,13 +27,13 @@ class AuthParkingController(
     ): ResponseEntity<UserParkingPhoneLoginResponse> {
         return try {
             // Check if user is fully registered
-            val isRegistered = userService.checkIfUserIsFullyRegistered(request.phone)
+            userService.checkIfUserIsFullyRegistered(request.phone)
             userService.createOTPAndSendSMS(request.phone)
-            ResponseEntity.ok().body(UserParkingPhoneLoginResponse(isRegistered, null))
+            ResponseEntity.ok().body(UserParkingPhoneLoginResponse(null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserParkingPhoneLoginResponse(null, ErrorContent("Login Error", e.message ?: "Unknown Error")))
+                .body(UserParkingPhoneLoginResponse(ErrorContent("Login Error", e.message ?: "Unknown Error")))
         }
     }
 
@@ -54,5 +55,10 @@ class AuthParkingController(
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(UserResponse(null, ErrorContent("OTP Verify Error", e.message ?: "Unknown Error")))
         }
+    }
+
+    @PutMapping("/update")
+    fun updateProfile() {
+
     }
 }
