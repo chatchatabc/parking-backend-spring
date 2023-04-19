@@ -19,13 +19,13 @@ open class User : UserDetails {
     open lateinit var id: String
 
     @Column(unique = true)
-    open lateinit var email: String
+    open var email: String? = null
 
     @Column(unique = true)
-    private lateinit var username: String
+    private var username: String? = null
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private lateinit var password: String
+    private var password: String? = null
 
     @Column(unique = true)
     open lateinit var phone: String
@@ -46,7 +46,10 @@ open class User : UserDetails {
     open lateinit var updatedAt: Date
 
     @Column
-    open var verifiedAt: Date? = null
+    open var emailVerifiedAt: Date? = null
+
+    @Column
+    open var phoneVerifiedAt: Date? = null
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
@@ -70,7 +73,7 @@ open class User : UserDetails {
         return this.roles.stream().map { role -> role as GrantedAuthority }.toList().toMutableList()
     }
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return this.password
     }
 
@@ -78,7 +81,7 @@ open class User : UserDetails {
         this.password = newPassword
     }
 
-    override fun getUsername(): String {
+    override fun getUsername(): String? {
         return this.username
     }
 
