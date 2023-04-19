@@ -23,16 +23,16 @@ class AuthParkingController(
     @PostMapping("/login")
     fun loginWithPhone(
         @RequestBody request: UserParkingPhoneLoginRequest
-    ): ResponseEntity<UserParkingPhoneLoginResponse> {
+    ): ResponseEntity<UserPhoneLoginResponse> {
         return try {
             // Check if user is fully registered
             userService.checkIfUserIsFullyRegistered(request.phone)
             userService.createOTPAndSendSMS(request.phone)
-            ResponseEntity.ok().body(UserParkingPhoneLoginResponse(null))
+            ResponseEntity.ok().body(UserPhoneLoginResponse(null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserParkingPhoneLoginResponse(ErrorContent("Login Error", e.message ?: "Unknown Error")))
+                .body(UserPhoneLoginResponse(ErrorContent("Login Error", e.message ?: "Unknown Error")))
         }
     }
 
