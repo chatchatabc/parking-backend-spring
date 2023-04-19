@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import lombok.Data
 import org.hibernate.annotations.CreationTimestamp
 import java.math.BigDecimal
-import java.util.Date
+import java.util.*
 
 @Data
 @Entity

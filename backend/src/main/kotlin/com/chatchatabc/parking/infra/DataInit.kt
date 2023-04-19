@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class DataInit (
+class DataInit(
     private val roleService: RoleService
 ) : CommandLineRunner {
     private val log = LoggerFactory.getLogger(DataInit::class.java)

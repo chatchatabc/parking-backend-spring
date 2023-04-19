@@ -7,7 +7,7 @@ import com.chatchatabc.parking.domain.service.VehicleService
 import org.springframework.stereotype.Service
 
 @Service
-class VehicleServiceImpl (
+class VehicleServiceImpl(
     private val vehicleRepository: VehicleRepository,
     private val userRepository: UserRepository
 ) : VehicleService {

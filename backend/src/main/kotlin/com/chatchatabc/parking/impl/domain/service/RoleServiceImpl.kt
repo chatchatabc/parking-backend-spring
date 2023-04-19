@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class RoleServiceImpl (
+class RoleServiceImpl(
     private val roleRepository: RoleRepository
 ) : RoleService {
     private val log = LoggerFactory.getLogger(RoleServiceImpl::class.java)

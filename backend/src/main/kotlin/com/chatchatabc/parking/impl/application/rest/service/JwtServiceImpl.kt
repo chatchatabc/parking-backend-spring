@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JwtServiceImpl (
+class JwtServiceImpl(
     @Value("\${server.jwt.secret}")
     private val secret: String,
 

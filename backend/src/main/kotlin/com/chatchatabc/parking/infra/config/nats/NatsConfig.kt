@@ -26,15 +26,19 @@ class NatsConfig(
                     ConnectionListener.Events.DISCONNECTED -> {
                         log.info("Disconnected from NATS server")
                     }
+
                     ConnectionListener.Events.RECONNECTED -> {
                         log.info("Reconnected to NATS server")
                     }
+
                     ConnectionListener.Events.CLOSED -> {
                         log.info("Closed connection to NATS server")
                     }
+
                     ConnectionListener.Events.CONNECTED -> {
                         log.info("Connected to NATS server")
                     }
+
                     else -> {
                         log.info("Unknown event: $events")
                     }
