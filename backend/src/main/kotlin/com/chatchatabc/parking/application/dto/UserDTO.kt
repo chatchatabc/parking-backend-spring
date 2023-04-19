@@ -18,7 +18,6 @@ data class UserParkingPhoneLoginRequest(
 )
 
 data class UserParkingPhoneLoginResponse(
-    val isRegistered: Boolean?,
     val error: ErrorContent?
 )
 
