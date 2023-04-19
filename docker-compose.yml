@@ -22,6 +22,12 @@ services:
       - "8080:8080"
     volumes:
       - ./config/:/etc/nats
+  redis:
+    container_name: redis_parking_abc
+    image: redis:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
 
 
 volumes:
