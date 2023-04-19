@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Parking Owner Register
-POST {{address}}/api/auth/register-parking-owner
+POST {{address}}/api/auth/register-parking-manager
 Content-Type: application/json
 
 {

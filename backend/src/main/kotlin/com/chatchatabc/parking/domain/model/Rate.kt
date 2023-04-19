@@ -17,8 +17,7 @@ open class Rate {
     open lateinit var id: String
 
     @JsonIgnore
-    @JoinColumn(name = "parking_lot_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "rate", fetch = FetchType.LAZY)
     open lateinit var parkingLot: ParkingLot
 
     @Column

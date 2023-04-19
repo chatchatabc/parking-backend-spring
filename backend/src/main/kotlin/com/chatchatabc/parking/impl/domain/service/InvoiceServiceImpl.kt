@@ -33,7 +33,7 @@ class InvoiceServiceImpl(
         val invoice = Invoice().apply {
             this.parkingLot = parkingLot
             this.vehicle = vehicle
-            this.rate = parkingLot.rate
+//            this.rate = parkingLot.rate
             this.startAt = Date()
         }
         val savedInvoice = invoiceRepository.save(invoice)
@@ -56,7 +56,7 @@ class InvoiceServiceImpl(
         // Calculate total cost based on rate and start/end time
         val duration = invoice.endAt!!.time - invoice.startAt!!.time
         val hours = duration / (1000 * 60 * 60)
-        invoice.total = invoice.rate * hours.toBigDecimal()
+//        invoice.total = invoice.rate * hours.toBigDecimal()
         val savedInvoice = invoiceRepository.save(invoice)
         // Update parkingLot capacity
         parkingLot.capacity += 1

@@ -79,13 +79,13 @@ class AuthController(
     /**
      * Register a new parking owner
      */
-    @PostMapping("/register-parking-owner")
+    @PostMapping("/register-parking-manager")
     fun registerParkingOwner(
         @RequestBody request: UserRegisterRequest
     ): ResponseEntity<UserResponse> {
         return try {
             val user = mapper.map(request, User::class.java)
-            val registeredUser = userService.register(user, RoleNames.ROLE_PARKING_OWNER)
+            val registeredUser = userService.register(user, RoleNames.ROLE_PARKING_MANAGER)
             ResponseEntity.ok(UserResponse(registeredUser, null))
         } catch (e: Exception) {
             ResponseEntity.ok(

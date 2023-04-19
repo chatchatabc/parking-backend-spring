@@ -35,7 +35,7 @@ class VehicleController(
         // Get Principal from Security Context
         val principal = SecurityContextHolder.getContext().authentication.principal as User
         val user = userRepository.findById(principal.id).get()
-        val vehicles = vehicleRepository.findAllByUser(user, pageable)
+        val vehicles = vehicleRepository.findAllByOwner(user, pageable)
         return ResponseEntity.ok().body(vehicles)
     }
 

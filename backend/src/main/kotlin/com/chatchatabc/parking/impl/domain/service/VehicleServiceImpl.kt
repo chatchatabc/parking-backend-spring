@@ -15,8 +15,8 @@ class VehicleServiceImpl(
      * Register a vehicle to a user
      */
     override fun register(userId: String, vehicle: Vehicle): Vehicle {
-        val user = userRepository.findById(userId).get()
-        vehicle.user = user
+        val owner = userRepository.findById(userId).get()
+        vehicle.owner = owner
         return vehicleRepository.save(vehicle)
     }
 
@@ -25,7 +25,7 @@ class VehicleServiceImpl(
      */
     override fun update(userId: String, vehicleId: String, newVehicleInfo: Vehicle): Vehicle {
         val user = userRepository.findById(userId).get()
-        val vehicle = vehicleRepository.findByIdAndUser(vehicleId, user).get()
+        val vehicle = vehicleRepository.findByIdAndOwner(vehicleId, user).get()
 
         if (newVehicleInfo.name != null) {
             vehicle.name = newVehicleInfo.name

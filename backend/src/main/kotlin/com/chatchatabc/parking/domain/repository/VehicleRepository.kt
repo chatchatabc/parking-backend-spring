@@ -14,12 +14,12 @@ interface VehicleRepository : JpaRepository<Vehicle, String> {
     /**
      * Find a vehicle by its id and user
      */
-    @Query("SELECT v FROM Vehicle v WHERE v.id = ?1 AND v.user = ?2")
-    fun findByIdAndUser(vehicleId: String, user: User): Optional<Vehicle>
+    @Query("SELECT v FROM Vehicle v WHERE v.id = ?1 AND v.owner = ?2")
+    fun findByIdAndOwner(vehicleId: String, owner: User): Optional<Vehicle>
 
     /**
      * Find all vehicles of a user
      */
-    @Query("SELECT v FROM Vehicle v WHERE v.user = ?1")
-    fun findAllByUser(user: User, pageable: Pageable): Page<Vehicle>
+    @Query("SELECT v FROM Vehicle v WHERE v.owner = ?1")
+    fun findAllByOwner(owner: User, pageable: Pageable): Page<Vehicle>
 }

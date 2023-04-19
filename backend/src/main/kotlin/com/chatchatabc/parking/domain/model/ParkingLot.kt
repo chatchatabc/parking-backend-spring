@@ -18,7 +18,8 @@ open class ParkingLot {
     @JoinColumn(name = "owner_id")
     open lateinit var owner: User
 
-    @OneToOne(mappedBy = "rate", fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rate_id")
     open var rate: Rate? = null
 
     @Column
