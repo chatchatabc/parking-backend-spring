@@ -26,6 +26,13 @@ data class UserParkingVerifyRequest(
     val otp: String
 )
 
+data class UserProfileUpdateRequest(
+    val username: String?,
+    val email: String?,
+    val firstName: String?,
+    val lastName: String?
+)
+
 data class UserResponse(
     val user: User?,
     val error: ErrorContent?
