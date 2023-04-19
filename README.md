@@ -14,6 +14,7 @@ used as template for future projects needing `Android and iOS` implementation.
 ![Flowchart](./docs/flowchart.png)
 
 ### UI Wireframe
+
 ![UI Wireframe](./docs/ui-wireframe.png)
 
 ## Goals
@@ -31,6 +32,9 @@ used as template for future projects needing `Android and iOS` implementation.
 - [x] Flowchart
 - [x] UI Wireframe
 - [x] Entity Relationship Diagram
+- [ ] Redis
+    - [ ] for Forgot Password
+    - [ ] for OTP
 - [ ] User App
     - [ ] Android App
     - [ ] iOS App
