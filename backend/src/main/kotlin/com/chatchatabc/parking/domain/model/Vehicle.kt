@@ -25,6 +25,10 @@ open class Vehicle {
     open var type: Int = 0
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "vehicles")
+    open var users: MutableList<User> = mutableListOf()
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "owner_id")
     open lateinit var owner: User

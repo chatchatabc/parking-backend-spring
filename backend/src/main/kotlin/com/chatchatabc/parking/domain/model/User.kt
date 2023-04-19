@@ -58,10 +58,12 @@ open class User : UserDetails {
     open var roles: MutableList<Role> = mutableListOf()
 
     @JsonIgnore
-    @OneToMany(mappedBy = "owner")
-    open var parkingLots: MutableList<ParkingLot> = mutableListOf()
-
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_vehicles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "vehicle_id")]
+    )
     open var vehicles: MutableList<Vehicle> = mutableListOf()
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
