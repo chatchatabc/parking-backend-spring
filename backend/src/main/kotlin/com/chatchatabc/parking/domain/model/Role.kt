@@ -6,7 +6,9 @@ import lombok.Data
 import org.springframework.security.core.GrantedAuthority
 
 enum class RoleNames {
-    ROLE_PARKING_OWNER,
+    ROLE_ADMIN,
+    ROLE_PARKING_MANAGER,
+    ROLE_ENFORCER,
     ROLE_USER
 }
 
