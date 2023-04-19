@@ -20,10 +20,13 @@ open class Invoice {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    open lateinit var vehicle: Vehicle
+    open var vehicle: Vehicle? = null
 
-    @Column(columnDefinition = "DECIMAL(10,2)")
-    open lateinit var rate: BigDecimal
+    @Column
+    open var plateNumber: String? = null
+
+    @Column
+    open var estimatedParkingDurationInHours: Int = 0
 
     @Column(columnDefinition = "DECIMAL(10,2)")
     open var total: BigDecimal? = null
