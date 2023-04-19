@@ -11,4 +11,19 @@ interface UserService : UserDetailsService {
      * Register a new user
      */
     fun register(user: User, roleName: RoleNames): User
+
+    /**
+     * Check if user is fully registered
+     */
+    fun checkIfUserIsFullyRegistered(phone: String): Boolean
+
+    /**
+     * Create OTP and send via SMS
+     */
+    fun createOTPAndSendSMS(phone: String)
+
+    /**
+     * Verify if OTP and Phone is correct
+     */
+    fun parkingVerifyOTP(phone: String, otp: String): User
 }
