@@ -1,12 +1,10 @@
 package com.chatchatabc.parking.application.rest
 
-import com.chatchatabc.parking.application.dto.ErrorContent
-import com.chatchatabc.parking.application.dto.UserLoginRequest
-import com.chatchatabc.parking.application.dto.UserRegisterRequest
-import com.chatchatabc.parking.application.dto.UserResponse
+import com.chatchatabc.parking.application.dto.*
 import com.chatchatabc.parking.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.model.RoleNames
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import org.modelmapper.ModelMapper
@@ -15,10 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,10 +21,14 @@ class AuthController(
     private val userRepository: UserRepository,
     private val userService: UserService,
     private val authenticationManager: AuthenticationManager,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val roleRepository: RoleRepository
 ) {
     private val mapper = ModelMapper()
 
+    /**
+     * Login with username and password
+     */
     @PostMapping("/login")
     fun login(
         @RequestBody request: UserLoginRequest
