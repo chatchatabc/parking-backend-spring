@@ -1,9 +1,11 @@
 package com.chatchatabc.parking.application.rest
 
+import com.chatchatabc.api.application.dto.user.UserDTO
+import com.chatchatabc.api.application.rest.service.JwtService
+import com.chatchatabc.api.domain.enums.RoleNames
+import com.chatchatabc.api.domain.service.UserService
 import com.chatchatabc.parking.application.dto.*
-import com.chatchatabc.parking.application.rest.service.JwtService
-import com.chatchatabc.parking.domain.model.RoleNames
-import com.chatchatabc.parking.domain.service.UserService
+import org.modelmapper.ModelMapper
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,6 +17,8 @@ class AuthController(
     private val userService: UserService,
     private val jwtService: JwtService
 ) {
+    private val modelMapper = ModelMapper()
+
     /**
      * Dynamic Login with phone number
      */
@@ -62,7 +66,8 @@ class AuthController(
                 }
             }
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(user)
+            val userDTO = modelMapper.map(user, UserDTO::class.java)
+            val token: String = jwtService.generateToken(userDTO)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(UserResponse(user, null))
         } catch (e: Exception) {
