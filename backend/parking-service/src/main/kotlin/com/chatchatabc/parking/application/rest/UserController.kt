@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.application.rest
 
+import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.api.domain.service.UserService
-import com.chatchatabc.parking.application.dto.ErrorContent
 import com.chatchatabc.parking.application.dto.UserProfileUpdateRequest
 import com.chatchatabc.parking.application.dto.UserResponse
 import com.chatchatabc.parking.domain.model.User

@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.application.rest
 
-import com.chatchatabc.parking.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.parking.application.dto.ParkingLotCreateRequest
 import com.chatchatabc.parking.application.dto.ParkingLotResponse
 import com.chatchatabc.parking.application.dto.ParkingLotUpdateRequest

@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.application.rest
 
+import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.api.application.dto.user.UserDTO
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.api.domain.enums.RoleNames

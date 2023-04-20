@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.application.dto
 
+import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.api.application.dto.user.UserDTO
 
 data class UserPhoneLoginRequest(

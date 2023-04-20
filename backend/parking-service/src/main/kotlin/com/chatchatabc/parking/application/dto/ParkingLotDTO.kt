@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.application.dto
 
+import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.parking.domain.model.ParkingLot
 import java.math.BigDecimal
 

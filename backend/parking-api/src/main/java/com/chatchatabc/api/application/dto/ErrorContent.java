@@ -1,4 +1,4 @@
-package com.chatchatabc.api.application.dto.role;
+package com.chatchatabc.api.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO implements Serializable {
-    private String id;
-    private String name;
+public class ErrorContent implements Serializable {
+    private String title;
+    private String message;
 }
