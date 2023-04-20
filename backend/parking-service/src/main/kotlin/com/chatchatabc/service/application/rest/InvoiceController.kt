@@ -1,11 +1,14 @@
 package com.chatchatabc.service.application.rest
 
 import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.invoice.InvoiceDTO
+import com.chatchatabc.api.application.dto.invoice.InvoiceResponse
 import com.chatchatabc.service.domain.model.Invoice
 import com.chatchatabc.service.domain.repository.InvoiceRepository
 import com.chatchatabc.service.domain.repository.ParkingLotRepository
 import com.chatchatabc.service.domain.repository.VehicleRepository
 import com.chatchatabc.service.domain.service.InvoiceService
+import org.modelmapper.ModelMapper
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -19,21 +22,24 @@ class InvoiceController(
     private val vehicleRepository: VehicleRepository,
     private val parkingLotRepository: ParkingLotRepository
 ) {
+    private val modelMapper = ModelMapper()
+
     /**
      * Get Invoice by ID
      */
     @GetMapping("/get/{invoiceId}")
     fun getInvoice(
         @PathVariable invoiceId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.InvoiceResponse> {
+    ): ResponseEntity<InvoiceResponse> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(com.chatchatabc.service.application.dto.InvoiceResponse(invoice, null))
+            val invoiceDTO = modelMapper.map(invoice, InvoiceDTO::class.java)
+            ResponseEntity.ok(InvoiceResponse(invoiceDTO, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.InvoiceResponse(
+                    InvoiceResponse(
                         null,
                         ErrorContent("Get Invoice Error", e.message ?: "Unknown Error")
                     )
@@ -72,15 +78,16 @@ class InvoiceController(
     fun createInvoice(
         @PathVariable parkingLotId: String,
         @PathVariable vehicleId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.InvoiceResponse> {
+    ): ResponseEntity<InvoiceResponse> {
         return try {
             val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
-            ResponseEntity.ok(com.chatchatabc.service.application.dto.InvoiceResponse(createdInvoice, null))
+            val invoiceDTO = modelMapper.map(createdInvoice, InvoiceDTO::class.java)
+            ResponseEntity.ok(InvoiceResponse(invoiceDTO, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.InvoiceResponse(
+                    InvoiceResponse(
                         null,
                         ErrorContent("Create Invoice Error", e.message ?: "Unknown Error")
                     )
@@ -95,15 +102,16 @@ class InvoiceController(
     fun endInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.InvoiceResponse> {
+    ): ResponseEntity<InvoiceResponse> {
         return try {
             val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(com.chatchatabc.service.application.dto.InvoiceResponse(endedInvoice, null))
+            val invoiceDTO = modelMapper.map(endedInvoice, InvoiceDTO::class.java)
+            ResponseEntity.ok(InvoiceResponse(invoiceDTO, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.InvoiceResponse(
+                    InvoiceResponse(
                         null,
                         ErrorContent("End Invoice Error", e.message ?: "Unknown Error")
                     )
@@ -118,15 +126,16 @@ class InvoiceController(
     fun payInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.InvoiceResponse> {
+    ): ResponseEntity<InvoiceResponse> {
         return try {
             val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(com.chatchatabc.service.application.dto.InvoiceResponse(paidInvoice, null))
+            val invoiceDTO = modelMapper.map(paidInvoice, InvoiceDTO::class.java)
+            ResponseEntity.ok(InvoiceResponse(invoiceDTO, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.InvoiceResponse(
+                    InvoiceResponse(
                         null,
                         ErrorContent("Pay Invoice Error", e.message ?: "Unknown Error")
                     )
