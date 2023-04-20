@@ -20,6 +20,15 @@ open class Report {
     @Column
     open lateinit var description: String
 
+    @Column
+    open lateinit var plateNumber: String
+
+    @Column
+    open var latitude: Double = 0.0
+
+    @Column
+    open var longitude: Double = 0.0
+
     @ManyToOne
     @JoinColumn(name = "reported_by")
     open lateinit var reportedBy: User
