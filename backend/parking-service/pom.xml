@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>parking</artifactId>
+    <artifactId>service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
     <description>backend</description>
@@ -158,8 +158,8 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
