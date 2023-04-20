@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController (
+class AuthController(
     private val userService: UserService,
     private val jwtService: JwtService
 ) {
@@ -63,9 +63,18 @@ class AuthController (
     ): ResponseEntity<UserResponse> {
         return try {
             val headers = HttpHeaders()
-            var roleName = RoleNames.ROLE_USER
-            if (type == "parking") {
-                roleName = RoleNames.ROLE_PARKING_MANAGER
+            val roleName: RoleNames = when (type) {
+                "parking" -> {
+                    RoleNames.ROLE_PARKING_MANAGER
+                }
+
+                "user" -> {
+                    RoleNames.ROLE_USER
+                }
+
+                else -> {
+                    throw Exception("Invalid type")
+                }
             }
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
             val token: String = jwtService.generateToken(user)
