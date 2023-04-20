@@ -16,34 +16,19 @@ class AuthController(
     private val jwtService: JwtService
 ) {
     /**
-     * Parking Management Login with phone number
+     * Dynamic Login with phone number
      */
-    @PostMapping("/parking/login")
-    fun loginParkingManagementWithPhone(
-        @RequestBody request: UserParkingManagementLoginRequest
+    @PostMapping("/{type}/login")
+    fun loginWithPhone(
+        @RequestBody request: UserPhoneLoginRequest,
+        @PathVariable type: String
     ): ResponseEntity<UserPhoneLoginResponse> {
         return try {
-            // Check if user is fully registered
-            userService.checkIfUserIsFullyRegistered(request.phone)
-            userService.createOTPAndSendSMS(request.phone)
-            ResponseEntity.ok().body(UserPhoneLoginResponse(null))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserPhoneLoginResponse(ErrorContent("Login Error", e.message ?: "Unknown Error")))
-        }
-    }
-
-    /**
-     * User/Commuter Login with phone number
-     */
-    @PostMapping("/user/login")
-    fun loginUserWithPhone(
-        @RequestBody request: UserPhoneLoginRequest
-    ): ResponseEntity<UserPhoneLoginResponse> {
-        return try {
+            if (type != "user" && type != "parking") {
+                throw Exception("Invalid type")
+            }
             // Check if the user is fully registered
-            userService.checkIfUserIsFullyRegistered(request.phone, request.username)
+            userService.softRegisterUser(request.phone, request.username)
             userService.createOTPAndSendSMS(request.phone)
             ResponseEntity.ok().body(UserPhoneLoginResponse(null))
         } catch (e: Exception) {

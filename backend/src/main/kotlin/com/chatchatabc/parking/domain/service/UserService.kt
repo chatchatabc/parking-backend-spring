@@ -13,14 +13,9 @@ interface UserService : UserDetailsService {
     fun register(user: User, roleName: RoleNames): User
 
     /**
-     * Check if user is fully registered
+     * Soft register a user if not exist
      */
-    fun checkIfUserIsFullyRegistered(phone: String)
-
-    /**
-     * Check if user is fully registered w/ username
-     */
-    fun checkIfUserIsFullyRegistered(phone: String, username: String)
+    fun softRegisterUser(phone: String, username: String?)
 
     /**
      * Create OTP and send via SMS

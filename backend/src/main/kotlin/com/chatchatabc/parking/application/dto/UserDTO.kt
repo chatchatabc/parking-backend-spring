@@ -3,11 +3,7 @@ package com.chatchatabc.parking.application.dto
 import com.chatchatabc.parking.domain.model.User
 
 data class UserPhoneLoginRequest(
-    val username: String,
-    val phone: String
-)
-
-data class UserParkingManagementLoginRequest(
+    val username: String?,
     val phone: String
 )
 
