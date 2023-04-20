@@ -1,38 +1,40 @@
 package com.chatchatabc.parking.impl.domain.service
 
-import com.chatchatabc.parking.domain.model.RoleNames
+import com.chatchatabc.api.application.dto.user.UserDTO
+import com.chatchatabc.api.domain.enums.RoleNames
+import com.chatchatabc.api.domain.service.UserService
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.infra.service.JedisService
 import com.chatchatabc.parking.infra.service.UtilService
+import org.modelmapper.ModelMapper
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder,
     private val roleRepository: RoleRepository,
     private val jedisService: JedisService,
     private val utilService: UtilService
-) : UserService {
+) : UserService, UserDetailsService {
+    private val modelMapper = ModelMapper()
+
     /**
      * Register a new user
      */
-    override fun register(user: User, roleName: RoleNames): User {
+    override fun registerUser(user: UserDTO, roleName: RoleNames): UserDTO {
         // Get Role
         val role = roleRepository.findByName(roleName.name)
-        // Encode Password
-        if (user.password != null) {
-            user.setPassword(passwordEncoder.encode(user.password))
-        }
+        // Create User
+        val createdUser = modelMapper.map(user, User::class.java)
         // Set Role
-        user.roles.add(role.get())
-        return userRepository.save(user)
+        createdUser.roles.add(role.get())
+        // Map created user back to DTO and return
+        return modelMapper.map(userRepository.save(createdUser), UserDTO::class.java)
     }
 
     /**
@@ -72,7 +74,7 @@ class UserServiceImpl(
     /**
      * Verify if OTP and Phone is correct
      */
-    override fun verifyOTP(phone: String, otp: String, roleName: RoleNames): User {
+    override fun verifyOTP(phone: String, otp: String, roleName: RoleNames): UserDTO {
         val queriedUser = userRepository.findByPhone(phone)
         if (queriedUser.isEmpty) {
             throw Exception("User not found")
@@ -94,7 +96,7 @@ class UserServiceImpl(
         val role = roleRepository.findByName(roleName.name)
         queriedUser.get().roles.add(role.get())
         userRepository.save(queriedUser.get())
-        return queriedUser.get()
+        return modelMapper.map(queriedUser.get(), UserDTO::class.java)
     }
 
     /**
@@ -106,7 +108,7 @@ class UserServiceImpl(
         email: String?,
         firstName: String?,
         lastName: String?
-    ): User {
+    ): UserDTO {
         val queriedUser = userRepository.findById(userId)
         if (queriedUser.isEmpty) {
             throw Exception("User not found")
@@ -125,7 +127,7 @@ class UserServiceImpl(
         if (lastName != null) {
             queriedUser.get().lastName = lastName
         }
-        return userRepository.save(queriedUser.get())
+        return modelMapper.map(userRepository.save(queriedUser.get()), UserDTO::class.java)
     }
 
     /**
