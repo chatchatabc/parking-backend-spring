@@ -1,6 +1,10 @@
 package com.chatchatabc.service.application.rest
 
 import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotCreateRequest
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotDTO
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotResponse
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.service.domain.model.ParkingLot
 import com.chatchatabc.service.domain.model.User
 import com.chatchatabc.service.domain.repository.ParkingLotRepository
@@ -10,7 +14,6 @@ import org.modelmapper.ModelMapper
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,7 +23,7 @@ class ParkingLotController(
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository
 ) {
-    private val mapper = ModelMapper()
+    private val modelMapper = ModelMapper()
 
     /**
      * Get parking lots by pageable
@@ -28,16 +31,17 @@ class ParkingLotController(
     @GetMapping("/get/{parkingLotId}")
     fun get(
         @PathVariable parkingLotId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.ParkingLotResponse> {
+    ): ResponseEntity<ParkingLotResponse> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId)
             if (parkingLot.isEmpty) {
                 throw Exception("Parking Lot Not Found")
             }
-            ResponseEntity.ok(com.chatchatabc.service.application.dto.ParkingLotResponse(parkingLot.get(), null))
+            val parkingLotDTO = modelMapper.map(parkingLot.get(), ParkingLotDTO::class.java)
+            ResponseEntity.ok(ParkingLotResponse(parkingLotDTO, null))
         } catch (e: Exception) {
             ResponseEntity.ok(
-                com.chatchatabc.service.application.dto.ParkingLotResponse(
+                ParkingLotResponse(
                     null,
                     ErrorContent("Get Parking By ID Error", e.message ?: "Unknown Error")
                 )
@@ -88,16 +92,17 @@ class ParkingLotController(
      */
     @PostMapping("/register")
     fun register(
-        @RequestBody request: com.chatchatabc.service.application.dto.ParkingLotCreateRequest
-    ): ResponseEntity<com.chatchatabc.service.application.dto.ParkingLotResponse> {
+        @RequestBody request: ParkingLotCreateRequest
+    ): ResponseEntity<ParkingLotResponse> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val parkingLot = mapper.map(request, ParkingLot::class.java)
+            val parkingLot = modelMapper.map(request, ParkingLot::class.java)
             val createdParkingLot = parkingLotService.register(principal.id, parkingLot)
+            val parkingLotDTO = modelMapper.map(createdParkingLot, ParkingLotDTO::class.java)
             return ResponseEntity.ok(
-                com.chatchatabc.service.application.dto.ParkingLotResponse(
-                    createdParkingLot,
+                ParkingLotResponse(
+                    parkingLotDTO,
                     null
                 )
             )
@@ -105,7 +110,7 @@ class ParkingLotController(
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.ParkingLotResponse(
+                    ParkingLotResponse(
                         null,
                         ErrorContent("Register Parking Lot Error", e.message ?: "Unknown Error")
                     )
@@ -118,17 +123,18 @@ class ParkingLotController(
      */
     @PutMapping("/update/{parkingLotId}")
     fun update(
-        @RequestBody request: com.chatchatabc.service.application.dto.ParkingLotUpdateRequest,
+        @RequestBody request: ParkingLotUpdateRequest,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<com.chatchatabc.service.application.dto.ParkingLotResponse> {
+    ): ResponseEntity<ParkingLotResponse> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val parkingLot = mapper.map(request, ParkingLot::class.java)
+            val parkingLot = modelMapper.map(request, ParkingLot::class.java)
             val updatedParkingLot = parkingLotService.update(principal.id, parkingLotId, parkingLot)
+            val parkingLotDTO = modelMapper.map(updatedParkingLot, ParkingLotDTO::class.java)
             return ResponseEntity.ok(
-                com.chatchatabc.service.application.dto.ParkingLotResponse(
-                    updatedParkingLot,
+                ParkingLotResponse(
+                    parkingLotDTO,
                     null
                 )
             )
@@ -136,7 +142,7 @@ class ParkingLotController(
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    com.chatchatabc.service.application.dto.ParkingLotResponse(
+                    ParkingLotResponse(
                         null,
                         ErrorContent("Update Parking Lot Error", e.message ?: "Unknown Error")
                     )
