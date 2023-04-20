@@ -1,10 +1,10 @@
 package com.chatchatabc.parking.application.rest
 
+import com.chatchatabc.api.domain.service.UserService
 import com.chatchatabc.parking.application.dto.ErrorContent
 import com.chatchatabc.parking.application.dto.UserProfileUpdateRequest
 import com.chatchatabc.parking.application.dto.UserResponse
 import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
