@@ -5,12 +5,14 @@ import jakarta.persistence.*
 import lombok.Data
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import java.math.BigDecimal
 import java.util.*
 
 @Data
 @Entity
 @Table(name = "rates")
+@EnableJpaAuditing
 open class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,4 +45,8 @@ open class Rate {
 
     @UpdateTimestamp
     open lateinit var updatedAt: Date
+
+    @Version
+    @Column(name = "version", nullable = false)
+    open var version: Long? = null
 }
