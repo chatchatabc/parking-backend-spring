@@ -1,4 +1,4 @@
-package com.chatchatabc.service.infra.config.swagger
+package com.chatchatabc.parkingadmin.infra.config.swagger
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
@@ -16,8 +16,8 @@ class SwaggerConfig {
     fun customOpenAPI(): OpenAPI {
         return OpenAPI().components(Components())
             .info(
-                Info().title("Parking Demo API")
-                    .description("Parking Demo API")
+                Info().title("Parking Admin API")
+                    .description("Parking Admin API")
                     .version("1.0.0")
             )
     }
