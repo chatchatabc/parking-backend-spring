@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service
 
+import com.chatchatabc.api.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.Role
-import com.chatchatabc.parking.domain.model.RoleNames
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.service.RoleService
 import org.slf4j.LoggerFactory
