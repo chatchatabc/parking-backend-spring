@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.application.dto
 
-import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.api.application.dto.user.UserDTO
 
 data class UserPhoneLoginRequest(
     val username: String?,
@@ -24,6 +24,6 @@ data class UserProfileUpdateRequest(
 )
 
 data class UserResponse(
-    val user: User?,
+    val user: UserDTO?,
     val error: ErrorContent?
 )
