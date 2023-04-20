@@ -34,6 +34,12 @@ class SecurityConfig(
 
                 // Vehicle API
                 it.requestMatchers("/api/vehicle/**").authenticated()
+                // TODO: Create and Update Vehicle should be allowed for user with role "USER"
+
+                // Report API
+                it.requestMatchers("/api/report/get").authenticated()
+                it.requestMatchers("/api/report/create").authenticated()
+                it.requestMatchers("/api/report/**").hasAnyRole("ENFORCER")
 
                 // Parking Lot API
                 it.requestMatchers("/api/parking-lot/get").authenticated()
