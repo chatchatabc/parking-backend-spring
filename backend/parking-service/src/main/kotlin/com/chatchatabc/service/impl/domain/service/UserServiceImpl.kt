@@ -8,19 +8,17 @@ import com.chatchatabc.service.domain.repository.RoleRepository
 import com.chatchatabc.service.domain.repository.UserRepository
 import com.chatchatabc.service.infra.service.JedisService
 import com.chatchatabc.service.infra.service.UtilService
+import org.apache.dubbo.config.annotation.DubboService
 import org.modelmapper.ModelMapper
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.stereotype.Service
 import java.util.*
 
-@Service
+@DubboService
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val jedisService: JedisService,
     private val utilService: UtilService
-) : UserService, UserDetailsService {
+) : UserService {
     private val modelMapper = ModelMapper()
 
     /**
@@ -53,7 +51,7 @@ class UserServiceImpl(
         } else {
             // Check if username is correct for existing user
             if (!username.isNullOrEmpty()) {
-                if (queriedUser.get().username != username) {
+                if (queriedUser.get().getUsername() != username) {
                     throw Exception("Username is incorrect")
                 }
             }
@@ -133,19 +131,19 @@ class UserServiceImpl(
     /**
      * Load user by username for Login
      */
-    override fun loadUserByUsername(username: String): UserDetails {
-        val user: Optional<User> = userRepository.findByUsername(username)
-        if (user.isEmpty) {
-            throw Exception("User not found")
-        }
-        return org.springframework.security.core.userdetails.User(
-            user.get().username,
-            user.get().password,
-            user.get().isEnabled,
-            user.get().isAccountNonExpired,
-            user.get().isCredentialsNonExpired,
-            user.get().isAccountNonLocked,
-            user.get().authorities
-        )
-    }
+//    override fun loadUserByUsername(username: String): UserDetails {
+//        val user: Optional<User> = userRepository.findByUsername(username)
+//        if (user.isEmpty) {
+//            throw Exception("User not found")
+//        }
+//        return org.springframework.security.core.userdetails.User(
+//            user.get().username,
+//            user.get().password,
+//            user.get().isEnabled,
+//            user.get().isAccountNonExpired,
+//            user.get().isCredentialsNonExpired,
+//            user.get().isAccountNonLocked,
+//            user.get().authorities
+//        )
+//    }
 }
