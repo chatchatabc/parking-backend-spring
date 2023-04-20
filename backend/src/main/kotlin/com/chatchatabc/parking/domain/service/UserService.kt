@@ -30,7 +30,7 @@ interface UserService : UserDetailsService {
     /**
      * Verify if OTP and Phone is correct
      */
-    fun parkingVerifyOTP(phone: String, otp: String): User
+    fun verifyOTP(phone: String, otp: String, roleName: RoleNames): User
 
     /**
      * Update user

@@ -78,7 +78,7 @@ class UserServiceImpl(
     /**
      * Verify if OTP and Phone is correct
      */
-    override fun parkingVerifyOTP(phone: String, otp: String): User {
+    override fun verifyOTP(phone: String, otp: String, roleName: RoleNames): User {
         val queriedUser = userRepository.findByPhone(phone)
         if (queriedUser.isEmpty) {
             throw Exception("User not found")
@@ -92,10 +92,12 @@ class UserServiceImpl(
         }
         // Delete OTP on Redis if done
         jedisService.get("otp_$phone")
-        // TODO: Need to update this date? Value could be present already
-        queriedUser.get().phoneVerifiedAt = Date()
+        // Update phone verified date only if null, no need to reset again
+        if (queriedUser.get().phoneVerifiedAt == null) {
+            queriedUser.get().phoneVerifiedAt = Date()
+        }
         // Add Parking Manager Role to User
-        val role = roleRepository.findByName(RoleNames.ROLE_PARKING_MANAGER.name)
+        val role = roleRepository.findByName(roleName.name)
         queriedUser.get().roles.add(role.get())
         userRepository.save(queriedUser.get())
         return queriedUser.get()

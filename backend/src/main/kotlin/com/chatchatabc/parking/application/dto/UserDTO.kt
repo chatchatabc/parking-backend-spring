@@ -2,23 +2,12 @@ package com.chatchatabc.parking.application.dto
 
 import com.chatchatabc.parking.domain.model.User
 
-data class UserRegisterRequest(
-    val email: String,
+data class UserPhoneLoginRequest(
     val username: String,
-    val password: String
-)
-
-data class UserLoginRequest(
-    val username: String,
-    val password: String
-)
-
-data class UserParkingPhoneLoginRequest(
     val phone: String
 )
 
-data class UserPhoneLoginRequest(
-    val username: String,
+data class UserParkingManagementLoginRequest(
     val phone: String
 )
 
@@ -26,7 +15,7 @@ data class UserPhoneLoginResponse(
     val error: ErrorContent?
 )
 
-data class UserParkingVerifyRequest(
+data class UserVerifyOTPRequest(
     val phone: String,
     val otp: String
 )
