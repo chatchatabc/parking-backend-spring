@@ -23,6 +23,7 @@
     <modules>
         <module>parking-admin</module>
         <module>parking-api</module>
+        <module>parking-enforcer</module>
         <module>parking-management</module>
         <module>parking-user</module>
         <module>parking-service</module>
