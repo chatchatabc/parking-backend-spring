@@ -28,6 +28,13 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+  zookeeper:
+    container_name: zookeeper_parking_abc
+    image: zookeeper:latest
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
 
 
 volumes:
