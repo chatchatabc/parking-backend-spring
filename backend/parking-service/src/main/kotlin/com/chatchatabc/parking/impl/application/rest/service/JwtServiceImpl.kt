@@ -6,12 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.chatchatabc.api.application.dto.user.UserDTO
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.repository.UserRepository
+import org.apache.dubbo.config.annotation.DubboService
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
 
-@Service
+@Service // TODO: To be removed
+@DubboService
 class JwtServiceImpl(
     @Value("\${server.jwt.secret}")
     private val secret: String,
