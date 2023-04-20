@@ -9,10 +9,8 @@ import com.chatchatabc.service.domain.repository.UserRepository
 import org.apache.dubbo.config.annotation.DubboService
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
 import java.util.*
 
-@Service // TODO: To be removed
 @DubboService
 class JwtServiceImpl(
     @Value("\${server.jwt.secret}")
