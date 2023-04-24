@@ -1,0 +1,47 @@
+package com.chatchatabc.parking.domain.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "vehicles")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Column
+    private String name;
+
+    @Column(unique = true)
+    private String plateNumber;
+
+    @Column
+    private int type;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "vehicles")
+    private List<User> users = List.of();
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+}
