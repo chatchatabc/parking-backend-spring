@@ -42,6 +42,7 @@ class ParkingLotServiceImpl(
             this.capacity = capacity
             this.availableSlots = capacity
         }
+        // TODO: Add user to user_parking_lot table
         val savedParkingLot = parkingLotRepository.save(parkingLot)
         return modelMapper.map(savedParkingLot, ParkingLotDTO::class.java)
     }
