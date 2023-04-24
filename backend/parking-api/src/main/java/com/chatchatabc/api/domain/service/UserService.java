@@ -40,6 +40,14 @@ public interface UserService {
     UserDTO verifyOTP(String phone, String otp, RoleNames roleName);
 
     /**
+     * Get user by id
+     *
+     * @param userId the user id
+     * @return the user dto
+     */
+    UserDTO getUser(String userId);
+
+    /**
      * Update user
      *
      * @param userId    the user id

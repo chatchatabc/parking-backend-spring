@@ -100,6 +100,20 @@ class UserServiceImpl(
     }
 
     /**
+     * Get user by id
+     *
+     * @param userId the user id
+     * @return the user dto
+     */
+    override fun getUser(userId: String): UserDTO {
+        val user = userRepository.findById(userId)
+        if (user.isEmpty) {
+            throw Exception("User not found")
+        }
+        return modelMapper.map(user.get(), UserDTO::class.java)
+    }
+
+    /**
      * Update user
      */
     override fun updateUser(
