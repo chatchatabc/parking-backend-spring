@@ -12,7 +12,7 @@ public interface VehicleService {
      * @param type        the type of the vehicle
      * @return the vehicle
      */
-    Vehicle registerVehicle(String userId, String name, String plateNumber, int type);
+    Vehicle registerVehicle(String userId, String name, String plateNumber, int type) throws Exception;
 
     /**
      * Update vehicle
@@ -24,5 +24,5 @@ public interface VehicleService {
      * @param type        the type of the vehicle
      * @return the vehicle
      */
-    Vehicle updateVehicle(String userId, String vehicleId, String name, String plateNumber, int type);
+    Vehicle updateVehicle(String userId, String vehicleId, String name, String plateNumber, Integer type) throws Exception;
 }
