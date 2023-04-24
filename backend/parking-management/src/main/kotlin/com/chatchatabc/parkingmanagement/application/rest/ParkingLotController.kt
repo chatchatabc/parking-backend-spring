@@ -45,22 +45,21 @@ class ParkingLotController(
 //        }
 //    }
 //
-//    /**
-//     * Get Parking Lots By Owner
-//     */
-//    @GetMapping("/get-mine")
-//    fun getByOwner(
-//        pageable: Pageable
-//    ): ResponseEntity<Page<ParkingLot>> {
-//        return try {
-//            // Get Security Context
-//            val principal = SecurityContextHolder.getContext().authentication.principal as User
-//            val owner = userRepository.findById(principal.id).get()
-//            return ResponseEntity.ok(parkingLotRepository.findAllByOwner(owner, pageable))
-//        } catch (e: Exception) {
-//            ResponseEntity.badRequest().body(null)
-//        }
-//    }
+    /**
+     * Get Parking Lots By User
+     */
+    // TODO: Implement pageable
+    @GetMapping("/get-managing")
+    fun getByManaging(): ResponseEntity<Array<ParkingLotDTO>> {
+        return try {
+            // Get Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            val parkingLots = parkingLotService.getParkingLotsByUserId(principal.id)
+            return ResponseEntity.ok(parkingLots)
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(null)
+        }
+    }
 //
 //    /**
 //     * Get parking lots by distance

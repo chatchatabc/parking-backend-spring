@@ -4,6 +4,15 @@ import com.chatchatabc.api.application.dto.parking_lot.ParkingLotDTO;
 
 public interface ParkingLotService {
     /**
+     * Get parking lot by user id
+     *
+     * @param userId the user id
+     * @return the array of parking lot DTO
+     */
+    // TODO: Implement pageable
+    ParkingLotDTO[] getParkingLotsByUserId(String userId);
+
+    /**
      * Register a new parking lot
      *
      * @param ownerId     the owner of the parking lot

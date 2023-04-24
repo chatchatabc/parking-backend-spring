@@ -27,6 +27,13 @@ interface ParkingLotRepository : JpaRepository<ParkingLot, String> {
     /**
      * Find all parking lots by owner
      */
+    // TODO: Put DTO here instead?
+    @Query("SELECT p FROM ParkingLot p WHERE p.owner = ?1")
+    fun findAllByOwner(owner: User): List<ParkingLot>
+
+    /**
+     * Find all parking lots by owner w/ pageable
+     */
     @Query("SELECT p FROM ParkingLot p WHERE p.owner = ?1")
     fun findAllByOwner(owner: User, pageable: Pageable): Page<ParkingLot>
 }

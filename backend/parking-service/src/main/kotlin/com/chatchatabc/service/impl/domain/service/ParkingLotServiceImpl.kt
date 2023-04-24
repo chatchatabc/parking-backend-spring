@@ -47,6 +47,21 @@ class ParkingLotServiceImpl(
     }
 
     /**
+     * Get parking lot by user id
+     *
+     * @param userId the user id
+     * @return the array of parking lot DTO
+     */
+    override fun getParkingLotsByUserId(userId: String): Array<ParkingLotDTO> {
+        // TODO: Uses owner id for now, need to change to user id
+        val user = userRepository.findById(userId).get()
+        val parkingLots = parkingLotRepository.findAllByOwner(user)
+        return parkingLots.map { parkingLot ->
+            modelMapper.map(parkingLot, ParkingLotDTO::class.java)
+        }.toTypedArray()
+    }
+
+    /**
      * Update a parking lot
      */
     override fun updateParkingLot(
