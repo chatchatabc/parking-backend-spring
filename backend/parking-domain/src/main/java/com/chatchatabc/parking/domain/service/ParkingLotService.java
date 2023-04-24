@@ -1,16 +1,8 @@
-package com.chatchatabc.api.domain.service;
+package com.chatchatabc.parking.domain.service;
 
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotDTO;
+import com.chatchatabc.parking.domain.model.ParkingLot;
 
 public interface ParkingLotService {
-    /**
-     * Get parking lot by user id
-     *
-     * @param userId the user id
-     * @return the array of parking lot DTO
-     */
-    // TODO: Implement pageable
-    ParkingLotDTO[] getParkingLotsByUserId(String userId);
 
     /**
      * Register a new parking lot
@@ -22,9 +14,9 @@ public interface ParkingLotService {
      * @param address     the address of the parking lot
      * @param description the description of the parking lot
      * @param capacity    the capacity of the parking lot
-     * @return the parking lot DTO
+     * @return the parking lot
      */
-    ParkingLotDTO registerParkingLot(
+    ParkingLot registerParkingLot(
             String ownerId,
             String name,
             Double latitude,
@@ -45,9 +37,9 @@ public interface ParkingLotService {
      * @param address      the address of the parking lot
      * @param description  the description of the parking lot
      * @param capacity     the capacity of the parking lot
-     * @return the parking lot DTO
+     * @return the parking lot
      */
-    ParkingLotDTO updateParkingLot(
+    ParkingLot updateParkingLot(
             String userId,
             String parkingLotId,
             String name,
