@@ -1,4 +1,4 @@
-package com.chatchatabc.api.domain.enums;
+package com.chatchatabc.parking.domain.enums;
 
 public enum RoleNames {
     ROLE_ADMIN,
