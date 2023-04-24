@@ -44,14 +44,14 @@ class UserServiceImpl(
             val createdUser = User().apply {
                 this.phone = phone
                 if (username != null) {
-                    this.setUsername(username)
+                    this.username = username
                 }
             }
             userRepository.save(createdUser)
         } else {
             // Check if username is correct for existing user
             if (!username.isNullOrEmpty()) {
-                if (queriedUser.get().getUsername() != username) {
+                if (queriedUser.get().username != username) {
                     throw Exception("Username is incorrect")
                 }
             }
@@ -114,7 +114,7 @@ class UserServiceImpl(
 
         // Apply changes
         if (username != null) {
-            queriedUser.get().setUsername(username)
+            queriedUser.get().username = username
         }
         if (email != null) {
             queriedUser.get().email = email
