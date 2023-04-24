@@ -1,5 +1,5 @@
 ### User Login/Register
-POST {{address}}/api/auth/parking/login
+POST {{address-management}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -7,10 +7,10 @@ Content-Type: application/json
 }
 
 ### Verify Phone and OTP
-POST {{address}}/api/auth/parking/verify
+POST {{address-management}}/api/auth/verify
 Content-Type: application/json
 
 {
   "phone": "09123456789",
-  "otp": "581135"
+  "otp": "227670"
 }
