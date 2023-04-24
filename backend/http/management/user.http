@@ -1,3 +1,15 @@
 ### Get User Profile
 GET {{address-management}}/api/user/me
 Authorization: Bearer {{token}}
+
+### Update User Profile
+PUT {{address-management}}/api/user/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "username": "test",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "test@gmail.com"
+}
