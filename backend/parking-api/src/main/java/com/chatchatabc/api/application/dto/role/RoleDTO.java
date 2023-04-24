@@ -10,6 +10,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleDTO implements Serializable {
-    private String id;
     private String name;
 }
