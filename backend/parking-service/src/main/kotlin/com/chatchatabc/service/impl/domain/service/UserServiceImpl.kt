@@ -90,9 +90,11 @@ class UserServiceImpl(
         if (queriedUser.get().phoneVerifiedAt == null) {
             queriedUser.get().phoneVerifiedAt = Date()
         }
-        // Add Parking Manager Role to User
+        // Add Parking Manager Role to User if not exist
         val role = roleRepository.findByName(roleName.name)
-        queriedUser.get().roles.add(role.get())
+        if (queriedUser.get().roles.none { it.id == role.get().id }) {
+            queriedUser.get().roles.add(role.get())
+        }
         userRepository.save(queriedUser.get())
         return modelMapper.map(queriedUser.get(), UserDTO::class.java)
     }
