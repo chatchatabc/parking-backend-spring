@@ -4,6 +4,7 @@ import com.chatchatabc.api.application.dto.ErrorContent
 import com.chatchatabc.api.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.api.application.dto.parking_lot.ParkingLotDTO
 import com.chatchatabc.api.application.dto.parking_lot.ParkingLotResponse
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.api.application.dto.user.UserDTO
 import com.chatchatabc.api.domain.service.ParkingLotService
 import org.apache.dubbo.config.annotation.DubboReference
@@ -119,36 +120,38 @@ class ParkingLotController(
                 )
         }
     }
-//
-//    /**
-//     * Update a parking lot
-//     */
-//    @PutMapping("/update/{parkingLotId}")
-//    fun update(
-//        @RequestBody request: ParkingLotUpdateRequest,
-//        @PathVariable parkingLotId: String
-//    ): ResponseEntity<ParkingLotResponse> {
-//        return try {
-//            // Get principal from Security Context
-//            val principal = SecurityContextHolder.getContext().authentication.principal as User
-//            val parkingLot = modelMapper.map(request, ParkingLot::class.java)
-//            val updatedParkingLot = parkingLotService.update(principal.id, parkingLotId, parkingLot)
-//            val parkingLotDTO = modelMapper.map(updatedParkingLot, ParkingLotDTO::class.java)
-//            return ResponseEntity.ok(
-//                ParkingLotResponse(
-//                    parkingLotDTO,
-//                    null
-//                )
-//            )
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            ResponseEntity.badRequest()
-//                .body(
-//                    ParkingLotResponse(
-//                        null,
-//                        ErrorContent("Update Parking Lot Error", e.message ?: "Unknown Error")
-//                    )
-//                )
-//        }
-//    }
+
+    /**
+     * Update a parking lot
+     */
+    @PutMapping("/update/{parkingLotId}")
+    fun update(
+        @RequestBody req: ParkingLotUpdateRequest,
+        @PathVariable parkingLotId: String
+    ): ResponseEntity<ParkingLotResponse> {
+        return try {
+            // Get principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            val updatedParkingLot = parkingLotService.updateParkingLot(
+                principal.id,
+                parkingLotId,
+                req.name,
+                req.latitude,
+                req.longitude,
+                req.address,
+                req.description,
+                req.capacity
+            )
+            return ResponseEntity.ok(ParkingLotResponse(updatedParkingLot, null))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ParkingLotResponse(
+                        null,
+                        ErrorContent("Update Parking Lot Error", e.message ?: "Unknown Error")
+                    )
+                )
+        }
+    }
 }

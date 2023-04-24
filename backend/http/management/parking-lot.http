@@ -25,14 +25,15 @@ Content-Type: application/json
 }
 
 ### Update Parking Lot
-PUT {{address-management}}/api/parking-lot/update/9772e5e5-3cca-4fa7-ad26-45823d638a4b
+PUT {{address-management}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "name": "Parking Lot 2",
-  "rate": "11000.00",
-  "capacity": 15,
   "latitude": 7.110451,
-  "longitude": 125.633836
+  "longitude": 125.633836,
+  "address": "Address 2",
+  "description": "Description 2",
+  "capacity": 25
 }

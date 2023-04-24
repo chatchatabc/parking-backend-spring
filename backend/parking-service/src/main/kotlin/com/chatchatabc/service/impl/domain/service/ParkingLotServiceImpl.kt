@@ -49,35 +49,47 @@ class ParkingLotServiceImpl(
     /**
      * Update a parking lot
      */
-//    override fun update(ownerId: String, parkingLotId: String, newParkingLotInfo: ParkingLot): ParkingLot {
-//        val owner = userRepository.findById(ownerId).get()
-//        val parkingLot = parkingLotRepository.findByIdAndOwner(parkingLotId, owner).get()
-//        println(parkingLot)
-//
-//        // Apply Updates
-//        if (newParkingLotInfo.name != null) {
-//            parkingLot.name = newParkingLotInfo.name
-//        }
-//        if (newParkingLotInfo.rate != null) {
-//            parkingLot.rate = newParkingLotInfo.rate
-//        }
-//        if (newParkingLotInfo.capacity != null) {
-//            parkingLot.capacity = newParkingLotInfo.capacity
-//            // Get active invoices and update available slots to accommodate new capacity
-//            val activeInvoices = invoiceRepository.countActiveInvoices(parkingLotId)
-//            parkingLot.availableSlots = newParkingLotInfo.capacity - activeInvoices
-//        }
-//        if (newParkingLotInfo.latitude != null) {
-//            parkingLot.latitude = newParkingLotInfo.latitude
-//        }
-//        if (newParkingLotInfo.longitude != null) {
-//            parkingLot.longitude = newParkingLotInfo.longitude
-//        }
-//
-//        // Nats publish event
+    override fun updateParkingLot(
+        userId: String,
+        parkingLotId: String,
+        name: String?,
+        latitude: Double?,
+        longitude: Double?,
+        address: String?,
+        description: String?,
+        capacity: Int?
+    ): ParkingLotDTO {
+        // TODO: get user from allowed list
+        val user = userRepository.findById(userId).get()
+        val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+
+        // Apply Updates
+        if (name != null) {
+            parkingLot.name = name
+        }
+        if (capacity != null) {
+            parkingLot.capacity = capacity
+            // Get active invoices and update available slots to accommodate new capacity
+            val activeInvoices = invoiceRepository.countActiveInvoices(parkingLotId)
+            parkingLot.availableSlots = capacity - activeInvoices
+        }
+        if (latitude != null) {
+            parkingLot.latitude = latitude
+        }
+        if (longitude != null) {
+            parkingLot.longitude = longitude
+        }
+        if (address != null) {
+            parkingLot.address = address
+        }
+        if (description != null) {
+            parkingLot.description = description
+        }
+
+        // Nats publish event
 //        val jsonMessage = objectMapper.writeValueAsString(parkingLot)
 //        natsConnection.publish("parking-lots", jsonMessage.toByteArray(Charsets.UTF_8))
-//
-//        return parkingLotRepository.save(parkingLot)
-//    }
+        val savedParkingLot = parkingLotRepository.save(parkingLot)
+        return modelMapper.map(savedParkingLot, ParkingLotDTO::class.java)
+    }
 }
