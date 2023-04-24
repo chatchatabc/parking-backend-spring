@@ -11,7 +11,7 @@ public interface InvoiceService {
      * @param vehicleId    the vehicle id
      * @return the invoice
      */
-    Invoice createInvoice(String parkingLotId, String vehicleId);
+    Invoice createInvoice(String parkingLotId, String vehicleId) throws Exception;
 
     /**
      * End invoice
@@ -20,7 +20,7 @@ public interface InvoiceService {
      * @param parkingLotId the parking lot id
      * @return the invoice
      */
-    Invoice endInvoice(String invoiceId, String parkingLotId);
+    Invoice endInvoice(String invoiceId, String parkingLotId) throws Exception;
 
     /**
      * Pay invoice
@@ -29,5 +29,5 @@ public interface InvoiceService {
      * @param parkingLotId the parking lot id
      * @return the invoice
      */
-    Invoice payInvoice(String invoiceId, String parkingLotId);
+    Invoice payInvoice(String invoiceId, String parkingLotId) throws Exception;
 }
