@@ -1,6 +1,7 @@
 package com.chatchatabc.parkingmanagement.infra.config.security.filter
 
 import com.chatchatabc.api.application.rest.service.JwtService
+import com.chatchatabc.parkingmanagement.infra.config.security.dto.RoleDTOGrantedAuthority
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -46,7 +47,7 @@ class JwtRequestFilter(
         }
 
         val authorities: MutableCollection<out GrantedAuthority> =
-            user.roles.stream().map { role -> role as GrantedAuthority }.toList().toMutableList()
+            user.roles.stream().map { role -> RoleDTOGrantedAuthority(role) }.toList().toMutableList()
 
         val authentication = UsernamePasswordAuthenticationToken(
             user,

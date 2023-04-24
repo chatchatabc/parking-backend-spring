@@ -29,7 +29,11 @@ class SecurityConfig(
         return http
             .cors().and().csrf().disable()
             .authorizeHttpRequests {
+                // Auth routes must be public
                 it.requestMatchers("/api/auth/**").permitAll()
+
+                // User routes must be authenticated
+                it.requestMatchers("/api/user/**").authenticated()
 
                 // All routes must have management role
                 it.requestMatchers("/api/**").hasAnyRole("PARKING_MANAGER")
