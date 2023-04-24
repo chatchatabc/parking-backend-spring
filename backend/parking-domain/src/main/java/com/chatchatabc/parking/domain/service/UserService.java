@@ -10,7 +10,7 @@ public interface UserService {
      * @param phone    the phone number
      * @param username the username
      */
-    void softRegisterUser(String phone, String username);
+    void softRegisterUser(String phone, String username) throws Exception;
 
     /**
      * Create OTP and send SMS
@@ -27,7 +27,7 @@ public interface UserService {
      * @param roleName the role name
      * @return the user
      */
-    User verifyOTP(String phone, String otp, RoleNames roleName);
+    User verifyOTP(String phone, String otp, RoleNames roleName) throws Exception;
 
     /**
      * Update user
@@ -39,5 +39,5 @@ public interface UserService {
      * @param lastName  the last name
      * @return the user
      */
-    User updateUser(String userId, String username, String email, String firstName, String lastName);
+    User updateUser(String userId, String username, String email, String firstName, String lastName) throws Exception;
 }
