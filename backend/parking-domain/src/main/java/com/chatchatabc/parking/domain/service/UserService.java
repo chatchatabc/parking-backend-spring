@@ -1,19 +1,9 @@
-package com.chatchatabc.api.domain.service;
+package com.chatchatabc.parking.domain.service;
 
-import com.chatchatabc.api.application.dto.user.UserDTO;
-import com.chatchatabc.api.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.model.User;
 
 public interface UserService {
-
-    /**
-     * Register a new user
-     *
-     * @param user     the user dto
-     * @param roleName the role name
-     * @return the user dto
-     */
-    UserDTO registerUser(UserDTO user, RoleNames roleName);
-
     /**
      * Soft register a new user if not exists
      *
@@ -35,17 +25,9 @@ public interface UserService {
      * @param phone    the phone number
      * @param otp      the otp
      * @param roleName the role name
-     * @return the user dto
+     * @return the user
      */
-    UserDTO verifyOTP(String phone, String otp, RoleNames roleName);
-
-    /**
-     * Get user by id
-     *
-     * @param userId the user id
-     * @return the user dto
-     */
-    UserDTO getUser(String userId);
+    User verifyOTP(String phone, String otp, RoleNames roleName);
 
     /**
      * Update user
@@ -55,7 +37,7 @@ public interface UserService {
      * @param email     the email
      * @param firstName the first name
      * @param lastName  the last name
-     * @return the user dto
+     * @return the user
      */
-    UserDTO updateUser(String userId, String username, String email, String firstName, String lastName);
+    User updateUser(String userId, String username, String email, String firstName, String lastName);
 }
