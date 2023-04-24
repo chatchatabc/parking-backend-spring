@@ -1,0 +1,3 @@
+### Get User Profile
+GET {{address-management}}/api/user/me
+Authorization: Bearer {{token}}
