@@ -24,7 +24,7 @@ public interface ParkingLotService {
             String address,
             String description,
             Integer capacity
-    );
+    ) throws Exception;
 
     /**
      * Update parking lot
@@ -48,5 +48,5 @@ public interface ParkingLotService {
             String address,
             String description,
             Integer capacity
-    );
+    ) throws Exception;
 }
