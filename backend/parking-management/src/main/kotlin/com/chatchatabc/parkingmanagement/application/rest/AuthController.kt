@@ -3,6 +3,7 @@ package com.chatchatabc.parkingmanagement.application.rest
 import com.chatchatabc.api.application.dto.user.*
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.api.domain.service.UserService
+import org.apache.dubbo.config.annotation.DubboReference
 import org.modelmapper.ModelMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
+    @DubboReference
     private val userService: UserService,
+    @DubboReference
     private val jwtService: JwtService
 ) {
     private val modelMapper =  ModelMapper()
