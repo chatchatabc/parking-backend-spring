@@ -36,4 +36,15 @@ public interface VehicleService {
      * @throws Exception the exception
      */
     Vehicle addUserToVehicle(String userId, String vehicleId, String userToAddId) throws Exception;
+
+    /**
+     * Remove a user from a vehicle
+     *
+     * @param userId         the user id
+     * @param vehicleId      the vehicle id
+     * @param userToRemoveId the user to remove id
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    Vehicle removeUserFromVehicle(String userId, String vehicleId, String userToRemoveId) throws Exception;
 }

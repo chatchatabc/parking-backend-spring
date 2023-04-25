@@ -123,4 +123,49 @@ public class VehicleServiceImpl implements VehicleService {
 
         return vehicle.get();
     }
+
+    /**
+     * Remove a user from a vehicle
+     *
+     * @param userId         the user id
+     * @param vehicleId      the vehicle id
+     * @param userToRemoveId the user to remove id
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    @Override
+    public Vehicle removeUserFromVehicle(String userId, String vehicleId, String userToRemoveId) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new Exception("User not found");
+        }
+
+        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        if (vehicle.isEmpty()) {
+            throw new Exception("Vehicle not found");
+        }
+        // Check if user has access to update vehicle
+        if (!vehicle.get().getUsers().contains(user.get())) {
+            throw new Exception("Vehicle not found");
+        }
+        // Check if user is the owner, do not remove
+        if (vehicle.get().getOwner().getId().equals(userToRemoveId)) {
+            throw new Exception("Cannot remove owner");
+        }
+
+        Optional<User> userToRemove = userRepository.findById(userToRemoveId);
+        if (userToRemove.isEmpty()) {
+            throw new Exception("User to add not found");
+        }
+        // Check if user to remove is not in vehicle
+        if (!vehicle.get().getUsers().contains(userToRemove.get())) {
+            throw new Exception("User not in vehicle");
+        }
+
+        // Remove vehicle from user
+        userToRemove.get().getVehicles().remove(vehicle.get());
+        userRepository.save(userToRemove.get());
+
+        return vehicle.get();
+    }
 }
