@@ -1,9 +1,9 @@
-package com.chatchatabc.parking.impl.application.rest;
+package com.chatchatabc.api.impl.application.rest;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.chatchatabc.parking.application.rest.service.JwtService;
+import com.chatchatabc.api.application.rest.service.JwtService;
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

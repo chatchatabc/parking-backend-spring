@@ -1,8 +1,8 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.parking.application.dto.ErrorContent
-import com.chatchatabc.parking.application.dto.user.UserProfileUpdateRequest
-import com.chatchatabc.parking.application.dto.user.UserResponse
+import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.user.UserProfileUpdateRequest
+import com.chatchatabc.api.application.dto.user.UserResponse
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
@@ -23,11 +23,24 @@ class UserController(
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
-            ResponseEntity.ok().body(UserResponse(user, null))
+            ResponseEntity.ok().body(
+                UserResponse(
+                    user,
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserResponse(null, ErrorContent("User Profile Get Error", e.message ?: "Unknown Error")))
+                .body(
+                    UserResponse(
+                        null,
+                        ErrorContent(
+                            "User Profile Get Error",
+                            e.message ?: "Unknown Error"
+                        )
+                    )
+                )
         }
     }
 
@@ -48,11 +61,24 @@ class UserController(
                 request.firstName,
                 request.lastName
             )
-            ResponseEntity.ok().body(UserResponse(user, null))
+            ResponseEntity.ok().body(
+                UserResponse(
+                    user,
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserResponse(null, ErrorContent("User Profile Update Error", e.message ?: "Unknown Error")))
+                .body(
+                    UserResponse(
+                        null,
+                        ErrorContent(
+                            "User Profile Update Error",
+                            e.message ?: "Unknown Error"
+                        )
+                    )
+                )
         }
     }
 }

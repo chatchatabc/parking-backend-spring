@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.application.rest.service;
+package com.chatchatabc.api.application.rest.service;
 
 import com.chatchatabc.parking.domain.model.User;
 

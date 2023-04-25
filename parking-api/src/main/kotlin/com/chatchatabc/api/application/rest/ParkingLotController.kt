@@ -1,9 +1,9 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.parking.application.dto.ErrorContent
-import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotCreateRequest
-import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotResponse
-import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotUpdateRequest
+import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotCreateRequest
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotResponse
+import com.chatchatabc.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -117,7 +117,10 @@ class ParkingLotController(
                 .body(
                     ParkingLotResponse(
                         null,
-                        ErrorContent("Register Parking Lot Error", e.message ?: "Unknown Error")
+                        ErrorContent(
+                            "Register Parking Lot Error",
+                            e.message ?: "Unknown Error"
+                        )
                     )
                 )
         }
@@ -144,14 +147,22 @@ class ParkingLotController(
                 req.description,
                 req.capacity
             )
-            return ResponseEntity.ok(ParkingLotResponse(updatedParkingLot, null))
+            return ResponseEntity.ok(
+                ParkingLotResponse(
+                    updatedParkingLot,
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ParkingLotResponse(
                         null,
-                        ErrorContent("Update Parking Lot Error", e.message ?: "Unknown Error")
+                        ErrorContent(
+                            "Update Parking Lot Error",
+                            e.message ?: "Unknown Error"
+                        )
                     )
                 )
         }

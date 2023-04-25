@@ -1,6 +1,6 @@
 package com.chatchatabc.admin.infra.config.security.filter
 
-import com.chatchatabc.parking.application.rest.service.JwtService
+import com.chatchatabc.api.application.rest.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtRequestFilter(
-    private val jwtService: JwtService
+    private val jwtService: com.chatchatabc.api.application.rest.service.JwtService
 ) : OncePerRequestFilter() {
     private val log = LoggerFactory.getLogger(JwtRequestFilter::class.java)
 

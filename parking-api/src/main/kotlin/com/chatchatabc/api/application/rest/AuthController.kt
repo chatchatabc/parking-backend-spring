@@ -1,11 +1,11 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.parking.application.dto.ErrorContent
-import com.chatchatabc.parking.application.dto.user.UserPhoneLoginRequest
-import com.chatchatabc.parking.application.dto.user.UserPhoneLoginResponse
-import com.chatchatabc.parking.application.dto.user.UserResponse
-import com.chatchatabc.parking.application.dto.user.UserVerifyOTPRequest
-import com.chatchatabc.parking.application.rest.service.JwtService
+import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.user.UserPhoneLoginRequest
+import com.chatchatabc.api.application.dto.user.UserPhoneLoginResponse
+import com.chatchatabc.api.application.dto.user.UserResponse
+import com.chatchatabc.api.application.dto.user.UserVerifyOTPRequest
+import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpHeaders
@@ -31,11 +31,22 @@ class AuthController(
             println(req)
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
-            ResponseEntity.ok().body(UserPhoneLoginResponse(null))
+            ResponseEntity.ok().body(
+                UserPhoneLoginResponse(
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(UserPhoneLoginResponse(ErrorContent("User Login Error", e.message ?: "Unknown Error")))
+                .body(
+                    UserPhoneLoginResponse(
+                        ErrorContent(
+                            "User Login Error",
+                            e.message ?: "Unknown Error"
+                        )
+                    )
+                )
         }
     }
 
@@ -53,7 +64,12 @@ class AuthController(
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
-            ResponseEntity.ok().headers(headers).body(UserResponse(user, null))
+            ResponseEntity.ok().headers(headers).body(
+                UserResponse(
+                    user,
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             // TODO: Improve error message
@@ -61,7 +77,10 @@ class AuthController(
                 .body(
                     UserResponse(
                         null,
-                        ErrorContent("OTP Verify Error", e.message ?: "Unknown Error")
+                        ErrorContent(
+                            "OTP Verify Error",
+                            e.message ?: "Unknown Error"
+                        )
                     )
                 )
         }
