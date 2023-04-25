@@ -26,27 +26,23 @@ class ParkingLotController(
     /**
      * Get parking lots by pageable
      */
-//    @GetMapping("/get/{parkingLotId}")
-//    fun get(
-//        @PathVariable parkingLotId: String
-//    ): ResponseEntity<ParkingLotResponse> {
-//        return try {
-//            val parkingLot = parkingLotRepository.findById(parkingLotId)
-//            if (parkingLot.isEmpty) {
-//                throw Exception("Parking Lot Not Found")
-//            }
-//            val parkingLotDTO = modelMapper.map(parkingLot.get(), ParkingLotDTO::class.java)
-//            ResponseEntity.ok(ParkingLotResponse(parkingLotDTO, null))
-//        } catch (e: Exception) {
-//            ResponseEntity.ok(
-//                ParkingLotResponse(
-//                    null,
-//                    ErrorContent("Get Parking By ID Error", e.message ?: "Unknown Error")
-//                )
-//            )
-//        }
-//    }
-//
+    @GetMapping("/get/{parkingLotId}")
+    fun get(
+        @PathVariable parkingLotId: String
+    ): ResponseEntity<ParkingLotResponse> {
+        return try {
+            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            ResponseEntity.ok(ParkingLotResponse(parkingLot, null))
+        } catch (e: Exception) {
+            ResponseEntity.ok(
+                ParkingLotResponse(
+                    null,
+                    ErrorContent("Get Parking Lot Error", e.message ?: "Unknown Error")
+                )
+            )
+        }
+    }
+
     /**
      * Get Parking Lots By User
      */
