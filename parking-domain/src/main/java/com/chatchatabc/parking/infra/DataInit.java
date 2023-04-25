@@ -2,6 +2,7 @@ package com.chatchatabc.parking.infra;
 
 import com.chatchatabc.parking.domain.service.ParkingRoleService;
 import com.chatchatabc.parking.domain.service.RoleService;
+import com.chatchatabc.parking.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataInit implements CommandLineRunner {
     @Autowired
     private RoleService roleService;
-
+    @Autowired
+    private UserService userService;
     @Autowired
     private ParkingRoleService parkingRoleService;
 
@@ -26,10 +28,11 @@ public class DataInit implements CommandLineRunner {
      */
     @Transactional
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws Exception {
         log.info("Initializing data...");
         roleService.initRoles();
         parkingRoleService.initRoles();
+        userService.initAdmin();
         log.info("Data initialized.");
     }
 }
