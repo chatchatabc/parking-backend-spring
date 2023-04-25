@@ -1,4 +1,4 @@
-package com.chatchatabc.parkingmanagement
+package com.chatchatabc.api
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

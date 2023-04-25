@@ -1,4 +1,4 @@
-package com.chatchatabc.parkingmanagement.application.rest
+package com.chatchatabc.api.application.rest
 
 import org.modelmapper.ModelMapper
 import org.springframework.web.bind.annotation.*

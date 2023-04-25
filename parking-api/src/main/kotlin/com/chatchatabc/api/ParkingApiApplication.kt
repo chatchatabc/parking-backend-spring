@@ -1,4 +1,4 @@
-package com.chatchatabc.parkingmanagement
+package com.chatchatabc.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,14 +1,12 @@
-package com.chatchatabc.parkingmanagement.infra.config.security.filter
+package com.chatchatabc.api.infra.config.security.filter
 
 import com.chatchatabc.parking.application.rest.service.JwtService
-import com.chatchatabc.parkingmanagement.infra.config.security.dto.RoleDTOGrantedAuthority
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.dubbo.config.annotation.DubboReference
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
@@ -46,13 +44,10 @@ class JwtRequestFilter(
             return
         }
 
-        val authorities: MutableCollection<out GrantedAuthority> =
-            user.roles.stream().map { role -> RoleDTOGrantedAuthority(role) }.toList().toMutableList()
-
         val authentication = UsernamePasswordAuthenticationToken(
             user,
             null,
-            authorities
+            user.authorities
         )
 
         authentication.details = WebAuthenticationDetailsSource().buildDetails(request)

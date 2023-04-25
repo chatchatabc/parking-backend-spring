@@ -1,6 +1,6 @@
-package com.chatchatabc.parkingmanagement.infra.config.security
+package com.chatchatabc.api.infra.config.security
 
-import com.chatchatabc.parkingmanagement.infra.config.security.filter.JwtRequestFilter
+import com.chatchatabc.api.infra.config.security.filter.JwtRequestFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager

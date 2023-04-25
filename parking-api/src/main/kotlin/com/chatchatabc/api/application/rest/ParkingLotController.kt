@@ -1,4 +1,4 @@
-package com.chatchatabc.parkingmanagement.application.rest
+package com.chatchatabc.api.application.rest
 
 import com.chatchatabc.parking.application.dto.ErrorContent
 import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotCreateRequest
