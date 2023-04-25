@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -75,7 +74,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id")
     )
-    private List<Vehicle> vehicles = List.of();
+    private Collection<Vehicle> vehicles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

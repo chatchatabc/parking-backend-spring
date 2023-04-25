@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -32,7 +32,7 @@ public class Vehicle {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "vehicles")
-    private List<User> users = List.of();
+    private Collection<User> users;
 
     @JsonIgnore
     @ManyToOne
