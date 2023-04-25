@@ -4,7 +4,6 @@ import com.chatchatabc.parking.application.rest.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.apache.dubbo.config.annotation.DubboReference
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
@@ -15,7 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtRequestFilter(
-    @DubboReference
     private val jwtService: JwtService
 ) : OncePerRequestFilter() {
     private val log = LoggerFactory.getLogger(JwtRequestFilter::class.java)
