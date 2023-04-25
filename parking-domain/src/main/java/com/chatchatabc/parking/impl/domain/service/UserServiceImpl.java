@@ -102,7 +102,8 @@ public class UserServiceImpl implements UserService {
             // Set Phone Verified At to current local date time
             queriedUser.get().setPhoneVerifiedAt(LocalDateTime.now());
         }
-        // Add role to user if not exist
+        // TODO: Might cause a problem in the future. Need to check if role is already added or add additional check before giving role
+        // Add role to user
         if (queriedUser.get().getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.get().getId()))) {
             queriedUser.get().getRoles().add(role.get());
         }

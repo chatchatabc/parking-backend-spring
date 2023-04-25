@@ -8,6 +8,7 @@ import com.chatchatabc.api.application.dto.user.UserVerifyOTPRequest
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.service.UserService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,8 +22,12 @@ class AuthController(
 ) {
 
     /**
-     * Login with phone number
+     * Login with phone number or username
      */
+    @Operation(
+        summary = "Login with phone number or username",
+        description = "This API is used for both parking managers and users."
+    )
     @PostMapping("/login")
     fun loginWithPhone(
         @RequestBody req: UserPhoneLoginRequest
@@ -51,15 +56,23 @@ class AuthController(
 
 
     /**
-     * Verify OTP dynamically
+     * Verify OTP dynamically users
      */
-    @PostMapping("/verify")
+    @Operation(
+        summary = "Verify the OTP of a user logging in.",
+        description = "This API is used for both parking managers and users. Type = manager if verifying a parking manager. Type = user if verifying a user."
+    )
+    @PostMapping("/verify/{type}")
     fun verifyOTP(
         @RequestBody request: UserVerifyOTPRequest,
+        @PathVariable type: String,
     ): ResponseEntity<UserResponse> {
         return try {
             val headers = HttpHeaders()
-            val roleName: RoleNames = RoleNames.ROLE_PARKING_MANAGER
+            var roleName: RoleNames = RoleNames.ROLE_USER
+            if (type == "manager") {
+                roleName = RoleNames.ROLE_PARKING_MANAGER
+            }
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
