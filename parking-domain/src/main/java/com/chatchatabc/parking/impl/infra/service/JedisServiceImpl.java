@@ -2,8 +2,10 @@ package com.chatchatabc.parking.impl.infra.service;
 
 import com.chatchatabc.parking.infra.service.JedisService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+@Service
 public class JedisServiceImpl implements JedisService {
     @Value("${server.jedis.host}")
     private String host;
