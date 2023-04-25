@@ -1,6 +1,7 @@
-package com.chatchatabc.api.application.dto.report;
+package com.chatchatabc.parking.application.dto.report;
 
-import com.chatchatabc.api.application.dto.ErrorContent;
+import com.chatchatabc.parking.application.dto.ErrorContent;
+import com.chatchatabc.parking.domain.model.Report;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportResponse implements Serializable {
-    private ReportDTO report;
+    private Report report;
     private ErrorContent error;
 }

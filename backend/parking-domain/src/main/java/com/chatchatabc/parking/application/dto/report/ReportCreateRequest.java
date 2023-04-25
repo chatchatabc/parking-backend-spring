@@ -1,4 +1,4 @@
-package com.chatchatabc.api.application.dto.report;
+package com.chatchatabc.parking.application.dto.report;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
