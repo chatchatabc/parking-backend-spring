@@ -1,4 +1,4 @@
-package com.chatchatabc.api.application.dto.parking_lot;
+package com.chatchatabc.parking.application.dto.parking_lot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,11 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingLotUpdateRequest implements Serializable {
+public class ParkingLotCreateRequest implements Serializable {
     private String name;
     private Double latitude;
     private Double longitude;
     private String address;
     private String description;
     private Integer capacity;
-    private Integer availableSlots;
 }
