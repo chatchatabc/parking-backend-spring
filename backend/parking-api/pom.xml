@@ -8,10 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>management</artifactId>
+    <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parking-management</name>
-    <description>parking-management</description>
+    <name>parking-api</name>
+    <description>parking-api</description>
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.7.22</kotlin.version>

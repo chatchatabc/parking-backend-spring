@@ -22,8 +22,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>parking-admin</module>
+        <module>parking-api</module>
         <module>parking-domain</module>
-        <module>parking-management</module>
     </modules>
     <dependencyManagement>
         <dependencies>
