@@ -1,6 +1,7 @@
-package com.chatchatabc.api.application.dto.vehicle;
+package com.chatchatabc.parking.application.dto.vehicle;
 
-import com.chatchatabc.api.application.dto.ErrorContent;
+import com.chatchatabc.parking.application.dto.ErrorContent;
+import com.chatchatabc.parking.domain.model.Vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehicleResponse implements Serializable {
-    private VehicleDTO vehicle;
+    private Vehicle vehicle;
     private ErrorContent error;
 }

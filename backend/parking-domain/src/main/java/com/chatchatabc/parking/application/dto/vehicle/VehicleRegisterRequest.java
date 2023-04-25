@@ -1,4 +1,4 @@
-package com.chatchatabc.api.application.dto.vehicle;
+package com.chatchatabc.parking.application.dto.vehicle;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VehicleUpdateRequest implements Serializable {
+public class VehicleRegisterRequest implements Serializable {
     private String name;
     private String plateNumber;
     private Integer type;
