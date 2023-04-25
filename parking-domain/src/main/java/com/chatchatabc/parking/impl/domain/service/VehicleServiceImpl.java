@@ -82,4 +82,45 @@ public class VehicleServiceImpl implements VehicleService {
 
         return vehicleRepository.save(vehicle.get());
     }
+
+    /**
+     * Add a user to a vehicle
+     *
+     * @param userId      the user id
+     * @param vehicleId   the vehicle id
+     * @param userToAddId the user to add id
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    @Override
+    public Vehicle addUserToVehicle(String userId, String vehicleId, String userToAddId) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new Exception("User not found");
+        }
+
+        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        if (vehicle.isEmpty()) {
+            throw new Exception("Vehicle not found");
+        }
+        // Check if user has access to update vehicle
+        if (!vehicle.get().getUsers().contains(user.get())) {
+            throw new Exception("Vehicle not found");
+        }
+
+        Optional<User> userToAdd = userRepository.findById(userToAddId);
+        if (userToAdd.isEmpty()) {
+            throw new Exception("User to add not found");
+        }
+        // Check if user to add is already in vehicle
+        if (vehicle.get().getUsers().contains(userToAdd.get())) {
+            throw new Exception("User already in vehicle");
+        }
+
+        // Add vehicle to user
+        userToAdd.get().getVehicles().add(vehicle.get());
+        userRepository.save(userToAdd.get());
+
+        return vehicle.get();
+    }
 }

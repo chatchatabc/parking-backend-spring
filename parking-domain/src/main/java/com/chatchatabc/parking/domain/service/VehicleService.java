@@ -25,4 +25,15 @@ public interface VehicleService {
      * @return the vehicle
      */
     Vehicle updateVehicle(String userId, String vehicleId, String name, String plateNumber, Integer type) throws Exception;
+
+    /**
+     * Add a user to a vehicle
+     *
+     * @param userId      the user id
+     * @param vehicleId   the vehicle id
+     * @param userToAddId the user to add id
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    Vehicle addUserToVehicle(String userId, String vehicleId, String userToAddId) throws Exception;
 }

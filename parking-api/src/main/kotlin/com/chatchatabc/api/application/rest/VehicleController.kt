@@ -106,6 +106,21 @@ class VehicleController(
     }
 
     // TODO: Add a user to a vehicle
+    @PutMapping("/add-user/{vehicleId}/{userId}")
+    fun addUserToVehicle(
+        @PathVariable vehicleId: String,
+        @PathVariable userId: String
+    ): ResponseEntity<ApiResponse<Vehicle>> {
+        return try {
+            // Get user from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val vehicle = vehicleService.addUserToVehicle(principal.id, vehicleId, userId)
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "User added to vehicle successfully", false))
+        } catch (e: Exception) {
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+        }
+    }
+
 
     // TODO: Remove a user from a vehicle
 

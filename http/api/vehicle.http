@@ -27,3 +27,7 @@ Content-Type: application/json
   "plateNumber": "12345",
   "type": 1
 }
+
+### Add a user to a vehicle
+PUT {{address-api}}/api/vehicle/add-user/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e/cec4779b-7ecc-4602-a322-2633702a9ec8
+Authorization: Bearer {{token}}
