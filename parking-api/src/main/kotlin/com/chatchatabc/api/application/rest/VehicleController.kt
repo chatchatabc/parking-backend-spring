@@ -7,6 +7,8 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -18,7 +20,23 @@ class VehicleController(
     private val vehicleRepository: VehicleRepository,
     private val vehicleService: VehicleService
 ) {
-    // TODO: Get my vehicles
+
+    /**
+     * Get all vehicles by user
+     */
+    @GetMapping("/get-my-vehicles")
+    fun getMyVehicles(
+        pageable: Pageable
+    ): ResponseEntity<Page<Vehicle>> {
+        return try {
+            // Get user from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val vehicles = vehicleRepository.findAllByUser(principal.id, pageable)
+            ResponseEntity.ok(vehicles)
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(null)
+        }
+    }
 
     /**
      * Get a vehicle by id

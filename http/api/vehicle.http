@@ -1,5 +1,5 @@
-### Get Vehicles
-GET {{address-api}}/api/vehicle/get
+### Get My Vehicles
+GET {{address-api}}/api/vehicle/get-my-vehicles
 Authorization: Bearer {{token}}
 
 ### Get Vehicle by ID
