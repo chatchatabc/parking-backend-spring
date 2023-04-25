@@ -60,28 +60,26 @@ class ParkingLotController(
             ResponseEntity.badRequest().body(null)
         }
     }
-//
-//    /**
-//     * Get parking lots by distance
-//     */
-//    @GetMapping("/get-by-location")
-//    fun getByLocation(
-//        @RequestParam("longitude") longitude: Double,
-//        @RequestParam("latitude") latitude: Double,
-//        @RequestParam("distance") distance: Double,
-//    ): ResponseEntity<List<ParkingLot>> {
-//        println("longitude: $longitude")
-//        println("latitude: $latitude")
-//        var inputDistance = distance
-//        // Place a cap on the range, distance should not exceed 0.1km
-//        if (distance >= 0.1) {
-//            inputDistance = 0.1
-//        }
-//        return ResponseEntity.ok(
-//            parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
-//        )
-//    }
-//
+
+    /**
+     * Get parking lots by distance
+     */
+    @GetMapping("/get-by-location")
+    fun getByLocation(
+        @RequestParam("longitude") longitude: Double,
+        @RequestParam("latitude") latitude: Double,
+        @RequestParam("distance") distance: Double,
+    ): ResponseEntity<List<ParkingLot>> {
+        var inputDistance = distance
+        // Place a cap on the range, distance should not exceed 0.1km
+        if (distance >= 0.1) {
+            inputDistance = 0.1
+        }
+        return ResponseEntity.ok(
+            parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
+        )
+    }
+
     /**
      * Register a parking lot
      */
