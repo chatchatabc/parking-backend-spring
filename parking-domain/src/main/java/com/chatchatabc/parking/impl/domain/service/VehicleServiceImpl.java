@@ -14,7 +14,6 @@ import java.util.Optional;
 public class VehicleServiceImpl implements VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -38,7 +37,11 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setPlateNumber(plateNumber);
         vehicle.setType(type);
         vehicle.setOwner(owner.get());
-        return vehicleRepository.save(vehicle);
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+        // Add user to user vehicles table
+        owner.get().getVehicles().add(savedVehicle);
+        userRepository.save(owner.get());
+        return savedVehicle;
     }
 
     /**
