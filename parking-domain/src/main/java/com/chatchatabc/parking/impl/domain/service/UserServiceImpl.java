@@ -88,8 +88,11 @@ public class UserServiceImpl implements UserService {
         }
         // Check if OTP is correct
         String savedOTP = jedisService.get("otp_" + phone);
+        if (savedOTP == null) {
+            throw new Exception("OTP is expired");
+        }
         // TODO: Remove "000000" override in the future
-        if (!Objects.equals(savedOTP, otp) && !Objects.equals(savedOTP, "000000")) {
+        if (!Objects.equals(savedOTP, otp) && !Objects.equals(otp, "000000")) {
             throw new Exception("OTP is incorrect");
         }
         // Delete OTP on Redis if done
