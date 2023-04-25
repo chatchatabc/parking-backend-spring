@@ -2,6 +2,10 @@
 GET {{address-api}}/api/vehicle/get
 Authorization: Bearer {{token}}
 
+### Get Vehicle by ID
+GET {{address-api}}/api/vehicle/get/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
+Authorization: Bearer {{token}}
+
 ### Vehicle Register
 POST {{address-api}}/api/vehicle/register
 Authorization: Bearer {{token}}
