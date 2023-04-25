@@ -34,6 +34,10 @@ class SecurityConfig {
                 // All routes must have admin role
                 it.requestMatchers("/api/**").hasAnyRole("ADMIN")
 
+                // Allow route to Swagger UI
+                it.requestMatchers("/api/swagger-ui/**").permitAll()
+                it.requestMatchers("/api/v3/api-docs/**").permitAll()
+
                 it.anyRequest().authenticated()
             }
             .sessionManagement { session ->
