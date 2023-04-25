@@ -9,6 +9,8 @@ import com.chatchatabc.parking.domain.service.UserService;
 import com.chatchatabc.parking.infra.service.JedisService;
 import com.chatchatabc.parking.infra.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -135,5 +137,22 @@ public class UserServiceImpl implements UserService {
             queriedUser.get().setLastName(lastName);
         }
         return userRepository.save(queriedUser.get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new org.springframework.security.core.userdetails.User(
+                user.get().getUsername(),
+                user.get().getPassword(),
+                user.get().isEnabled(),
+                user.get().isAccountNonExpired(),
+                user.get().isCredentialsNonExpired(),
+                user.get().isAccountNonLocked(),
+                user.get().getAuthorities()
+        );
     }
 }

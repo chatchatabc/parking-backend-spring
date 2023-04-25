@@ -2,8 +2,9 @@ package com.chatchatabc.parking.domain.service;
 
 import com.chatchatabc.parking.domain.enums.RoleNames;
 import com.chatchatabc.parking.domain.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     /**
      * Soft register a new user if not exists
      *
