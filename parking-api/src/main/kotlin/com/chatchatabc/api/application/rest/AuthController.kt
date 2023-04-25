@@ -28,7 +28,6 @@ class AuthController(
         @RequestBody req: UserPhoneLoginRequest
     ): ResponseEntity<UserPhoneLoginResponse> {
         return try {
-            println(req)
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
             ResponseEntity.ok().body(
