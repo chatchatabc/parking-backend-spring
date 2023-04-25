@@ -22,8 +22,20 @@ public class JwtServiceImpl implements JwtService {
     @Autowired
     private UserRepository userRepository;
 
-    private final Algorithm hmac512 = Algorithm.HMAC512(secret);
-    private final JWTVerifier jwtVerifier = JWT.require(hmac512).build();
+    private final Algorithm hmac512;
+    private final JWTVerifier verifier;
+
+    public JwtServiceImpl(
+            @Value("${server.jwt.secret}")
+            String secret,
+            @Value("${server.jwt.expiration}")
+            String expiration
+    ) {
+        this.secret = secret;
+        this.expiration = expiration;
+        hmac512 = Algorithm.HMAC512(secret);
+        verifier = JWT.require(hmac512).build();
+    }
 
     /**
      * Generate a JWT token for the given user id
@@ -48,7 +60,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public User validateTokenAndGetUser(String token) {
         try {
-            String userId = jwtVerifier.verify(token).getSubject();
+            String userId = verifier.verify(token).getSubject();
             return userRepository.findById(userId).orElse(null);
         } catch (Exception e) {
             return null;
