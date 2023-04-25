@@ -1,12 +1,13 @@
 package com.chatchatabc.parkingmanagement.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
-import com.chatchatabc.api.application.dto.user.*
-import com.chatchatabc.api.application.rest.service.JwtService
-import com.chatchatabc.api.domain.enums.RoleNames
-import com.chatchatabc.api.domain.enums.RoleNames.ROLE_PARKING_MANAGER
-import com.chatchatabc.api.domain.service.UserService
-import org.apache.dubbo.config.annotation.DubboReference
+import com.chatchatabc.parking.application.dto.ErrorContent
+import com.chatchatabc.parking.application.dto.user.UserPhoneLoginRequest
+import com.chatchatabc.parking.application.dto.user.UserPhoneLoginResponse
+import com.chatchatabc.parking.application.dto.user.UserResponse
+import com.chatchatabc.parking.application.dto.user.UserVerifyOTPRequest
+import com.chatchatabc.parking.application.rest.service.JwtService
+import com.chatchatabc.parking.domain.enums.RoleNames
+import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    @DubboReference
     private val userService: UserService,
-    @DubboReference
     private val jwtService: JwtService
 ) {
 
@@ -50,9 +49,9 @@ class AuthController(
     ): ResponseEntity<UserResponse> {
         return try {
             val headers = HttpHeaders()
-            val roleName: RoleNames = ROLE_PARKING_MANAGER
+            val roleName: RoleNames = RoleNames.ROLE_PARKING_MANAGER
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(user)
+            val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(UserResponse(user, null))
         } catch (e: Exception) {

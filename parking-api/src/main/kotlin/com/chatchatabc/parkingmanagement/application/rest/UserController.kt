@@ -1,11 +1,11 @@
 package com.chatchatabc.parkingmanagement.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
-import com.chatchatabc.api.application.dto.user.UserDTO
-import com.chatchatabc.api.application.dto.user.UserProfileUpdateRequest
-import com.chatchatabc.api.application.dto.user.UserResponse
-import com.chatchatabc.api.domain.service.UserService
-import org.apache.dubbo.config.annotation.DubboReference
+import com.chatchatabc.parking.application.dto.ErrorContent
+import com.chatchatabc.parking.application.dto.user.UserProfileUpdateRequest
+import com.chatchatabc.parking.application.dto.user.UserResponse
+import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/user")
 class UserController(
-    @DubboReference
-    private val userService: UserService
+    private val userService: UserService,
+    private val userRepository: UserRepository
 ) {
     @GetMapping("/me")
     fun getProfile(): ResponseEntity<UserResponse> {
         return try {
             // Get ID from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
-            val user = userService.getUser(principal.id)
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findById(principal.id).get()
             ResponseEntity.ok().body(UserResponse(user, null))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -40,7 +40,7 @@ class UserController(
     ): ResponseEntity<UserResponse> {
         return try {
             // Get principal from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userService.updateUser(
                 principal.id,
                 request.username,

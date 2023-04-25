@@ -1,14 +1,16 @@
 package com.chatchatabc.parkingmanagement.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotCreateRequest
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotDTO
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotResponse
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotUpdateRequest
-import com.chatchatabc.api.application.dto.user.UserDTO
-import com.chatchatabc.api.domain.service.ParkingLotService
-import org.apache.dubbo.config.annotation.DubboReference
-import org.modelmapper.ModelMapper
+import com.chatchatabc.parking.application.dto.ErrorContent
+import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotCreateRequest
+import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotResponse
+import com.chatchatabc.parking.application.dto.parking_lot.ParkingLotUpdateRequest
+import com.chatchatabc.parking.domain.model.ParkingLot
+import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.ParkingLotService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -16,10 +18,10 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
-    @DubboReference
-    private val parkingLotService: ParkingLotService
+    private val parkingLotService: ParkingLotService,
+    private val parkingLotRepository: ParkingLotRepository,
+    private val userRepository: UserRepository
 ) {
-    private val modelMapper = ModelMapper()
 
     /**
      * Get parking lots by pageable
@@ -48,13 +50,15 @@ class ParkingLotController(
     /**
      * Get Parking Lots By User
      */
-    // TODO: Implement pageable
     @GetMapping("/get-managing")
-    fun getByManaging(): ResponseEntity<Array<ParkingLotDTO>> {
+    fun getByManaging(
+        pageable: Pageable
+    ): ResponseEntity<Page<ParkingLot>> {
         return try {
             // Get Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
-            val parkingLots = parkingLotService.getParkingLotsByUserId(principal.id)
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findById(principal.id).get()
+            val parkingLots = parkingLotRepository.findAllByOwner(user, pageable)
             return ResponseEntity.ok(parkingLots)
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(null)
@@ -91,7 +95,7 @@ class ParkingLotController(
     ): ResponseEntity<ParkingLotResponse> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
             val createdParkingLot = parkingLotService.registerParkingLot(
                 principal.id,
                 req.name,
@@ -101,10 +105,9 @@ class ParkingLotController(
                 req.description,
                 req.capacity,
             )
-            val parkingLotDTO = modelMapper.map(createdParkingLot, ParkingLotDTO::class.java)
             return ResponseEntity.ok(
                 ParkingLotResponse(
-                    parkingLotDTO,
+                    createdParkingLot,
                     null
                 )
             )
@@ -130,7 +133,7 @@ class ParkingLotController(
     ): ResponseEntity<ParkingLotResponse> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as UserDTO
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
             val updatedParkingLot = parkingLotService.updateParkingLot(
                 principal.id,
                 parkingLotId,

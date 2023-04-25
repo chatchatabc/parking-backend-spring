@@ -1,6 +1,6 @@
 package com.chatchatabc.parkingmanagement.infra.config.security.filter
 
-import com.chatchatabc.api.application.rest.service.JwtService
+import com.chatchatabc.parking.application.rest.service.JwtService
 import com.chatchatabc.parkingmanagement.infra.config.security.dto.RoleDTOGrantedAuthority
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
