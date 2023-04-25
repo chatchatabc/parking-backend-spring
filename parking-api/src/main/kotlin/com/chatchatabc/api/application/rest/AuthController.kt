@@ -5,6 +5,7 @@ import com.chatchatabc.api.application.dto.user.UserPhoneLoginRequest
 import com.chatchatabc.api.application.dto.user.UserVerifyOTPRequest
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.enums.RoleNames
+import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpHeaders
@@ -29,7 +30,7 @@ class AuthController(
     @PostMapping("/login")
     fun loginWithPhone(
         @RequestBody req: UserPhoneLoginRequest
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
@@ -57,7 +58,7 @@ class AuthController(
     fun verifyOTP(
         @RequestBody request: UserVerifyOTPRequest,
         @PathVariable type: String,
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
             val headers = HttpHeaders()
             var roleName: RoleNames = RoleNames.ROLE_USER

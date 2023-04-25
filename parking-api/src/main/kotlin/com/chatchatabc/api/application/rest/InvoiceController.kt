@@ -27,7 +27,7 @@ class InvoiceController(
     @GetMapping("/get/{invoiceId}")
     fun getInvoice(
         @PathVariable invoiceId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
             ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.value(), "Get Invoice Successful", false))
@@ -76,7 +76,7 @@ class InvoiceController(
     fun createInvoice(
         @PathVariable parkingLotId: String,
         @PathVariable vehicleId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
             ResponseEntity.ok(ApiResponse(createdInvoice, HttpStatus.OK.value(), "Create Invoice Successful", false))
@@ -101,7 +101,7 @@ class InvoiceController(
     fun endInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
             ResponseEntity.ok(ApiResponse(endedInvoice, HttpStatus.OK.value(), "End Invoice Successful", false))
@@ -126,7 +126,7 @@ class InvoiceController(
     fun payInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
             ResponseEntity.ok(ApiResponse(paidInvoice, HttpStatus.OK.value(), "Pay Invoice Successful", false))

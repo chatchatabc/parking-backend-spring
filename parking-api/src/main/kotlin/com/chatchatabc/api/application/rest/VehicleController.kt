@@ -3,6 +3,7 @@ package com.chatchatabc.api.application.rest
 import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.api.application.dto.vehicle.VehicleRegisterRequest
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
 import org.springframework.http.HttpStatus
@@ -24,7 +25,7 @@ class VehicleController(
     @GetMapping("/get/{vehicleId}")
     fun getVehicleById(
         @PathVariable vehicleId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Vehicle>> {
         return  try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -37,7 +38,7 @@ class VehicleController(
                 throw Exception("User does not have access to this vehicle")
             }
 
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle retrieved successfully", false))
+            ResponseEntity.ok(ApiResponse(vehicle.get(), HttpStatus.OK.value(), "Vehicle retrieved successfully", false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
         }
@@ -49,7 +50,7 @@ class VehicleController(
     @PostMapping("/register")
     fun registerVehicle(
         @RequestBody req: VehicleRegisterRequest
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User

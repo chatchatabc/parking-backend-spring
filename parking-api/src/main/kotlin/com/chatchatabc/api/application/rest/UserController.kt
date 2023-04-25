@@ -26,7 +26,7 @@ class UserController(
         description = "User to get the profile of the logged in user."
     )
     @GetMapping("/me")
-    fun getProfile(): ResponseEntity<ApiResponse> {
+    fun getProfile(): ResponseEntity<ApiResponse<User>> {
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -53,7 +53,7 @@ class UserController(
     @PutMapping("/update")
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User

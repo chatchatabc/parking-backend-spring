@@ -29,7 +29,7 @@ class ParkingLotController(
     @GetMapping("/get/{parkingLotId}")
     fun get(
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
             ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), "Get Parking Lot Successful", false))
@@ -83,7 +83,7 @@ class ParkingLotController(
     @PostMapping("/register")
     fun register(
         @RequestBody req: ParkingLotCreateRequest
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -125,7 +125,7 @@ class ParkingLotController(
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse> {
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
