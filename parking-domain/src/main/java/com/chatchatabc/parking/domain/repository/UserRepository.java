@@ -2,6 +2,7 @@ package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -24,4 +25,7 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return the user
      */
     Optional<User> findByPhone(String phone);
+
+    @Query("SELECT COUNT(u.id) FROM User u JOIN u.roles r WHERE r.name = :roleName")
+    Long countUsersByRole(String roleName);
 }
