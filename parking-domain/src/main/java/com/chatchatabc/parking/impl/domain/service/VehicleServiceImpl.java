@@ -60,9 +60,12 @@ public class VehicleServiceImpl implements VehicleService {
         if (user.isEmpty()) {
             throw new Exception("User not found");
         }
-        // TODO: Check if user has roles to update vehicle
         Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
         if (vehicle.isEmpty()) {
+            throw new Exception("Vehicle not found");
+        }
+        // Check if user has access to update vehicle
+        if (!vehicle.get().getUsers().contains(user.get())) {
             throw new Exception("Vehicle not found");
         }
 

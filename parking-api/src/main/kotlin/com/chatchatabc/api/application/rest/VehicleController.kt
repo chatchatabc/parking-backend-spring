@@ -2,6 +2,7 @@ package com.chatchatabc.api.application.rest
 
 import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.api.application.dto.vehicle.VehicleRegisterRequest
+import com.chatchatabc.api.application.dto.vehicle.VehicleUpdateRequest
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
@@ -26,7 +27,7 @@ class VehicleController(
     fun getVehicleById(
         @PathVariable vehicleId: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
-        return  try {
+        return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleRepository.findById(vehicleId)
@@ -38,7 +39,14 @@ class VehicleController(
                 throw Exception("User does not have access to this vehicle")
             }
 
-            ResponseEntity.ok(ApiResponse(vehicle.get(), HttpStatus.OK.value(), "Vehicle retrieved successfully", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    vehicle.get(),
+                    HttpStatus.OK.value(),
+                    "Vehicle retrieved successfully",
+                    false
+                )
+            )
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
         }
@@ -61,9 +69,26 @@ class VehicleController(
         }
     }
 
+    /**
+     * Update a vehicle
+     */
+    @PutMapping("/update/{vehicleId}")
+    fun updateVehicle(
+        @PathVariable vehicleId: String,
+        @RequestBody req: VehicleUpdateRequest
+    ): ResponseEntity<ApiResponse<Vehicle>> {
+        return try {
+            // Get user from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val vehicle = vehicleService.updateVehicle(principal.id, vehicleId, req.name, req.plateNumber, req.type)
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle updated successfully", false))
+        } catch (e: Exception) {
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+        }
+    }
+
     // TODO: Add a user to a vehicle
 
-    // TODO: Remove a user to a vehicle
+    // TODO: Remove a user from a vehicle
 
-    // TODO: Update a vehicle
 }

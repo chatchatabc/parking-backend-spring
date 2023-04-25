@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### Update Vehicle
-PUT {{address-api}}/api/vehicle/update/877e08e3-f834-400b-969c-3d87056ec601
+PUT {{address-api}}/api/vehicle/update/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
