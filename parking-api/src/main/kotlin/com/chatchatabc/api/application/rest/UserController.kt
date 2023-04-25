@@ -6,6 +6,7 @@ import com.chatchatabc.api.application.dto.user.UserResponse
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -17,6 +18,14 @@ class UserController(
     private val userService: UserService,
     private val userRepository: UserRepository
 ) {
+
+    /**
+     * Get user profile
+     */
+    @Operation(
+        summary = "Get the profile of the logged in user",
+        description = "User to get the profile of the logged in user."
+    )
     @GetMapping("/me")
     fun getProfile(): ResponseEntity<UserResponse> {
         return try {
@@ -47,6 +56,10 @@ class UserController(
     /**
      * Update user
      */
+    @Operation(
+        summary = "Update the details of a user's profile",
+        description = "User to update the details of a user's profile."
+    )
     @PutMapping("/update")
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest
