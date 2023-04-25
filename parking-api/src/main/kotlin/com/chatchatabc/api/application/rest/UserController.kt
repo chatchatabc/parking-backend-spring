@@ -1,8 +1,7 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.api.application.dto.user.UserProfileUpdateRequest
-import com.chatchatabc.api.application.dto.user.UserResponse
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
@@ -27,28 +26,19 @@ class UserController(
         description = "User to get the profile of the logged in user."
     )
     @GetMapping("/me")
-    fun getProfile(): ResponseEntity<UserResponse> {
+    fun getProfile(): ResponseEntity<ApiResponse> {
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
-                UserResponse(
-                    user,
-                    null
-                )
+                ApiResponse(user, HttpStatus.OK.hashCode(), "Get profile successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    UserResponse(
-                        null,
-                        ErrorContent(
-                            "User Profile Get Error",
-                            e.message ?: "Unknown Error"
-                        )
-                    )
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
                 )
         }
     }
@@ -63,7 +53,7 @@ class UserController(
     @PutMapping("/update")
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest
-    ): ResponseEntity<UserResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -75,22 +65,13 @@ class UserController(
                 request.lastName
             )
             ResponseEntity.ok().body(
-                UserResponse(
-                    user,
-                    null
-                )
+                ApiResponse(user, HttpStatus.OK.hashCode(), "Update successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    UserResponse(
-                        null,
-                        ErrorContent(
-                            "User Profile Update Error",
-                            e.message ?: "Unknown Error"
-                        )
-                    )
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
                 )
         }
     }

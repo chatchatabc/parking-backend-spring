@@ -1,9 +1,7 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.api.application.dto.user.UserPhoneLoginRequest
-import com.chatchatabc.api.application.dto.user.UserPhoneLoginResponse
-import com.chatchatabc.api.application.dto.user.UserResponse
 import com.chatchatabc.api.application.dto.user.UserVerifyOTPRequest
 import com.chatchatabc.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.enums.RoleNames
@@ -31,25 +29,18 @@ class AuthController(
     @PostMapping("/login")
     fun loginWithPhone(
         @RequestBody req: UserPhoneLoginRequest
-    ): ResponseEntity<UserPhoneLoginResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
             ResponseEntity.ok().body(
-                UserPhoneLoginResponse(
-                    null
-                )
+                ApiResponse(null, HttpStatus.OK.hashCode(), "Login successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    UserPhoneLoginResponse(
-                        ErrorContent(
-                            "User Login Error",
-                            e.message ?: "Unknown Error"
-                        )
-                    )
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
                 )
         }
     }
@@ -66,7 +57,7 @@ class AuthController(
     fun verifyOTP(
         @RequestBody request: UserVerifyOTPRequest,
         @PathVariable type: String,
-    ): ResponseEntity<UserResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val headers = HttpHeaders()
             var roleName: RoleNames = RoleNames.ROLE_USER
@@ -77,23 +68,13 @@ class AuthController(
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
-                UserResponse(
-                    user,
-                    null
-                )
+                ApiResponse(user, HttpStatus.OK.hashCode(), "Verify OTP successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            // TODO: Improve error message
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    UserResponse(
-                        null,
-                        ErrorContent(
-                            "OTP Verify Error",
-                            e.message ?: "Unknown Error"
-                        )
-                    )
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
                 )
         }
     }

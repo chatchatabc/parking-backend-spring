@@ -1,13 +1,5 @@
 package com.chatchatabc.api.application.dto.parking_lot
 
-import com.chatchatabc.api.application.dto.ErrorContent
-import com.chatchatabc.parking.domain.model.ParkingLot
-
-data class ParkingLotResponse(
-    val parkingLot: ParkingLot?,
-    val error: ErrorContent?
-)
-
 data class ParkingLotCreateRequest(
     val name: String,
     val latitude: Double,

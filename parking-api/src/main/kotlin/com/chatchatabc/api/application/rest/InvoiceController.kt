@@ -1,7 +1,6 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
-import com.chatchatabc.api.application.dto.invoice.InvoiceResponse
+import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -9,6 +8,7 @@ import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -27,17 +27,19 @@ class InvoiceController(
     @GetMapping("/get/{invoiceId}")
     fun getInvoice(
         @PathVariable invoiceId: String
-    ): ResponseEntity<InvoiceResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(InvoiceResponse(invoice, null))
+            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.hashCode(), "Get Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    InvoiceResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent("Get Invoice Error", e.message ?: "Unknown Error")
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }
@@ -74,17 +76,19 @@ class InvoiceController(
     fun createInvoice(
         @PathVariable parkingLotId: String,
         @PathVariable vehicleId: String
-    ): ResponseEntity<InvoiceResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
-            ResponseEntity.ok(InvoiceResponse(createdInvoice, null))
+            ResponseEntity.ok(ApiResponse(createdInvoice, HttpStatus.OK.hashCode(), "Create Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    InvoiceResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent("Create Invoice Error", e.message ?: "Unknown Error")
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }
@@ -97,17 +101,19 @@ class InvoiceController(
     fun endInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<InvoiceResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(InvoiceResponse(endedInvoice, null))
+            ResponseEntity.ok(ApiResponse(endedInvoice, HttpStatus.OK.hashCode(), "End Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    InvoiceResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent("End Invoice Error", e.message ?: "Unknown Error")
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }
@@ -120,17 +126,19 @@ class InvoiceController(
     fun payInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<InvoiceResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(InvoiceResponse(paidInvoice, null))
+            ResponseEntity.ok(ApiResponse(paidInvoice, HttpStatus.OK.hashCode(), "Pay Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    InvoiceResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent("Pay Invoice Error", e.message ?: "Unknown Error")
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }

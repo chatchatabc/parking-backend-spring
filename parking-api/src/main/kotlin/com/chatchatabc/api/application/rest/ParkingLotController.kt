@@ -1,8 +1,7 @@
 package com.chatchatabc.api.application.rest
 
-import com.chatchatabc.api.application.dto.ErrorContent
+import com.chatchatabc.api.application.dto.ApiResponse
 import com.chatchatabc.api.application.dto.parking_lot.ParkingLotCreateRequest
-import com.chatchatabc.api.application.dto.parking_lot.ParkingLotResponse
 import com.chatchatabc.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
@@ -11,6 +10,7 @@ import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -29,16 +29,13 @@ class ParkingLotController(
     @GetMapping("/get/{parkingLotId}")
     fun get(
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ParkingLotResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            ResponseEntity.ok(ParkingLotResponse(parkingLot, null))
+            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.hashCode(), "Get Parking Lot Successful", false))
         } catch (e: Exception) {
             ResponseEntity.ok(
-                ParkingLotResponse(
-                    null,
-                    ErrorContent("Get Parking Lot Error", e.message ?: "Unknown Error")
-                )
+                ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), "Parking Lot Not Found", true)
             )
         }
     }
@@ -86,7 +83,7 @@ class ParkingLotController(
     @PostMapping("/register")
     fun register(
         @RequestBody req: ParkingLotCreateRequest
-    ): ResponseEntity<ParkingLotResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -100,21 +97,22 @@ class ParkingLotController(
                 req.capacity,
             )
             return ResponseEntity.ok(
-                ParkingLotResponse(
+                ApiResponse(
                     createdParkingLot,
-                    null
+                    HttpStatus.OK.hashCode(),
+                    "Register Parking Lot Successful",
+                    false
                 )
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    ParkingLotResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent(
-                            "Register Parking Lot Error",
-                            e.message ?: "Unknown Error"
-                        )
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }
@@ -127,7 +125,7 @@ class ParkingLotController(
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ParkingLotResponse> {
+    ): ResponseEntity<ApiResponse> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -142,21 +140,22 @@ class ParkingLotController(
                 req.capacity
             )
             return ResponseEntity.ok(
-                ParkingLotResponse(
+                ApiResponse(
                     updatedParkingLot,
-                    null
+                    HttpStatus.OK.hashCode(),
+                    "Update Parking Lot Successful",
+                    false
                 )
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
-                    ParkingLotResponse(
+                    ApiResponse(
                         null,
-                        ErrorContent(
-                            "Update Parking Lot Error",
-                            e.message ?: "Unknown Error"
-                        )
+                        HttpStatus.BAD_REQUEST.hashCode(),
+                        e.message ?: "Unknown Error",
+                        true
                     )
                 )
         }
