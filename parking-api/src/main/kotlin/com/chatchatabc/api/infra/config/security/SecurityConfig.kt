@@ -32,6 +32,10 @@ class SecurityConfig(
                 // Auth routes must be public
                 it.requestMatchers("/api/auth/**").permitAll()
 
+                // Allow route to Swagger UI
+                it.requestMatchers("/api/swagger-ui/**").permitAll()
+                it.requestMatchers("/api/v3/api-docs/**").permitAll()
+
                 // User routes must be authenticated
                 it.requestMatchers("/api/user/**").authenticated()
 
