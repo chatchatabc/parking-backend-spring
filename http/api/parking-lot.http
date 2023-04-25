@@ -1,17 +1,17 @@
 ### Get Parking Lot by ID
-GET {{address-management}}/api/parking-lot/get/9eac93b7-0b7e-4eb0-86d6-9c002fb4c8c1
+GET {{address-api}}/api/parking-lot/get/9eac93b7-0b7e-4eb0-86d6-9c002fb4c8c1
 Authorization: Bearer {{token}}
 
 ### Get Parking Lots By Range
-GET {{address-management}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
+GET {{address-api}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
 Authorization: Bearer {{token}}
 
 ### Get parking lots I manage
-GET {{address-management}}/api/parking-lot/get-managing
+GET {{address-api}}/api/parking-lot/get-managing
 Authorization: Bearer {{token}}
 
 ### Create Parking Lot
-POST {{address-management}}/api/parking-lot/register
+POST {{address-api}}/api/parking-lot/register
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ### Update Parking Lot
-PUT {{address-management}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
+PUT {{address-api}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -1,9 +1,9 @@
 ### Get User Profile
-GET {{address-management}}/api/user/me
+GET {{address-api}}/api/user/me
 Authorization: Bearer {{token}}
 
 ### Update User Profile
-PUT {{address-management}}/api/user/update
+PUT {{address-api}}/api/user/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

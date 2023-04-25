@@ -1,0 +1,23 @@
+### Get Invoice by ID
+GET {{address-api}}/api/invoice/get/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{token}}
+
+### Get Invoice By Vehicle ID
+GET {{address-api}}/api/invoice/get/vehicle/d8d31413-5e18-448d-8337-d5b5da9624e8
+Authorization: Bearer {{token}}
+
+### Get Invoice By Parking Lot
+GET {{address-api}}/api/invoice/get/parking-lot/9772e5e5-3cca-4fa7-ad26-45823d638a4b
+Authorization: Bearer {{token}}
+
+### Create an Invoice
+POST {{address-api}}/api/invoice/create/9772e5e5-3cca-4fa7-ad26-45823d638a4b/d8d31413-5e18-448d-8337-d5b5da9624e8
+Authorization: Bearer {{token}}
+
+### End an Invoice
+POST {{address-api}}/api/invoice/end/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{token}}
+
+### Pay an Invoice
+POST {{address-api}}/api/invoice/pay/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{token}}

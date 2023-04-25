@@ -1,9 +1,9 @@
 ### Get Vehicles
-GET {{address}}/api/vehicle/get
+GET {{address-api}}/api/vehicle/get
 Authorization: Bearer {{token}}
 
 ### Vehicle Register
-POST {{address}}/api/vehicle/register
+POST {{address-api}}/api/vehicle/register
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Update Vehicle
-PUT {{address}}/api/vehicle/update/877e08e3-f834-400b-969c-3d87056ec601
+PUT {{address-api}}/api/vehicle/update/877e08e3-f834-400b-969c-3d87056ec601
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
