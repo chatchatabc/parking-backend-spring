@@ -34,13 +34,13 @@ class AuthController(
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
             ResponseEntity.ok().body(
-                ApiResponse(null, HttpStatus.OK.hashCode(), "Login successful", false)
+                ApiResponse(null, HttpStatus.OK.value(), "Login successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
                 )
         }
     }
@@ -68,13 +68,13 @@ class AuthController(
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
-                ApiResponse(user, HttpStatus.OK.hashCode(), "Verify OTP successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), "Verify OTP successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
                 )
         }
     }

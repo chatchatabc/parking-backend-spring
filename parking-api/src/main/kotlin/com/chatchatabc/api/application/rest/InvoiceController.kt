@@ -30,14 +30,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.hashCode(), "Get Invoice Successful", false))
+            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.value(), "Get Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )
@@ -79,14 +79,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse> {
         return try {
             val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
-            ResponseEntity.ok(ApiResponse(createdInvoice, HttpStatus.OK.hashCode(), "Create Invoice Successful", false))
+            ResponseEntity.ok(ApiResponse(createdInvoice, HttpStatus.OK.value(), "Create Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )
@@ -104,14 +104,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse> {
         return try {
             val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(endedInvoice, HttpStatus.OK.hashCode(), "End Invoice Successful", false))
+            ResponseEntity.ok(ApiResponse(endedInvoice, HttpStatus.OK.value(), "End Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )
@@ -129,14 +129,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse> {
         return try {
             val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(paidInvoice, HttpStatus.OK.hashCode(), "Pay Invoice Successful", false))
+            ResponseEntity.ok(ApiResponse(paidInvoice, HttpStatus.OK.value(), "Pay Invoice Successful", false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )

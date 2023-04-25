@@ -32,13 +32,13 @@ class UserController(
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.hashCode(), "Get profile successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), "Get profile successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
                 )
         }
     }
@@ -65,13 +65,13 @@ class UserController(
                 request.lastName
             )
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.hashCode(), "Update successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), "Update successful", false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
                 )
         }
     }

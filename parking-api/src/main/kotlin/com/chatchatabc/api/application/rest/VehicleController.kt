@@ -37,9 +37,9 @@ class VehicleController(
                 throw Exception("User does not have access to this vehicle")
             }
 
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.hashCode(), "Vehicle retrieved successfully", false))
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle retrieved successfully", false))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
         }
     }
 
@@ -54,9 +54,9 @@ class VehicleController(
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleService.registerVehicle(principal.id, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.hashCode(), "Vehicle registered successfully", false))
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle registered successfully", false))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
         }
     }
 

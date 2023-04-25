@@ -32,10 +32,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.hashCode(), "Get Parking Lot Successful", false))
+            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), "Get Parking Lot Successful", false))
         } catch (e: Exception) {
             ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.hashCode(), "Parking Lot Not Found", true)
+                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), "Parking Lot Not Found", true)
             )
         }
     }
@@ -99,7 +99,7 @@ class ParkingLotController(
             return ResponseEntity.ok(
                 ApiResponse(
                     createdParkingLot,
-                    HttpStatus.OK.hashCode(),
+                    HttpStatus.OK.value(),
                     "Register Parking Lot Successful",
                     false
                 )
@@ -110,7 +110,7 @@ class ParkingLotController(
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )
@@ -142,7 +142,7 @@ class ParkingLotController(
             return ResponseEntity.ok(
                 ApiResponse(
                     updatedParkingLot,
-                    HttpStatus.OK.hashCode(),
+                    HttpStatus.OK.value(),
                     "Update Parking Lot Successful",
                     false
                 )
@@ -153,7 +153,7 @@ class ParkingLotController(
                 .body(
                     ApiResponse(
                         null,
-                        HttpStatus.BAD_REQUEST.hashCode(),
+                        HttpStatus.BAD_REQUEST.value(),
                         e.message ?: "Unknown Error",
                         true
                     )
