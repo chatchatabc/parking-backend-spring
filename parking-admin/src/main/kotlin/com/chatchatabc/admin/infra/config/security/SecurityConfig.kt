@@ -1,6 +1,7 @@
 package com.chatchatabc.admin.infra.config.security
 
-import com.chatchatabc.admin.infra.config.security.filter.JwtRequestFilter
+import jakarta.servlet.SessionTrackingMode
+import jakarta.servlet.http.HttpSessionEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -11,16 +12,15 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.session.HttpSessionEventPublisher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import java.util.*
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(
-    private val jwtRequestFilter: JwtRequestFilter
-) {
+class SecurityConfig {
     /**
      * Configure security rules
      */
@@ -39,7 +39,6 @@ class SecurityConfig(
             .sessionManagement { session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 
@@ -58,6 +57,31 @@ class SecurityConfig(
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
+    }
+
+    @Bean
+    fun httpSessionEventPublisher(): HttpSessionEventPublisher {
+        return object : HttpSessionEventPublisher() {
+            override fun sessionCreated(event: HttpSessionEvent) {
+                // Set session tracking mode to COOKIE
+                event.session.servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE))
+                super.sessionCreated(event)
+            }
+        }
+    }
+
+    @Bean
+    protected fun configure(http: HttpSecurity) {
+        http
+            .sessionManagement()
+            .sessionFixation()
+            .migrateSession()
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(true)
+            // TODO: Change URL and add to application.properties
+            .expiredUrl("/login?expired")
+            .and()
+            .invalidSessionUrl("/login?invalid")
     }
 
     /**
