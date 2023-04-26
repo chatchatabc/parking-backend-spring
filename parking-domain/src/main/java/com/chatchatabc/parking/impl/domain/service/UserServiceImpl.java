@@ -9,17 +9,13 @@ import com.chatchatabc.parking.domain.service.UserService;
 import com.chatchatabc.parking.infra.service.JedisService;
 import com.chatchatabc.parking.infra.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,54 +27,6 @@ public class UserServiceImpl implements UserService {
     private JedisService jedisService;
     @Autowired
     private UtilService utilService;
-    @Autowired
-    private PasswordEncoder passwordEncoderDomain;
-
-    @Value("${server.admin.email}")
-    private String adminEmail;
-    @Value("${server.admin.username}")
-    private String adminUsername;
-    @Value("${server.admin.password}")
-    private String adminPassword;
-    @Value("${server.admin.firstname}")
-    private String adminFirstname;
-    @Value("${server.admin.lastname}")
-    private String adminLastname;
-
-    /**
-     * Initialize admin user
-     */
-    @Override
-    @Transactional
-    public void initAdmin() throws Exception {
-        if (!adminUserExists()) {
-            Optional<Role> adminRole = roleRepository.findByName(RoleNames.ROLE_ADMIN.name());
-            if (adminRole.isEmpty()) {
-                throw new Exception("Admin role not found");
-            }
-            User adminUser = new User();
-            adminUser.setEmail(adminEmail);
-            adminUser.setUsername(adminUsername);
-            adminUser.setPassword(passwordEncoderDomain.encode(adminPassword));
-            adminUser.setFirstName(adminFirstname);
-            adminUser.setLastName(adminLastname);
-            adminUser.setRoles(Set.of(adminRole.get()));
-            adminUser.setCreatedAt(LocalDateTime.now());
-            userRepository.save(adminUser);
-        }
-    }
-
-    /**
-     * Check if admin user exists
-     *
-     * @return true if exists, false otherwise
-     */
-    @Override
-    public boolean adminUserExists() {
-        RoleNames adminRoleName = RoleNames.ROLE_ADMIN;
-        Long adminRoleCount = userRepository.countUsersByRole(adminRoleName.name());
-        return adminRoleCount > 0;
-    }
 
     /**
      * Soft register a new user if not exists

@@ -6,18 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
     /**
-     * Initialize admin user
-     */
-    void initAdmin() throws Exception;
-
-    /**
-     * Check if admin user exists
-     *
-     * @return true if exists, false otherwise
-     */
-    boolean adminUserExists();
-
-    /**
      * Soft register a new user if not exists
      *
      * @param phone    the phone number
