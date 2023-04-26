@@ -1,0 +1,4 @@
+GET https://httpbin.org/ip
+
+### helath check for user api
+GET https://user-api.parking.davao.page/health
