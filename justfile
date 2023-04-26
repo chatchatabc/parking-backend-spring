@@ -5,3 +5,7 @@ build:
 # check oudated dependencies
 outdated:
   mvn compile versions:display-dependency-updates > outdated.txt
+
+# display dependency tree
+depenency-tree:
+  mvn compile dependency:tree > dependency-tree.txt
