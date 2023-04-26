@@ -141,5 +141,4 @@ class VehicleController(
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
         }
     }
-
 }
