@@ -44,6 +44,7 @@ public class User implements UserDetails {
     @Column
     private String lastName;
 
+    @JsonIgnore
     @Column
     private int flag;
 
