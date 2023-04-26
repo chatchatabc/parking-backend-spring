@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -27,23 +28,23 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-            .cors().and().csrf().disable()
-            .authorizeHttpRequests {
-                it.requestMatchers("/api/auth/**").permitAll()
+                .cors().and().csrf().disable()
+                .authorizeHttpRequests {
+                    it.requestMatchers("/api/auth/**").permitAll()
 
-                // All routes must have admin role
-                it.requestMatchers("/api/**").hasAnyRole("ADMIN")
+                    // All routes must have admin role
+                    it.requestMatchers("/api/**").hasAnyRole("ADMIN")
 
-                // Allow route to Swagger UI
-                it.requestMatchers("/api/swagger-ui/**").permitAll()
-                it.requestMatchers("/api/v3/api-docs/**").permitAll()
+                    // Allow route to Swagger UI
+                    it.requestMatchers("/api/swagger-ui/**").permitAll()
+                    it.requestMatchers("/api/v3/api-docs/**").permitAll()
 
-                it.anyRequest().authenticated()
-            }
-            .sessionManagement { session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .build()
+                    it.anyRequest().authenticated()
+                }
+                .sessionManagement { session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                }
+                .build()
     }
 
     /**
@@ -75,17 +76,17 @@ class SecurityConfig {
     }
 
     @Bean
-    protected fun configure(http: HttpSecurity) {
-        http
-            .sessionManagement()
-            .sessionFixation()
-            .migrateSession()
-            .maximumSessions(1)
-            .maxSessionsPreventsLogin(true)
-            // TODO: Change URL and add to application.properties
-            .expiredUrl("/login?expired")
-            .and()
-            .invalidSessionUrl("/login?invalid")
+    protected fun configure(http: HttpSecurity): SessionManagementConfigurer<HttpSecurity> {
+        return http
+                .sessionManagement()
+                .sessionFixation()
+                .migrateSession()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                // TODO: Change URL and add to application.properties
+                .expiredUrl("/login?expired")
+                .and()
+                .invalidSessionUrl("/login?invalid")
     }
 
     /**
