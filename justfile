@@ -7,5 +7,5 @@ outdated:
   mvn compile versions:display-dependency-updates > outdated.txt
 
 # display dependency tree
-depenency-tree:
+dependency-tree:
   mvn compile dependency:tree > dependency-tree.txt
