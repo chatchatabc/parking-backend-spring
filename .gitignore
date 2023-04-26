@@ -139,3 +139,4 @@ buildNumber.properties
 
 outdated.txt
 http-client.private.env.json
+dependency-tree.txt
