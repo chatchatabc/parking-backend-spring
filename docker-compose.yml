@@ -15,7 +15,7 @@ services:
       - "4222:4222"
       - "8080:8080"
     volumes:
-      - ./config/:/etc/nats
+      - ./src/config/:/etc/nats
   redis:
     image: redis:7.0.11
     ports:
