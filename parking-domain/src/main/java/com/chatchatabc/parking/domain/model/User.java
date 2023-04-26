@@ -44,6 +44,7 @@ public class User implements UserDetails {
     @Column
     private String lastName;
 
+    @JsonIgnore
     @Column
     private int flag;
 
@@ -59,6 +60,7 @@ public class User implements UserDetails {
     @Column
     private LocalDateTime phoneVerifiedAt;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",

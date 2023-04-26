@@ -1,18 +1,23 @@
 package com.chatchatabc.admin.infra.config.security
 
+import com.chatchatabc.admin.infra.config.security.filter.CsrfTokenResponseHeaderBindingFilter
+import com.chatchatabc.admin.infra.config.security.filter.SessionRequestFilter
 import jakarta.servlet.SessionTrackingMode
 import jakarta.servlet.http.HttpSessionEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfFilter
 import org.springframework.security.web.session.HttpSessionEventPublisher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
@@ -21,29 +26,50 @@ import java.util.*
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(
+        private val sessionRequestFilter: SessionRequestFilter,
+        private val csrfTokenResponseHeaderBindingFilter: CsrfTokenResponseHeaderBindingFilter
+) {
     /**
      * Configure security rules
      */
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-                .cors().and().csrf().disable()
+                // Enable cors
+                .cors().and()
+                // Enable CSRF
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeHttpRequests {
+                    // Allow certain post requests
+                    it.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                    // Allow all get requests
                     it.requestMatchers("/api/auth/**").permitAll()
 
-                    // All routes must have admin role
-                    it.requestMatchers("/api/**").hasAnyRole("ADMIN")
+                    // User Path
+                    it.requestMatchers("/api/user/**").hasAnyRole("ADMIN")
 
                     // Allow route to Swagger UI
                     it.requestMatchers("/api/swagger-ui/**").permitAll()
                     it.requestMatchers("/api/v3/api-docs/**").permitAll()
 
+                    // All routes must have admin role
+                    it.requestMatchers("/api/**").hasAnyRole("ADMIN")
                     it.anyRequest().authenticated()
                 }
                 .sessionManagement { session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    session
+                            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                            .sessionFixation().migrateSession()
+                            .maximumSessions(1)
+                            .maxSessionsPreventsLogin(true)
+                            // TODO: Change URL and add to application.properties
+                            .expiredUrl("/login?expired")
+                            .and()
+                            .invalidSessionUrl("/login?invalid")
                 }
+                .addFilterBefore(csrfTokenResponseHeaderBindingFilter, CsrfFilter::class.java)
+                .addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .build()
     }
 
@@ -73,20 +99,6 @@ class SecurityConfig {
                 super.sessionCreated(event)
             }
         }
-    }
-
-    @Bean
-    protected fun configure(http: HttpSecurity): SessionManagementConfigurer<HttpSecurity> {
-        return http
-                .sessionManagement()
-                .sessionFixation()
-                .migrateSession()
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true)
-                // TODO: Change URL and add to application.properties
-                .expiredUrl("/login?expired")
-                .and()
-                .invalidSessionUrl("/login?invalid")
     }
 
     /**
