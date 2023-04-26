@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class SessionRequestFilter(
         private val httpSession: HttpSession,
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
 ) : OncePerRequestFilter() {
     private val log = LoggerFactory.getLogger(SessionRequestFilter::class.java)
 
@@ -26,26 +26,31 @@ class SessionRequestFilter(
             request: HttpServletRequest,
             response: HttpServletResponse,
             filterChain: FilterChain) {
-        // Get User ID from session
-        // TODO: verify, this might not be safe
-        val userId = httpSession.getAttribute("userId") as String
-        if (userId == null) {
+        try {
+            // Get User ID from session
+            // TODO: verify, this might not be safe
+            val userId = httpSession.getAttribute("userId") as String
+            if (userId == null) {
+                filterChain.doFilter(request, response)
+                logRequest(request, response)
+                return
+            }
+
+            val user = userRepository.findById(userId).get()
+
+            val authentication = UsernamePasswordAuthenticationToken(
+                    user, null, user.authorities
+            )
+
+            authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+            SecurityContextHolder.getContext().authentication = authentication
+
+            filterChain.doFilter(request, response)
+            logRequest(request, response, user.id)
+        } catch (e: Exception) {
             filterChain.doFilter(request, response)
             logRequest(request, response)
-            return
         }
-
-        val user = userRepository.findById(userId).get()
-
-        val authentication = UsernamePasswordAuthenticationToken(
-                user, null, user.authorities
-        )
-
-        authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-        SecurityContextHolder.getContext().authentication = authentication
-
-        filterChain.doFilter(request, response)
-        logRequest(request, response, user.id)
     }
 
     /**
