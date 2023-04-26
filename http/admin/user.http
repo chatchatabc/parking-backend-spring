@@ -1,0 +1,7 @@
+### User Logout
+POST {{address-admin}}/api/user/logout
+X-XSRF-TOKEN: {{XSRF-TOKEN}}
+
+### Test
+GET {{address-admin}}/api/user/test
+X-XSRF-TOKEN: {{XSRF-TOKEN}}

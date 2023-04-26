@@ -29,7 +29,8 @@ class AuthController(
             request: HttpServletRequest
     ): String {
         val token: CsrfToken = request.getAttribute("_csrf") as CsrfToken
-        println("$token.headerName : $token.token")
+        println(token.headerName)
+        println(token.token)
         return "CSRF Retrieved!"
     }
 
