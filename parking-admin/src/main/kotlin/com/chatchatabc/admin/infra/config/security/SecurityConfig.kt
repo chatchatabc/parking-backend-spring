@@ -1,5 +1,6 @@
 package com.chatchatabc.admin.infra.config.security
 
+import com.chatchatabc.admin.infra.config.security.filter.CsrfTokenResponseHeaderBindingFilter
 import com.chatchatabc.admin.infra.config.security.filter.SessionRequestFilter
 import jakarta.servlet.SessionTrackingMode
 import jakarta.servlet.http.HttpSessionEvent
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfFilter
 import org.springframework.security.web.session.HttpSessionEventPublisher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
@@ -25,7 +27,8 @@ import java.util.*
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-        private val sessionRequestFilter: SessionRequestFilter
+        private val sessionRequestFilter: SessionRequestFilter,
+        private val csrfTokenResponseHeaderBindingFilter: CsrfTokenResponseHeaderBindingFilter
 ) {
     /**
      * Configure security rules
@@ -42,6 +45,9 @@ class SecurityConfig(
                     it.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                     // Allow all get requests
                     it.requestMatchers("/api/auth/**").permitAll()
+
+                    // User Path
+                    it.requestMatchers("/api/user/**").hasAnyRole("ADMIN")
 
                     // Allow route to Swagger UI
                     it.requestMatchers("/api/swagger-ui/**").permitAll()
@@ -62,6 +68,7 @@ class SecurityConfig(
                             .and()
                             .invalidSessionUrl("/login?invalid")
                 }
+                .addFilterBefore(csrfTokenResponseHeaderBindingFilter, CsrfFilter::class.java)
                 .addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .build()
     }
