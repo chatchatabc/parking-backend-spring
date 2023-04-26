@@ -15,8 +15,6 @@ public class DataInit implements CommandLineRunner {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private ParkingRoleService parkingRoleService;
 
     private final Logger log = LoggerFactory.getLogger(DataInit.class);
@@ -32,7 +30,6 @@ public class DataInit implements CommandLineRunner {
         log.info("Initializing data...");
         roleService.initRoles();
         parkingRoleService.initRoles();
-        userService.initAdmin();
         log.info("Data initialized.");
     }
 }
