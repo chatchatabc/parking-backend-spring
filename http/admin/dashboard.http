@@ -1,3 +1,0 @@
-### Test Get URL
-GET {{address-admin}}/api/dashboard/test
-X-XSRF-TOKEN: {{XSRF-TOKEN}}

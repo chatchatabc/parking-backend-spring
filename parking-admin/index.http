@@ -1,0 +1,30 @@
+# AUTH APIs
+
+### User Login
+POST {{address-admin}}/api/auth/login
+X-XSRF-TOKEN: {{XSRF-TOKEN}}
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+### Get CSRF Token
+GET {{address-admin}}/api/auth/get-csrf-token
+
+# USER APIs
+
+### User Logout
+POST {{address-admin}}/api/user/logout
+X-XSRF-TOKEN: {{XSRF-TOKEN}}
+
+### Test
+GET {{address-admin}}/api/user/test
+X-XSRF-TOKEN: {{XSRF-TOKEN}}
+
+# DASHBOARD APIs
+
+### Test Get URL
+GET {{address-admin}}/api/dashboard/test
+X-XSRF-TOKEN: {{XSRF-TOKEN}}
