@@ -1,21 +1,15 @@
 version: '3.5'
 
-
 services:
   postgres:
-    container_name: postgres_parking_abc
-    image: postgres:latest
+    image: postgres:15.2
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: pass
-      PGDATA: /data/postgres
-    volumes:
-      - postgres-db:/data/postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
   nats-server:
-    container_name: nats_parking_abc
-    image: nats:latest
+    image: nats:2.9.16
     command: "-c /etc/nats/nats.conf -DV"
     ports:
       - "4222:4222"
@@ -23,13 +17,6 @@ services:
     volumes:
       - ./config/:/etc/nats
   redis:
-    container_name: redis_parking_abc
-    image: redis:latest
+    image: redis:7.0.11
     ports:
       - "6379:6379"
-      - "8001:8001"
-
-
-volumes:
-  postgres-db:
-    driver: local
