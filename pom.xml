@@ -2,32 +2,61 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+
     <groupId>com.chatchatabc</groupId>
-    <artifactId>parking</artifactId>
+    <artifactId>parking-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parking</name>
-    <description>Parking project for Spring Boot</description>
-    <properties>
-        <java.version>17</java.version>
-        <kotlin.version>1.7.22</kotlin.version>
-        <dubbo.version>3.2.0-beta.5</dubbo.version>
-        <spring-boot.version>3.0.5</spring-boot.version>
-    </properties>
     <packaging>pom</packaging>
+    <name>Parent for parking project</name>
+    <description>Parking project with Spring Boot</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <kotlin.version>1.8.21</kotlin.version>
+        <spring-boot.version>3.0.6</spring-boot.version>
+    </properties>
+
     <modules>
         <module>parking-admin</module>
         <module>parking-api</module>
         <module>parking-domain</module>
     </modules>
+
+    <scm>
+        <connection>scm:git:git@github.com:chatchatabc/parking-backend-spring.git</connection>
+        <developerConnection>scm:git:git@github.com:chatchatabc/parking-backend-spring.git</developerConnection>
+        <url>https://github.com/chatchatabc/parking-backend-spring</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>Raphile14</id>
+            <name>Raphael Dalangin</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>linux_china</id>
+            <name>Jacky Chan</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>${kotlin.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -39,7 +68,45 @@
     </dependencyManagement>
 
     <build>
-
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <parameters>true</parameters>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Tests.java</include>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/Abstract*.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>
