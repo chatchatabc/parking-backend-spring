@@ -10,8 +10,8 @@
     </parent>
     <artifactId>admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parking-admin</name>
-    <description>parking-admin</description>
+    <name>Parking Admin Backend</name>
+    <description>Spring Boot Admin Backend for Parking Project</description>
     <properties>
         <mainClass>com.chatchatabc.admin.ParkingAdminApplicationKt</mainClass>
     </properties>

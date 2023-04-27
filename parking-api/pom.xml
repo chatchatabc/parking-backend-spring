@@ -10,8 +10,8 @@
     </parent>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parking-api</name>
-    <description>parking-api</description>
+    <name>Parking API Backend</name>
+    <description>Spring Boot API Backend for Parking Project</description>
     <properties>
         <mainClass>com.chatchatabc.api.ParkingApiApplicationKt</mainClass>
     </properties>
