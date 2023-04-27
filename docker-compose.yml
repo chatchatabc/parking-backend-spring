@@ -7,16 +7,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5432"
   nats-server:
     image: nats:2.9.16
     command: "-c /etc/nats/nats.conf -DV"
     ports:
-      - "4222:4222"
-      - "8080:8080"
+      - "4222"
+      - "18080:8080"
     volumes:
       - ./src/config/:/etc/nats
+    labels:
+      org.springframework.boot.ignore: true
   redis:
     image: redis:7.0.11
     ports:
-      - "6379:6379"
+      - "6379"
