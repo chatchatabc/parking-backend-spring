@@ -45,7 +45,6 @@ class AuthController(
             ResponseEntity.ok().headers(headers)
                 .body(ApiResponse(user, HttpStatus.OK.value(), "Login successful", false))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message, true))
         }
