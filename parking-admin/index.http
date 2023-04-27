@@ -8,6 +8,10 @@ Content-Type: application/json
   "password": "123456"
 }
 
+### Get User Profile
+GET {{adminBaseUrl}}/api/user/me
+Authorization: Bearer {{userToken}}
+
 ### User Logout
 POST {{adminBaseUrl}}/api/user/logout
 Authorization: Bearer {{adminToken}}
