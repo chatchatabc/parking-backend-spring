@@ -3,6 +3,7 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.user.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.user.UserVerifyOTPRequest
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
@@ -35,13 +36,13 @@ class AuthController(
             userService.softRegisterUser(req.phone, req.username)
             userService.createOTPAndSendSMS(req.phone)
             ResponseEntity.ok().body(
-                ApiResponse(null, HttpStatus.OK.value(), "Login successful", false)
+                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
                 )
         }
     }
@@ -69,13 +70,13 @@ class AuthController(
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
-                ApiResponse(user, HttpStatus.OK.value(), "Verify OTP successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.USER_VERIFY_OTP_SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
                 )
         }
     }

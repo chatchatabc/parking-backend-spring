@@ -3,6 +3,7 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -33,10 +34,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), "Get Parking Lot Successful", false))
+            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), "Parking Lot Not Found", true)
+                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_NOT_FOUND.name, true)
             )
         }
     }
@@ -55,7 +56,7 @@ class ParkingLotController(
             val parkingLots = parkingLotRepository.findAllByOwner(user, pageable)
             return ResponseEntity.ok(parkingLots)
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(null)
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
         }
     }
 
@@ -101,7 +102,7 @@ class ParkingLotController(
                 ApiResponse(
                     createdParkingLot,
                     HttpStatus.OK.value(),
-                    "Register Parking Lot Successful",
+                    ResponseNames.SUCCESS_CREATE.name,
                     false
                 )
             )
@@ -112,7 +113,7 @@ class ParkingLotController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR_CREATE.name,
                         true
                     )
                 )
@@ -144,7 +145,7 @@ class ParkingLotController(
                 ApiResponse(
                     updatedParkingLot,
                     HttpStatus.OK.value(),
-                    "Update Parking Lot Successful",
+                    ResponseNames.SUCCESS_UPDATE.name,
                     false
                 )
             )
@@ -155,7 +156,7 @@ class ParkingLotController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR_UPDATE.name,
                         true
                     )
                 )

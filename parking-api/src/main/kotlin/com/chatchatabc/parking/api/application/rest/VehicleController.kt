@@ -3,6 +3,7 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.vehicle.VehicleRegisterRequest
 import com.chatchatabc.parking.api.application.dto.vehicle.VehicleUpdateRequest
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
@@ -61,12 +62,19 @@ class VehicleController(
                 ApiResponse(
                     vehicle.get(),
                     HttpStatus.OK.value(),
-                    "Vehicle retrieved successfully",
+                    ResponseNames.SUCCESS.name,
                     false
                 )
             )
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR_NOT_FOUND.name,
+                    true
+                )
+            )
         }
     }
 
@@ -81,9 +89,17 @@ class VehicleController(
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleService.registerVehicle(principal.id, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle registered successfully", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
+                )
+            )
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(
+                ApiResponse(
+                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_CREATE.name, true
+                )
+            )
         }
     }
 
@@ -99,9 +115,9 @@ class VehicleController(
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleService.updateVehicle(principal.id, vehicleId, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "Vehicle updated successfully", false))
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
         }
     }
 
@@ -117,9 +133,9 @@ class VehicleController(
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleService.addUserToVehicle(principal.id, vehicleId, userId)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "User added to vehicle successfully", false))
+            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
         }
     }
 
@@ -136,9 +152,16 @@ class VehicleController(
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicle = vehicleService.removeUserFromVehicle(principal.id, vehicleId, userId)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), "User removed from vehicle successfully", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    vehicle,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
         }
     }
 }

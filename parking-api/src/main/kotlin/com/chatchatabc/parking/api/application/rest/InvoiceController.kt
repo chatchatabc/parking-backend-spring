@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -30,7 +31,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.value(), "Get Invoice Successful", false))
+            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -38,7 +39,7 @@ class InvoiceController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR.name,
                         true
                     )
                 )
@@ -79,7 +80,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
-            ResponseEntity.ok(ApiResponse(createdInvoice, HttpStatus.OK.value(), "Create Invoice Successful", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    createdInvoice,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_CREATE.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -87,7 +95,7 @@ class InvoiceController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR_CREATE.name,
                         true
                     )
                 )
@@ -104,7 +112,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(endedInvoice, HttpStatus.OK.value(), "End Invoice Successful", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    endedInvoice,
+                    HttpStatus.OK.value(),
+                    ResponseNames.INVOICE_END_SUCCESS.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -112,7 +127,7 @@ class InvoiceController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR.name,
                         true
                     )
                 )
@@ -129,7 +144,14 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(paidInvoice, HttpStatus.OK.value(), "Pay Invoice Successful", false))
+            ResponseEntity.ok(
+                ApiResponse(
+                    paidInvoice,
+                    HttpStatus.OK.value(),
+                    ResponseNames.INVOICE_PAY_SUCCESS.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -137,7 +159,7 @@ class InvoiceController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        e.message ?: "Unknown Error",
+                        ResponseNames.ERROR.name,
                         true
                     )
                 )

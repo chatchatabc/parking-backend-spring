@@ -2,6 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.user.UserProfileUpdateRequest
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
@@ -32,13 +33,15 @@ class UserController(
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.value(), "Get profile successful", false)
+                ApiResponse(
+                    user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
                 )
         }
     }
@@ -65,13 +68,13 @@ class UserController(
                 request.lastName
             )
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.value(), "Update successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true)
                 )
         }
     }
