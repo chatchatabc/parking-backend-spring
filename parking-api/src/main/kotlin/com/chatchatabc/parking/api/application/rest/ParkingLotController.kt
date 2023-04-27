@@ -26,7 +26,7 @@ class ParkingLotController(
 ) {
 
     /**
-     * Get parking lots by pageable
+     * Get parking lots by id
      */
     @GetMapping("/get/{parkingLotId}")
     fun get(
@@ -43,20 +43,34 @@ class ParkingLotController(
     }
 
     /**
-     * Get Parking Lots By User
+     * Get Parking Lots Managed By User
      */
     @GetMapping("/get-managing")
     fun getByManaging(
         pageable: Pageable
-    ): ResponseEntity<Page<ParkingLot>> {
+    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
         return try {
             // Get Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             val parkingLots = parkingLotRepository.findAllByOwner(user, pageable)
-            return ResponseEntity.ok(parkingLots)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    parkingLots,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR.name,
+                    true
+                )
+            )
         }
     }
 
