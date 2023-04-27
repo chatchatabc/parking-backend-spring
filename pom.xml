@@ -17,6 +17,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <kotlin.version>1.8.21</kotlin.version>
         <spring-boot.version>3.1.0-RC1</spring-boot.version>
+        <jackson.version>2.15.0</jackson.version>
     </properties>
 
     <modules>
@@ -59,6 +60,13 @@
                 <version>${kotlin.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
