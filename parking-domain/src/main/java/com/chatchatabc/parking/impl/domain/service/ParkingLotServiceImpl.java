@@ -95,7 +95,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         if (capacity != null) {
             parkingLot.get().setCapacity(capacity);
             // Get active invoices and update available slots
-            Long activeInvoices = invoiceRepository.countActiveInvoices(parkingLotId);
+            Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId);
             parkingLot.get().setAvailableSlots(capacity - activeInvoices.intValue());
         }
         // TODO: NATS publish parking lot update
