@@ -1,4 +1,4 @@
-package com.chatchatabc.admin.application.rest
+package com.chatchatabc.parking.admin.application.rest
 
 import org.springframework.web.bind.annotation.*
 

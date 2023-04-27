@@ -1,7 +1,7 @@
-package com.chatchatabc.admin.infra.config.security
+package com.chatchatabc.parking.admin.infra.config.security
 
-import com.chatchatabc.admin.infra.config.security.filter.CsrfTokenResponseHeaderBindingFilter
-import com.chatchatabc.admin.infra.config.security.filter.SessionRequestFilter
+import com.chatchatabc.parking.admin.infra.config.security.filter.CsrfTokenResponseHeaderBindingFilter
+import com.chatchatabc.parking.admin.infra.config.security.filter.SessionRequestFilter
 import jakarta.servlet.SessionTrackingMode
 import jakarta.servlet.http.HttpSessionEvent
 import org.springframework.context.annotation.Bean
@@ -27,8 +27,8 @@ import java.util.*
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-        private val sessionRequestFilter: SessionRequestFilter,
-        private val csrfTokenResponseHeaderBindingFilter: CsrfTokenResponseHeaderBindingFilter
+    private val sessionRequestFilter: SessionRequestFilter,
+    private val csrfTokenResponseHeaderBindingFilter: CsrfTokenResponseHeaderBindingFilter
 ) {
     /**
      * Configure security rules

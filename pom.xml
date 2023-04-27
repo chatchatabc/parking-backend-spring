@@ -38,6 +38,7 @@
             <roles>
                 <role>Developer</role>
             </roles>
+            <organizationUrl>https://github.com/chatchatabc</organizationUrl>
         </developer>
         <developer>
             <id>linux_china</id>
@@ -45,6 +46,7 @@
             <roles>
                 <role>Developer</role>
             </roles>
+            <organizationUrl>https://github.com/chatchatabc</organizationUrl>
         </developer>
     </developers>
 

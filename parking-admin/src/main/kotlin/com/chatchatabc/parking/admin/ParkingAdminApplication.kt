@@ -1,4 +1,4 @@
-package com.chatchatabc.admin
+package com.chatchatabc.parking.admin
 
 import com.chatchatabc.parking.DomainConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @SpringBootApplication
-@ComponentScan("com.chatchatabc.parking", "com.chatchatabc.admin")
+@ComponentScan("com.chatchatabc.parking")
 @EnableJpaRepositories(basePackages = arrayOf("com.chatchatabc.parking.domain.repository"))
 @EntityScan(basePackages = arrayOf("com.chatchatabc.parking.domain.model"))
 @Import(DomainConfig::class)

@@ -1,4 +1,4 @@
-package com.chatchatabc.admin.application.dto
+package com.chatchatabc.parking.admin.application.dto
 
 data class ApiResponse<T>(
         val data: T?,

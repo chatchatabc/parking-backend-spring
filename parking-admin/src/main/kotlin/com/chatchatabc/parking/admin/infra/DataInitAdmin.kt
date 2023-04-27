@@ -1,6 +1,6 @@
-package com.chatchatabc.admin.infra
+package com.chatchatabc.parking.admin.infra
 
-import com.chatchatabc.admin.domain.service.AdminService
+import com.chatchatabc.parking.admin.domain.service.AdminService
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component

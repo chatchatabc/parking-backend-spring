@@ -1,6 +1,6 @@
-package com.chatchatabc.admin.application.rest
+package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.domain.model.User
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

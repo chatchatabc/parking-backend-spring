@@ -1,7 +1,7 @@
-package com.chatchatabc.admin.application.rest
+package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.admin.application.dto.ApiResponse
-import com.chatchatabc.admin.application.dto.user.UserLoginRequest
+import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.user.UserLoginRequest
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import jakarta.servlet.http.HttpServletRequest
@@ -39,8 +39,8 @@ class AuthController(
      */
     @PostMapping("/login")
     fun loginUser(
-            @RequestBody req: UserLoginRequest,
-            request: HttpServletRequest
+        @RequestBody req: UserLoginRequest,
+        request: HttpServletRequest
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             val user = userRepository.findByUsername(req.username).get()

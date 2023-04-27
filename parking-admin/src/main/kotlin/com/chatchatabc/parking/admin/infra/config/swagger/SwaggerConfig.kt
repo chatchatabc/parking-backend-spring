@@ -1,4 +1,4 @@
-package com.chatchatabc.admin.infra.config.swagger
+package com.chatchatabc.parking.admin.infra.config.swagger
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI

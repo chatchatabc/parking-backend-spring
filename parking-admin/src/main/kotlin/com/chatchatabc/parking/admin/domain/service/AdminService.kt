@@ -1,4 +1,4 @@
-package com.chatchatabc.admin.domain.service
+package com.chatchatabc.parking.admin.domain.service
 
 import org.springframework.stereotype.Service
 

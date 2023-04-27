@@ -1,4 +1,4 @@
-package com.chatchatabc.admin.application.dto.user
+package com.chatchatabc.parking.admin.application.dto.user
 
 data class UserLoginRequest(
         val username: String,

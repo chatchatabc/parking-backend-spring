@@ -1,6 +1,6 @@
-package com.chatchatabc.admin.impl.domain.service
+package com.chatchatabc.parking.admin.impl.domain.service
 
-import com.chatchatabc.admin.domain.service.AdminService
+import com.chatchatabc.parking.admin.domain.service.AdminService
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.RoleRepository
