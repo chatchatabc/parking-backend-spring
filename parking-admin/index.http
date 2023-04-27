@@ -16,10 +16,10 @@ Authorization: Bearer {{adminToken}}
 POST {{adminBaseUrl}}/api/profile/logout
 Authorization: Bearer {{adminToken}}
 
-### Test
-GET {{adminBaseUrl}}/api/user/test
+### Get User Login Logs
+GET {{adminBaseUrl}}/api/user/get-login-logs
 Authorization: Bearer {{adminToken}}
 
-### Test Get URL
-GET {{adminBaseUrl}}/api/dashboard/test
+### Get User Logout Logs
+GET {{adminBaseUrl}}/api/user/get-logout-logs
 Authorization: Bearer {{adminToken}}
