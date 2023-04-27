@@ -51,7 +51,7 @@ class AuthController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
+                        ResponseNames.USER_BAD_CREDENTIALS.name,
                         true
                     )
                 )
