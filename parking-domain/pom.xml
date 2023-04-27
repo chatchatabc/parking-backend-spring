@@ -10,8 +10,8 @@
     </parent>
     <artifactId>domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>parking-domain</name>
-    <description>parking-domain</description>
+    <name>Parking Domain</name>
+    <description>Domain for Parking Project</description>
     
     <dependencies>
         <dependency>
