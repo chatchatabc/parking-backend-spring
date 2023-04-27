@@ -68,15 +68,32 @@ class ParkingLotController(
         @RequestParam("longitude") longitude: Double,
         @RequestParam("latitude") latitude: Double,
         @RequestParam("distance") distance: Double,
-    ): ResponseEntity<List<ParkingLot>> {
-        var inputDistance = distance
-        // Place a cap on the range, distance should not exceed 0.1km
-        if (distance >= 0.1) {
-            inputDistance = 0.1
+    ): ResponseEntity<ApiResponse<List<ParkingLot>>> {
+        return try {
+            var inputDistance = distance
+            // Place a cap on the range, distance should not exceed 0.1km
+            if (distance >= 0.1) {
+                inputDistance = 0.1
+            }
+            val parkingLots = parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    parkingLots,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR.name,
+                    true
+                )
+            )
         }
-        return ResponseEntity.ok(
-            parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
-        )
     }
 
     /**
