@@ -53,9 +53,29 @@ class InvoiceController(
     fun getInvoicesByVehicle(
         @PathVariable vehicleId: String,
         pageable: Pageable
-    ): ResponseEntity<Page<Invoice>> {
-        val vehicle = vehicleRepository.findById(vehicleId).get()
-        return ResponseEntity.ok(invoiceRepository.findAllByVehicle(vehicle, pageable))
+    ): ResponseEntity<ApiResponse<Page<Invoice>>> {
+        return try {
+            val vehicle = vehicleRepository.findById(vehicleId).get()
+            return ResponseEntity.ok(
+                ApiResponse(
+                    invoiceRepository.findAllByVehicle(vehicle, pageable),
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR.name,
+                        true
+                    )
+                )
+        }
     }
 
     /**
