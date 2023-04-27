@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import io.swagger.v3.oas.annotations.Operation
@@ -33,13 +34,18 @@ class UserController(
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.value(), "Get profile successful", false)
+                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message ?: "Unknown Error", true)
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR.name,
+                        true
+                    )
                 )
         }
     }
@@ -54,9 +60,10 @@ class UserController(
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             // TODO: Implement logout
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), "Logout successful", false))
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message, true))
+            ResponseEntity.badRequest()
+                .body(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true))
         }
     }
 }

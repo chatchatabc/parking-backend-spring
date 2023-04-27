@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.user.UserLoginRequest
+import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
@@ -43,10 +44,17 @@ class AuthController(
             val token: String = jwtService.generateToken(user.id)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers)
-                .body(ApiResponse(user, HttpStatus.OK.value(), "Login successful", false))
+                .body(ApiResponse(user, HttpStatus.OK.value(), ResponseNames.USER_LOGIN_SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), e.message, true))
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR.name,
+                        true
+                    )
+                )
         }
     }
 }
