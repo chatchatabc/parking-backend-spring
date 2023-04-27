@@ -55,6 +55,10 @@ class SecurityConfig(
 
                     // All routes must have admin role
                     it.requestMatchers("/api/**").hasAnyRole("ADMIN")
+
+                    // Permit actuator
+                    it.requestMatchers("/actuator/**").permitAll()
+
                     it.anyRequest().authenticated()
                 }
                 .sessionManagement { session ->

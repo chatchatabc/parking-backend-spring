@@ -44,6 +44,9 @@ class SecurityConfig(
                 // All routes must have management role
                 it.requestMatchers("/api/**").hasAnyRole("PARKING_MANAGER")
 
+                // Permit actuator
+                it.requestMatchers("/actuator/**").permitAll()
+
                 it.anyRequest().authenticated()
             }
             .sessionManagement { session ->
