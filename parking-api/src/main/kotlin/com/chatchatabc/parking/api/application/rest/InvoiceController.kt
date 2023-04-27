@@ -85,9 +85,30 @@ class InvoiceController(
     fun getInvoicesByParkingLot(
         @PathVariable parkingLotId: String,
         pageable: Pageable
-    ): ResponseEntity<Page<Invoice>> {
-        val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-        return ResponseEntity.ok(invoiceRepository.findAllByParkingLot(parkingLot, pageable))
+    ): ResponseEntity<ApiResponse<Page<Invoice>>> {
+        return try {
+            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val invoices = invoiceRepository.findAllByParkingLot(parkingLot, pageable)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    invoices,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR.name,
+                        true
+                    )
+                )
+        }
     }
 
     /**
