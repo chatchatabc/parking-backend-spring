@@ -141,10 +141,11 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <jvmTarget>${java.version}</jvmTarget>
                     <args>
                         <arg>-Xjsr305=strict</arg>
+                        <arg>-jvm-target=17</arg>
                     </args>
-                    <jvmTarget>${java.version}</jvmTarget>
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
