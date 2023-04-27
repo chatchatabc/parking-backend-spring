@@ -1,7 +1,7 @@
-package com.chatchatabc.parking.admin.infra.config.security
+package com.chatchatabc.parking.admin.application.config.security
 
-import com.chatchatabc.parking.admin.infra.config.security.filter.CsrfTokenResponseHeaderBindingFilter
-import com.chatchatabc.parking.admin.infra.config.security.filter.SessionRequestFilter
+import com.chatchatabc.parking.admin.application.config.security.filter.CsrfTokenResponseHeaderBindingFilter
+import com.chatchatabc.parking.admin.application.config.security.filter.SessionRequestFilter
 import jakarta.servlet.SessionTrackingMode
 import jakarta.servlet.http.HttpSessionEvent
 import org.springframework.context.annotation.Bean
@@ -36,45 +36,45 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-                // Enable cors
-                .cors().and()
-                // Enable CSRF
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-                .authorizeHttpRequests {
-                    // Allow certain post requests
-                    it.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                    // Allow all get requests
-                    it.requestMatchers("/api/auth/**").permitAll()
+            // Enable cors
+            .cors().and()
+            // Enable CSRF
+            .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+            .authorizeHttpRequests {
+                // Allow certain post requests
+                it.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                // Allow all get requests
+                it.requestMatchers("/api/auth/**").permitAll()
 
-                    // User Path
-                    it.requestMatchers("/api/user/**").hasAnyRole("ADMIN")
+                // User Path
+                it.requestMatchers("/api/user/**").hasAnyRole("ADMIN")
 
-                    // Allow route to Swagger UI
-                    it.requestMatchers("/api/swagger-ui/**").permitAll()
-                    it.requestMatchers("/api/v3/api-docs/**").permitAll()
+                // Allow route to Swagger UI
+                it.requestMatchers("/api/swagger-ui/**").permitAll()
+                it.requestMatchers("/api/v3/api-docs/**").permitAll()
 
-                    // All routes must have admin role
-                    it.requestMatchers("/api/**").hasAnyRole("ADMIN")
+                // All routes must have admin role
+                it.requestMatchers("/api/**").hasAnyRole("ADMIN")
 
-                    // Permit actuator
-                    it.requestMatchers("/actuator/**").permitAll()
+                // Permit actuator
+                it.requestMatchers("/actuator/**").permitAll()
 
-                    it.anyRequest().authenticated()
-                }
-                .sessionManagement { session ->
-                    session
-                            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                            .sessionFixation().migrateSession()
-                            .maximumSessions(1)
-                            .maxSessionsPreventsLogin(true)
-                            // TODO: Change URL and add to application.properties
-                            .expiredUrl("/login?expired")
-                            .and()
-                            .invalidSessionUrl("/login?invalid")
-                }
-                .addFilterBefore(csrfTokenResponseHeaderBindingFilter, CsrfFilter::class.java)
-                .addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
-                .build()
+                it.anyRequest().authenticated()
+            }
+            .sessionManagement { session ->
+                session
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .sessionFixation().migrateSession()
+                    .maximumSessions(1)
+                    .maxSessionsPreventsLogin(true)
+                    // TODO: Change URL and add to application.properties
+                    .expiredUrl("/login?expired")
+                    .and()
+                    .invalidSessionUrl("/login?invalid")
+            }
+            .addFilterBefore(csrfTokenResponseHeaderBindingFilter, CsrfFilter::class.java)
+            .addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .build()
     }
 
     /**

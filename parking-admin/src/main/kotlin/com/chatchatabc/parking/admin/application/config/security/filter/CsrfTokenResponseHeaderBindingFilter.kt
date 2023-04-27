@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.admin.infra.config.security.filter
+package com.chatchatabc.parking.admin.application.config.security.filter
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
