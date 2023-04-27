@@ -1,5 +1,5 @@
 ### User Login/Register
-POST {{address-api}}/api/auth/login
+POST {{userBaseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ### Verify Phone and OTP
-POST {{address-api}}/api/auth/verify
+POST {{userBaseUrl}}/api/auth/verify
 Content-Type: application/json
 
 {
@@ -16,12 +16,12 @@ Content-Type: application/json
 }
 
 ### Get User Profile
-GET {{address-api}}/api/user/me
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/user/me
+Authorization: Bearer {{userToken}}
 
 ### Update User Profile
-PUT {{address-api}}/api/user/update
-Authorization: Bearer {{token}}
+PUT {{userBaseUrl}}/api/user/update
+Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -32,44 +32,44 @@ Content-Type: application/json
 }
 
 ### Get Invoice by ID
-GET {{address-api}}/api/invoice/get/0f2014a2-0752-4548-9166-afa1a8b1f55a
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/invoice/get/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{userToken}}
 
 ### Get Invoice By Vehicle ID
-GET {{address-api}}/api/invoice/get/vehicle/d8d31413-5e18-448d-8337-d5b5da9624e8
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/invoice/get/vehicle/d8d31413-5e18-448d-8337-d5b5da9624e8
+Authorization: Bearer {{userToken}}
 
 ### Get Invoice By Parking Lot
-GET {{address-api}}/api/invoice/get/parking-lot/9772e5e5-3cca-4fa7-ad26-45823d638a4b
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/invoice/get/parking-lot/9772e5e5-3cca-4fa7-ad26-45823d638a4b
+Authorization: Bearer {{userToken}}
 
 ### Create an Invoice
-POST {{address-api}}/api/invoice/create/9772e5e5-3cca-4fa7-ad26-45823d638a4b/d8d31413-5e18-448d-8337-d5b5da9624e8
-Authorization: Bearer {{token}}
+POST {{userBaseUrl}}/api/invoice/create/9772e5e5-3cca-4fa7-ad26-45823d638a4b/d8d31413-5e18-448d-8337-d5b5da9624e8
+Authorization: Bearer {{userToken}}
 
 ### End an Invoice
-POST {{address-api}}/api/invoice/end/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
-Authorization: Bearer {{token}}
+POST {{userBaseUrl}}/api/invoice/end/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{userToken}}
 
 ### Pay an Invoice
-POST {{address-api}}/api/invoice/pay/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
-Authorization: Bearer {{token}}
+POST {{userBaseUrl}}/api/invoice/pay/9772e5e5-3cca-4fa7-ad26-45823d638a4b/0f2014a2-0752-4548-9166-afa1a8b1f55a
+Authorization: Bearer {{userToken}}
 
 ### Get Parking Lot by ID
-GET {{address-api}}/api/parking-lot/get/9eac93b7-0b7e-4eb0-86d6-9c002fb4c8c1
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/parking-lot/get/9eac93b7-0b7e-4eb0-86d6-9c002fb4c8c1
+Authorization: Bearer {{userToken}}
 
 ### Get Parking Lots By Range
-GET {{address-api}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
+Authorization: Bearer {{userToken}}
 
 ### Get parking lots I manage
-GET {{address-api}}/api/parking-lot/get-managing
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/parking-lot/get-managing
+Authorization: Bearer {{userToken}}
 
 ### Create Parking Lot
-POST {{address-api}}/api/parking-lot/register
-Authorization: Bearer {{token}}
+POST {{userBaseUrl}}/api/parking-lot/register
+Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -82,8 +82,8 @@ Content-Type: application/json
 }
 
 ### Update Parking Lot
-PUT {{address-api}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
-Authorization: Bearer {{token}}
+PUT {{userBaseUrl}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
+Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -96,16 +96,16 @@ Content-Type: application/json
 }
 
 ### Get My Vehicles
-GET {{address-api}}/api/vehicle/get-my-vehicles
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/vehicle/get-my-vehicles
+Authorization: Bearer {{userToken}}
 
 ### Get Vehicle by ID
-GET {{address-api}}/api/vehicle/get/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
-Authorization: Bearer {{token}}
+GET {{userBaseUrl}}/api/vehicle/get/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
+Authorization: Bearer {{userToken}}
 
 ### Vehicle Register
-POST {{address-api}}/api/vehicle/register
-Authorization: Bearer {{token}}
+POST {{userBaseUrl}}/api/vehicle/register
+Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -115,8 +115,8 @@ Content-Type: application/json
 }
 
 ### Update Vehicle
-PUT {{address-api}}/api/vehicle/update/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
-Authorization: Bearer {{token}}
+PUT {{userBaseUrl}}/api/vehicle/update/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e
+Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
 {
@@ -126,9 +126,9 @@ Content-Type: application/json
 }
 
 ### Add a user to a vehicle
-PUT {{address-api}}/api/vehicle/add-user/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e/cec4779b-7ecc-4602-a322-2633702a9ec8
-Authorization: Bearer {{token}}
+PUT {{userBaseUrl}}/api/vehicle/add-user/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e/cec4779b-7ecc-4602-a322-2633702a9ec8
+Authorization: Bearer {{userToken}}
 
 ### Remove a user from a vehicle
-PUT {{address-api}}/api/vehicle/remove-user/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e/cec4779b-7ecc-4602-a322-2633702a9ec8
-Authorization: Bearer {{token}}
+PUT {{userBaseUrl}}/api/vehicle/remove-user/07b98e55-9ae5-49e4-9e2a-69bb6ed1497e/cec4779b-7ecc-4602-a322-2633702a9ec8
+Authorization: Bearer {{userToken}}

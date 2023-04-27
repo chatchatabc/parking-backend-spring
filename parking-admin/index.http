@@ -1,8 +1,8 @@
 # AUTH APIs
 
 ### User Login
-POST {{address-admin}}/api/auth/login
-X-XSRF-TOKEN: {{XSRF-TOKEN}}
+POST {{adminBaseUrl}}/api/auth/login
+Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
@@ -11,20 +11,20 @@ Content-Type: application/json
 }
 
 ### Get CSRF Token
-GET {{address-admin}}/api/auth/get-csrf-token
+GET {{adminBaseUrl}}/api/auth/get-csrf-token
 
 # USER APIs
 
 ### User Logout
-POST {{address-admin}}/api/user/logout
-X-XSRF-TOKEN: {{XSRF-TOKEN}}
+POST {{adminBaseUrl}}/api/user/logout
+Authorization: Bearer {{adminToken}}
 
 ### Test
-GET {{address-admin}}/api/user/test
-X-XSRF-TOKEN: {{XSRF-TOKEN}}
+GET {{adminBaseUrl}}/api/user/test
+Authorization: Bearer {{adminToken}}
 
 # DASHBOARD APIs
 
 ### Test Get URL
-GET {{address-admin}}/api/dashboard/test
-X-XSRF-TOKEN: {{XSRF-TOKEN}}
+GET {{adminBaseUrl}}/api/dashboard/test
+Authorization: Bearer {{adminToken}}
