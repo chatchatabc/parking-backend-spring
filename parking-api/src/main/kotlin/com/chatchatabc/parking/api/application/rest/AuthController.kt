@@ -3,10 +3,10 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.user.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.user.UserVerifyOTPRequest
-import com.chatchatabc.parking.api.application.rest.service.JwtService
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
+import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

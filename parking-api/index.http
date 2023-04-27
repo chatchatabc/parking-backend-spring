@@ -6,8 +6,17 @@ Content-Type: application/json
   "phone": "09123456789"
 }
 
-### Verify Phone and OTP
-POST {{userBaseUrl}}/api/auth/verify
+### Verify Manager Phone and OTP
+POST {{userBaseUrl}}/api/auth/verify/manager
+Content-Type: application/json
+
+{
+  "phone": "09123456789",
+  "otp": "000000"
+}
+
+### Verify User Phone and OTP
+POST {{userBaseUrl}}/api/auth/verify/user
 Content-Type: application/json
 
 {
