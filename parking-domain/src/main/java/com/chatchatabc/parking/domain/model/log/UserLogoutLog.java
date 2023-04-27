@@ -29,6 +29,13 @@ public class UserLogoutLog {
     @Column
     private String phone;
 
+    /**
+     * 0: KMM Mobile
+     * 1: Admin
+     */
+    @Column
+    private Integer type = 0;
+
     @Column
     private String ipAddress;
 
