@@ -9,11 +9,11 @@ Content-Type: application/json
 }
 
 ### Get User Profile
-GET {{adminBaseUrl}}/api/user/me
-Authorization: Bearer {{userToken}}
+GET {{adminBaseUrl}}/api/profile/me
+Authorization: Bearer {{adminToken}}
 
 ### User Logout
-POST {{adminBaseUrl}}/api/user/logout
+POST {{adminBaseUrl}}/api/profile/logout
 Authorization: Bearer {{adminToken}}
 
 ### Test

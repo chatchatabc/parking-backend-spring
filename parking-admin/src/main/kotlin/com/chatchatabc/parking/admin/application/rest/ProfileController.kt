@@ -3,7 +3,9 @@ package com.chatchatabc.parking.admin.application.rest
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.log.UserLogoutLog
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -18,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/profile")
 class ProfileController(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userLogoutLogRepository: UserLogoutLogRepository
 ) {
     /**
      * Get User Profile
@@ -28,11 +31,22 @@ class ProfileController(
         description = "User to get the profile of the logged in user."
     )
     @GetMapping("/me")
-    fun getProfile(): ResponseEntity<ApiResponse<User>> {
+    fun getProfile(
+        request: HttpServletRequest
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
+            userLogoutLogRepository.save(
+                UserLogoutLog().apply {
+                    this.user = user
+                    this.email = user.email
+                    this.phone = user.phone
+                    this.type = 1
+                    this.ipAddress = request.remoteAddr
+                }
+            )
             ResponseEntity.ok().body(
                 ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
