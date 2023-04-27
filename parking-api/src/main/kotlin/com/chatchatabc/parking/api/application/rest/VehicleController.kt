@@ -28,14 +28,28 @@ class VehicleController(
     @GetMapping("/get-my-vehicles")
     fun getMyVehicles(
         pageable: Pageable
-    ): ResponseEntity<Page<Vehicle>> {
+    ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val vehicles = vehicleRepository.findAllByUser(principal.id, pageable)
-            ResponseEntity.ok(vehicles)
+            ResponseEntity.ok(
+                ApiResponse(
+                    vehicles,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(null)
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR.name,
+                    true
+                )
+            )
         }
     }
 
