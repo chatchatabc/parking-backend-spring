@@ -7,6 +7,14 @@ type Query {
 
 type Mutation {
     createUser(phone: String!, username: String): User
+    updateUser(
+        id: String!,
+        phone: String,
+        username: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+    ): User
 }
 
 # User Related

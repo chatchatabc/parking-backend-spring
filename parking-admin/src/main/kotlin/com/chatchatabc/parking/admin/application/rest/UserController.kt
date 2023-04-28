@@ -87,6 +87,29 @@ class UserController(
     }
 
     /**
+     * Update a user
+     */
+    @MutationMapping
+    fun updateUser(
+        @Argument id: String,
+        @Argument email: String?,
+        @Argument phone: String?,
+        @Argument username: String?,
+        @Argument firstName: String?,
+        @Argument lastName: String?,
+    ): User {
+        val user = userRepository.findById(id).get()
+        user.apply {
+            this.email = email
+            this.phone = phone
+            this.username = username
+            this.firstName = firstName
+            this.lastName = lastName
+        }
+        return userRepository.save(user)
+    }
+
+    /**
      * Get User Login Logs w/ pageable
      */
     // TODO: Add date range?
