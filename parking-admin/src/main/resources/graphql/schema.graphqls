@@ -70,7 +70,7 @@ type ParkingLot {
     latitude: Float,
     longitude: Float,
     name: String,
-#    createdAt: String,
+    #    createdAt: String,
     updatedAt: String,
     verifiedAt: String,
     owner: User,
@@ -89,6 +89,21 @@ type Rate {
     type: Int,
     createdAt: String,
     updatedAt: String,
+}
+
+# Invoice Related
+type Invoice {
+    id: String!,
+    createdAt: String,
+    endAt: String,
+    estimatedParkingDurationInHours: Int,
+    paidAt: String,
+    plateNumber: String,
+    startAt: String,
+    total: Float,
+    updatedAt: String,
+    parkingLot: ParkingLot,
+    vehicle: Vehicle,
 }
 
 # Misc
