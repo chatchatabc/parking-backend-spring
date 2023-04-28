@@ -59,6 +59,7 @@ type Vehicle {
 
 # Parking Lot
 type ParkingLot {
+    id: String!,
     address: String,
     availableSlots: Int,
     businessHoursEnd: String,
@@ -73,8 +74,21 @@ type ParkingLot {
     updatedAt: String,
     verifiedAt: String,
     owner: User,
-    # TODO: Rate
+    rate: Rate,
     verifiedBy: User,
+}
+
+# Rate Related
+type Rate {
+    id: String!,
+    freeHours: Int,
+    interval: Int,
+    payForFreeHoursWhenExceeding: Boolean,
+    rate: Float,
+    startingRate: Float,
+    type: Int,
+    createdAt: String,
+    updatedAt: String,
 }
 
 # Misc
