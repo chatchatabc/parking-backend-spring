@@ -40,6 +40,16 @@ class UserController(
     }
 
     /**
+     * Get user by username
+     */
+    @QueryMapping
+    fun getUserByUsername(
+        @Argument username: String
+    ): Optional<User> {
+        return userRepository.findByUsername(username)
+    }
+
+    /**
      * Get user by phone
      */
     @QueryMapping

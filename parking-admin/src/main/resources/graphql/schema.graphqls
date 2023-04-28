@@ -1,6 +1,7 @@
 type Query {
     getUserById(id: String!): User
     getUserByPhone(phone: String!): User
+    getUserByUsername(username: String!): User
     getUsers(page: Int, size: Int): [User]!
 }
 
