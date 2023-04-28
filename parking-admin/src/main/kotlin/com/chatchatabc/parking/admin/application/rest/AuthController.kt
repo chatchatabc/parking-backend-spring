@@ -62,16 +62,18 @@ class AuthController(
         } catch (e: Exception) {
             // Generate Failed Login Log
             // TODO: Move as an event
-            userLoginLogRepository.save(
-                UserLoginLog().apply {
-                    this.user = user.get()
-                    this.ipAddress = request.remoteAddr
-                    this.email = user.get().email
-                    this.phone = user.get().phone
-                    this.type = 1
-                    this.success = false
-                }
-            )
+            if (user.isPresent) {
+                userLoginLogRepository.save(
+                    UserLoginLog().apply {
+                        this.user = user.get()
+                        this.ipAddress = request.remoteAddr
+                        this.email = user.get().email
+                        this.phone = user.get().phone
+                        this.type = 1
+                        this.success = false
+                    }
+                )
+            }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                     ApiResponse(
