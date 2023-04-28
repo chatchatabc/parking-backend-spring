@@ -45,6 +45,11 @@ public class SecurityConfig {
 
                     // TODO: Add routes for other controllers
 
+                    // Permit Graphql
+                    // TODO: Add auth in the future
+                    auth.requestMatchers("/graphiql").permitAll();
+                    auth.requestMatchers("/graphql").permitAll();
+
                     // Permit Actuator
                     // TODO: Add auth in the future
                     auth.requestMatchers("/actuator/**").permitAll();
@@ -65,7 +70,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // TODO: Add some on application properties
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://davao-parking-admin.pages.dev"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://davao-parking-admin.pages.dev", "http://192.168.1.11:5180"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token", "X-Access-Token"));
         // Allow client to write to header
