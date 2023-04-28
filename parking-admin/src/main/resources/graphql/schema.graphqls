@@ -3,6 +3,8 @@ type Query {
     getUserByPhone(phone: String!): User
     getUserByUsername(username: String!): User
     getUsers(page: Int, size: Int): [User]!
+
+    getVehicles(page: Int, size: Int): [Vehicle]!
 }
 
 type Mutation {
@@ -40,6 +42,17 @@ type UserList {
 # Role Related
 type Authorities {
     authority: String!
+}
+
+# Vehicle
+type Vehicle {
+    id: String!
+    owner: User
+    name: String
+    plateNumber: String
+    type: Int
+    createdAt: String
+    updatedAt: String
 }
 
 # Misc
