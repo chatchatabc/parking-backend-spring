@@ -55,6 +55,26 @@ type Vehicle {
     updatedAt: String
 }
 
+# Parking Lot
+type ParkingLot {
+    address: String,
+    availableSlots: Int,
+    businessHoursEnd: String,
+    businessHoursStart: String,
+    capacity: Int,
+    createdAt: String,
+    description: String,
+    latitude: Float,
+    longitude: Float,
+    name: String,
+    createdAt: String,
+    updatedAt: String,
+    verifiedAt: String,
+    owner: User,
+    # TODO: Rate
+    verifiedBy: User,
+}
+
 # Misc
 type PageInfo {
     hasNextPage: Boolean!
