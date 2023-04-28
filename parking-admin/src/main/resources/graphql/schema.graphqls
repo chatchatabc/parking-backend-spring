@@ -5,6 +5,8 @@ type Query {
     getUsers(page: Int, size: Int): [User]!
 
     getVehicles(page: Int, size: Int): [Vehicle]!
+
+    getParkingLots(page: Int, size: Int): [ParkingLot]!
 }
 
 type Mutation {
@@ -67,7 +69,7 @@ type ParkingLot {
     latitude: Float,
     longitude: Float,
     name: String,
-    createdAt: String,
+#    createdAt: String,
     updatedAt: String,
     verifiedAt: String,
     owner: User,
