@@ -9,15 +9,20 @@ import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
-@RestController
-@RequestMapping("/api/user")
+//@RestController
+//@RequestMapping("/api/user")
+@Controller
 class UserController(
     private val userRepository: UserRepository,
     private val userLoginLogRepository: UserLoginLogRepository,
@@ -25,32 +30,50 @@ class UserController(
 ) {
 
     /**
-     * Get all users by pageable
+     * Get user by id
      */
-    @GetMapping("/get")
+    @QueryMapping
+    fun getUserById(
+        @Argument id: String
+    ): Optional<User> {
+        return userRepository.findById(id)
+    }
+
+    /**
+     * Get user by phone
+     */
+    @QueryMapping
+    fun getUserByPhone(
+        @Argument phone: String
+    ): Optional<User> {
+        return userRepository.findByPhone(phone)
+    }
+
+    /**
+     * Get all users
+     */
+    @QueryMapping
     fun getUsers(
-        pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<User>>> {
-        return try {
-            val users = userRepository.findAll(pageable)
-            ResponseEntity.ok(
-                ApiResponse(
-                    users,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
+        @Argument page: Int,
+        @Argument size: Int
+    ): Page<User> {
+        val pr = PageRequest.of(page, size)
+        return userRepository.findAll(pr)
+    }
+
+    /**
+     * Create a user
+     */
+    @MutationMapping
+    fun createUser(
+        @Argument phone: String,
+        @Argument username: String?
+    ): User {
+        val user = User().apply {
+            this.phone = phone
+            this.username = username
         }
+        return userRepository.save(user)
     }
 
     /**
