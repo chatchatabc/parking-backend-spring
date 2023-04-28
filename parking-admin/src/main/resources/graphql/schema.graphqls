@@ -25,6 +25,10 @@ type User {
     phone: String,
     firstName: String,
     lastName: String,
+    createdAt: String,
+    updatedAt: String,
+    phoneVerifiedAt: String,
+    emailVerifiedAt: String,
 }
 
 type UserList {
