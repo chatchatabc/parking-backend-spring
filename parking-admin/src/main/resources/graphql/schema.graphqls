@@ -1,0 +1,31 @@
+type Query {
+    getUserById(id: String!): User
+    getUserByPhone(phone: String!): User
+    getUsers(page: Int, size: Int): [User]!
+}
+
+type Mutation {
+    createUser(phone: String!, username: String): User
+}
+
+# User Related
+type User {
+    id: String,
+    username: String,
+    email: String,
+    phone: String,
+    firstName: String,
+    lastName: String,
+}
+
+type UserList {
+    users: [User]!
+    pageInfo: PageInfo!
+}
+
+# Misc
+type PageInfo {
+    hasNextPage: Boolean!
+    totalPageCount: Int!
+    totalCount: Int!
+}

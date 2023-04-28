@@ -12,6 +12,9 @@ Content-Type: application/json
 GET {{adminBaseUrl}}/api/profile/me
 Authorization: Bearer {{adminToken}}
 
+### Get List of Users
+GET {{adminBaseUrl}}/graphql
+
 ### User Logout
 POST {{adminBaseUrl}}/api/profile/logout
 Authorization: Bearer {{adminToken}}
