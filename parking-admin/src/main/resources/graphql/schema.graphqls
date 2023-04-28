@@ -23,6 +23,7 @@ type User {
     username: String,
     email: String,
     phone: String,
+    authorities: [Authorities],
     firstName: String,
     lastName: String,
     createdAt: String,
@@ -34,6 +35,11 @@ type User {
 type UserList {
     users: [User]!
     pageInfo: PageInfo!
+}
+
+# Role Related
+type Authorities {
+    authority: String!
 }
 
 # Misc
