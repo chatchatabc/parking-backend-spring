@@ -8,6 +8,7 @@ import com.chatchatabc.parking.domain.model.log.UserLogoutLog
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
+import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -25,6 +26,7 @@ import java.util.*
 @Controller
 class UserController(
     private val userRepository: UserRepository,
+    private val userService: UserService,
     private val userLoginLogRepository: UserLoginLogRepository,
     private val userLogoutLogRepository: UserLogoutLogRepository
 ) {
@@ -98,15 +100,7 @@ class UserController(
         @Argument firstName: String?,
         @Argument lastName: String?,
     ): User {
-        val user = userRepository.findById(id).get()
-        user.apply {
-            this.email = email
-            this.phone = phone
-            this.username = username
-            this.firstName = firstName
-            this.lastName = lastName
-        }
-        return userRepository.save(user)
+        return userService.updateUser(id, username, email, firstName, lastName)
     }
 
     /**
