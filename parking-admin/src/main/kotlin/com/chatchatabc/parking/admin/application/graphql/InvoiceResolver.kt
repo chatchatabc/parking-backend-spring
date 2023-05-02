@@ -1,8 +1,9 @@
 package com.chatchatabc.parking.admin.application.graphql
 
+import com.chatchatabc.parking.admin.application.dto.PageInfo
+import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -13,14 +14,24 @@ class InvoiceResolver(
     private val invoiceRepository: InvoiceRepository
 ) {
     /**
-     * Get invoices
+      * Get invoices
      */
     @QueryMapping
     fun getInvoices(
         @Argument page: Int,
         @Argument size: Int
-    ): Page<Invoice> {
+    ): PagedResponse<Invoice> {
         val pr = PageRequest.of(page, size)
-        return invoiceRepository.findAll(pr)
+        val invoices = invoiceRepository.findAll(pr)
+        return PagedResponse(
+            invoices.content,
+            PageInfo(
+                invoices.size,
+                invoices.totalElements,
+                invoices.isFirst,
+                invoices.isLast,
+                invoices.isEmpty
+            )
+        )
     }
 }

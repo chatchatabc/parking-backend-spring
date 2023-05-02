@@ -11,6 +11,8 @@ type Query {
     getVehicles(page: Int size: Int): VehicleList!
 
     getParkingLots(page: Int size: Int): [ParkingLot]!
+
+    getInvoices(page: Int size: Int): InvoiceList!
 }
 
 type Mutation {
@@ -147,6 +149,11 @@ type Invoice {
     updatedAt: String
     parkingLot: ParkingLot
     vehicle: Vehicle
+}
+
+type InvoiceList {
+    content: [Invoice]!
+    pageInfo: PageInfo!
 }
 
 # Misc
