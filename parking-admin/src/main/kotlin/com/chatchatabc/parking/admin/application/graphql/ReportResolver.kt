@@ -36,6 +36,9 @@ class ReportResolver(
         )
     }
 
+    /**
+     * Get report by id
+     */
     @QueryMapping
     fun getReportById(
         @Argument id: String
