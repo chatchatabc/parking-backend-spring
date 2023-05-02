@@ -15,8 +15,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "rates")
 @EnableJpaAuditing
-@EqualsAndHashCode(callSuper = true)
-public class Rate extends BaseEntity {
+public class Rate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @JsonIgnore
     @OneToOne(mappedBy = "rate", fetch = FetchType.LAZY)
     private ParkingLot parkingLot;

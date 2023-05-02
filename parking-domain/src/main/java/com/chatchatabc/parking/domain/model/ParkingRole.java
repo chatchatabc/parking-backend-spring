@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "parking_roles")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ParkingRole extends BaseEntity {
+public class ParkingRole {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @Column
     private String name;
 }

@@ -17,8 +17,11 @@ import java.util.Collection;
 @Table(name = "vehicles")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Vehicle extends BaseEntity {
+public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @Column
     private String name;
 

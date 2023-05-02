@@ -16,8 +16,11 @@ import java.time.LocalDateTime;
 @Table(name = "invoices")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Invoice extends BaseEntity {
+public class Invoice {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @ManyToOne
     @JoinColumn(name = "parking_lot_id")
     private ParkingLot parkingLot;

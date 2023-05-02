@@ -15,8 +15,11 @@ import java.util.List;
 @Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Role extends BaseEntity implements GrantedAuthority {
+public class Role implements GrantedAuthority {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @Column(unique = true)
     private String name;
 

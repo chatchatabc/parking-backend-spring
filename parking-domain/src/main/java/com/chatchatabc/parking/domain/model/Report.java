@@ -16,8 +16,11 @@ import java.util.List;
 @Table(name = "reports")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Report extends BaseEntity {
+public class Report {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @Column
     private String name;
 
