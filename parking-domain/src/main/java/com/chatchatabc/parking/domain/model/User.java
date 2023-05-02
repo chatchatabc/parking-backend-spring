@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class User extends FlagEntity implements UserDetails {
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
