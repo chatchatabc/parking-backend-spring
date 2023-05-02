@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import java.util.*
 
 @Controller
 class ReportResolver(
@@ -33,5 +34,12 @@ class ReportResolver(
                 reports.isEmpty
             )
         )
+    }
+
+    @QueryMapping
+    fun getReportById(
+        @Argument id: String
+    ): Optional<Report> {
+        return reportRepository.findById(id)
     }
 }

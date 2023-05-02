@@ -19,6 +19,7 @@ type Query {
     getInvoiceById(id: String!): Invoice
 
     getReports(page: Int size: Int): ReportList!
+    getReportById(id: String!): Report
 }
 
 type Mutation {
