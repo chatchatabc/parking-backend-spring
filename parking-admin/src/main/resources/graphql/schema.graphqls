@@ -4,7 +4,7 @@ type Query {
     getUserByUsername(username: String!): User
     getUsers(page: Int, size: Int): UserList!
 
-    getVehicles(page: Int, size: Int): [Vehicle]!
+    getVehicles(page: Int, size: Int): VehicleList!
 
     getParkingLots(page: Int, size: Int): [ParkingLot]!
 }
@@ -55,6 +55,11 @@ type Vehicle {
     type: Int
     createdAt: String
     updatedAt: String
+}
+
+type VehicleList {
+    content: [Vehicle]!
+    pageInfo: PageInfo!
 }
 
 # Parking Lot
