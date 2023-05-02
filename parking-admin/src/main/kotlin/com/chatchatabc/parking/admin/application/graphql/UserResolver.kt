@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.admin.application.dto.graphql
+package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.PageInfo

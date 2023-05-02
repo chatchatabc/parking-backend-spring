@@ -69,3 +69,13 @@ used as template for future projects needing `Android and iOS` implementation.
     - [ ] DB Test
     - [ ] Unit Test on Domain
 - [x] use flyway for init of data (dont use init or data init)
+
+## Security TODO:
+
+- [ ] NATS use same JWT as API
+- [ ] NATS use same JWT as Admin
+- [ ] Users with NATS should only be "listen" only
+- [ ] Add more fields to user
+    - [x] Integer ID (hidden, don't expose)
+    - [x] Another UUID user id
+    - [x] Another UUID for notification ID

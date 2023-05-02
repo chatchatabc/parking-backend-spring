@@ -1,7 +1,7 @@
-package com.chatchatabc.parking.admin.application.dto.graphql
+package com.chatchatabc.parking.admin.application.graphql
 
-import com.chatchatabc.parking.domain.model.Invoice
-import com.chatchatabc.parking.domain.repository.InvoiceRepository
+import com.chatchatabc.parking.domain.model.ParkingLot
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -9,18 +9,18 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class InvoiceResolver(
-    private val invoiceRepository: InvoiceRepository
+class ParkingLotResolver(
+    private val parkingLotRepository: ParkingLotRepository
 ) {
     /**
-     * Get invoices
+     * Get parking lots
      */
     @QueryMapping
-    fun getInvoices(
+    fun getParkingLots(
         @Argument page: Int,
         @Argument size: Int
-    ): Page<Invoice> {
+    ): Page<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        return invoiceRepository.findAll(pr)
+        return parkingLotRepository.findAll(pr)
     }
 }
