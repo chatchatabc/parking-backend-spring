@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.admin.application.rest
+package com.chatchatabc.parking.admin.application.dto.graphql
 
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -9,7 +9,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class ParkingLotController(
+class ParkingLotResolver(
     private val parkingLotRepository: ParkingLotRepository
 ) {
     /**

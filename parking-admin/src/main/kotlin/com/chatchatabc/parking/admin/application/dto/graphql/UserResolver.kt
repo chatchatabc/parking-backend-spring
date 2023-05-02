@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.admin.application.rest
+package com.chatchatabc.parking.admin.application.dto.graphql
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
@@ -26,7 +26,7 @@ import java.util.*
 //@RestController
 //@RequestMapping("/api/user")
 @Controller
-class UserController(
+class UserResolver(
     private val userRepository: UserRepository,
     private val userService: UserService,
     private val userLoginLogRepository: UserLoginLogRepository,
