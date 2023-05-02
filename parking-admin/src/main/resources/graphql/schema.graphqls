@@ -9,6 +9,7 @@ type Query {
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
+    getVehicleById(id: String!): Vehicle
 
     getParkingLots(page: Int size: Int): ParkingLotList!
     getParkingLotById(id: String!): ParkingLot

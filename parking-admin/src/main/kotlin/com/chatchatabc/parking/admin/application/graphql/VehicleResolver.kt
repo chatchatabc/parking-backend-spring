@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import java.util.*
 
 @Controller
 class VehicleResolver(
@@ -34,5 +35,15 @@ class VehicleResolver(
                 vehicles.isEmpty
             )
         )
+    }
+
+    /**
+     * Get vehicle by id
+     */
+    @QueryMapping
+    fun getVehicleById(
+        @Argument id: String
+    ): Optional<Vehicle> {
+        return vehicleRepository.findById(id)
     }
 }
