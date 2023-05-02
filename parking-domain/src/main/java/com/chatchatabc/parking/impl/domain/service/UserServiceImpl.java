@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.event.user.UserLoginEvent;
 import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
@@ -9,6 +10,7 @@ import com.chatchatabc.parking.domain.service.UserService;
 import com.chatchatabc.parking.infra.service.JedisService;
 import com.chatchatabc.parking.infra.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private JedisService jedisService;
     @Autowired
     private UtilService utilService;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * Soft register a new user if not exists
@@ -64,8 +68,8 @@ public class UserServiceImpl implements UserService {
         // Create OTP
         String otp = utilService.generateOTP();
         jedisService.set("otp_" + phone, otp, 900L);
-        System.out.println("Phone: " + phone + ", OTP: " + otp);
         // TODO: Send SMS using events
+        applicationEventPublisher.publishEvent(new UserLoginEvent(this, phone, otp));
     }
 
     /**
