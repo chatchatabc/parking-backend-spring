@@ -56,7 +56,7 @@ public class ParkingLot {
     private LocalDateTime businessHoursEnd;
 
     @Column
-    private int operatingFlag;
+    private int flag;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

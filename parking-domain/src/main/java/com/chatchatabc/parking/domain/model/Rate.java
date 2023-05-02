@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -14,11 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "rates")
 @EnableJpaAuditing
-public class Rate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+@EqualsAndHashCode(callSuper = true)
+public class Rate extends BaseEntity {
     @JsonIgnore
     @OneToOne(mappedBy = "rate", fetch = FetchType.LAZY)
     private ParkingLot parkingLot;

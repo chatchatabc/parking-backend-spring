@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,11 +17,8 @@ import java.util.Collection;
 @Table(name = "vehicles")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+@EqualsAndHashCode(callSuper = true)
+public class Vehicle extends BaseEntity {
     @Column
     private String name;
 

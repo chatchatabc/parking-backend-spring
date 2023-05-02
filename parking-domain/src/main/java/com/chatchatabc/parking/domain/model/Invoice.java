@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,11 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "invoices")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Invoice {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+@EqualsAndHashCode(callSuper = true)
+public class Invoice extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "parking_lot_id")
     private ParkingLot parkingLot;

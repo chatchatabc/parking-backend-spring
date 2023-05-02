@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -10,20 +11,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "parking_roles")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+@EqualsAndHashCode(callSuper = true)
+public class ParkingRole extends BaseEntity {
     @Column
     private String name;
-
-    /**
-     * Constructor
-     *
-     * @param name name of the role
-     */
-    public ParkingRole(String name) {
-        this.name = name;
-    }
 }
