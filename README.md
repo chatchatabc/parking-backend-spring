@@ -9,11 +9,11 @@ used as template for future projects needing `Android and iOS` implementation.
 
 ### Entity Relationship Diagram
 
-![Entity Relationship Diagram](./docs/erd.png)
+![Entity Relationship Diagram](./src/site/images/erd.png)
 
 ### Flowchart
 
-![Flowchart](./docs/flowchart.png)
+![Flowchart](./src/site/images/flowchart.png)
 
 ## Goals
 
