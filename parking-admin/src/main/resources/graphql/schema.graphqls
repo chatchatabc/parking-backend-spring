@@ -17,6 +17,8 @@ type Query {
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceById(id: String!): Invoice
+
+    getReports(page: Int size: Int): ReportList!
 }
 
 type Mutation {
@@ -163,6 +165,34 @@ type Invoice {
 type InvoiceList {
     content: [Invoice]!
     pageInfo: PageInfo!
+}
+
+# Report Related
+type Report {
+    id: String!
+    name: String
+    description: String
+    plateNumber: String
+    latitude: Float
+    longitude: Float
+    reportedBy: User
+    cancelledAt: String
+    status: [ReportStatus]
+    createdAt: String
+    updatedAt: String
+}
+
+type ReportList {
+    content: [Report]!
+    pageInfo: PageInfo!
+}
+
+type ReportStatus {
+    id: String!
+    performedBy: User
+    status: Int
+    remarks: String
+    createdAt: String
 }
 
 # Misc
