@@ -5,10 +5,8 @@ import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.log.UserLoginLog
 import com.chatchatabc.parking.domain.model.log.UserLogoutLog
 import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -24,7 +22,6 @@ import java.util.*
 @Controller
 class UserResolver(
     private val userRepository: UserRepository,
-    private val userLoginLogRepository: UserLoginLogRepository,
     private val userLogoutLogRepository: UserLogoutLogRepository
 ) {
 
@@ -78,36 +75,6 @@ class UserResolver(
                 users.isEmpty
             )
         )
-    }
-
-    /**
-     * Get User Login Logs w/ pageable
-     */
-    // TODO: Add date range?
-    @GetMapping("/get-login-logs")
-    fun getUserLoginLogs(
-        pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<UserLoginLog>>> {
-        return try {
-            val logs = userLoginLogRepository.findAll(pageable)
-            ResponseEntity.ok(
-                ApiResponse(
-                    logs,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
-        }
     }
 
     /**

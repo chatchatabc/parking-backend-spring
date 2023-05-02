@@ -2,43 +2,62 @@ type Query {
     getUserById(id: String!): User
     getUserByPhone(phone: String!): User
     getUserByUsername(username: String!): User
-    getUsers(page: Int, size: Int): UserList!
+    getUsers(page: Int size: Int): UserList!
 
-    getVehicles(page: Int, size: Int): VehicleList!
+    getUserLoginLogs(page: Int size: Int): UserLoginLogList!
 
-    getParkingLots(page: Int, size: Int): [ParkingLot]!
+    getVehicles(page: Int size: Int): VehicleList!
+
+    getParkingLots(page: Int size: Int): [ParkingLot]!
 }
 
 type Mutation {
     updateUser(
-        id: String!,
-        phone: String,
-        username: String,
-        firstName: String,
-        lastName: String,
-        email: String,
+        id: String!
+        phone: String
+        username: String
+        firstName: String
+        lastName: String
+        email: String
     ): User
 }
 
 # User Related
 type User {
-    userId: String,
+    userId: String
     # Notification ID should be retrieved in a private manner
-    # notificationId: String,
-    username: String,
-    email: String,
-    phone: String,
-    authorities: [Authorities],
-    firstName: String,
-    lastName: String,
-    createdAt: String,
-    updatedAt: String,
-    phoneVerifiedAt: String,
-    emailVerifiedAt: String,
+    # notificationId: String
+    username: String
+    email: String
+    phone: String
+    authorities: [Authorities]
+    firstName: String
+    lastName: String
+    createdAt: String
+    updatedAt: String
+    phoneVerifiedAt: String
+    emailVerifiedAt: String
 }
 
 type UserList {
     content: [User]!
+    pageInfo: PageInfo!
+}
+
+# User Login Log Related
+type UserLoginLog {
+    id: String
+    user: User
+    email: String
+    phone: String
+    type: Int
+    ipAddress: String
+    success: Boolean
+    createdAt: String
+}
+
+type UserLoginLogList {
+    content: [UserLoginLog]!
     pageInfo: PageInfo!
 }
 
@@ -65,51 +84,51 @@ type VehicleList {
 
 # Parking Lot
 type ParkingLot {
-    id: String!,
-    address: String,
-    availableSlots: Int,
-    businessHoursEnd: String,
-    businessHoursStart: String,
-    capacity: Int,
-    createdAt: String,
-    description: String,
-    latitude: Float,
-    longitude: Float,
-    name: String,
-    #    createdAt: String,
-    updatedAt: String,
-    verifiedAt: String,
-    owner: User,
-    rate: Rate,
-    verifiedBy: User,
+    id: String!
+    address: String
+    availableSlots: Int
+    businessHoursEnd: String
+    businessHoursStart: String
+    capacity: Int
+    createdAt: String
+    description: String
+    latitude: Float
+    longitude: Float
+    name: String
+    #    createdAt: String
+    updatedAt: String
+    verifiedAt: String
+    owner: User
+    rate: Rate
+    verifiedBy: User
 }
 
 # Rate Related
 type Rate {
-    id: String!,
-    freeHours: Int,
-    interval: Int,
-    payForFreeHoursWhenExceeding: Boolean,
-    rate: Float,
-    startingRate: Float,
-    type: Int,
-    createdAt: String,
-    updatedAt: String,
+    id: String!
+    freeHours: Int
+    interval: Int
+    payForFreeHoursWhenExceeding: Boolean
+    rate: Float
+    startingRate: Float
+    type: Int
+    createdAt: String
+    updatedAt: String
 }
 
 # Invoice Related
 type Invoice {
-    id: String!,
-    createdAt: String,
-    endAt: String,
-    estimatedParkingDurationInHours: Int,
-    paidAt: String,
-    plateNumber: String,
-    startAt: String,
-    total: Float,
-    updatedAt: String,
-    parkingLot: ParkingLot,
-    vehicle: Vehicle,
+    id: String!
+    createdAt: String
+    endAt: String
+    estimatedParkingDurationInHours: Int
+    paidAt: String
+    plateNumber: String
+    startAt: String
+    total: Float
+    updatedAt: String
+    parkingLot: ParkingLot
+    vehicle: Vehicle
 }
 
 # Misc
