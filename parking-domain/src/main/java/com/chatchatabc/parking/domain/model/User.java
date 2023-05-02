@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,7 +24,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity implements UserDetails {
+public class User extends FlagEntity implements UserDetails {
+    @JsonIgnore
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(unique = true)
+    private String userId = UUID.randomUUID().toString();
+
+    @Column(unique = true)
+    private String notificationId = UUID.randomUUID().toString();
+
     @Column(unique = true)
     private String email;
 
@@ -42,21 +54,17 @@ public class User extends BaseEntity implements UserDetails {
     @Column
     private String lastName;
 
-    @JsonIgnore
     @Column
-    private int flag;
+    private LocalDateTime emailVerifiedAt;
+
+    @Column
+    private LocalDateTime phoneVerifiedAt;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-    @Column
-    private LocalDateTime emailVerifiedAt;
-
-    @Column
-    private LocalDateTime phoneVerifiedAt;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

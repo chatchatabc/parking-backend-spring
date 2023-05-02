@@ -34,7 +34,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      */
     @Override
     public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity) throws Exception {
-        Optional<User> owner = userRepository.findById(ownerId);
+        Optional<User> owner = userRepository.findByUserId(ownerId);
         if (owner.isEmpty()) {
             throw new Exception("User not found");
         }
@@ -67,7 +67,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     @Override
     public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity) throws Exception {
         // TODO: Get user from allowed list to check for permission
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
             throw new Exception("User not found");
         }

@@ -40,7 +40,7 @@ class UserController(
     fun getUserById(
         @Argument id: String
     ): Optional<User> {
-        return userRepository.findById(id)
+        return userRepository.findByUserId(id)
     }
 
     /**
@@ -99,6 +99,10 @@ class UserController(
         }
         return userRepository.save(user)
     }
+
+    /**
+     * TODO: Create user POST Rest API
+     */
 
     /**
      * Update a user

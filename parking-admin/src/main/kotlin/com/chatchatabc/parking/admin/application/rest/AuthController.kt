@@ -43,7 +43,7 @@ class AuthController(
             )
             // Generate JWT Token
             val headers = HttpHeaders()
-            val token: String = jwtService.generateToken(user.get().id)
+            val token: String = jwtService.generateToken(user.get().userId)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             // TODO: Move as an event

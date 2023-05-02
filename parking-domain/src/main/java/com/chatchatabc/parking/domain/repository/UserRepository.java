@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Find user by username
@@ -26,6 +26,21 @@ public interface UserRepository extends JpaRepository<User, String> {
      */
     Optional<User> findByPhone(String phone);
 
+    /**
+     * Count users by role name
+     *
+     * @param roleName the role name
+     * @return the count
+     */
     @Query("SELECT COUNT(u.id) FROM User u JOIN u.roles r WHERE r.name = :roleName")
     Long countUsersByRole(String roleName);
+
+
+    /**
+     * Find user by user id
+     *
+     * @param userId the user id
+     * @return the user
+     */
+    Optional<User> findByUserId(String userId);
 }

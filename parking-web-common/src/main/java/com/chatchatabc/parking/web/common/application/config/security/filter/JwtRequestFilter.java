@@ -47,7 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         final String token = header.substring(7);
-        final User user =  jwtService.validateTokenAndGetUser(token);
+        final User user = jwtService.validateTokenAndGetUser(token);
 
         if (user == null) {
             filterChain.doFilter(request, response);
@@ -66,7 +66,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // Continue flow with the user in the security context
         filterChain.doFilter(request, response);
-        logRequest(request, response, user.getId());
+        logRequest(request, response, user.getUserId());
     }
 
     /**

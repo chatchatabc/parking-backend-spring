@@ -28,7 +28,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @Override
     public Vehicle registerVehicle(String userId, String name, String plateNumber, int type) throws Exception {
-        Optional<User> owner = userRepository.findById(userId);
+        Optional<User> owner = userRepository.findByUserId(userId);
         if (owner.isEmpty()) {
             throw new Exception("User not found");
         }
@@ -56,7 +56,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @Override
     public Vehicle updateVehicle(String userId, String vehicleId, String name, String plateNumber, Integer type) throws Exception {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
             throw new Exception("User not found");
         }
@@ -94,7 +94,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @Override
     public Vehicle addUserToVehicle(String userId, String vehicleId, String userToAddId) throws Exception {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
             throw new Exception("User not found");
         }
@@ -108,7 +108,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Vehicle not found");
         }
 
-        Optional<User> userToAdd = userRepository.findById(userToAddId);
+        Optional<User> userToAdd = userRepository.findByUserId(userToAddId);
         if (userToAdd.isEmpty()) {
             throw new Exception("User to add not found");
         }
@@ -135,7 +135,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @Override
     public Vehicle removeUserFromVehicle(String userId, String vehicleId, String userToRemoveId) throws Exception {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
             throw new Exception("User not found");
         }
@@ -153,7 +153,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Cannot remove owner");
         }
 
-        Optional<User> userToRemove = userRepository.findById(userToRemoveId);
+        Optional<User> userToRemove = userRepository.findByUserId(userToRemoveId);
         if (userToRemove.isEmpty()) {
             throw new Exception("User to add not found");
         }

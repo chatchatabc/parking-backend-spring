@@ -37,7 +37,7 @@ class ProfileController(
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findById(principal.id).get()
+            val user = userRepository.findByUserId(principal.userId).get()
             userLogoutLogRepository.save(
                 UserLogoutLog().apply {
                     this.user = user

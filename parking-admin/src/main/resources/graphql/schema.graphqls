@@ -23,7 +23,9 @@ type Mutation {
 
 # User Related
 type User {
-    id: String,
+    userId: String,
+    # Notification ID should be retrieved in a private manner
+    # notificationId: String,
     username: String,
     email: String,
     phone: String,

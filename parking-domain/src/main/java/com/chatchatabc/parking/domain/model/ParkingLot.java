@@ -4,21 +4,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "parking_lots")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingLot {
+@EqualsAndHashCode(callSuper = true)
+public class ParkingLot extends FlagEntity {
+    @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(unique = true)
+    private String parkingLotId = UUID.randomUUID().toString();
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -54,15 +59,6 @@ public class ParkingLot {
 
     @Column
     private LocalDateTime businessHoursEnd;
-
-    @Column
-    private int flag;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     @Column
     private LocalDateTime verifiedAt;

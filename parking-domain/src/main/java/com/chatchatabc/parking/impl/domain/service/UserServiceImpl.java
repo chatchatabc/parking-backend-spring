@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User updateUser(String userId, String username, String email, String firstName, String lastName) throws Exception {
-        Optional<User> queriedUser = userRepository.findById(userId);
+        Optional<User> queriedUser = userRepository.findByUserId(userId);
         if (queriedUser.isEmpty()) {
             throw new Exception("User not found");
         }
