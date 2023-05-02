@@ -2,16 +2,14 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.user.UserCreateRequest
+import com.chatchatabc.parking.admin.application.dto.user.UserUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
@@ -35,6 +33,35 @@ class UserController(
             return ResponseEntity.ok(
                 ApiResponse(
                     createdUser, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
+                    )
+                )
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    fun updateUser(
+        @RequestBody req: UserUpdateRequest, @PathVariable id: String
+    ): ResponseEntity<ApiResponse<User>> {
+        return try {
+            val updatedUser = userService.updateUser(
+                id,
+                req.phone,
+                req.username,
+                req.email,
+                req.firstName,
+                req.lastName
+            )
+            return ResponseEntity.ok(
+                ApiResponse(
+                    updatedUser, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {

@@ -33,6 +33,7 @@ public interface UserService extends UserDetailsService {
     /**
      * Update user
      *
+     * @param phone     the phone
      * @param userId    the user id
      * @param username  the username
      * @param email     the email
@@ -40,5 +41,5 @@ public interface UserService extends UserDetailsService {
      * @param lastName  the last name
      * @return the user
      */
-    User updateUser(String userId, String username, String email, String firstName, String lastName) throws Exception;
+    User updateUser(String userId, String phone, String username, String email, String firstName, String lastName) throws Exception;
 }

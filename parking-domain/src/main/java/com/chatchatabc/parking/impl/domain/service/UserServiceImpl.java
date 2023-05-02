@@ -121,13 +121,16 @@ public class UserServiceImpl implements UserService {
      * @return the user
      */
     @Override
-    public User updateUser(String userId, String username, String email, String firstName, String lastName) throws Exception {
+    public User updateUser(String userId, String phone, String username, String email, String firstName, String lastName) throws Exception {
         Optional<User> queriedUser = userRepository.findByUserId(userId);
         if (queriedUser.isEmpty()) {
             throw new Exception("User not found");
         }
 
         // Apply Changes
+        if (phone != null) {
+            queriedUser.get().setPhone(phone);
+        }
         if (username != null) {
             queriedUser.get().setUsername(username);
         }

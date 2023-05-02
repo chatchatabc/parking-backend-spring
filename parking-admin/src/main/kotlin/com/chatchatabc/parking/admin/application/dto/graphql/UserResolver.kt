@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.admin.application.dto.graphql
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.admin.application.dto.PageInfo
+import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserLoginLog
@@ -10,12 +10,10 @@ import com.chatchatabc.parking.domain.model.log.UserLogoutLog
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
-import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.graphql.data.method.annotation.Argument
-import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,7 +24,6 @@ import java.util.*
 @Controller
 class UserResolver(
     private val userRepository: UserRepository,
-    private val userService: UserService,
     private val userLoginLogRepository: UserLoginLogRepository,
     private val userLogoutLogRepository: UserLogoutLogRepository
 ) {
@@ -81,21 +78,6 @@ class UserResolver(
                 users.isEmpty
             )
         )
-    }
-
-    /**
-     * Update a user
-     */
-    @MutationMapping
-    fun updateUser(
-        @Argument id: String,
-        @Argument email: String?,
-        @Argument phone: String?,
-        @Argument username: String?,
-        @Argument firstName: String?,
-        @Argument lastName: String?,
-    ): User {
-        return userService.updateUser(id, username, email, firstName, lastName)
     }
 
     /**
