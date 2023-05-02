@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import java.util.*
 
 @Controller
 class InvoiceResolver(
@@ -33,5 +34,15 @@ class InvoiceResolver(
                 invoices.isEmpty
             )
         )
+    }
+
+    /**
+     * Get invoice by id
+     */
+    @QueryMapping
+    fun getInvoiceById(
+        @Argument id: String
+    ): Optional<Invoice> {
+        return invoiceRepository.findById(id)
     }
 }

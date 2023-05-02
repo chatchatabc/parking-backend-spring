@@ -13,6 +13,7 @@ type Query {
     getParkingLots(page: Int size: Int): [ParkingLot]!
 
     getInvoices(page: Int size: Int): InvoiceList!
+    getInvoiceById(id: String!): Invoice
 }
 
 type Mutation {
