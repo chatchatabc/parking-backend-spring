@@ -32,7 +32,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicles = vehicleRepository.findAllByUser(principal.id, pageable)
+            val vehicles = vehicleRepository.findAllByUser(principal.userId, pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicles,
@@ -102,7 +102,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.registerVehicle(principal.id, req.name, req.plateNumber, req.type)
+            val vehicle = vehicleService.registerVehicle(principal.userId, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
@@ -128,7 +128,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.updateVehicle(principal.id, vehicleId, req.name, req.plateNumber, req.type)
+            val vehicle = vehicleService.updateVehicle(principal.userId, vehicleId, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -146,7 +146,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.addUserToVehicle(principal.id, vehicleId, userId)
+            val vehicle = vehicleService.addUserToVehicle(principal.userId, vehicleId, userId)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -165,7 +165,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.removeUserFromVehicle(principal.id, vehicleId, userId)
+            val vehicle = vehicleService.removeUserFromVehicle(principal.userId, vehicleId, userId)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,

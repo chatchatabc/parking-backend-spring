@@ -61,7 +61,8 @@ class UserController(
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userService.updateUser(
-                principal.id,
+                principal.userId,
+                request.phone,
                 request.username,
                 request.email,
                 request.firstName,

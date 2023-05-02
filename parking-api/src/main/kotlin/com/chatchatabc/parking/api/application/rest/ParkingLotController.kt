@@ -121,7 +121,7 @@ class ParkingLotController(
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val createdParkingLot = parkingLotService.registerParkingLot(
-                principal.id,
+                principal.userId,
                 req.name,
                 req.latitude,
                 req.longitude,
@@ -163,7 +163,7 @@ class ParkingLotController(
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val updatedParkingLot = parkingLotService.updateParkingLot(
-                principal.id,
+                principal.userId,
                 parkingLotId,
                 req.name,
                 req.latitude,

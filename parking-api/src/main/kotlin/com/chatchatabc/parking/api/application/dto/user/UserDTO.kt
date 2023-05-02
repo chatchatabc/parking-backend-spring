@@ -7,6 +7,7 @@ data class UserPhoneLoginRequest(
 
 data class UserProfileUpdateRequest(
     val username: String?,
+    val phone: String?,
     val email: String?,
     val firstName: String?,
     val lastName: String?

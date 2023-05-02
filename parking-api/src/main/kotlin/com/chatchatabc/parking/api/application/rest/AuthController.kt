@@ -67,7 +67,7 @@ class AuthController(
                 roleName = RoleNames.ROLE_PARKING_MANAGER
             }
             val user = userService.verifyOTP(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(user.id)
+            val token: String = jwtService.generateToken(user.userId)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(user, HttpStatus.OK.value(), ResponseNames.USER_VERIFY_OTP_SUCCESS.name, false)
