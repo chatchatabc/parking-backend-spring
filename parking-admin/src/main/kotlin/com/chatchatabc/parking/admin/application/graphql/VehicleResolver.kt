@@ -1,19 +1,17 @@
-package com.chatchatabc.parking.admin.application.rest
+package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
-import com.chatchatabc.parking.domain.service.VehicleService
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class VehicleController(
+class VehicleResolver(
     private val vehicleRepository: VehicleRepository,
-    private val vehicleService: VehicleService
 ) {
 
     /**
