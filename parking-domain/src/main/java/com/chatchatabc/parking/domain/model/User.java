@@ -33,6 +33,7 @@ public class User extends FlagEntity implements UserDetails {
     @Column(unique = true)
     private String userId = UUID.randomUUID().toString();
 
+    @JsonIgnore
     @Column(unique = true)
     private String notificationId = UUID.randomUUID().toString();
 
