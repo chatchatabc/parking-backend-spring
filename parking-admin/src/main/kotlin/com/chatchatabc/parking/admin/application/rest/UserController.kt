@@ -1,6 +1,8 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.PagedResponse
+import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserLoginLog
@@ -68,9 +70,19 @@ class UserController(
     fun getUsers(
         @Argument page: Int,
         @Argument size: Int
-    ): Page<User> {
+    ): PagedResponse<User> {
         val pr = PageRequest.of(page, size)
-        return userRepository.findAll(pr)
+        val users = userRepository.findAll(pr)
+        return PagedResponse(
+            users.content,
+            PageInfo(
+                users.size,
+                users.totalElements,
+                users.isFirst,
+                users.isLast,
+                users.isEmpty
+            )
+        )
     }
 
     /**

@@ -2,7 +2,7 @@ type Query {
     getUserById(id: String!): User
     getUserByPhone(phone: String!): User
     getUserByUsername(username: String!): User
-    getUsers(page: Int, size: Int): [User]!
+    getUsers(page: Int, size: Int): UserList!
 
     getVehicles(page: Int, size: Int): [Vehicle]!
 
@@ -37,7 +37,7 @@ type User {
 }
 
 type UserList {
-    users: [User]!
+    content: [User]!
     pageInfo: PageInfo!
 }
 
@@ -108,7 +108,9 @@ type Invoice {
 
 # Misc
 type PageInfo {
-    hasNextPage: Boolean!
-    totalPageCount: Int!
-    totalCount: Int!
+    size: Int
+    totalElements: Int
+    first: Boolean
+    last: Boolean
+    empty: Boolean
 }
