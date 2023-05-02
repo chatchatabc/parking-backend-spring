@@ -2,27 +2,27 @@ package com.chatchatabc.parking.admin.application.graphql.log
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.log.UserLoginLog
-import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
+import com.chatchatabc.parking.domain.model.log.UserLogoutLog
+import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class UserLoginLogResolver(
-    private val userLoginLogRepository: UserLoginLogRepository
+class UserLogoutLogResolver(
+    private val userLogoutLogRepository: UserLogoutLogRepository
 ) {
     /**
-     * Get user login logs
+     * Get user logout logs
      */
     @QueryMapping
-    fun getUserLoginLogs(
+    fun getUserLogoutLogs(
         @Argument page: Int,
         @Argument size: Int
-    ): PagedResponse<UserLoginLog> {
+    ): PagedResponse<UserLogoutLog> {
         val pr = PageRequest.of(page, size)
-        val logs = userLoginLogRepository.findAll(pr)
+        val logs = userLogoutLogRepository.findAll(pr)
         return PagedResponse(
             logs.content,
             PageInfo(

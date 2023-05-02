@@ -6,6 +6,8 @@ type Query {
 
     getUserLoginLogs(page: Int size: Int): UserLoginLogList!
 
+    getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
+
     getVehicles(page: Int size: Int): VehicleList!
 
     getParkingLots(page: Int size: Int): [ParkingLot]!
@@ -58,6 +60,22 @@ type UserLoginLog {
 
 type UserLoginLogList {
     content: [UserLoginLog]!
+    pageInfo: PageInfo!
+}
+
+# User Logout Log Related
+type UserLogoutLog {
+    id: String
+    user: User
+    email: String
+    phone: String
+    type: Int
+    ipAddress: String
+    createdAt: String
+}
+
+type UserLogoutLogList {
+    content: [UserLogoutLog]!
     pageInfo: PageInfo!
 }
 
