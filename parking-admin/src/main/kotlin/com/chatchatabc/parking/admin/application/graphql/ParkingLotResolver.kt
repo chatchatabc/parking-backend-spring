@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import java.util.*
 
 @Controller
 class ParkingLotResolver(
@@ -33,5 +34,15 @@ class ParkingLotResolver(
                 parkingLots.isEmpty
             )
         )
+    }
+
+    /**
+     * Get parking lot by id
+     */
+    @QueryMapping
+    fun getParkingLotById(
+        @Argument id: String
+    ): Optional<ParkingLot> {
+        return parkingLotRepository.findById(id)
     }
 }
