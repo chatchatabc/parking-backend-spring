@@ -23,8 +23,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import java.util.*
 
-//@RestController
-//@RequestMapping("/api/user")
 @Controller
 class UserResolver(
     private val userRepository: UserRepository,
@@ -84,25 +82,6 @@ class UserResolver(
             )
         )
     }
-
-    /**
-     * Create a user
-     */
-    @MutationMapping
-    fun createUser(
-        @Argument phone: String,
-        @Argument username: String?
-    ): User {
-        val user = User().apply {
-            this.phone = phone
-            this.username = username
-        }
-        return userRepository.save(user)
-    }
-
-    /**
-     * TODO: Create user POST Rest API
-     */
 
     /**
      * Update a user
