@@ -8,6 +8,7 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserLogoutLog
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
+import com.chatchatabc.parking.domain.specification.UserSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -22,7 +23,7 @@ import java.util.*
 @Controller
 class UserResolver(
     private val userRepository: UserRepository,
-    private val userLogoutLogRepository: UserLogoutLogRepository
+    private val userLogoutLogRepository: UserLogoutLogRepository,
 ) {
 
     /**
@@ -56,15 +57,17 @@ class UserResolver(
     }
 
     /**
-     * Get all users
+     * Get all users w/ keyword
      */
     @QueryMapping
     fun getUsers(
         @Argument page: Int,
-        @Argument size: Int
+        @Argument size: Int,
+        @Argument keyword: String?
     ): PagedResponse<User> {
         val pr = PageRequest.of(page, size)
-        val users = userRepository.findAll(pr)
+        val spec = UserSpecification.withKeyword(keyword ?: "")
+        val users = userRepository.findAll(spec, pr)
         return PagedResponse(
             users.content,
             PageInfo(
