@@ -74,6 +74,7 @@ used as template for future projects needing `Android and iOS` implementation.
 
 - [ ] NATS use same JWT as API
 - [ ] NATS use same JWT as Admin
+- [ ] JWT Auth on GraphQL
 - [ ] Users with NATS should only be "listen" only
 - [ ] Add more fields to user
     - [x] Integer ID (hidden, don't expose)

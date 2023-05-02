@@ -10,7 +10,7 @@ type Query {
 
     getVehicles(page: Int size: Int): VehicleList!
 
-    getParkingLots(page: Int size: Int): [ParkingLot]!
+    getParkingLots(page: Int size: Int): ParkingLotList!
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceById(id: String!): Invoice
@@ -122,6 +122,11 @@ type ParkingLot {
     owner: User
     rate: Rate
     verifiedBy: User
+}
+
+type ParkingLotList {
+    content: [ParkingLot]!
+    pageInfo: PageInfo!
 }
 
 # Rate Related
