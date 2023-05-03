@@ -17,3 +17,7 @@ data class UserVerifyOTPRequest(
     val phone: String,
     val otp: String
 )
+
+data class UserNotificationResponse(
+    val notificationId: String
+)

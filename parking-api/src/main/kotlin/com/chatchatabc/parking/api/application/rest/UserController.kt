@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.user.UserNotificationResponse
 import com.chatchatabc.parking.api.application.dto.user.UserProfileUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
@@ -35,6 +36,36 @@ class UserController(
             ResponseEntity.ok().body(
                 ApiResponse(
                     user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(
+                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+                )
+        }
+    }
+
+    /**
+     * Get user notification id
+     */
+    @Operation(
+        summary = "Get the notification id of the logged in user",
+        description = "Get notification id of the logged in user. This is used for push notifications and should not be available to other users."
+    )
+    @GetMapping("/get-notification-id")
+    fun getNotificationId(): ResponseEntity<ApiResponse<UserNotificationResponse>> {
+        return try {
+            // Get user from security context holder
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findById(principal.id).get()
+            ResponseEntity.ok().body(
+                ApiResponse(
+                    UserNotificationResponse(user.notificationId),
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
                 )
             )
         } catch (e: Exception) {
