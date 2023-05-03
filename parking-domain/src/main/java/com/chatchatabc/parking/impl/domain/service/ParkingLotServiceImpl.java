@@ -9,6 +9,7 @@ import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -99,6 +100,31 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             parkingLot.get().setAvailableSlots(capacity - activeInvoices.intValue());
         }
         // TODO: NATS publish parking lot update
+        return parkingLotRepository.save(parkingLot.get());
+    }
+
+    /**
+     * Verify parking lot
+     *
+     * @param userId       the user id
+     * @param parkingLotId the parking lot id
+     * @return the parking lot
+     */
+    @Override
+    public ParkingLot verifyParkingLot(String userId, String parkingLotId) throws Exception {
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isEmpty()) {
+            throw new Exception("User not found");
+        }
+        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
+        if (parkingLot.isEmpty()) {
+            throw new Exception("Parking lot not found");
+        }
+        // Check if parking lot is already verified
+        if (parkingLot.get().getVerifiedAt() != null) {
+            throw new Exception("Parking lot is already verified");
+        }
+        parkingLot.get().setVerifiedAt(LocalDateTime.now());
         return parkingLotRepository.save(parkingLot.get());
     }
 }

@@ -49,4 +49,16 @@ public interface ParkingLotService {
             String description,
             Integer capacity
     ) throws Exception;
+
+    /**
+     * Verify parking lot
+     *
+     * @param userId       the user id
+     * @param parkingLotId the parking lot id
+     * @return the parking lot
+     */
+    ParkingLot verifyParkingLot(
+            String userId,
+            String parkingLotId
+    ) throws Exception;
 }

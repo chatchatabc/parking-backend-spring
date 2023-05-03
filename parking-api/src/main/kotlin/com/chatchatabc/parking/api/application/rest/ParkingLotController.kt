@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
@@ -192,14 +191,5 @@ class ParkingLotController(
                     )
                 )
         }
-    }
-
-    // TODO: Verify Parking Lot by an Admin
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/verify/{parkingLotId}")
-    fun verifyParkingLot(
-        @PathVariable parkingLotId: String
-    ) {
-
     }
 }
