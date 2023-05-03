@@ -23,7 +23,7 @@ SELECT 'ec4af6e9-ec57-434d-990d-ae83d9459a31',
        'admin',
        '1234567890',
        '$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK',
-       0
+       1
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin');
 
 -- Assign the 'ROLE_ADMIN' role to the user
