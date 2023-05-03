@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         if (queriedUser.isEmpty()) {
             User createdUser = new User();
             createdUser.setPhone(phone);
+            createdUser.setEnabled(true);
             if (username != null) {
                 createdUser.setUsername(username);
             }

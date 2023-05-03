@@ -33,6 +33,7 @@ class UserController(
                 this.username = req.username
                 this.email = req.email
                 this.roles = roles
+                this.isEnabled = req.enabled
             }
             val createdUser = userRepository.save(user)
             return ResponseEntity.ok(

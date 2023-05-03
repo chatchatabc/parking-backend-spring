@@ -10,6 +10,7 @@ data class UserCreateRequest(
         val username: String?,
         val email: String?,
         val roles: List<String>,
+        val enabled: Boolean = true
 )
 
 data class UserUpdateRequest(

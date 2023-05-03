@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class User extends FlagEntity implements UserDetails {
+    private static final int ENABLED = 0;
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,6 +109,10 @@ public class User extends FlagEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.getBitValue(ENABLED);
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.setBitValue(ENABLED, enabled);
     }
 }
