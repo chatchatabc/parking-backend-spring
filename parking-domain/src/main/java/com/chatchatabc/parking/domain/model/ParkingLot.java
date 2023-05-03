@@ -65,6 +65,9 @@ public class ParkingLot extends FlagEntity {
     private LocalDateTime businessHoursEnd;
 
     @Column
+    private Integer openDaysFlag = 0;
+
+    @Column
     private LocalDateTime verifiedAt;
 
     // Verified by user

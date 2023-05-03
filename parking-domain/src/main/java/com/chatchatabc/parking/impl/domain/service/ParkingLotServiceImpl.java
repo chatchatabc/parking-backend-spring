@@ -34,7 +34,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @return the parking lot
      */
     @Override
-    public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity) throws Exception {
+    public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
         Optional<User> owner = userRepository.findByUserId(ownerId);
         if (owner.isEmpty()) {
             throw new Exception("User not found");
@@ -49,6 +49,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         parkingLot.setCapacity(capacity);
         parkingLot.setAvailableSlots(capacity);
         parkingLot.setDraft(true);
+        parkingLot.setBusinessHoursStart(businessHoursStart);
+        parkingLot.setBusinessHoursEnd(businessHoursEnd);
+        parkingLot.setOpenDaysFlag(openDaysFlag);
         // TODO: Add owner to user_parking_lot table
         return parkingLotRepository.save(parkingLot);
     }
@@ -67,7 +70,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @return the parking lot
      */
     @Override
-    public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity) throws Exception {
+    public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
         // TODO: Get user from allowed list to check for permission
         Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
@@ -99,6 +102,15 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             // Get active invoices and update available slots
             Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId);
             parkingLot.get().setAvailableSlots(capacity - activeInvoices.intValue());
+        }
+        if (businessHoursStart != null) {
+            parkingLot.get().setBusinessHoursStart(businessHoursStart);
+        }
+        if (businessHoursEnd != null) {
+            parkingLot.get().setBusinessHoursEnd(businessHoursEnd);
+        }
+        if (openDaysFlag != null) {
+            parkingLot.get().setOpenDaysFlag(openDaysFlag);
         }
         // TODO: NATS publish parking lot update
         return parkingLotRepository.save(parkingLot.get());

@@ -1,5 +1,7 @@
 package com.chatchatabc.parking.api.application.dto.parking_lot
 
+import java.time.LocalDateTime
+
 data class ParkingLotCreateRequest(
     val name: String,
     val latitude: Double,
@@ -7,6 +9,9 @@ data class ParkingLotCreateRequest(
     val address: String,
     val description: String,
     val capacity: Int,
+    val businessHoursStart: LocalDateTime,
+    val businessHoursEnd: LocalDateTime,
+    val openDaysFlag: Int = 0
 )
 
 data class ParkingLotUpdateRequest(
@@ -16,5 +21,8 @@ data class ParkingLotUpdateRequest(
     val address: String?,
     val description: String?,
     val capacity: Int?,
-    val availableSlots: Int?
+    val availableSlots: Int?,
+    val businessHoursStart: LocalDateTime?,
+    val businessHoursEnd: LocalDateTime?,
+    val openDaysFlag: Int?
 )

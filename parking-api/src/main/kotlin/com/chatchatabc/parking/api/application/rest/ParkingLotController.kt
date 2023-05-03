@@ -127,6 +127,9 @@ class ParkingLotController(
                 req.address,
                 req.description,
                 req.capacity,
+                req.businessHoursStart,
+                req.businessHoursEnd,
+                req.openDaysFlag
             )
             return ResponseEntity.ok(
                 ApiResponse(
@@ -169,7 +172,10 @@ class ParkingLotController(
                 req.longitude,
                 req.address,
                 req.description,
-                req.capacity
+                req.capacity,
+                req.businessHoursStart,
+                req.businessHoursEnd,
+                req.openDaysFlag
             )
             return ResponseEntity.ok(
                 ApiResponse(
