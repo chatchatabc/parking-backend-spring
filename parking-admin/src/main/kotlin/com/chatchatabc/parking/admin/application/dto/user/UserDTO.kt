@@ -7,7 +7,9 @@ data class UserLoginRequest(
 
 data class UserCreateRequest(
         val phone: String,
-        val username: String?
+        val username: String?,
+        val email: String?,
+        val roles: List<String>,
 )
 
 data class UserUpdateRequest(

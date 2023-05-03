@@ -5,6 +5,7 @@ import com.chatchatabc.parking.admin.application.dto.user.UserCreateRequest
 import com.chatchatabc.parking.admin.application.dto.user.UserUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import org.springframework.http.HttpStatus
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 class UserController(
     private val userService: UserService,
     private val userRepository: UserRepository,
+    private val roleRepository: RoleRepository
 ) {
     /**
      * Create user
@@ -25,9 +27,12 @@ class UserController(
         @RequestBody req: UserCreateRequest
     ): ResponseEntity<ApiResponse<User>> {
         return try {
+            val roles = roleRepository.findRolesIn(req.roles)
             val user = User().apply {
                 this.phone = req.phone
                 this.username = req.username
+                this.email = req.email
+                this.roles = roles
             }
             val createdUser = userRepository.save(user)
             return ResponseEntity.ok(
