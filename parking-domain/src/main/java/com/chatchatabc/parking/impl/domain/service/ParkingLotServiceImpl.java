@@ -48,6 +48,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         parkingLot.setDescription(description);
         parkingLot.setCapacity(capacity);
         parkingLot.setAvailableSlots(capacity);
+        parkingLot.setDraft(true);
         // TODO: Add owner to user_parking_lot table
         return parkingLotRepository.save(parkingLot);
     }
@@ -125,6 +126,8 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             throw new Exception("Parking lot is already verified");
         }
         parkingLot.get().setVerifiedAt(LocalDateTime.now());
+        parkingLot.get().setDraft(false);
+        parkingLot.get().setPending(false);
         return parkingLotRepository.save(parkingLot.get());
     }
 }

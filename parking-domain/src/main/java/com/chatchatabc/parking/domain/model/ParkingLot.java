@@ -78,4 +78,20 @@ public class ParkingLot extends FlagEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public boolean isDraft() {
+        return this.getBitValue(DRAFT);
+    }
+
+    public void setDraft(boolean value) {
+        this.setBitValue(DRAFT, value);
+    }
+
+    public boolean isPending() {
+        return this.getBitValue(PENDING);
+    }
+
+    public void setPending(boolean value) {
+        this.setBitValue(PENDING, value);
+    }
 }

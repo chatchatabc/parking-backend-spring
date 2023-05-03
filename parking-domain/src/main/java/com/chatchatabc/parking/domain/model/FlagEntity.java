@@ -10,13 +10,13 @@ import lombok.Data;
 public class FlagEntity {
     @JsonIgnore
     @Column
-    private int flag = 0;
+    protected int flag = 0;
 
-    private boolean getBitValue(int bitIndex) {
+    protected boolean getBitValue(int bitIndex) {
         return (this.flag & (1 << bitIndex)) != 0;
     }
 
-    private void setBitValue(int bitIndex, boolean value) {
+    protected void setBitValue(int bitIndex, boolean value) {
         if (value) {
             this.flag |= (1 << bitIndex);
         } else {
