@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,6 +19,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
+    private static final int DRAFT = 0;
+    private static final int PENDING = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -67,4 +72,10 @@ public class ParkingLot extends FlagEntity {
     @ManyToOne
     @JoinColumn(name = "verified_by")
     private User verifiedBy;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

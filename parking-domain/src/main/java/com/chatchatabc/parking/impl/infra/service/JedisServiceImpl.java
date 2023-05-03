@@ -1,17 +1,17 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.chatchatabc.parking.infra.service.JedisService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JedisServiceImpl implements JedisService {
-    @Value("${server.jedis.host}")
-    private String host;
-
-    @Value("${server.jedis.port}")
-    private String port;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * Set key value to redis
@@ -22,14 +22,12 @@ public class JedisServiceImpl implements JedisService {
      */
     @Override
     public void set(String key, String value, Long ttl) {
-        // TODO: Fix this with Jedis Pool
-        Jedis jedis = new Jedis(host, Integer.parseInt(port));
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         if (ttl != null) {
-            jedis.setex(key, ttl, value);
+            valueOperations.set(key, value, ttl, TimeUnit.SECONDS);
         } else {
-            jedis.set(key, value);
+            valueOperations.set(key, value);
         }
-        jedis.close();
     }
 
     /**
@@ -40,11 +38,8 @@ public class JedisServiceImpl implements JedisService {
      */
     @Override
     public String get(String key) {
-        // TODO: Fix this with Jedis Pool
-        Jedis jedis = new Jedis(host, Integer.parseInt(port));
-        String value = jedis.get(key);
-        jedis.close();
-        return value;
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        return (String) valueOperations.get(key);
     }
 
     /**
@@ -54,9 +49,6 @@ public class JedisServiceImpl implements JedisService {
      */
     @Override
     public void del(String key) {
-        // TODO: Fix this with Jedis Pool
-        Jedis jedis = new Jedis(host, Integer.parseInt(port));
-        jedis.del(key);
-        jedis.close();
+        redisTemplate.delete(key);
     }
 }
