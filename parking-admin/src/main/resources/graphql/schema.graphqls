@@ -4,6 +4,8 @@ type Query {
     getUserByUsername(username: String!): User
     getUsers(page: Int size: Int, keyword: String): UserList!
 
+    getRoles(page: Int size: Int): RoleList!
+
     getUserLoginLogs(page: Int size: Int): UserLoginLogList!
 
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
@@ -31,6 +33,16 @@ type Mutation {
         lastName: String
         email: String
     ): User
+}
+
+# Role Related
+type Role {
+    name: String!
+}
+
+type RoleList {
+    content: [Role]!
+    pageInfo: PageInfo!
 }
 
 # User Related
