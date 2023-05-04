@@ -4,7 +4,6 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.user.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.user.UserVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
-import com.chatchatabc.parking.api.application.service.KVService
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.User
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*
 class AuthController(
     private val userService: UserService,
     private val jwtService: JwtService,
-    private val kvService: KVService,
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
@@ -40,8 +38,7 @@ class AuthController(
         return try {
             userService.softRegisterUser(req.phone, req.username)
             // Generate OTP and set to KV store
-            val otp = userService.generateOTP()
-            kvService.set("otp_${req.phone}", otp, 900L)
+            val otp = userService.generateOTPAndSaveToKV(req.phone, 900L)
             // Send OTP to SMS using events
             applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp))
             ResponseEntity.ok().body(
@@ -75,18 +72,7 @@ class AuthController(
             if (type == "manager") {
                 roleName = RoleNames.ROLE_PARKING_MANAGER
             }
-            // Check if OTP is valid
-            val savedOTP = kvService.get("otp_${request.phone}")
-            if (savedOTP == null) {
-                throw Exception("OTP is expired")
-            }
-            // TODO: Remove "000000" override in the future
-            if (savedOTP != request.otp && request.otp != "000000") {
-                throw java.lang.Exception("OTP is incorrect")
-            }
-            // Delete OTP from KV store if done
-            kvService.delete("otp_${request.phone}")
-            val user = userService.verifyPhoneAndAddRole(request.phone, roleName)
+            val user = userService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
             val token: String = jwtService.generateToken(user.userId)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(

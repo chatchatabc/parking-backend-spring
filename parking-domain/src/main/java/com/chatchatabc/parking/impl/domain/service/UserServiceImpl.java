@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.service.UserService;
+import com.chatchatabc.parking.infra.service.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private KVService kvService;
 
     private final Random random = new Random();
 
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService {
      * @return the user
      */
     @Override
-    public User verifyPhoneAndAddRole(String phone, RoleNames roleName) throws Exception {
+    public User verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception {
         Optional<User> queriedUser = userRepository.findByPhone(phone);
         if (queriedUser.isEmpty()) {
             throw new Exception("User not found");
@@ -70,6 +73,20 @@ public class UserServiceImpl implements UserService {
         if (role.isEmpty()) {
             throw new Exception("Role not found");
         }
+
+        // Check if OTP is valid
+        String savedOTP = kvService.get("otp_" + phone);
+        if (savedOTP == null) {
+            throw new Exception("OTP is expired");
+        }
+        // TODO: Remove "000000" override in the future
+        if (!savedOTP.equals(otp) && !Objects.equals(otp, "000000")) {
+            throw new Exception("OTP is incorrect");
+        }
+
+        // Delete OTP from KV
+        kvService.delete("otp_" + phone);
+
         // Update phone verified date only if null, no need to reset again
         if (queriedUser.get().getPhoneVerifiedAt() == null) {
             // Set Phone Verified At to current local date time
@@ -119,16 +136,25 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Generate OTP
+     * Generate OTP and save to KV
      *
      * @return OTP
      */
     @Override
-    public String generateOTP() {
+    public String generateOTPAndSaveToKV(String phone, Long duration) {
         int randomNumber = random.nextInt(1000000);
-        return String.format(Locale.ENGLISH, "%06d", randomNumber);
+        String otp = String.format(Locale.ENGLISH, "%06d", randomNumber);
+        kvService.set("otp_" + phone, otp, duration);
+        return otp;
     }
 
+    /**
+     * Login for Security
+     *
+     * @param username the username
+     * @return the user details
+     * @throws UsernameNotFoundException if user not found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);

@@ -20,7 +20,7 @@ public interface UserService extends UserDetailsService {
      * @param roleName the role name
      * @return the user
      */
-    User verifyPhoneAndAddRole(String phone, RoleNames roleName) throws Exception;
+    User verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception;
 
     /**
      * Update user
@@ -36,9 +36,9 @@ public interface UserService extends UserDetailsService {
     User updateUser(String userId, String phone, String username, String email, String firstName, String lastName) throws Exception;
 
     /**
-     * Generate OTP
+     * Generate OTP and save to KV
      *
      * @return OTP
      */
-    String generateOTP();
+    String generateOTPAndSaveToKV(String phone, Long duration);
 }
