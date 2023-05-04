@@ -30,4 +30,11 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, String> 
      */
     @Query("SELECT p FROM ParkingLot p WHERE p.owner = ?1")
     Page<ParkingLot> findAllByOwner(User owner, Pageable pageable);
+
+    /**
+     * Find all parking lots by owner and flag bit
+     */
+    @Query("SELECT p FROM ParkingLot p WHERE p.owner = :owner AND MOD(p.flag / :divisor, 2) = :bitValue")
+    Page<ParkingLot> findAllByOwnerAndFlag(User owner, int divisor, int bitValue, Pageable pageable);
+
 }
