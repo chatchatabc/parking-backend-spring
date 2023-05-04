@@ -9,6 +9,7 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -53,6 +54,58 @@ class ParkingLotController(
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findById(principal.id).get()
             val parkingLots = parkingLotRepository.findAllByOwner(user, pageable)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    parkingLots,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR.name,
+                    true
+                )
+            )
+        }
+    }
+
+    /**
+     * Get Draft Parking Lots Managed By User
+     */
+    @Operation(
+        summary = "Get list of parking lots by status.",
+        description = "Get parking lots by status. status=draft to get parking lots that are drafts. status=pending to get pending parking lots."
+    )
+    @GetMapping("/get-managing/{status}")
+    fun getDraftByManaging(
+        pageable: Pageable,
+        @PathVariable status: String
+    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
+        return try {
+            // Get Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findById(principal.id).get()
+
+            // Draft is the default status
+            var bitPosition = ParkingLot.DRAFT
+            if (status == "pending") {
+                bitPosition = ParkingLot.PENDING
+            }
+
+            val divisor = 1 shl bitPosition
+            val bitValue = 1 // for true bit value
+
+            val parkingLots = parkingLotRepository.findAllByOwnerAndFlag(
+                user,
+                divisor,
+                bitValue,
+                pageable
+            )
             return ResponseEntity.ok(
                 ApiResponse(
                     parkingLots,

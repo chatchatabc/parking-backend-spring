@@ -3,7 +3,7 @@ POST {{userBaseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-  "phone": "09123456789"
+  "phone": "1234567890"
 }
 
 ### Verify Manager Phone and OTP
@@ -11,7 +11,7 @@ POST {{userBaseUrl}}/api/auth/verify/manager
 Content-Type: application/json
 
 {
-  "phone": "09123456789",
+  "phone": "1234567890",
   "otp": "000000"
 }
 
@@ -74,6 +74,14 @@ Authorization: Bearer {{userToken}}
 
 ### Get parking lots I manage
 GET {{userBaseUrl}}/api/parking-lot/get-managing
+Authorization: Bearer {{userToken}}
+
+### Get parking lots I manage that are drafts
+GET {{userBaseUrl}}/api/parking-lot/get-managing/draft
+Authorization: Bearer {{userToken}}
+
+### Get parking lots I manage that are pending
+GET {{userBaseUrl}}/api/parking-lot/get-managing/pending
 Authorization: Bearer {{userToken}}
 
 ### Create Parking Lot
