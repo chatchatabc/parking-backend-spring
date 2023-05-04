@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class FileDataServiceImpl implements FileDataService {
@@ -57,6 +58,36 @@ public class FileDataServiceImpl implements FileDataService {
             log.warn("Failed to delete temporary file: " + tempFile.getAbsolutePath());
         }
         return fileDataRepository.save(fileData);
+    }
+
+    /**
+     * Delete a file from the storage service.
+     *
+     * @param id the id of the file
+     */
+    @Override
+    public void deleteFile(String id) throws Exception {
+        Optional<File> fileData = fileDataRepository.findById(id);
+        if (fileData.isEmpty()) {
+            throw new Exception("File not found");
+        }
+        fileData.get().setDeleted(true);
+        fileDataRepository.save(fileData.get());
+    }
+
+    /**
+     * Restore a deleted file
+     *
+     * @param id the id of the file
+     */
+    @Override
+    public void restoreFile(String id) {
+        Optional<File> fileData = fileDataRepository.findById(id);
+        if (fileData.isEmpty()) {
+            throw new RuntimeException("File not found");
+        }
+        fileData.get().setDeleted(false);
+        fileDataRepository.save(fileData.get());
     }
 
     public String getFileExtension(MultipartFile file) {

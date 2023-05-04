@@ -20,6 +20,20 @@ public interface FileDataService {
     File uploadFile(User uploadedBy, String namespace, String parentId, Integer fileOrder, MultipartFile file) throws IOException;
 
     /**
+     * Mark file as deleted
+     *
+     * @param id the id of the file
+     */
+    void deleteFile(String id) throws Exception;
+
+    /**
+     * Restore a deleted file
+     *
+     * @param id the id of the file
+     */
+    void restoreFile(String id);
+
+    /**
      * Get the file extension of a multipart file.
      *
      * @param file the multipart file
