@@ -19,8 +19,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
-    private static final int DRAFT = 0;
-    private static final int PENDING = 1;
+    public static final int DRAFT = 0;
+    public static final int PENDING = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
