@@ -1,0 +1,55 @@
+package com.chatchatabc.parking.admin.application.config.nats
+
+import com.chatchatabc.parking.admin.application.config.nats.listener.NatsErrorListener
+import io.nats.client.Connection
+import io.nats.client.ConnectionListener
+import io.nats.client.Nats
+import io.nats.client.Options
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+class NatsConfig(
+    @Value("\${spring.nats.uri}")
+    private val natsUri: String,
+) {
+    private val log = LoggerFactory.getLogger(NatsConfig::class.java)
+
+    /**
+     * Create a NATS connection
+     */
+    @Bean
+    fun natsConnection(): Connection {
+        val options = Options.Builder()
+            .server(natsUri)
+            .connectionListener { _, events ->
+                when (events) {
+                    ConnectionListener.Events.DISCONNECTED -> {
+                        log.info("Disconnected from NATS server")
+                    }
+
+                    ConnectionListener.Events.RECONNECTED -> {
+                        log.info("Reconnected to NATS server")
+                    }
+
+                    ConnectionListener.Events.CLOSED -> {
+                        log.info("Closed connection to NATS server")
+                    }
+
+                    ConnectionListener.Events.CONNECTED -> {
+                        log.info("Connected to NATS server")
+                    }
+
+                    else -> {
+                        log.info("Unknown event: $events")
+                    }
+                }
+            }
+            .errorListener(NatsErrorListener())
+            .build()
+        log.info("Connecting to NATS server at $natsUri")
+        return Nats.connect(options)
+    }
+}
