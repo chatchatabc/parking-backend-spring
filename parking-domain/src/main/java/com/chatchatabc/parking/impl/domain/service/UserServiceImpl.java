@@ -1,15 +1,12 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.enums.RoleNames;
-import com.chatchatabc.parking.domain.event.user.UserLoginEvent;
 import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.service.UserService;
-import com.chatchatabc.parking.infra.service.JedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,10 +23,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private JedisService jedisService;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
 
     private final Random random = new Random();
 
@@ -61,29 +54,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Create OTP and send SMS
-     *
-     * @param phone the phone number
-     */
-    @Override
-    public void createOTPAndSendSMS(String phone) {
-        // Create OTP
-        String otp = this.generateOTP();
-        jedisService.set("otp_" + phone, otp, 900L);
-        // TODO: Send SMS using events
-        applicationEventPublisher.publishEvent(new UserLoginEvent(this, phone, otp));
-    }
-
-    /**
      * Verify if OTP and phone number is valid
      *
      * @param phone    the phone number
-     * @param otp      the otp
      * @param roleName the role name
      * @return the user
      */
     @Override
-    public User verifyOTP(String phone, String otp, RoleNames roleName) throws Exception {
+    public User verifyPhoneAndAddRole(String phone, RoleNames roleName) throws Exception {
         Optional<User> queriedUser = userRepository.findByPhone(phone);
         if (queriedUser.isEmpty()) {
             throw new Exception("User not found");
@@ -92,24 +70,12 @@ public class UserServiceImpl implements UserService {
         if (role.isEmpty()) {
             throw new Exception("Role not found");
         }
-        // Check if OTP is correct
-        String savedOTP = jedisService.get("otp_" + phone);
-        if (savedOTP == null) {
-            throw new Exception("OTP is expired");
-        }
-        // TODO: Remove "000000" override in the future
-        if (!Objects.equals(savedOTP, otp) && !Objects.equals(otp, "000000")) {
-            throw new Exception("OTP is incorrect");
-        }
-        // Delete OTP on Redis if done
-        jedisService.del("otp_" + phone);
         // Update phone verified date only if null, no need to reset again
         if (queriedUser.get().getPhoneVerifiedAt() == null) {
             // Set Phone Verified At to current local date time
             queriedUser.get().setPhoneVerifiedAt(LocalDateTime.now());
         }
-        // TODO: Might cause a problem in the future. Need to check if role is already added or add additional check before giving role
-        // Add role to user
+        // Add role to user if not exists
         if (queriedUser.get().getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.get().getId()))) {
             queriedUser.get().getRoles().add(role.get());
         }

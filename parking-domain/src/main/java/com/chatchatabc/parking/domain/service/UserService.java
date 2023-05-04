@@ -14,21 +14,13 @@ public interface UserService extends UserDetailsService {
     void softRegisterUser(String phone, String username) throws Exception;
 
     /**
-     * Create OTP and send SMS
-     *
-     * @param phone the phone number
-     */
-    void createOTPAndSendSMS(String phone);
-
-    /**
      * Verify if OTP and phone number is valid
      *
      * @param phone    the phone number
-     * @param otp      the otp
      * @param roleName the role name
      * @return the user
      */
-    User verifyOTP(String phone, String otp, RoleNames roleName) throws Exception;
+    User verifyPhoneAndAddRole(String phone, RoleNames roleName) throws Exception;
 
     /**
      * Update user
