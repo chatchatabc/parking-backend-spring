@@ -26,9 +26,6 @@ public class ParkingLot extends FlagEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(unique = true)
-    private String parkingLotId = UUID.randomUUID().toString();
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
