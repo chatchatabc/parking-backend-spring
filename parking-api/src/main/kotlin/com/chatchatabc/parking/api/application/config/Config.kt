@@ -1,7 +1,5 @@
 package com.chatchatabc.parking.api.application.config
 
-import com.aliyun.oss.OSS
-import com.aliyun.oss.OSSClientBuilder
 import com.chatchatabc.parking.api.application.config.nats.listener.NatsErrorListener
 import io.nats.client.Connection
 import io.nats.client.ConnectionListener
@@ -16,13 +14,6 @@ import org.springframework.context.annotation.Configuration
 class Config(
     @Value("\${spring.nats.uri}")
     private val natsUri: String,
-    @Value("\${aliyun.access-id}")
-    private val ossAccessKeyId: String,
-    @Value("\${aliyun.access-secret}")
-    private val ossAccessKeySecret: String,
-    @Value("\${aliyun.oss.endpoint}")
-    private val ossEndpoint: String,
-
 ) {
     private val log = LoggerFactory.getLogger(Config::class.java)
 
@@ -60,14 +51,5 @@ class Config(
             .build()
         log.info("Connecting to NATS server at $natsUri")
         return Nats.connect(options)
-    }
-
-    /**
-     * Create an OSS client
-     */
-    @Bean
-    fun ossClient(): OSS {
-        return OSSClientBuilder()
-            .build(ossEndpoint, ossAccessKeyId, ossAccessKeySecret)
     }
 }
