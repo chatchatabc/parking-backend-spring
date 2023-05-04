@@ -124,6 +124,17 @@ Content-Type: image/jpeg
 <./cat.jpeg>
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
+### Get Active Parking Lot Images
+GET {{userBaseUrl}}/api/parking-lot/get-images/5729d247-c7bf-4234-9f2a-059560e90b98
+Authorization: Bearer {{userToken}}
+
+### Delete a parking lot image
+POST {{userBaseUrl}}/api/parking-lot/delete-image/0187e602-023f-7e40-8547-9e39077beaee.jpeg
+Authorization: Bearer {{userToken}}
+
+### Restore a parking lot image
+POST {{userBaseUrl}}/api/parking-lot/restore-image/0187e602-023f-7e40-8547-9e39077beaee.jpeg
+Authorization: Bearer {{userToken}}
 
 ### Get My Vehicles
 GET {{userBaseUrl}}/api/vehicle/get-my-vehicles

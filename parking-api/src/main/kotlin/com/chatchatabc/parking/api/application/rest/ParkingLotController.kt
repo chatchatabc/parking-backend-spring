@@ -7,6 +7,7 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.File
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.FileDataRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.FileDataService
@@ -26,7 +27,8 @@ class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository,
-    private val fileDataService: FileDataService
+    private val fileDataService: FileDataService,
+    private val fileDataRepository: FileDataRepository
 ) {
     private val fileNamespace = "parkingLot"
 
@@ -168,6 +170,45 @@ class ParkingLotController(
     }
 
     /**
+     * Get Images of a Parking Lot By Id
+     */
+    @GetMapping("/get-images/{parkingLotId}")
+    fun getImages(
+        @PathVariable parkingLotId: String,
+        pageable: Pageable
+    ): ResponseEntity<ApiResponse<Page<File>>> {
+        return try {
+            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val bitPosition = File.DELETED
+            val divisor = 1 shl bitPosition
+            val bitValue = 0 // for false bit value
+            val images = fileDataRepository.findAllByParentIdAndFlag(
+                parkingLot.id,
+                divisor,
+                bitValue,
+                pageable
+            )
+            ResponseEntity.ok(
+                ApiResponse(
+                    images,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null,
+                    HttpStatus.BAD_REQUEST.value(),
+                    ResponseNames.ERROR.name,
+                    true
+                )
+            )
+        }
+    }
+
+    /**
      * Register a parking lot
      */
     @PostMapping("/register")
@@ -222,6 +263,7 @@ class ParkingLotController(
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
+            println(req)
             val updatedParkingLot = parkingLotService.updateParkingLot(
                 principal.userId,
                 parkingLotId,
@@ -274,6 +316,76 @@ class ParkingLotController(
             return ResponseEntity.ok(
                 ApiResponse(
                     fileData,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR_UPDATE.name,
+                        true
+                    )
+                )
+        }
+    }
+
+    /**
+     * Delete image
+     */
+    @PostMapping("/delete-image/{imageId}")
+    fun deleteImage(
+        @PathVariable imageId: String
+    ): ResponseEntity<ApiResponse<File>> {
+        return try {
+            // Get principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findByUserId(principal.userId).get()
+            // TODO: Add verification to check if user has permissions to delete the file
+            fileDataService.deleteFile(imageId)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    null,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR_UPDATE.name,
+                        true
+                    )
+                )
+        }
+    }
+
+    /**
+     * Restore image
+     */
+    @PostMapping("/restore-image/{imageId}")
+    fun restoreImage(
+        @PathVariable imageId: String
+    ): ResponseEntity<ApiResponse<File>> {
+        return try {
+            // Get principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findByUserId(principal.userId).get()
+            // TODO: Add verification to check if user has permissions to restore the file
+            fileDataService.restoreFile(imageId)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_UPDATE.name,
                     false
