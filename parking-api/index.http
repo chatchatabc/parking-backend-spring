@@ -112,6 +112,19 @@ Content-Type: application/json
   "capacity": 25
 }
 
+### Upload Image to Parking Lot
+POST {{userBaseUrl}}/api/parking-lot/upload-image/5729d247-c7bf-4234-9f2a-059560e90b98/0
+Authorization: Bearer {{userToken}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="cat.jpg"
+Content-Type: image/jpeg
+
+<./cat.jpeg>
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
 ### Get My Vehicles
 GET {{userBaseUrl}}/api/vehicle/get-my-vehicles
 Authorization: Bearer {{userToken}}

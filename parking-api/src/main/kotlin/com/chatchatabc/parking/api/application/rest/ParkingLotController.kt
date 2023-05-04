@@ -4,10 +4,12 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
+import com.chatchatabc.parking.domain.model.File
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.FileDataService
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
@@ -16,14 +18,17 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val fileDataService: FileDataService
 ) {
+    private val fileNamespace = "parkingLot"
 
     /**
      * Get parking lots by id
@@ -233,6 +238,42 @@ class ParkingLotController(
             return ResponseEntity.ok(
                 ApiResponse(
                     updatedParkingLot,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR_UPDATE.name,
+                        true
+                    )
+                )
+        }
+    }
+
+    /**
+     * Upload image
+     */
+    @PostMapping("/upload-image/{parkingLotId}/{fileOrder}")
+    fun uploadImage(
+        @PathVariable parkingLotId: String,
+        @RequestParam("file", required = false) file: MultipartFile? = null,
+        @PathVariable fileOrder: Int = 0
+    ): ResponseEntity<ApiResponse<File>> {
+        return try {
+            // Get principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val user = userRepository.findByUserId(principal.userId).get()
+            val fileData = fileDataService.uploadFile(user, fileNamespace, parkingLotId, fileOrder, file)
+            return ResponseEntity.ok(
+                ApiResponse(
+                    fileData,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_UPDATE.name,
                     false
