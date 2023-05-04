@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class File {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @JsonIgnore
@@ -26,9 +25,6 @@ public class File {
 
     @Column
     private String parentId;
-
-    @Column
-    private String filename;
 
     @Column
     private String mimetype;
