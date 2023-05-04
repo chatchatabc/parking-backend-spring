@@ -12,7 +12,9 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.FileDataService
 import com.chatchatabc.parking.domain.service.ParkingLotService
+import com.chatchatabc.parking.infra.service.FileStorageService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -28,7 +30,8 @@ class ParkingLotController(
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository,
     private val fileDataService: FileDataService,
-    private val fileDataRepository: FileDataRepository
+    private val fileDataRepository: FileDataRepository,
+    private val fileStorageService: FileStorageService
 ) {
     private val fileNamespace = "parkingLot"
 
@@ -296,6 +299,30 @@ class ParkingLotController(
                         true
                     )
                 )
+        }
+    }
+
+    // TODO: API to set parking lot status to pending
+
+    /**
+     * Get image
+     */
+    // TODO: Add security to this endpoint? or remove?
+    @GetMapping("/get-image/{imageId}")
+    fun getImage(
+        @PathVariable imageId: String,
+        response: HttpServletResponse
+    ) {
+        try {
+            val imageData = fileDataRepository.findById(imageId).get()
+            val image = fileStorageService.downloadFile(fileNamespace + "/" + imageId)
+            response.contentType = imageData.mimetype
+            response.outputStream.use { outputStream ->
+                image.copyTo(outputStream)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }
 
