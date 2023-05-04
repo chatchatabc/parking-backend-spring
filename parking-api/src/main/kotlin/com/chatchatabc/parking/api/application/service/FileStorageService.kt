@@ -5,7 +5,7 @@ import java.io.File
 import java.io.InputStream
 
 @Service
-interface FileService {
+interface FileStorageService {
     /**
      * Upload a file to the cloud storage
      */

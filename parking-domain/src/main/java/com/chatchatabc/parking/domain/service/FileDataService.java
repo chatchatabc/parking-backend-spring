@@ -1,4 +1,4 @@
 package com.chatchatabc.parking.domain.service;
 
-public interface FileService {
+public interface FileDataService {
 }

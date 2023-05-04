@@ -1,19 +1,19 @@
 package com.chatchatabc.parking.api.impl.application.service
 
 import com.aliyun.oss.OSS
-import com.chatchatabc.parking.api.application.service.FileService
+import com.chatchatabc.parking.api.application.service.FileStorageService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.File
 import java.io.InputStream
 
 @Service
-class FileServiceOSSImpl(
+class FileStorageServiceOSSImpl(
     @Value("\${aliyun.oss.bucket-name}")
     private val bucketName: String,
 
     private val ossClient: OSS
-) : FileService {
+) : FileStorageService {
 
     /**
      * Upload a file to the cloud storage
