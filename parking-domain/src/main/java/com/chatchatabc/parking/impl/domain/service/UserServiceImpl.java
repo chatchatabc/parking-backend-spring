@@ -8,7 +8,6 @@ import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.service.UserService;
 import com.chatchatabc.parking.infra.service.JedisService;
-import com.chatchatabc.parking.infra.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,9 +29,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JedisService jedisService;
     @Autowired
-    private UtilService utilService;
-    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+
+    private final Random random = new Random();
 
     /**
      * Soft register a new user if not exists
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createOTPAndSendSMS(String phone) {
         // Create OTP
-        String otp = utilService.generateOTP();
+        String otp = this.generateOTP();
         jedisService.set("otp_" + phone, otp, 900L);
         // TODO: Send SMS using events
         applicationEventPublisher.publishEvent(new UserLoginEvent(this, phone, otp));
@@ -149,6 +150,17 @@ public class UserServiceImpl implements UserService {
             queriedUser.get().setLastName(lastName);
         }
         return userRepository.save(queriedUser.get());
+    }
+
+    /**
+     * Generate OTP
+     *
+     * @return OTP
+     */
+    @Override
+    public String generateOTP() {
+        int randomNumber = random.nextInt(1000000);
+        return String.format(Locale.ENGLISH, "%06d", randomNumber);
     }
 
     @Override

@@ -42,4 +42,11 @@ public interface UserService extends UserDetailsService {
      * @return the user
      */
     User updateUser(String userId, String phone, String username, String email, String firstName, String lastName) throws Exception;
+
+    /**
+     * Generate OTP
+     *
+     * @return OTP
+     */
+    String generateOTP();
 }
