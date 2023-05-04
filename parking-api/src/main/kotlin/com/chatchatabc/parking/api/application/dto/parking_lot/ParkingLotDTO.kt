@@ -9,8 +9,8 @@ data class ParkingLotCreateRequest(
     val address: String,
     val description: String,
     val capacity: Int,
-    val businessHoursStart: LocalDateTime,
-    val businessHoursEnd: LocalDateTime,
+    val businessHoursStart: LocalDateTime?,
+    val businessHoursEnd: LocalDateTime?,
     val openDaysFlag: Int = 0
 )
 
