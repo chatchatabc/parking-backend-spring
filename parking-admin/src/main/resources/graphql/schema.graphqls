@@ -10,6 +10,7 @@ type Query {
     getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
+    getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
     getVehicleById(id: String!): Vehicle
