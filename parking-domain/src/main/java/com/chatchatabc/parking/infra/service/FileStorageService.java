@@ -1,6 +1,8 @@
 package com.chatchatabc.parking.infra.service;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.io.InputStream;
 
 public interface FileStorageService {
@@ -8,11 +10,11 @@ public interface FileStorageService {
     /**
      * Upload file to cloud storage
      *
-     * @param key  file name
-     * @param file file to upload
+     * @param key           file name
+     * @param multipartFile multipartFile to upload
      * @return file url
      */
-    String uploadFile(String key, File file);
+    String uploadFile(String key, MultipartFile multipartFile) throws IOException;
 
     /**
      * Download file from cloud storage
