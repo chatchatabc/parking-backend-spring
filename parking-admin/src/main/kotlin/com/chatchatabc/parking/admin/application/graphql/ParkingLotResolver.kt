@@ -5,6 +5,7 @@ import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -16,16 +17,19 @@ class ParkingLotResolver(
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository
 ) {
+
     /**
      * Get parking lots
      */
     @QueryMapping
     fun getParkingLots(
         @Argument page: Int,
-        @Argument size: Int
+        @Argument size: Int,
+        @Argument keyword: String?
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val parkingLots = parkingLotRepository.findAll(pr)
+        val spec = ParkingLotSpecification.withKeyword(keyword ?: "")
+        val parkingLots = parkingLotRepository.findAll(spec, pr)
         return PagedResponse(
             parkingLots.content,
             PageInfo(
@@ -48,6 +52,9 @@ class ParkingLotResolver(
         return parkingLotRepository.findById(id)
     }
 
+    /**
+     * Get parking lots by owner
+     */
     @QueryMapping
     fun getParkingLotsByOwner(
         @Argument page: Int,

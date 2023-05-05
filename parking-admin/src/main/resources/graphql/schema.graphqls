@@ -16,7 +16,7 @@ type Query {
     getVehicleById(id: String!): Vehicle
     getVehiclesByOwner(page: Int size: Int, ownerId: String!): VehicleList!
 
-    getParkingLots(page: Int size: Int): ParkingLotList!
+    getParkingLots(page: Int size: Int, keyword: String): ParkingLotList!
     getParkingLotById(id: String!): ParkingLot
     getParkingLotsByOwner(page: Int size: Int, ownerId: String!): ParkingLotList!
 
