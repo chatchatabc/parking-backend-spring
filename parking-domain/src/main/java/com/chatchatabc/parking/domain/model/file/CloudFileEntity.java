@@ -1,24 +1,22 @@
-package com.chatchatabc.parking.domain.model;
+package com.chatchatabc.parking.domain.model.file;
 
+import com.chatchatabc.parking.domain.model.FlagEntity;
+import com.chatchatabc.parking.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "files")
-@AllArgsConstructor
-@NoArgsConstructor
+@MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
-public class File extends FlagEntity {
+public class CloudFileEntity extends FlagEntity {
     public static int DELETED = 0;
 
+    @JsonIgnore
     @Id
     private String id;
 
@@ -28,13 +26,13 @@ public class File extends FlagEntity {
     private User uploadedBy;
 
     @Column
-    private String parentId;
+    private String filename;
+
+    @Column
+    private Long filesize;
 
     @Column
     private String mimetype;
-
-    @Column
-    private int fileOrder;
 
     @Column
     private String url;
