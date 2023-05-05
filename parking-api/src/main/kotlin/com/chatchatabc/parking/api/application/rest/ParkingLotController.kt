@@ -4,14 +4,15 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.File
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.repository.FileDataRepository
+import com.chatchatabc.parking.domain.model.file.CloudFileEntity
+import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.service.FileDataService
+import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
+import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -27,8 +28,9 @@ class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository,
-    private val fileDataService: FileDataService,
-    private val fileDataRepository: FileDataRepository,
+    private val parkingLotImageService: ParkingLotImageService,
+    private val parkingLotImageRepository: ParkingLotImageRepository,
+
 ) {
     private val fileNamespace = "parkingLot"
 
@@ -176,14 +178,14 @@ class ParkingLotController(
     fun getImages(
         @PathVariable parkingLotId: String,
         pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<File>>> {
+    ): ResponseEntity<ApiResponse<Page<ParkingLotImage>>> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            val bitPosition = File.DELETED
+            val bitPosition = CloudFileEntity.DELETED
             val divisor = 1 shl bitPosition
             val bitValue = 0 // for false bit value
-            val images = fileDataRepository.findAllByParentIdAndFlag(
-                parkingLot.id,
+            val images = parkingLotImageRepository.findAllByParkingLotAndFlag(
+                parkingLot,
                 divisor,
                 bitValue,
                 pageable
@@ -260,6 +262,7 @@ class ParkingLotController(
         @RequestBody req: ParkingLotUpdateRequest,
         @PathVariable parkingLotId: String
     ): ResponseEntity<ApiResponse<ParkingLot>> {
+        // TODO: Process image order
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -304,17 +307,17 @@ class ParkingLotController(
     /**
      * Upload image
      */
-    @PostMapping("/upload-image/{parkingLotId}/{fileOrder}")
+    @PostMapping("/upload-image/{parkingLotId}")
     fun uploadImage(
         @PathVariable parkingLotId: String,
-        @RequestParam("file", required = false) file: MultipartFile? = null,
-        @PathVariable fileOrder: Int = 0
-    ): ResponseEntity<ApiResponse<File>> {
+        @RequestParam("file", required = true) file: MultipartFile? = null,
+    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findByUserId(principal.userId).get()
-            val fileData = fileDataService.uploadFile(user, fileNamespace, parkingLotId, fileOrder, file)
+            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val fileData = parkingLotImageService.uploadImage(user, parkingLot, fileNamespace, file)
             return ResponseEntity.ok(
                 ApiResponse(
                     fileData,
@@ -343,13 +346,13 @@ class ParkingLotController(
     @PostMapping("/delete-image/{imageId}")
     fun deleteImage(
         @PathVariable imageId: String
-    ): ResponseEntity<ApiResponse<File>> {
+    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findByUserId(principal.userId).get()
             // TODO: Add verification to check if user has permissions to delete the file
-            fileDataService.deleteFile(imageId)
+            parkingLotImageService.deleteImage(imageId)
             return ResponseEntity.ok(
                 ApiResponse(
                     null,
@@ -375,16 +378,17 @@ class ParkingLotController(
     /**
      * Restore image
      */
+    // TODO: Transfer to admin dashboard
     @PostMapping("/restore-image/{imageId}")
     fun restoreImage(
         @PathVariable imageId: String
-    ): ResponseEntity<ApiResponse<File>> {
+    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
             val user = userRepository.findByUserId(principal.userId).get()
             // TODO: Add verification to check if user has permissions to restore the file
-            fileDataService.restoreFile(imageId)
+            parkingLotImageService.restoreImage(imageId)
             return ResponseEntity.ok(
                 ApiResponse(
                     null,
