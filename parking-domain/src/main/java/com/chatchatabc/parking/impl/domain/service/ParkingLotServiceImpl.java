@@ -2,14 +2,18 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.UserRepository;
+import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +24,8 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     private ParkingLotRepository parkingLotRepository;
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private ParkingLotImageRepository parkingLotImageRepository;
 
     /**
      * Register a new parking lot
@@ -70,7 +76,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @return the parking lot
      */
     @Override
-    public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
+    public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
         // TODO: Get user from allowed list to check for permission
         Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
@@ -112,6 +118,21 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         if (openDaysFlag != null) {
             parkingLot.get().setOpenDaysFlag(openDaysFlag);
         }
+
+        // Update Image Order
+        if (images != null) {
+            List<ParkingLotImage> updatedImages = new ArrayList<>();
+            for (ParkingLotImage image : images) {
+                Optional<ParkingLotImage> parkingLotImage = parkingLotImageRepository.findById(image.getId());
+                if (parkingLotImage.isEmpty()) {
+                    throw new Exception("Image not found");
+                }
+                parkingLotImage.get().setFileOrder(image.getFileOrder());
+                updatedImages.add(parkingLotImage.get());
+            }
+            parkingLotImageRepository.saveAll(updatedImages);
+        }
+
         // TODO: NATS publish parking lot update
         return parkingLotRepository.save(parkingLot.get());
     }

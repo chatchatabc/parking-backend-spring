@@ -1,8 +1,10 @@
 package com.chatchatabc.parking.domain.service;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
+import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ParkingLotService {
 
@@ -61,7 +63,8 @@ public interface ParkingLotService {
             Integer capacity,
             LocalDateTime businessHoursStart,
             LocalDateTime businessHoursEnd,
-            Integer openDaysFlag
+            Integer openDaysFlag,
+            List<ParkingLotImage> images
     ) throws Exception;
 
     /**
