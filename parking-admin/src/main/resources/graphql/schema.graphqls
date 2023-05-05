@@ -18,6 +18,7 @@ type Query {
 
     getParkingLots(page: Int size: Int): ParkingLotList!
     getParkingLotById(id: String!): ParkingLot
+    getParkingLotsByOwner(page: Int size: Int, ownerId: String!): ParkingLotList!
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceById(id: String!): Invoice
