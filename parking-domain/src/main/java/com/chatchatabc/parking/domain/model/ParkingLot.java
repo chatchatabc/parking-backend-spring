@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -77,6 +81,18 @@ public class ParkingLot extends FlagEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "parkingLot", fetch = FetchType.LAZY)
+    private List<ParkingLotImage> images;
+
+    public List<String> getImagesOrderedByFileOrder() {
+        return this.images.stream()
+                .filter(image -> !image.isDeleted())
+                .sorted(Comparator.comparingInt(ParkingLotImage::getFileOrder))
+                .map(ParkingLotImage::getUrl)
+                .collect(Collectors.toList());
+    }
 
     public boolean isDraft() {
         return this.getBitValue(DRAFT);
