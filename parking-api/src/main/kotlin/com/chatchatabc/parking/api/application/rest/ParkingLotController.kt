@@ -302,7 +302,39 @@ class ParkingLotController(
         }
     }
 
-    // TODO: API to set parking lot status to pending
+    /**
+     * Set parking lot status to pending
+     */
+    @PutMapping("/set-pending/{parkingLotId}")
+    fun setPending(
+        @PathVariable parkingLotId: String
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
+        return try {
+            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            parkingLot.isPending = true
+            parkingLot.isDraft = false
+            parkingLotRepository.save(parkingLot)
+            ResponseEntity.ok(
+                ApiResponse(
+                    parkingLot,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        HttpStatus.BAD_REQUEST.value(),
+                        ResponseNames.ERROR_UPDATE.name,
+                        true
+                    )
+                )
+        }
+    }
 
     /**
      * Upload image
