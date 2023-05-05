@@ -87,6 +87,10 @@ public class ParkingLot extends FlagEntity {
     private List<ParkingLotImage> images;
 
     public List<String> getImagesOrderedByFileOrder() {
+        // Check if there is images, return empty list if there is none
+        if (this.images == null || this.images.isEmpty()) {
+            return List.of();
+        }
         return this.images.stream()
                 .filter(image -> !image.isDeleted())
                 .sorted(Comparator.comparingInt(ParkingLotImage::getFileOrder))
