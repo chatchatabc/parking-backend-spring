@@ -255,14 +255,13 @@ class ParkingLotController(
     }
 
     /**
-     * Update a parking lot
+     * Update a parking lot and image order
      */
     @PutMapping("/update/{parkingLotId}")
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         @PathVariable parkingLotId: String
     ): ResponseEntity<ApiResponse<ParkingLot>> {
-        // TODO: Process image order
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as User
@@ -278,7 +277,8 @@ class ParkingLotController(
                 req.capacity,
                 req.businessHoursStart,
                 req.businessHoursEnd,
-                req.openDaysFlag
+                req.openDaysFlag,
+                req.images
             )
             return ResponseEntity.ok(
                 ApiResponse(
