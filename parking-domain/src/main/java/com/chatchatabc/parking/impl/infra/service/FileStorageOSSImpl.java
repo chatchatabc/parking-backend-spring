@@ -2,11 +2,14 @@ package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
 import com.chatchatabc.parking.infra.service.FileStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 @Service
@@ -19,16 +22,28 @@ public class FileStorageOSSImpl implements FileStorageService {
     @Autowired
     private OSS ossClient;
 
+    private final Logger log = LoggerFactory.getLogger(FileStorageOSSImpl.class);
+
     /**
      * Upload file to cloud storage
      *
-     * @param key  file name
-     * @param file file to upload
+     * @param key           file name
+     * @param multipartFile multipartFile to upload
      * @return file url
      */
     @Override
-    public String uploadFile(String key, File file) {
-        ossClient.putObject(bucketName, key, file);
+    public String uploadFile(String key, MultipartFile multipartFile) throws IOException {
+        // Create temporary file first
+        java.io.File tempFile = java.io.File.createTempFile("temp", null);
+        // Save multipart file to temporary file
+        multipartFile.transferTo(tempFile);
+        // Upload file to storage service
+        ossClient.putObject(bucketName, key, tempFile);
+        // Delete temporary file
+        boolean isDeleted = tempFile.delete();
+        if (!isDeleted) {
+            log.warn("Failed to delete temporary file: " + tempFile.getAbsolutePath());
+        }
         return "https://" + bucketName + "." + endpoint.substring(endpoint.indexOf("://") + 3) + "/" + key;
     }
 
