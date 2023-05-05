@@ -25,13 +25,12 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
      * @param uploadedBy    the user who uploaded the file
      * @param parkingLot    the parking lot to which the image belongs
      * @param namespace     the namespace of the file
-     * @param fileOrder     the order of the file
      * @param multipartFile the file to upload
      * @return the uploaded file data
      * @throws Exception if an error occurs
      */
     @Override
-    public ParkingLotImage uploadImage(User uploadedBy, ParkingLot parkingLot, String namespace, Integer fileOrder, MultipartFile multipartFile) throws Exception {
+    public ParkingLotImage uploadImage(User uploadedBy, ParkingLot parkingLot, String namespace, MultipartFile multipartFile) throws Exception {
         // Generate UUID name to be used also as key for cloud storage and append the file extension
         String uuid = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(multipartFile);
         // Modify file data
@@ -42,7 +41,6 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
         parkingLotImage.setMimetype(multipartFile.getContentType());
         parkingLotImage.setFilename(multipartFile.getOriginalFilename());
         parkingLotImage.setFilesize(multipartFile.getSize());
-        parkingLotImage.setFileOrder(fileOrder);
         parkingLotImage.setUrl(fileStorageService.uploadFile(namespace + "/" + uuid, multipartFile));
         return parkingLotImageRepository.save(parkingLotImage);
     }
