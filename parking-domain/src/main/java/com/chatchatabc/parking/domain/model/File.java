@@ -36,6 +36,9 @@ public class File extends FlagEntity {
     @Column
     private int fileOrder;
 
+    @Column
+    private String url;
+
     @JsonIgnore
     public boolean isDeleted() {
         return this.getBitValue(DELETED);

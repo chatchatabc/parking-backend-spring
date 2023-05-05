@@ -10,8 +10,9 @@ public interface FileStorageService {
      *
      * @param key  file name
      * @param file file to upload
+     * @return file url
      */
-    void uploadFile(String key, File file);
+    String uploadFile(String key, File file);
 
     /**
      * Download file from cloud storage

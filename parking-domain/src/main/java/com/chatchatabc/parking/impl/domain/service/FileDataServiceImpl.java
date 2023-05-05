@@ -51,7 +51,8 @@ public class FileDataServiceImpl implements FileDataService {
         // Save multipart file to temporary file
         file.transferTo(tempFile);
         // Upload file to storage service
-        fileStorageService.uploadFile(namespace + "/" + uuid, tempFile);
+        String url = fileStorageService.uploadFile(namespace + "/" + uuid, tempFile);
+        fileData.setUrl(url);
         // Delete temporary file
         boolean isDeleted = tempFile.delete();
         if (!isDeleted) {

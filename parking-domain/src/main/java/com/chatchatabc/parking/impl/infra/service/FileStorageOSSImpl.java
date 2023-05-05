@@ -13,6 +13,8 @@ import java.io.InputStream;
 public class FileStorageOSSImpl implements FileStorageService {
     @Value("${aliyun.oss.bucket-name}")
     private String bucketName;
+    @Value("${aliyun.oss.endpoint}")
+    private String endpoint;
 
     @Autowired
     private OSS ossClient;
@@ -22,10 +24,12 @@ public class FileStorageOSSImpl implements FileStorageService {
      *
      * @param key  file name
      * @param file file to upload
+     * @return file url
      */
     @Override
-    public void uploadFile(String key, File file) {
+    public String uploadFile(String key, File file) {
         ossClient.putObject(bucketName, key, file);
+        return "https://" + bucketName + "." + endpoint.substring(endpoint.indexOf("://") + 3) + "/" + key;
     }
 
     /**
