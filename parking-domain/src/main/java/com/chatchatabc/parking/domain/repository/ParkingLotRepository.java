@@ -5,6 +5,7 @@ import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ParkingLotRepository extends JpaRepository<ParkingLot, String> {
+public interface ParkingLotRepository extends JpaRepository<ParkingLot, String>, JpaSpecificationExecutor<ParkingLot> {
     /**
      * Find a parking lot by its id and owner
      */
