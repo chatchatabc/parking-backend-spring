@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.model.log;
 
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "user_logout_logs")
+@Table(name = "member_logout_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLogoutLog {
+public class MemberLogoutLog {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column
     private String email;
