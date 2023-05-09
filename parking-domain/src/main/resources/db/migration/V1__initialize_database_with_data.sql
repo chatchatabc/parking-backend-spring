@@ -94,11 +94,11 @@ WHERE NOT EXISTS (SELECT 1 FROM member WHERE username = 'admin');
 
 -- Assign admin role to admin member
 INSERT INTO member_role (member_id, role_id)
-SELECT users.id, roles.id
-FROM users,
-     roles
-WHERE users.username = 'admin'
-  AND roles.name = 'ROLE_ADMIN'
+SELECT member.member_id, role.id
+FROM member,
+     role
+WHERE member.username = 'admin'
+  AND role.name = 'ROLE_ADMIN'
 ON CONFLICT DO NOTHING;
 
 -- Create Vehicle table
