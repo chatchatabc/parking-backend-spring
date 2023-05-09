@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service.file;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.service.CloudFileService;
@@ -22,7 +22,7 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
     /**
      * Upload a file to the storage service.
      *
-     * @param uploadedBy    the user who uploaded the file
+     * @param uploadedBy    the member who uploaded the file
      * @param parkingLot    the parking lot to which the image belongs
      * @param namespace     the namespace of the file
      * @param multipartFile the file to upload
@@ -30,7 +30,7 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
      * @throws Exception if an error occurs
      */
     @Override
-    public ParkingLotImage uploadImage(User uploadedBy, ParkingLot parkingLot, String namespace, MultipartFile multipartFile) throws Exception {
+    public ParkingLotImage uploadImage(Member uploadedBy, ParkingLot parkingLot, String namespace, MultipartFile multipartFile) throws Exception {
         // Generate UUID name to be used also as key for cloud storage and append the file extension
         String uuid = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(multipartFile);
         // Modify file data
@@ -53,7 +53,7 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
     @Override
     public void deleteImage(String id) {
         ParkingLotImage parkingLotImage = parkingLotImageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Parking lot image not found"));
-        parkingLotImage.setDeleted(true);
+        parkingLotImage.setStatus(-1);
         parkingLotImageRepository.save(parkingLotImage);
     }
 
@@ -65,7 +65,7 @@ public class ParkingLotImageServiceImpl extends CloudFileService implements Park
     @Override
     public void restoreImage(String id) {
         ParkingLotImage parkingLotImage = parkingLotImageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Parking lot image not found"));
-        parkingLotImage.setDeleted(false);
+        parkingLotImage.setStatus(0);
         parkingLotImageRepository.save(parkingLotImage);
     }
 }
