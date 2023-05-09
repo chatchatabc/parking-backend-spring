@@ -4,24 +4,24 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "user_login_logs")
+@Table(name = "member_login_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginLog {
+public class MemberLoginLog {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column
     private String email;
