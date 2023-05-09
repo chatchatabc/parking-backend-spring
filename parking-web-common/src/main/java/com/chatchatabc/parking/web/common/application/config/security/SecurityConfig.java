@@ -41,7 +41,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v3/api-docs/**").permitAll();
 
                     // User routes must be authenticated
-                    auth.requestMatchers("/api/users/**").authenticated();
+                    auth.requestMatchers("/api/member/**").authenticated();
 
                     // TODO: Add routes for other controllers
 
