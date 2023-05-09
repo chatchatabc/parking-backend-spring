@@ -27,7 +27,7 @@ public class ParkingLot extends FlagEntity {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "member_id")
     private Member owner;
 
     @OneToOne(fetch = FetchType.EAGER)

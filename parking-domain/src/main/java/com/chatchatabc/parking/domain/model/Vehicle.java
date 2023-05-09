@@ -36,7 +36,7 @@ public class Vehicle {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "member_id")
     private Member owner;
 
     @CreationTimestamp

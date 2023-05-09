@@ -83,7 +83,7 @@ public class Member extends FlagEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "member_role",
-            joinColumns = @JoinColumn(name = "member_id"),
+            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
