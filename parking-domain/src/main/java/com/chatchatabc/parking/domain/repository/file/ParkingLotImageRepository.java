@@ -12,14 +12,13 @@ import org.springframework.stereotype.Repository;
 public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage, String> {
 
     /**
-     * Find all parking lot images by parking lot and bit value
+     * Find all parking lot images by parking lot and status value
      *
      * @param parkingLot the parking lot
-     * @param divisor    the divisor of the flag
-     * @param bitValue   the bit value of the flag
+     * @param status     the status
      * @param pageable   the pageable
      * @return the page of parking lot images
      */
-    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND MOD(pli.flag / :divisor, 2) = :bitValue")
-    Page<ParkingLotImage> findAllByParkingLotAndFlag(ParkingLot parkingLot, int divisor, int bitValue, Pageable pageable);
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.status = :status")
+    Page<ParkingLotImage> findAllByParkingLotAndStatus(ParkingLot parkingLot, int status, Pageable pageable);
 }
