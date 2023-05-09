@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "rates")
+@Table(name = "rate")
 @EnableJpaAuditing
 public class Rate {
     @Id
@@ -47,7 +47,7 @@ public class Rate {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Version
-    @Column(name = "version", nullable = false)
-    private Long version;
+//    @Version
+//    @Column(name = "version", nullable = false)
+//    private Long version;
 }

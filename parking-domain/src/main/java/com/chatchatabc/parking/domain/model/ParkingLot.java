@@ -17,21 +17,18 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "parking_lots")
+@Table(name = "parking_lot")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
-    public static final int DRAFT = 0;
-    public static final int PENDING = 1;
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private Member owner;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rate_id")
@@ -41,13 +38,13 @@ public class ParkingLot extends FlagEntity {
     private String name;
 
     @Column
+    private String address;
+
+    @Column
     private Double latitude;
 
     @Column
     private Double longitude;
-
-    @Column
-    private String address;
 
     @Column
     private String description;
@@ -68,13 +65,16 @@ public class ParkingLot extends FlagEntity {
     private Integer openDaysFlag = 0;
 
     @Column
+    private Integer status = 0;
+
+    @Column
     private LocalDateTime verifiedAt;
 
     // Verified by user
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "verified_by")
-    private User verifiedBy;
+    private Member verifiedBy;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -92,25 +92,9 @@ public class ParkingLot extends FlagEntity {
             return List.of();
         }
         return this.images.stream()
-                .filter(image -> !image.isDeleted())
+                .filter(image -> image.getStatus() > -1)
                 .sorted(Comparator.comparingInt(ParkingLotImage::getFileOrder))
                 .map(ParkingLotImage::getUrl)
                 .collect(Collectors.toList());
-    }
-
-    public boolean isDraft() {
-        return this.getBitValue(DRAFT);
-    }
-
-    public void setDraft(boolean value) {
-        this.setBitValue(DRAFT, value);
-    }
-
-    public boolean isPending() {
-        return this.getBitValue(PENDING);
-    }
-
-    public void setPending(boolean value) {
-        this.setBitValue(PENDING, value);
     }
 }

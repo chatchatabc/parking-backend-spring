@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "vehicles")
+@Table(name = "vehicle")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vehicle {
@@ -32,12 +32,12 @@ public class Vehicle {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "vehicles")
-    private Collection<User> users;
+    private Collection<Member> members;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private Member owner;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

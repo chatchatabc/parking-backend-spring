@@ -1,21 +1,16 @@
 package com.chatchatabc.parking.domain.model.file;
 
-import com.chatchatabc.parking.domain.model.FlagEntity;
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
-@EqualsAndHashCode(callSuper = true)
-public class CloudFileEntity extends FlagEntity {
-    public static int DELETED = 0;
-
+public class CloudFileEntity {
     @JsonIgnore
     @Id
     private String id;
@@ -23,7 +18,7 @@ public class CloudFileEntity extends FlagEntity {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uploaded_by")
-    private User uploadedBy;
+    private Member uploadedBy;
 
     @Column
     private String filename;
@@ -37,14 +32,8 @@ public class CloudFileEntity extends FlagEntity {
     @Column
     private String url;
 
-    @JsonIgnore
-    public boolean isDeleted() {
-        return this.getBitValue(DELETED);
-    }
-
-    public void setDeleted(boolean value) {
-        this.setBitValue(DELETED, value);
-    }
+    @Column
+    private Integer status = 0;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
