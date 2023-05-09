@@ -20,7 +20,7 @@ public class MemberLoginLog {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 
     @Column

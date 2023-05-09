@@ -5,7 +5,7 @@ import com.chatchatabc.parking.admin.application.dto.dashboard.DashboardStatisti
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/dashboard")
 class DashboardController(
-    private val userRepository: UserRepository,
+    private val memberRepository: MemberRepository,
     private val parkingLotRepository: ParkingLotRepository,
     private val vehicleRepository: VehicleRepository,
     private val invoiceRepository: InvoiceRepository
@@ -26,11 +26,11 @@ class DashboardController(
     @GetMapping("/get-numerical-statistics")
     fun getNumericalStatistics(): ResponseEntity<ApiResponse<DashboardStatistics>> {
         return try {
-            val totalUsers = userRepository.count()
-            // TODO: Verified Users
-            // TODO: New Users Today
-            // TODO: Verified Users Today
-            // TODO: Banned Users
+            val totalMembers = memberRepository.count()
+            // TODO: Verified Members
+            // TODO: New Members Today
+            // TODO: Verified Members Today
+            // TODO: Banned Members
             val totalVehicles = vehicleRepository.count()
             val totalParkingLots = parkingLotRepository.count()
             // TODO: Verified Parking Lots
@@ -44,7 +44,7 @@ class DashboardController(
             ResponseEntity.ok().body(
                 ApiResponse(
                     DashboardStatistics(
-                        totalUsers,
+                        totalMembers,
                         totalVehicles,
                         totalParkingLots,
                         totalActiveInvoices

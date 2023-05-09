@@ -1,13 +1,13 @@
-package com.chatchatabc.parking.api.application.schedule.user
+package com.chatchatabc.parking.api.application.schedule.member
 
-import com.chatchatabc.parking.api.application.schedule.user.job.UserLoginSendSMSOTPJob
+import com.chatchatabc.parking.api.application.schedule.member.job.MemberLoginSendSMSOTPJob
 import org.quartz.JobBuilder
 import org.quartz.Scheduler
 import org.quartz.TriggerBuilder
 import org.springframework.stereotype.Component
 
 @Component
-class UserSchedule(
+class MemberSchedule(
     private val scheduler: Scheduler
 ) {
 
@@ -16,7 +16,7 @@ class UserSchedule(
      */
     fun onLoginSendSMSOTP(phone: String, otp: String) {
         val job = JobBuilder
-            .newJob(UserLoginSendSMSOTPJob::class.java)
+            .newJob(MemberLoginSendSMSOTPJob::class.java)
             .withIdentity("onLoginSendSMSOTP", "user")
             .usingJobData("phone", phone)
             .usingJobData("otp", otp)

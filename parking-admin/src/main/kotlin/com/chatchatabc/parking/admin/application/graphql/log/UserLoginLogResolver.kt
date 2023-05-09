@@ -2,9 +2,9 @@ package com.chatchatabc.parking.admin.application.graphql.log
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.log.UserLoginLog
-import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
+import com.chatchatabc.parking.domain.model.log.MemberLoginLog
+import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller
 
 @Controller
 class UserLoginLogResolver(
-    private val userLoginLogRepository: UserLoginLogRepository,
-    private val userRepository: UserRepository
+    private val userLoginLogRepository: MemberLoginLogRepository,
+    private val userRepository: MemberRepository
 ) {
     /**
      * Get user login logs
@@ -22,7 +22,7 @@ class UserLoginLogResolver(
     fun getUserLoginLogs(
         @Argument page: Int,
         @Argument size: Int
-    ): PagedResponse<UserLoginLog> {
+    ): PagedResponse<MemberLoginLog> {
         val pr = PageRequest.of(page, size)
         val logs = userLoginLogRepository.findAll(pr)
         return PagedResponse(
@@ -45,10 +45,10 @@ class UserLoginLogResolver(
         @Argument page: Int,
         @Argument size: Int,
         @Argument id: String
-    ): PagedResponse<UserLoginLog> {
+    ): PagedResponse<MemberLoginLog> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByUserId(id).get()
-        val logs = userLoginLogRepository.findByUser(user, pr)
+        val user = userRepository.findByMemberId(id).get()
+        val logs = userLoginLogRepository.findByMember(user, pr)
         return PagedResponse(
             logs.content,
             PageInfo(

@@ -70,7 +70,7 @@ public class ParkingLot extends FlagEntity {
     @Column
     private LocalDateTime verifiedAt;
 
-    // Verified by user
+    // Verified by member
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "verified_by")

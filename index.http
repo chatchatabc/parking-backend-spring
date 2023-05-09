@@ -1,4 +1,4 @@
 GET https://httpbin.org/ip
 
-### helath check for user api
-GET https://user-api.parking.davao.page/health
+### helath check for member api
+GET https://member-api.parking.davao.page/health

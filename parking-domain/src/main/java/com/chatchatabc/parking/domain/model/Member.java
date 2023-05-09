@@ -31,7 +31,7 @@ public class Member extends FlagEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "member_id", unique = true)
     private String memberId = UUID.randomUUID().toString();
 
     @JsonIgnore
@@ -92,7 +92,7 @@ public class Member extends FlagEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "member_vehicle",
-            joinColumns = @JoinColumn(name = "member_id"),
+            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id")
     )
     private Collection<Vehicle> vehicles;

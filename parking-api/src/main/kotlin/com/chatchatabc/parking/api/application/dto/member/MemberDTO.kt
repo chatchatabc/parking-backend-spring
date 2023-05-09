@@ -1,11 +1,11 @@
-package com.chatchatabc.parking.api.application.dto.user
+package com.chatchatabc.parking.api.application.dto.member
 
-data class UserPhoneLoginRequest(
+data class MemberPhoneLoginRequest(
     val phone: String,
     val username: String?
 )
 
-data class UserProfileUpdateRequest(
+data class MemberProfileUpdateRequest(
     val username: String?,
     val phone: String?,
     val email: String?,
@@ -13,11 +13,11 @@ data class UserProfileUpdateRequest(
     val lastName: String?
 )
 
-data class UserVerifyOTPRequest(
+data class MemberVerifyOTPRequest(
     val phone: String,
     val otp: String
 )
 
-data class UserNotificationResponse(
+data class MemberNotificationResponse(
     val notificationId: String
 )

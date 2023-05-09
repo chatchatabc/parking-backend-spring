@@ -5,11 +5,10 @@ import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateR
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.file.CloudFileEntity
+import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
@@ -27,11 +26,11 @@ import org.springframework.web.multipart.MultipartFile
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository,
+    private val memberRepository: MemberRepository,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
 
-) {
+    ) {
     private val fileNamespace = "parkingLot"
 
     /**
@@ -52,7 +51,7 @@ class ParkingLotController(
     }
 
     /**
-     * Get Parking Lots Managed By User
+     * Get Parking Lots Managed By Member
      */
     @GetMapping("/get-managing")
     fun getByManaging(
@@ -60,9 +59,9 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
         return try {
             // Get Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findById(principal.id).get()
-            val parkingLots = parkingLotRepository.findAllByOwner(user, pageable)
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findById(principal.id).get()
+            val parkingLots = parkingLotRepository.findAllByOwner(member, pageable)
             return ResponseEntity.ok(
                 ApiResponse(
                     parkingLots,
@@ -84,7 +83,7 @@ class ParkingLotController(
     }
 
     /**
-     * Get Draft Parking Lots Managed By User
+     * Get Draft Parking Lots Managed By Member
      */
     @Operation(
         summary = "Get list of parking lots by status.",
@@ -97,22 +96,18 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
         return try {
             // Get Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findById(principal.id).get()
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findById(principal.id).get()
 
             // Draft is the default status
-            var bitPosition = ParkingLot.DRAFT
+            var statusVal = 0
             if (status == "pending") {
-                bitPosition = ParkingLot.PENDING
+                statusVal = 1
             }
 
-            val divisor = 1 shl bitPosition
-            val bitValue = 1 // for true bit value
-
-            val parkingLots = parkingLotRepository.findAllByOwnerAndFlag(
-                user,
-                divisor,
-                bitValue,
+            val parkingLots = parkingLotRepository.findAllByOwnerAndStatus(
+                member,
+                statusVal,
                 pageable
             )
             return ResponseEntity.ok(
@@ -172,7 +167,7 @@ class ParkingLotController(
     }
 
     /**
-     * Get Images of a Parking Lot By Id
+     * Get Images of a Parking Lot By Id and active status
      */
     @GetMapping("/get-images/{parkingLotId}")
     fun getImages(
@@ -181,13 +176,9 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<Page<ParkingLotImage>>> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            val bitPosition = CloudFileEntity.DELETED
-            val divisor = 1 shl bitPosition
-            val bitValue = 0 // for false bit value
-            val images = parkingLotImageRepository.findAllByParkingLotAndFlag(
+            val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
                 parkingLot,
-                divisor,
-                bitValue,
+                0,
                 pageable
             )
             ResponseEntity.ok(
@@ -219,9 +210,9 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val createdParkingLot = parkingLotService.registerParkingLot(
-                principal.userId,
+                principal.memberId,
                 req.name,
                 req.latitude,
                 req.longitude,
@@ -264,10 +255,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             println(req)
             val updatedParkingLot = parkingLotService.updateParkingLot(
-                principal.userId,
+                principal.memberId,
                 parkingLotId,
                 req.name,
                 req.latitude,
@@ -311,8 +302,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            parkingLot.isPending = true
-            parkingLot.isDraft = false
+            parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(
                 ApiResponse(
@@ -346,10 +336,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findByUserId(principal.userId).get()
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findByMemberId(principal.memberId).get()
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            val fileData = parkingLotImageService.uploadImage(user, parkingLot, fileNamespace, file)
+            val fileData = parkingLotImageService.uploadImage(member, parkingLot, fileNamespace, file)
             return ResponseEntity.ok(
                 ApiResponse(
                     fileData,
@@ -381,9 +371,9 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findByUserId(principal.userId).get()
-            // TODO: Add verification to check if user has permissions to delete the file
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findByMemberId(principal.memberId).get()
+            // TODO: Add verification to check if member has permissions to delete the file
             parkingLotImageService.deleteImage(imageId)
             return ResponseEntity.ok(
                 ApiResponse(
@@ -417,9 +407,9 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findByUserId(principal.userId).get()
-            // TODO: Add verification to check if user has permissions to restore the file
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findByMemberId(principal.memberId).get()
+            // TODO: Add verification to check if member has permissions to restore the file
             parkingLotImageService.restoreImage(imageId)
             return ResponseEntity.ok(
                 ApiResponse(

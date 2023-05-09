@@ -4,7 +4,7 @@ import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -15,7 +15,7 @@ import java.util.*
 @Controller
 class ParkingLotResolver(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository
+    private val userRepository: MemberRepository
 ) {
 
     /**
@@ -62,7 +62,7 @@ class ParkingLotResolver(
         @Argument ownerId: String
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByUserId(ownerId).get()
+        val user = userRepository.findByMemberId(ownerId).get()
         val parkingLots = parkingLotRepository.findAllByOwner(user, pr)
         return PagedResponse(
             parkingLots.content,

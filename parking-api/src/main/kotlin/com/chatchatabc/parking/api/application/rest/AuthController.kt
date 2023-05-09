@@ -1,13 +1,13 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.user.UserPhoneLoginRequest
-import com.chatchatabc.parking.api.application.dto.user.UserVerifyOTPRequest
-import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
+import com.chatchatabc.parking.api.application.dto.member.MemberPhoneLoginRequest
+import com.chatchatabc.parking.api.application.dto.member.MemberVerifyOTPRequest
+import com.chatchatabc.parking.api.application.event.member.MemberLoginEvent
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.service.UserService
+import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.service.MemberService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.context.ApplicationEventPublisher
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val userService: UserService,
+    private val memberService: MemberService,
     private val jwtService: JwtService,
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
@@ -29,18 +29,18 @@ class AuthController(
      */
     @Operation(
         summary = "Login with phone number or username",
-        description = "This API is used for both parking managers and users."
+        description = "This API is used for both parking managers and members."
     )
     @PostMapping("/login")
     fun loginWithPhone(
-        @RequestBody req: UserPhoneLoginRequest
-    ): ResponseEntity<ApiResponse<User>> {
+        @RequestBody req: MemberPhoneLoginRequest
+    ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            userService.softRegisterUser(req.phone, req.username)
+            memberService.softRegisterMember(req.phone, req.username)
             // Generate OTP and set to KV store
-            val otp = userService.generateOTPAndSaveToKV(req.phone, 900L)
+            val otp = memberService.generateOTPAndSaveToKV(req.phone, 900L)
             // Send OTP to SMS using events
-            applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp))
+            applicationEventPublisher.publishEvent(MemberLoginEvent(this, req.phone, otp))
             ResponseEntity.ok().body(
                 ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
@@ -55,28 +55,28 @@ class AuthController(
 
 
     /**
-     * Verify OTP dynamically users
+     * Verify OTP dynamically members
      */
     @Operation(
-        summary = "Verify the OTP of a user logging in.",
-        description = "This API is used for both parking managers and users. Type = manager if verifying a parking manager. Type = user if verifying a user."
+        summary = "Verify the OTP of a member logging in.",
+        description = "This API is used for both parking managers and members. Type = manager if verifying a parking manager. Type = member if verifying a member."
     )
     @PostMapping("/verify/{type}")
     fun verifyOTP(
-        @RequestBody request: UserVerifyOTPRequest,
+        @RequestBody request: MemberVerifyOTPRequest,
         @PathVariable type: String,
-    ): ResponseEntity<ApiResponse<User>> {
+    ): ResponseEntity<ApiResponse<Member>> {
         return try {
             val headers = HttpHeaders()
-            var roleName: RoleNames = RoleNames.ROLE_USER
+            var roleName: RoleNames = RoleNames.ROLE_MEMBER
             if (type == "manager") {
                 roleName = RoleNames.ROLE_PARKING_MANAGER
             }
-            val user = userService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(user.userId)
+            val member = memberService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
+            val token: String = jwtService.generateToken(member.memberId)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
-                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.USER_VERIFY_OTP_SUCCESS.name, false)
+                ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()

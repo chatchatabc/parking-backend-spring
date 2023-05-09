@@ -4,5 +4,5 @@ public enum RoleNames {
     ROLE_ADMIN,
     ROLE_PARKING_MANAGER,
     ROLE_ENFORCER,
-    ROLE_USER
+    ROLE_MEMBER
 }

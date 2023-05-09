@@ -4,11 +4,11 @@ import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.log.UserLogoutLog
-import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
-import com.chatchatabc.parking.domain.specification.UserSpecification
+import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.model.log.MemberLogoutLog
+import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.log.MemberLogoutLogRepository
+import com.chatchatabc.parking.domain.specification.MemberSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -21,75 +21,75 @@ import org.springframework.web.bind.annotation.GetMapping
 import java.util.*
 
 @Controller
-class UserResolver(
-    private val userRepository: UserRepository,
-    private val userLogoutLogRepository: UserLogoutLogRepository,
+class MemberResolver(
+    private val memberRepository: MemberRepository,
+    private val memberLogoutLogRepository: MemberLogoutLogRepository,
 ) {
 
     /**
-     * Get user by id
+     * Get member by id
      */
     @QueryMapping
-    fun getUserById(
+    fun getMemberById(
         @Argument id: String
-    ): Optional<User> {
-        return userRepository.findByUserId(id)
+    ): Optional<Member> {
+        return memberRepository.findByMemberId(id)
     }
 
     /**
-     * Get user by username
+     * Get member by username
      */
     @QueryMapping
-    fun getUserByUsername(
+    fun getMemberByUsername(
         @Argument username: String
-    ): Optional<User> {
-        return userRepository.findByUsername(username)
+    ): Optional<Member> {
+        return memberRepository.findByUsername(username)
     }
 
     /**
-     * Get user by phone
+     * Get member by phone
      */
     @QueryMapping
-    fun getUserByPhone(
+    fun getMemberByPhone(
         @Argument phone: String
-    ): Optional<User> {
-        return userRepository.findByPhone(phone)
+    ): Optional<Member> {
+        return memberRepository.findByPhone(phone)
     }
 
     /**
-     * Get all users w/ keyword
+     * Get all members w/ keyword
      */
     @QueryMapping
-    fun getUsers(
+    fun getMembers(
         @Argument page: Int,
         @Argument size: Int,
         @Argument keyword: String?
-    ): PagedResponse<User> {
+    ): PagedResponse<Member> {
         val pr = PageRequest.of(page, size)
-        val spec = UserSpecification.withKeyword(keyword ?: "")
-        val users = userRepository.findAll(spec, pr)
+        val spec = MemberSpecification.withKeyword(keyword ?: "")
+        val members = memberRepository.findAll(spec, pr)
         return PagedResponse(
-            users.content,
+            members.content,
             PageInfo(
-                users.size,
-                users.totalElements,
-                users.isFirst,
-                users.isLast,
-                users.isEmpty
+                members.size,
+                members.totalElements,
+                members.isFirst,
+                members.isLast,
+                members.isEmpty
             )
         )
     }
 
     /**
-     * Get User Logout Logs w/ pageable
+     * Get Member Logout Logs w/ pageable
      */
     // TODO: Add date range?
     @GetMapping("/get-logout-logs")
-    fun getUserLogoutLogs(
+    fun getMemberLogoutLogs(
         pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<UserLogoutLog>>> {
+    ): ResponseEntity<ApiResponse<Page<MemberLogoutLog>>> {
         return try {
-            val logs = userLogoutLogRepository.findAll(pageable)
+            val logs = memberLogoutLogRepository.findAll(pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     logs,
