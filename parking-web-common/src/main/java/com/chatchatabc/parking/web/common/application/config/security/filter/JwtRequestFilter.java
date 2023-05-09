@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.web.common.application.config.security.filter;
 
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -47,7 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         final String token = header.substring(7);
-        final User user = jwtService.validateTokenAndGetUser(token);
+        final Member user = jwtService.validateTokenAndGetMember(token);
 
         if (user == null) {
             filterChain.doFilter(request, response);
@@ -66,7 +66,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // Continue flow with the user in the security context
         filterChain.doFilter(request, response);
-        logRequest(request, response, user.getUserId());
+        logRequest(request, response, user.getMemberId());
     }
 
     /**
