@@ -34,6 +34,14 @@ public class MemberBanHistoryLog {
     @Column(columnDefinition = "TEXT")
     private String reason;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String unbanReason;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    private Member unbannedBy;
+
     @Column
     private Integer status = 0;
 

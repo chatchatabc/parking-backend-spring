@@ -121,6 +121,7 @@ public class Member extends FlagEntity implements UserDetails {
      * @return true if member is not banned, false otherwise
      */
     @Override
+    // TODO: Maybe theres a more simpler system than this
     public boolean isAccountNonLocked() {
         // Check if memberBanHistoryLogs has an active ban
         if (this.memberBanHistoryLogs != null) {

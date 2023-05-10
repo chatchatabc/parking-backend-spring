@@ -31,3 +31,7 @@ data class MemberBanRequest(
     val until: LocalDateTime,
     val reason: String
 )
+
+data class MemberUnbanRequest(
+    val unbanReason: String
+)

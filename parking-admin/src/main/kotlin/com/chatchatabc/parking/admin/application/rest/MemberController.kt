@@ -1,10 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.member.MemberBanRequest
-import com.chatchatabc.parking.admin.application.dto.member.MemberCreateRequest
-import com.chatchatabc.parking.admin.application.dto.member.MemberOverridePasswordRequest
-import com.chatchatabc.parking.admin.application.dto.member.MemberUpdateRequest
+import com.chatchatabc.parking.admin.application.dto.member.*
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog
@@ -143,6 +140,40 @@ class MemberController(
                 this.reason = req.reason
                 this.until = req.until
                 this.status = 0
+            }
+            ResponseEntity.ok().body(
+                ApiResponse(
+                    memberBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
+                )
+            )
+        }
+    }
+
+    /**
+     * Unban member
+     */
+    @PostMapping("/unban/{memberId}")
+    fun unbanMember(
+        @PathVariable memberId: String,
+        @RequestBody req: MemberUnbanRequest
+    ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
+        return try {
+            // Get principal
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val unbannedBy = memberRepository.findByMemberId(principal.memberId).get()
+            val member = memberRepository.findByMemberId(memberId).get()
+            // Get latest ban log
+            val banLog = memberBanHistoryLogRepository.findLatestBanLog(member).get().apply {
+                this.unbannedBy = unbannedBy
+                this.unbanReason = req.unbanReason
+                this.status = -1
             }
             ResponseEntity.ok().body(
                 ApiResponse(
