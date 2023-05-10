@@ -24,7 +24,7 @@ public class MemberBanHistoryLog {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @JoinColumn(name = "banned_by", referencedColumnName = "member_id")
     private Member bannedBy;
 
     @Column
