@@ -1,22 +1,35 @@
 package com.chatchatabc.parking.impl.domain.service;
 
+import com.chatchatabc.parking.domain.enums.RoleNames;
 import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.repository.RoleRepository;
+import com.chatchatabc.parking.infra.service.KVService;
+
+import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import org.mockito.InjectMocks;
+
 
 class MemberServiceImplTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
+    private KVService kvService;
 
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -25,6 +38,8 @@ class MemberServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    // ======================================================================
 
     @Test
     void softRegisterMember_NewMember_SuccessfullyRegistered() throws Exception {
@@ -49,6 +64,7 @@ class MemberServiceImplTest {
         Member existingMember = new Member();
         existingMember.setUsername(username);
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(existingMember));
+
 
         // Act
         memberService.softRegisterMember(phone, username);
@@ -76,4 +92,103 @@ class MemberServiceImplTest {
         verify(memberRepository, never()).save(any(Member.class));
     }
 
+    // ======================================================================
+
+    @Test
+    void testVerifyOTPAndAddRole_WithInvalidOTP_ShouldThrowException() {
+        // Arrange
+        String phone = "1234567890";
+        String otp = "123456";
+        String savedOTP = "654321";
+        RoleNames roleName = RoleNames.ROLE_ADMIN;
+
+        Member member = new Member();
+        member.setPhone(phone);
+        member.setRoles(new ArrayList<>()); // Initialize the roles collection
+
+        when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
+        when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(new Role()));
+        when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
+
+        // Act & Assert
+        assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
+    }
+
+    @Test
+    void testVerifyOTPAndAddRole_WithExpiredOTP_ShouldThrowException() {
+        // Arrange
+        String phone = "1234567890";
+        String otp = "123456";
+        String savedOTP = "";
+        RoleNames roleName = RoleNames.ROLE_ADMIN;
+
+        Member member = new Member();
+        member.setPhone(phone);
+        member.setRoles(new ArrayList<>()); // Initialize the roles collection
+
+        when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
+        when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(new Role()));
+        when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
+
+        // Act & Assert
+        assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
+    }
+
+    @Test
+    void testVerifyOTPAndAddRole_WithValidOTPAndExistingRole_ShouldNotAddRole() throws Exception {
+        // Arrange
+        String phone = "1234567890";
+        String otp = "123456";
+        String savedOTP = "123456";
+        RoleNames roleName = RoleNames.ROLE_ADMIN;
+
+        Member member = new Member();
+        member.setPhone(phone);
+        Role existingRole = new Role();
+        existingRole.setId("id");
+        member.getRoles().add(existingRole);
+
+        when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
+        when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(existingRole));
+        when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
+
+        // Act
+        Member result = memberService.verifyOTPAndAddRole(phone, otp, roleName);
+
+        // Assert
+        verify(memberRepository, times(1)).findByPhone(phone);
+        verify(roleRepository, times(1)).findByName(roleName.name());
+        verify(kvService, times(1)).get("otp_" + phone);
+        verify(kvService, times(1)).delete("otp_" + phone);
+        assertEquals(1, result.getRoles().size());
+    }
+
+    @Test
+    void testVerifyOTPAndAddRole_WithValidOTPAndNewRole_ShouldAddRoleToMember() throws Exception {
+        // Arrange
+        String phone = "1234567890";
+        String otp = "123456";
+        String savedOTP = "123456";
+        RoleNames roleName = RoleNames.ROLE_ADMIN;
+
+        Member member = new Member();
+        member.setPhone(phone);
+        Role existingRole = new Role();
+        existingRole.setId("id");
+        member.getRoles().add(existingRole);
+
+        when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
+        when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(new Role()));
+        when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
+
+        // Act
+        Member result = memberService.verifyOTPAndAddRole(phone, otp, roleName);
+
+        // Assert
+        verify(memberRepository, times(1)).findByPhone(phone);
+        verify(roleRepository, times(1)).findByName(roleName.name());
+        verify(kvService, times(1)).get("otp_" + phone);
+        verify(kvService, times(1)).delete("otp_" + phone);
+        assertEquals(2, result.getRoles().size()); // One existing role + newly added role
+    }
 }
