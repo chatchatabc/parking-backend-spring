@@ -9,11 +9,11 @@ public enum ResponseNames {
     SUCCESS_UPDATE,
 
     /**
-     * User Related
+     * Member Related
      */
-    USER_LOGIN_SUCCESS,
-    USER_BAD_CREDENTIALS,
-    USER_VERIFY_OTP_SUCCESS,
+    MEMBER_LOGIN_SUCCESS,
+    MEMBER_BAD_CREDENTIALS,
+    MEMBER_VERIFY_OTP_SUCCESS,
 
     /**
      * Invoice Related

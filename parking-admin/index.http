@@ -1,4 +1,4 @@
-### User Login
+### Member Login
 POST {{adminBaseUrl}}/api/auth/login
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
@@ -8,21 +8,21 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Get User Profile
+### Get Member Profile
 GET {{adminBaseUrl}}/api/profile/me
 Authorization: Bearer {{adminToken}}
 
-### Get List of Users
+### Get List of Members
 GET {{adminBaseUrl}}/graphql
 
-### User Logout
+### Member Logout
 POST {{adminBaseUrl}}/api/profile/logout
 Authorization: Bearer {{adminToken}}
 
-### Get User Login Logs
-GET {{adminBaseUrl}}/api/user/get-login-logs
+### Get Member Login Logs
+GET {{adminBaseUrl}}/api/member/get-login-logs
 Authorization: Bearer {{adminToken}}
 
-### Get User Logout Logs
-GET {{adminBaseUrl}}/api/user/get-logout-logs
+### Get Member Logout Logs
+GET {{adminBaseUrl}}/api/member/get-logout-logs
 Authorization: Bearer {{adminToken}}

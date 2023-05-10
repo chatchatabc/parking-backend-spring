@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
-import com.chatchatabc.parking.domain.repository.UserRepository;
+import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class ParkingLotServiceImpl implements ParkingLotService {
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     @Autowired
     private ParkingLotRepository parkingLotRepository;
     @Autowired
@@ -41,9 +41,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      */
     @Override
     public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
-        Optional<User> owner = userRepository.findByUserId(ownerId);
+        Optional<Member> owner = memberRepository.findByMemberId(ownerId);
         if (owner.isEmpty()) {
-            throw new Exception("User not found");
+            throw new Exception("Member not found");
         }
         ParkingLot parkingLot = new ParkingLot();
         parkingLot.setOwner(owner.get());
@@ -54,18 +54,17 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         parkingLot.setDescription(description);
         parkingLot.setCapacity(capacity);
         parkingLot.setAvailableSlots(capacity);
-        parkingLot.setDraft(true);
+        parkingLot.setStatus(0);
         parkingLot.setBusinessHoursStart(businessHoursStart);
         parkingLot.setBusinessHoursEnd(businessHoursEnd);
         parkingLot.setOpenDaysFlag(openDaysFlag);
-        // TODO: Add owner to user_parking_lot table
         return parkingLotRepository.save(parkingLot);
     }
 
     /**
      * Update parking lot
      *
-     * @param userId       the user id
+     * @param memberId     the member id
      * @param parkingLotId the parking lot id
      * @param name         the name of the parking lot
      * @param latitude     the latitude of the parking lot
@@ -76,11 +75,10 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @return the parking lot
      */
     @Override
-    public ParkingLot updateParkingLot(String userId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
-        // TODO: Get user from allowed list to check for permission
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new Exception("User not found");
+    public ParkingLot updateParkingLot(String memberId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        if (member.isEmpty()) {
+            throw new Exception("Member not found");
         }
         Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
         if (parkingLot.isEmpty()) {
@@ -140,15 +138,15 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param userId       the user id
+     * @param memberId     the member id
      * @param parkingLotId the parking lot id
      * @return the parking lot
      */
     @Override
-    public ParkingLot verifyParkingLot(String userId, String parkingLotId) throws Exception {
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new Exception("User not found");
+    public ParkingLot verifyParkingLot(String memberId, String parkingLotId) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        if (member.isEmpty()) {
+            throw new Exception("Member not found");
         }
         Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
         if (parkingLot.isEmpty()) {
@@ -159,8 +157,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             throw new Exception("Parking lot is already verified");
         }
         parkingLot.get().setVerifiedAt(LocalDateTime.now());
-        parkingLot.get().setDraft(false);
-        parkingLot.get().setPending(false);
+        parkingLot.get().setStatus(2);
         return parkingLotRepository.save(parkingLot.get());
     }
 }

@@ -1,7 +1,7 @@
 -- Create Role Table
 CREATE TABLE IF NOT EXISTS role
 (
-    id   UUID PRIMARY KEY,
+    id   VARCHAR(36) PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
@@ -26,8 +26,8 @@ WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ROLE_MEMBER');
 CREATE TABLE IF NOT EXISTS member
 (
     id                SERIAL PRIMARY KEY,
-    member_id         UUID          NOT NULL UNIQUE,
-    notification_id   UUID          NOT NULL UNIQUE,
+    member_id         VARCHAR(36)   NOT NULL UNIQUE,
+    notification_id   VARCHAR(36)   NOT NULL UNIQUE,
     email             VARCHAR(255) UNIQUE,
     username          VARCHAR(15) UNIQUE,
     password          VARCHAR(255),
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS member
 -- Create member_role table
 CREATE TABLE IF NOT EXISTS member_role
 (
-    member_id UUID NOT NULL,
-    role_id   UUID NOT NULL,
+    member_id VARCHAR(36) NOT NULL,
+    role_id   VARCHAR(36) NOT NULL,
     PRIMARY KEY (member_id, role_id),
     FOREIGN KEY (member_id) REFERENCES member (member_id),
     FOREIGN KEY (role_id) REFERENCES role (id)
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS member_role
 -- Create member_login_log table
 CREATE TABLE IF NOT EXISTS member_login_log
 (
-    id         UUID PRIMARY KEY,
-    member_id  UUID               NOT NULL,
+    id         VARCHAR(36) PRIMARY KEY,
+    member_id  VARCHAR(36)        NOT NULL,
     email      VARCHAR(255)       NOT NULL,
     phone      VARCHAR(15)        NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS member_login_log
 -- Create member_logout_log table
 CREATE TABLE IF NOT EXISTS member_logout_log
 (
-    id         UUID PRIMARY KEY,
-    member_id  UUID          NOT NULL,
+    id         VARCHAR(36) PRIMARY KEY,
+    member_id  VARCHAR(36)   NOT NULL,
     email      VARCHAR(255)  NOT NULL,
     phone      VARCHAR(15)   NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
@@ -94,21 +94,21 @@ WHERE NOT EXISTS (SELECT 1 FROM member WHERE username = 'admin');
 
 -- Assign admin role to admin member
 INSERT INTO member_role (member_id, role_id)
-SELECT users.id, roles.id
-FROM users,
-     roles
-WHERE users.username = 'admin'
-  AND roles.name = 'ROLE_ADMIN'
+SELECT member.member_id, role.id
+FROM member,
+     role
+WHERE member.username = 'admin'
+  AND role.name = 'ROLE_ADMIN'
 ON CONFLICT DO NOTHING;
 
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
 (
-    id           SERIAL PRIMARY KEY,
+    id           VARCHAR(36) PRIMARY KEY,
     name         VARCHAR(255) NOT NULL,
     plate_number VARCHAR(255) NOT NULL UNIQUE,
     type         INT          NOT NULL DEFAULT 0,
-    owner_id     UUID         NOT NULL,
+    owner_id     VARCHAR(36)  NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES member (member_id)
@@ -117,8 +117,8 @@ CREATE TABLE IF NOT EXISTS vehicle
 -- Create member_vehicle table
 CREATE TABLE IF NOT EXISTS member_vehicle
 (
-    member_id  UUID NOT NULL,
-    vehicle_id INT  NOT NULL,
+    member_id  VARCHAR(36) NOT NULL,
+    vehicle_id VARCHAR(36) NOT NULL,
     PRIMARY KEY (member_id, vehicle_id),
     FOREIGN KEY (member_id) REFERENCES member (member_id),
     FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS member_vehicle
 -- Create rate table
 CREATE TABLE IF NOT EXISTS rate
 (
-    id                                UUID PRIMARY KEY,
+    id                                VARCHAR(36) PRIMARY KEY,
     type                              INT            NOT NULL DEFAULT 0,
     interval                          INT            NOT NULL DEFAULT 0,
     free_hours                        INT            NOT NULL DEFAULT 0,
@@ -142,9 +142,9 @@ CREATE TABLE IF NOT EXISTS rate
 -- Create parking_lot table
 CREATE TABLE IF NOT EXISTS parking_lot
 (
-    id                   UUID PRIMARY KEY,
-    owner_id             UUID          NOT NULL,
-    rate_id              UUID,
+    id                   VARCHAR(36) PRIMARY KEY,
+    owner_id             VARCHAR(36)   NOT NULL,
+    rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,
     latitude             FLOAT         NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
-    verified_by          UUID,
+    verified_by          VARCHAR(36),
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL,
@@ -168,15 +168,15 @@ CREATE TABLE IF NOT EXISTS parking_lot
 -- Create parking_lot_image table
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
-    id             UUID PRIMARY KEY,
-    parking_lot_id UUID         NOT NULL,
+    id             VARCHAR(36) PRIMARY KEY,
+    parking_lot_id VARCHAR(36)  NOT NULL,
     file_order     INT          NOT NULL DEFAULT 0,
     filename       VARCHAR(255) NOT NULL,
     filesize       INT          NOT NULL,
     mimetype       VARCHAR(255) NOT NULL,
     url            VARCHAR(255) NOT NULL,
     status         INT          NOT NULL DEFAULT 0,
-    uploaded_by    UUID         NOT NULL,
+    uploaded_by    VARCHAR(36)  NOT NULL,
     created_at     TIMESTAMP    NOT NULL,
     updated_at     TIMESTAMP    NOT NULL,
     FOREIGN KEY (parking_lot_id) REFERENCES parking_lot (id),
@@ -186,9 +186,9 @@ CREATE TABLE IF NOT EXISTS parking_lot_image
 -- Create invoice table
 CREATE TABLE IF NOT EXISTS invoice
 (
-    id                                  UUID PRIMARY KEY,
-    parking_lot_id                      UUID           NOT NULL,
-    vehicle_id                          INT            NOT NULL,
+    id                                  VARCHAR(36) PRIMARY KEY,
+    parking_lot_id                      VARCHAR(36)    NOT NULL,
+    vehicle_id                          VARCHAR(36)    NOT NULL,
     plate_number                        VARCHAR(255)   NOT NULL,
     estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
     total                               DECIMAL(10, 2) NOT NULL,
@@ -204,13 +204,13 @@ CREATE TABLE IF NOT EXISTS invoice
 -- Create report table
 CREATE TABLE IF NOT EXISTS report
 (
-    id           UUID PRIMARY KEY,
+    id           VARCHAR(36) PRIMARY KEY,
     name         VARCHAR(255) NOT NULL,
     description  VARCHAR(255) NOT NULL,
     plate_number VARCHAR(255) NOT NULL,
     latitude     FLOAT        NOT NULL,
     longitude    FLOAT        NOT NULL,
-    reported_by  UUID         NOT NULL,
+    reported_by  VARCHAR(36)  NOT NULL,
     cancelled_at TIMESTAMP,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL,
@@ -220,12 +220,12 @@ CREATE TABLE IF NOT EXISTS report
 -- Create report_status table
 CREATE TABLE IF NOT EXISTS report_status
 (
-    id           UUID PRIMARY KEY,
-    report_id    UUID      NOT NULL,
-    performed_by UUID      NOT NULL,
-    status       INT       NOT NULL DEFAULT 0,
+    id           VARCHAR(36) PRIMARY KEY,
+    report_id    VARCHAR(36) NOT NULL,
+    performed_by VARCHAR(36) NOT NULL,
+    status       INT         NOT NULL DEFAULT 0,
     remarks      VARCHAR(255),
-    created_at   TIMESTAMP NOT NULL,
+    created_at   TIMESTAMP   NOT NULL,
     FOREIGN KEY (report_id) REFERENCES report (id),
     FOREIGN KEY (performed_by) REFERENCES member (member_id)
 );

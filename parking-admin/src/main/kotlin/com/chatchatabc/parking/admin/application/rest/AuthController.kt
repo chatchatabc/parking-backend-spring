@@ -1,12 +1,12 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.user.UserLoginRequest
+import com.chatchatabc.parking.admin.application.dto.member.MemberLoginRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.log.UserLoginLog
-import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
+import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.model.log.MemberLoginLog
+import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpHeaders
@@ -20,21 +20,21 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class AuthController(
     private val authenticationManager: AuthenticationManager,
-    private val userRepository: UserRepository,
+    private val memberRepository: MemberRepository,
     private val jwtService: JwtService,
-    private val userLoginLogRepository: UserLoginLogRepository
+    private val memberLoginLogRepository: MemberLoginLogRepository
 ) {
     /**
-     * Login user and authenticate user
+     * Login member and authenticate member
      */
     @PostMapping("/login")
-    fun loginUser(
-        @RequestBody req: UserLoginRequest,
+    fun loginMember(
+        @RequestBody req: MemberLoginRequest,
         request: HttpServletRequest
-    ): ResponseEntity<ApiResponse<User>> {
-        val user = userRepository.findByUsername(req.username)
+    ): ResponseEntity<ApiResponse<Member>> {
+        val member = memberRepository.findByUsername(req.username)
         return try {
-            // Authenticate user
+            // Authenticate member
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                     req.username,
@@ -43,32 +43,32 @@ class AuthController(
             )
             // Generate JWT Token
             val headers = HttpHeaders()
-            val token: String = jwtService.generateToken(user.get().userId)
+            val token: String = jwtService.generateToken(member.get().memberId)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             // TODO: Move as an event
-            userLoginLogRepository.save(
-                UserLoginLog().apply {
-                    this.user = user.get()
+            memberLoginLogRepository.save(
+                MemberLoginLog().apply {
+                    this.member = member.get()
                     this.ipAddress = request.remoteAddr
-                    this.email = user.get().email
-                    this.phone = user.get().phone
+                    this.email = member.get().email
+                    this.phone = member.get().phone
                     this.type = 1
                     this.success = true
                 }
             )
             ResponseEntity.ok().headers(headers)
-                .body(ApiResponse(user.get(), HttpStatus.OK.value(), ResponseNames.USER_LOGIN_SUCCESS.name, false))
+                .body(ApiResponse(member.get(), HttpStatus.OK.value(), ResponseNames.MEMBER_LOGIN_SUCCESS.name, false))
         } catch (e: Exception) {
             // Generate Failed Login Log
             // TODO: Move as an event
-            if (user.isPresent) {
-                userLoginLogRepository.save(
-                    UserLoginLog().apply {
-                        this.user = user.get()
+            if (member.isPresent) {
+                memberLoginLogRepository.save(
+                    MemberLoginLog().apply {
+                        this.member = member.get()
                         this.ipAddress = request.remoteAddr
-                        this.email = user.get().email
-                        this.phone = user.get().phone
+                        this.email = member.get().email
+                        this.phone = member.get().phone
                         this.type = 1
                         this.success = false
                     }
@@ -79,7 +79,7 @@ class AuthController(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.USER_BAD_CREDENTIALS.name,
+                        ResponseNames.MEMBER_BAD_CREDENTIALS.name,
                         true
                     )
                 )

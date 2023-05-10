@@ -6,45 +6,45 @@ public interface VehicleService {
     /**
      * Register vehicle
      *
-     * @param userId      the user id
+     * @param memberId    the member id
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
      * @param type        the type of the vehicle
      * @return the vehicle
      */
-    Vehicle registerVehicle(String userId, String name, String plateNumber, int type) throws Exception;
+    Vehicle registerVehicle(String memberId, String name, String plateNumber, int type) throws Exception;
 
     /**
      * Update vehicle
      *
-     * @param userId      the user id
+     * @param memberId    the member id
      * @param vehicleId   the vehicle id
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
      * @param type        the type of the vehicle
      * @return the vehicle
      */
-    Vehicle updateVehicle(String userId, String vehicleId, String name, String plateNumber, Integer type) throws Exception;
+    Vehicle updateVehicle(String memberId, String vehicleId, String name, String plateNumber, Integer type) throws Exception;
 
     /**
-     * Add a user to a vehicle
+     * Add a member to a vehicle
      *
-     * @param userId      the user id
-     * @param vehicleId   the vehicle id
-     * @param userToAddId the user to add id
+     * @param memberId      the member id
+     * @param vehicleId     the vehicle id
+     * @param memberToAddId the member to add id
      * @return the vehicle
      * @throws Exception the exception
      */
-    Vehicle addUserToVehicle(String userId, String vehicleId, String userToAddId) throws Exception;
+    Vehicle addMemberToVehicle(String memberId, String vehicleId, String memberToAddId) throws Exception;
 
     /**
-     * Remove a user from a vehicle
+     * Remove a member from a vehicle
      *
-     * @param userId         the user id
-     * @param vehicleId      the vehicle id
-     * @param userToRemoveId the user to remove id
+     * @param memberId         the member id
+     * @param vehicleId        the vehicle id
+     * @param memberToRemoveId the member to remove id
      * @return the vehicle
      * @throws Exception the exception
      */
-    Vehicle removeUserFromVehicle(String userId, String vehicleId, String userToRemoveId) throws Exception;
+    Vehicle removeMemberFromVehicle(String memberId, String vehicleId, String memberToRemoveId) throws Exception;
 }

@@ -1,16 +1,16 @@
 type Query {
-    getUserById(id: String!): User
-    getUserByPhone(phone: String!): User
-    getUserByUsername(username: String!): User
-    getUsers(page: Int size: Int, keyword: String): UserList!
+    getMemberById(id: String!): Member
+    getMemberByPhone(phone: String!): Member
+    getMemberByUsername(username: String!): Member
+    getMembers(page: Int size: Int, keyword: String): MemberList!
 
     getRoles(page: Int size: Int): RoleList!
 
-    getUserLoginLogs(page: Int size: Int): UserLoginLogList!
-    getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
+    getMemberLoginLogs(page: Int size: Int): MemberLoginLogList!
+    getMemberLoginLogsByMember(page: Int size: Int, id: String!): MemberLoginLogList!
 
-    getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
-    getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
+    getMemberLogoutLogs(page: Int size: Int): MemberLogoutLogList!
+    getMemberLogoutLogsByMember(page: Int size: Int, id: String!): MemberLoginLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
     getVehicleById(id: String!): Vehicle
@@ -28,14 +28,14 @@ type Query {
 }
 
 type Mutation {
-    updateUser(
+    updateMember(
         id: String!
         phone: String
         username: String
         firstName: String
         lastName: String
         email: String
-    ): User
+    ): Member
 }
 
 # Role Related
@@ -48,9 +48,9 @@ type RoleList {
     pageInfo: PageInfo!
 }
 
-# User Related
-type User {
-    userId: String
+# Member Related
+type Member {
+    memberId: String
     # Notification ID should be retrieved in a private manner
     # notificationId: String
     username: String
@@ -65,15 +65,15 @@ type User {
     emailVerifiedAt: String
 }
 
-type UserList {
-    content: [User]!
+type MemberList {
+    content: [Member]!
     pageInfo: PageInfo!
 }
 
-# User Login Log Related
-type UserLoginLog {
+# member Login Log Related
+type MemberLoginLog {
     id: String
-    user: User
+    member: Member
     email: String
     phone: String
     type: Int
@@ -82,15 +82,15 @@ type UserLoginLog {
     createdAt: String
 }
 
-type UserLoginLogList {
-    content: [UserLoginLog]!
+type MemberLoginLogList {
+    content: [MemberLoginLog]!
     pageInfo: PageInfo!
 }
 
-# User Logout Log Related
-type UserLogoutLog {
+# Member Logout Log Related
+type MemberLogoutLog {
     id: String
-    user: User
+    member: Member
     email: String
     phone: String
     type: Int
@@ -98,8 +98,8 @@ type UserLogoutLog {
     createdAt: String
 }
 
-type UserLogoutLogList {
-    content: [UserLogoutLog]!
+type MemberLogoutLogList {
+    content: [MemberLogoutLog]!
     pageInfo: PageInfo!
 }
 
@@ -111,7 +111,7 @@ type Authorities {
 # Vehicle
 type Vehicle {
     id: String!
-    owner: User
+    owner: Member
     name: String
     plateNumber: String
     type: Int
@@ -140,9 +140,9 @@ type ParkingLot {
     #    createdAt: String
     updatedAt: String
     verifiedAt: String
-    owner: User
+    owner: Member
     rate: Rate
-    verifiedBy: User
+    verifiedBy: Member
 }
 
 type ParkingLotList {
@@ -191,7 +191,7 @@ type Report {
     plateNumber: String
     latitude: Float
     longitude: Float
-    reportedBy: User
+    reportedBy: Member
     cancelledAt: String
     status: [ReportStatus]
     createdAt: String
@@ -205,7 +205,7 @@ type ReportList {
 
 type ReportStatus {
     id: String!
-    performedBy: User
+    performedBy: Member
     status: Int
     remarks: String
     createdAt: String

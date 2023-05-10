@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "report_statuses")
+@Table(name = "report_status")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportStatus {
@@ -26,7 +26,7 @@ public class ReportStatus {
 
     @ManyToOne
     @JoinColumn(name = "performed_by")
-    private User performedBy;
+    private Member performedBy;
 
     @Column
     private int status;

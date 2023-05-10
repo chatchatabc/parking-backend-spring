@@ -4,7 +4,7 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.vehicle.VehicleRegisterRequest
 import com.chatchatabc.parking.api.application.dto.vehicle.VehicleUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
@@ -23,16 +23,16 @@ class VehicleController(
 ) {
 
     /**
-     * Get all vehicles by user
+     * Get all vehicles by member
      */
     @GetMapping("/get-my-vehicles")
     fun getMyVehicles(
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicles = vehicleRepository.findAllByUser(principal.userId, pageable)
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val vehicles = vehicleRepository.findAllByMember(principal.memberId, pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicles,
@@ -61,15 +61,15 @@ class VehicleController(
         @PathVariable vehicleId: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val vehicle = vehicleRepository.findById(vehicleId)
             if (vehicle.isEmpty) {
                 throw Exception("Vehicle not found")
             }
-            // User should have access to this vehicle. If user is not inside vehicle users array
-            if (vehicle.get().users.find { it.id == principal.id } == null) {
-                throw Exception("User does not have access to this vehicle")
+            // Member should have access to this vehicle. If member is not inside vehicle members array
+            if (vehicle.get().members.find { it.id == principal.id } == null) {
+                throw Exception("Member does not have access to this vehicle")
             }
 
             ResponseEntity.ok(
@@ -100,9 +100,9 @@ class VehicleController(
         @RequestBody req: VehicleRegisterRequest
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.registerVehicle(principal.userId, req.name, req.plateNumber, req.type)
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val vehicle = vehicleService.registerVehicle(principal.memberId, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
@@ -126,9 +126,9 @@ class VehicleController(
         @RequestBody req: VehicleUpdateRequest
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.updateVehicle(principal.userId, vehicleId, req.name, req.plateNumber, req.type)
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val vehicle = vehicleService.updateVehicle(principal.memberId, vehicleId, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -136,17 +136,17 @@ class VehicleController(
     }
 
     /**
-     * Add a user to a vehicle
+     * Add a member to a vehicle
      */
-    @PutMapping("/add-user/{vehicleId}/{userId}")
-    fun addUserToVehicle(
+    @PutMapping("/add-member/{vehicleId}/{memberId}")
+    fun addMemberToVehicle(
         @PathVariable vehicleId: String,
-        @PathVariable userId: String
+        @PathVariable memberId: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.addUserToVehicle(principal.userId, vehicleId, userId)
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val vehicle = vehicleService.addMemberToVehicle(principal.memberId, vehicleId, memberId)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -155,17 +155,17 @@ class VehicleController(
 
 
     /**
-     * Remove a user from a vehicle
+     * Remove a member from a vehicle
      */
-    @PutMapping("/remove-user/{vehicleId}/{userId}")
-    fun removeUserFromVehicle(
+    @PutMapping("/remove-member/{vehicleId}/{memberId}")
+    fun removeMemberFromVehicle(
         @PathVariable vehicleId: String,
-        @PathVariable userId: String
+        @PathVariable memberId: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get user from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val vehicle = vehicleService.removeUserFromVehicle(principal.userId, vehicleId, userId)
+            // Get member from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberId, vehicleId, memberId)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,

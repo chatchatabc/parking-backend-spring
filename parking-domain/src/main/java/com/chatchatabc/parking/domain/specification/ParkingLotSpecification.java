@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.domain.specification;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -11,8 +11,8 @@ public class ParkingLotSpecification {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
 
-            // Join the owner user entity
-            Join<ParkingLot, User> owner = root.join("owner");
+            // Join the owner member entity
+            Join<ParkingLot, Member> owner = root.join("owner");
 
             return builder.or(
                     builder.like(builder.lower(root.get("name")), pattern),

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role implements GrantedAuthority {
@@ -24,7 +24,7 @@ public class Role implements GrantedAuthority {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private List<User> users = List.of();
+    private List<Member> members = List.of();
 
     @Override
     public String getAuthority() {

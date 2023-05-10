@@ -3,8 +3,8 @@ package com.chatchatabc.parking.web.common.impl.application.rest.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.chatchatabc.parking.domain.model.User;
-import com.chatchatabc.parking.domain.repository.UserRepository;
+import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class JwtServiceImpl implements JwtService {
     private String expiration;
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     private final Algorithm hmac512;
     private final JWTVerifier verifier;
@@ -38,30 +38,30 @@ public class JwtServiceImpl implements JwtService {
     }
 
     /**
-     * Generate a JWT token for the given user id
+     * Generate a JWT token for the given member id
      *
-     * @param userId the user id
+     * @param memberId the member id
      * @return the JWT token
      */
     @Override
-    public String generateToken(String userId) {
+    public String generateToken(String memberId) {
         return JWT.create()
-                .withSubject(userId)
+                .withSubject(memberId)
                 .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(expiration)))
                 .sign(hmac512);
     }
 
     /**
-     * Validate the given token and return the user
+     * Validate the given token and return the member
      *
      * @param token the token
-     * @return the user
+     * @return the member
      */
     @Override
-    public User validateTokenAndGetUser(String token) {
+    public Member validateTokenAndGetMember(String token) {
         try {
-            String userId = verifier.verify(token).getSubject();
-            return userRepository.findByUserId(userId).orElse(null);
+            String memberId = verifier.verify(token).getSubject();
+            return memberRepository.findByMemberId(memberId).orElse(null);
         } catch (Exception e) {
             return null;
         }

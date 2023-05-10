@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.web.common.application.config.security.filter;
 
-import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
     /**
-     * Filter the request and add the user to the security context if the token is valid
+     * Filter the request and add the member to the security context if the token is valid
      *
      * @param request     the request
      * @param response    the response
@@ -47,26 +47,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         final String token = header.substring(7);
-        final User user = jwtService.validateTokenAndGetUser(token);
+        final Member member = jwtService.validateTokenAndGetMember(token);
 
-        if (user == null) {
+        if (member == null) {
             filterChain.doFilter(request, response);
             logRequest(request, response);
             return;
         }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                user,
+                member,
                 null,
-                user.getAuthorities()
+                member.getAuthorities()
         );
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Continue flow with the user in the security context
+        // Continue flow with the member in the security context
         filterChain.doFilter(request, response);
-        logRequest(request, response, user.getUserId());
+        logRequest(request, response, member.getMemberId());
     }
 
     /**
@@ -85,10 +85,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      *
      * @param request  the request
      * @param response the response
-     * @param userId   the user id
+     * @param memberId   the member id
      */
-    private void logRequest(HttpServletRequest request, HttpServletResponse response, String userId) {
-        log.info("Request path: {} {} User ID {} from {} with code {}",
-                request.getMethod(), request.getRequestURL(), userId, request.getRemoteAddr(), response.getStatus());
+    private void logRequest(HttpServletRequest request, HttpServletResponse response, String memberId) {
+        log.info("Request path: {} {} Member ID {} from {} with code {}",
+                request.getMethod(), request.getRequestURL(), memberId, request.getRemoteAddr(), response.getStatus());
     }
 }

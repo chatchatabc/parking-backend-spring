@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "reports")
+@Table(name = "report")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Report {
@@ -37,7 +37,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "reported_by")
-    private User reportedBy;
+    private Member reportedBy;
 
     @Column
     private LocalDateTime cancelledAt;

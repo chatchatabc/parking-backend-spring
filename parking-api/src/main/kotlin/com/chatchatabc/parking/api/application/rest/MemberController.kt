@@ -1,12 +1,12 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.user.UserNotificationResponse
-import com.chatchatabc.parking.api.application.dto.user.UserProfileUpdateRequest
+import com.chatchatabc.parking.api.application.dto.member.MemberNotificationResponse
+import com.chatchatabc.parking.api.application.dto.member.MemberProfileUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.repository.UserRepository
-import com.chatchatabc.parking.domain.service.UserService
+import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,28 +14,28 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/user")
-class UserController(
-    private val userService: UserService,
-    private val userRepository: UserRepository
+@RequestMapping("/api/member")
+class MemberController(
+    private val memberService: MemberService,
+    private val memberRepository: MemberRepository
 ) {
 
     /**
-     * Get user profile
+     * Get member profile
      */
     @Operation(
-        summary = "Get the profile of the logged in user",
-        description = "User to get the profile of the logged in user."
+        summary = "Get the profile of the logged in member",
+        description = "Member to get the profile of the logged in member."
     )
     @GetMapping("/me")
-    fun getProfile(): ResponseEntity<ApiResponse<User>> {
+    fun getProfile(): ResponseEntity<ApiResponse<Member>> {
         return try {
             // Get ID from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findById(principal.id).get()
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
                 ApiResponse(
-                    user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {
@@ -48,21 +48,21 @@ class UserController(
     }
 
     /**
-     * Get user notification id
+     * Get member notification id
      */
     @Operation(
-        summary = "Get the notification id of the logged in user",
-        description = "Get notification id of the logged in user. This is used for push notifications and should not be available to other users."
+        summary = "Get the notification id of the logged in member",
+        description = "Get notification id of the logged in member. This is used for push notifications and should not be available to other members."
     )
     @GetMapping("/get-notification-id")
-    fun getNotificationId(): ResponseEntity<ApiResponse<UserNotificationResponse>> {
+    fun getNotificationId(): ResponseEntity<ApiResponse<MemberNotificationResponse>> {
         return try {
-            // Get user from security context holder
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userRepository.findById(principal.id).get()
+            // Get member from security context holder
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
                 ApiResponse(
-                    UserNotificationResponse(user.notificationId),
+                    MemberNotificationResponse(member.notificationId),
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
@@ -78,21 +78,21 @@ class UserController(
     }
 
     /**
-     * Update user
+     * Update member
      */
     @Operation(
-        summary = "Update the details of a user's profile",
-        description = "User to update the details of a user's profile."
+        summary = "Update the details of a member's profile",
+        description = "Member to update the details of a member's profile."
     )
     @PutMapping("/update")
-    fun updateUser(
-        @RequestBody request: UserProfileUpdateRequest
-    ): ResponseEntity<ApiResponse<User>> {
+    fun updateMember(
+        @RequestBody request: MemberProfileUpdateRequest
+    ): ResponseEntity<ApiResponse<Member>> {
         return try {
             // Get principal from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as User
-            val user = userService.updateUser(
-                principal.userId,
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberService.updateMember(
+                principal.memberId,
                 request.phone,
                 request.username,
                 request.email,
@@ -100,7 +100,7 @@ class UserController(
                 request.lastName
             )
             ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
+                ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()

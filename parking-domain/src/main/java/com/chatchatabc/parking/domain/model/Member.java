@@ -21,20 +21,18 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "member")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class User extends FlagEntity implements UserDetails {
-    private static final int ENABLED = 0;
-
+public class Member extends FlagEntity implements UserDetails {
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String userId = UUID.randomUUID().toString();
+    @Column(name = "member_id", unique = true)
+    private String memberId = UUID.randomUUID().toString();
 
     @JsonIgnore
     @Column(unique = true)
@@ -64,6 +62,12 @@ public class User extends FlagEntity implements UserDetails {
     private String lastName;
 
     @Column
+    private String avatar;
+
+    @Column
+    private Integer status = 0;
+
+    @Column
     private LocalDateTime emailVerifiedAt;
 
     @Column
@@ -78,8 +82,8 @@ public class User extends FlagEntity implements UserDetails {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "member_role",
+            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
@@ -87,8 +91,8 @@ public class User extends FlagEntity implements UserDetails {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_vehicles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "member_vehicle",
+            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id")
     )
     private Collection<Vehicle> vehicles;
@@ -115,10 +119,6 @@ public class User extends FlagEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.getBitValue(ENABLED);
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.setBitValue(ENABLED, enabled);
+        return this.status > -1;
     }
 }

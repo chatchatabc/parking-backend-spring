@@ -1,9 +1,9 @@
-package com.chatchatabc.parking.api.application.schedule.user.job
+package com.chatchatabc.parking.api.application.schedule.member.job
 
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 
-class UserLoginSendSMSOTPJob : Job {
+class MemberLoginSendSMSOTPJob : Job {
 
     /**
      * Execute the job of sending sms otp
