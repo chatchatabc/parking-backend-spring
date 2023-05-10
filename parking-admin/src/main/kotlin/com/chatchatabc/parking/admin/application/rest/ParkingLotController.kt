@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.parking_lot.ParkingLotCreateRequest
+import com.chatchatabc.parking.admin.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -49,7 +50,45 @@ class ParkingLotController(
         }
     }
 
-    // TODO: Update Parking Lot
+    /**
+     * Admin update Parking Lot
+     */
+    @PutMapping("/update/{parkingLotId}")
+    fun updateParkingLot(
+        @PathVariable parkingLotId: String,
+        @RequestBody req: ParkingLotUpdateRequest
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
+        return try {
+            // Get principal from Security Context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val updatedParkingLot = parkingLotService.updateParkingLot(
+                principal.memberId,
+                parkingLotId,
+                req.name,
+                req.latitude,
+                req.longitude,
+                req.address,
+                req.description,
+                req.capacity,
+                req.businessHoursStart,
+                req.businessHoursEnd,
+                req.openDaysFlag,
+                req.images
+            )
+            return ResponseEntity.ok(
+                ApiResponse(
+                    updatedParkingLot,
+                    HttpStatus.OK.value(),
+                    ResponseNames.SUCCESS_UPDATE.name,
+                    false
+                )
+            )
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(
+                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+            )
+        }
+    }
 
     /**
      * Verify Parking Lot

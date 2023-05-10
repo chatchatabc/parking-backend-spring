@@ -259,7 +259,6 @@ class ParkingLotController(
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            println(req)
             val updatedParkingLot = parkingLotService.updateParkingLot(
                 principal.memberId,
                 parkingLotId,
