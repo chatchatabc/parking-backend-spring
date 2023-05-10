@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage, String> {
 
@@ -23,12 +25,12 @@ public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage
     Page<ParkingLotImage> findAllByParkingLotAndStatus(ParkingLot parkingLot, int status, Pageable pageable);
 
     /**
-     * Find all parking lot images by parking lot and status value
+     * Find all parking lot images by id and status value
      *
      * @param id     the parking lot id
      * @param status the status
      * @return the parking lot image
      */
-    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.status = :status")
-    ParkingLotImage findByIdAndStatus(String id, int status);
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.id = :id AND pli.status = :status")
+    Optional<ParkingLotImage> findByIdAndStatus(String id, int status);
 }
