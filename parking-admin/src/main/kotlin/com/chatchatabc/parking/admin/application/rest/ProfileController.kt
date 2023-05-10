@@ -38,15 +38,6 @@ class ProfileController(
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findByMemberId(principal.memberId).get()
-            memberLogoutLogRepository.save(
-                MemberLogoutLog().apply {
-                    this.member = member
-                    this.email = member.email
-                    this.phone = member.phone
-                    this.type = 1
-                    this.ipAddress = request.remoteAddr
-                }
-            )
             ResponseEntity.ok().body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
@@ -73,7 +64,18 @@ class ProfileController(
         response: HttpServletResponse
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            // TODO: Implement logout
+            // Get ID from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findByMemberId(principal.memberId).get()
+            memberLogoutLogRepository.save(
+                MemberLogoutLog().apply {
+                    this.member = member
+                    this.email = member.email
+                    this.phone = member.phone
+                    this.type = 1
+                    this.ipAddress = request.remoteAddr
+                }
+            )
             ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
