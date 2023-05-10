@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "parking_lot_images")
+@Table(name = "parking_lot_image")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

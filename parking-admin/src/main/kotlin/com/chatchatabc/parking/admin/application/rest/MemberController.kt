@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.member.MemberCreateRequest
+import com.chatchatabc.parking.admin.application.dto.member.MemberOverridePasswordRequest
 import com.chatchatabc.parking.admin.application.dto.member.MemberUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
@@ -10,6 +11,7 @@ import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.*
 class MemberController(
     private val memberService: MemberService,
     private val memberRepository: MemberRepository,
-    private val roleRepository: RoleRepository
+    private val roleRepository: RoleRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
+
     /**
      * Create member
      */
@@ -56,6 +60,9 @@ class MemberController(
         }
     }
 
+    /**
+     * Update member
+     */
     @PutMapping("/update/{id}")
     fun updateMember(
         @RequestBody req: MemberUpdateRequest, @PathVariable id: String
@@ -84,4 +91,33 @@ class MemberController(
                 )
         }
     }
+
+    /**
+     * Override member password
+     */
+    @PutMapping("/override-password/{memberId}")
+    fun overrideMemberPassword(
+        @PathVariable memberId: String,
+        @RequestBody req: MemberOverridePasswordRequest
+    ): ResponseEntity<ApiResponse<Member>> {
+        return try {
+            val member = memberRepository.findByMemberId(memberId).get().apply {
+                this.password = passwordEncoder.encode(req.newPassword)
+            }
+            return ResponseEntity.ok(
+                ApiResponse(
+                    memberRepository.save(member), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
+                )
+            )
+        }
+    }
+
+    // TODO: Ban member
 }

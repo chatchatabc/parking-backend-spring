@@ -61,6 +61,7 @@ public class Member extends FlagEntity implements UserDetails {
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Last name can only contain letters and spaces.")
     private String lastName;
 
+    @JsonIgnore
     @Column
     private String avatar;
 
@@ -107,6 +108,7 @@ public class Member extends FlagEntity implements UserDetails {
         return true;
     }
 
+    // TODO: Use MemberBanHistoryLog to check if member is banned
     @Override
     public boolean isAccountNonLocked() {
         return true;

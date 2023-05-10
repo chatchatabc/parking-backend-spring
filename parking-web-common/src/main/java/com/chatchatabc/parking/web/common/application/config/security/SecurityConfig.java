@@ -40,7 +40,9 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/swagger-ui/**").permitAll();
                     auth.requestMatchers("/api/v3/api-docs/**").permitAll();
 
-                    // User routes must be authenticated
+                    // Allow public access to member avatar url
+                    auth.requestMatchers("/api/member/avatar/**").permitAll();
+                    // Member routes must be authenticated
                     auth.requestMatchers("/api/member/**").authenticated();
 
                     // TODO: Add routes for other controllers

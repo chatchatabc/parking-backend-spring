@@ -18,7 +18,7 @@ used as template for future projects needing `Android and iOS` implementation.
 ## Goals
 
 - Two Apps
-    - User App
+    - Member App
     - Parking Owner App
 - One Admin Dashboard
 - QR Code Scanning
@@ -34,7 +34,7 @@ used as template for future projects needing `Android and iOS` implementation.
 - [ ] Redis
     - [ ] for Forgot Password
     - [x] for OTP
-- [ ] User App
+- [ ] Member App
     - [ ] Android App
     - [ ] iOS App
 - [ ] Parking Owner App
@@ -44,7 +44,7 @@ used as template for future projects needing `Android and iOS` implementation.
     - [ ] Spring Boot Backend
     - [ ] React Frontend
 - [ ] Spring Boot Backend
-    - [x] User Registration
+    - [x] Member Registration
     - [x] Owner Registration
     - [x] Authentication
     - [ ] Logout (just delete token?)
@@ -75,8 +75,10 @@ used as template for future projects needing `Android and iOS` implementation.
 - [ ] NATS use same JWT as API
 - [ ] NATS use same JWT as Admin
 - [ ] JWT Auth on GraphQL
-- [ ] Users with NATS should only be "listen" only
-- [ ] Add more fields to user
+- [ ] Members with NATS should only be "listen" only
+- [ ] Add more fields to member
     - [x] Integer ID (hidden, don't expose)
-    - [x] Another UUID user id
+    - [x] Another UUID member id
     - [x] Another UUID for notification ID
+
+https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object

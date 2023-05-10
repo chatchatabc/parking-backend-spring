@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ### Verify Manager Phone and OTP
-POST {{memberBaseUrl}}/api/auth/verify/manager
+POST {{memberBaseUrl}}/api/auth/verify/owner
 Content-Type: application/json
 
 {

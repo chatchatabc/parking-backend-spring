@@ -7,18 +7,23 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.MemberService
+import com.chatchatabc.parking.domain.service.service.CloudFileService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/member")
 class MemberController(
     private val memberService: MemberService,
-    private val memberRepository: MemberRepository
-) {
+    private val memberRepository: MemberRepository,
+) : CloudFileService() {
 
     /**
      * Get member profile
@@ -108,6 +113,69 @@ class MemberController(
                 .body(
                     ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true)
                 )
+        }
+    }
+
+    /**
+     * Upload member avatar
+     */
+    @PostMapping("/upload-avatar")
+    fun uploadAvatar(
+        @RequestParam("file", required = true) file: MultipartFile
+    ): ApiResponse<Member> {
+        return try {
+            // Get principal from security context
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val member = memberRepository.findById(principal.id).get()
+            memberService.uploadImage(member, "avatar", file)
+            ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+        }
+    }
+
+    /**
+     * Get member avatar by username
+     */
+    @GetMapping("/avatar/{username}")
+    fun getMemberAvatar(
+        @PathVariable username: String,
+        response: HttpServletResponse
+    ): ResponseEntity<Any> {
+        return try {
+            val member = memberRepository.findByUsername(username).get()
+            if (member.avatar == null) {
+                throw Exception("Avatar not found")
+            }
+            val headers = HttpHeaders()
+            headers.location = URI.create(member.avatar)
+            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+        } catch (e: Exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    /**
+     * Get member avatar by memberId
+     */
+    @GetMapping("/avatar/id/{memberId}")
+    fun getMemberAvatarById(
+        @PathVariable memberId: String,
+        response: HttpServletResponse
+    ): ResponseEntity<Any> {
+        return try {
+            val member = memberRepository.findByMemberId(memberId).get()
+            if (member.avatar == null) {
+                throw Exception("Avatar not found")
+            }
+            val headers = HttpHeaders()
+            headers.location = URI.create(member.avatar)
+            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+        } catch (e: Exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
         }
     }
 }
