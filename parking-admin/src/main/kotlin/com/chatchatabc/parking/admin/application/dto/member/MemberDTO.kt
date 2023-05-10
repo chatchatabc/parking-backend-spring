@@ -20,3 +20,7 @@ data class MemberUpdateRequest(
     val firstName: String?,
     val lastName: String?,
 )
+
+data class MemberOverridePasswordRequest(
+    val newPassword: String,
+)
