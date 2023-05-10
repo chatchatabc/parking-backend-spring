@@ -1,64 +1,59 @@
 package com.chatchatabc.parking.web.common.impl.application.rest.service;
 
-import com.chatchatabc.parking.domain.model.User;
-import com.chatchatabc.parking.domain.repository.UserRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class JwtServiceImplTest {
+class JwtServiceImplTest {
 
-    @Value("${server.jwt.secret}")
-    private String secret;
-    @Value("${server.jwt.expiration}")
-    private String expiration;
+    private final String secret = "test-secret";
+    private final String expiration = "3600000"; // 1 hour in milliseconds
 
     @Mock
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     @InjectMocks
-    private JwtServiceImpl jwtService;
+    private JwtService jwtService = new JwtServiceImpl(secret, expiration);
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setUp() {
         MockitoAnnotations.openMocks(this);
-        jwtService = new JwtServiceImpl(secret);
     }
 
-
     @Test
-    public void testGenerateToken() {
-        String userId = "user1";
-        String token = jwtService.generateToken(userId);
+    void generateToken_shouldCreateToken() {
+        String memberId = "memberId";
+        String token = jwtService.generateToken(memberId);
         assertNotNull(token);
     }
 
     @Test
-    public void testValidateTokenAndGetUser() {
-        User user = new User();
-        user.setUserId("user1");
+    void validateTokenAndGetMember_shouldReturnMember_whenValidToken() {
+        String memberId = "memberId";
+        Member member = new Member();
+        member.setMemberId(memberId);
+        String token = jwtService.generateToken(memberId);
+        when(memberRepository.findByMemberId(memberId)).thenReturn(Optional.of(member));
+        Member result = jwtService.validateTokenAndGetMember(token);
+        assertNotNull(result);
+        assertEquals(member, result);
+        verify(memberRepository, times(1)).findByMemberId(memberId);
+    }
 
-        String token = jwtService.generateToken(user.getUserId());
-        when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
-
-        User returnedUser = jwtService.validateTokenAndGetUser(token);
-        assertNotNull(returnedUser);
-        assertEquals(user.getUserId(), returnedUser.getUserId());
-
-        verify(userRepository, times(1)).findByUserId(user.getUserId());
+    @Test
+    void validateTokenAndGetMember_shouldReturnNull_whenInvalidToken() {
+        String token = "invalidToken";
+        Member result = jwtService.validateTokenAndGetMember(token);
+        assertNull(result);
     }
 }
