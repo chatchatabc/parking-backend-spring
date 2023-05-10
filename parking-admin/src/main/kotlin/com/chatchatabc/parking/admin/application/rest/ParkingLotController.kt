@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -16,9 +17,37 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
-    private val parkingLotImageService: ParkingLotImageService
+    private val parkingLotImageService: ParkingLotImageService,
 ) {
-    // TODO: Create Parking Lot and Assign to User
+
+    /**
+     * Admin create Parking Lot
+     */
+    @PostMapping("/create/{memberId}")
+    fun createParkingLot(
+        @PathVariable memberId: String,
+        @RequestBody req: ParkingLotCreateRequest
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
+        return try {
+            val createdParkingLot = parkingLotService.registerParkingLot(
+                memberId,
+                req.name,
+                req.latitude,
+                req.longitude,
+                req.address,
+                req.description,
+                req.capacity,
+                req.businessHoursStart,
+                req.businessHoursEnd,
+                req.openDaysFlag
+            )
+            ResponseEntity.ok(ApiResponse(createdParkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().body(
+                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+            )
+        }
+    }
 
     // TODO: Update Parking Lot
 
