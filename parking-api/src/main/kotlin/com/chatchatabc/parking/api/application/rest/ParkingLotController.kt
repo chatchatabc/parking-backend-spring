@@ -400,43 +400,7 @@ class ParkingLotController(
             val member = memberRepository.findByMemberId(principal.memberId).get()
             // TODO: Add verification to check if member has permissions to delete the file
             parkingLotImageService.deleteImage(imageId)
-            return ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_UPDATE.name,
-                        true
-                    )
-                )
-        }
-    }
-
-    /**
-     * Restore image
-     */
-    // TODO: Transfer to admin dashboard
-    @PostMapping("/restore-image/{imageId}")
-    fun restoreImage(
-        @PathVariable imageId: String
-    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
-        return try {
-            // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findByMemberId(principal.memberId).get()
-            // TODO: Add verification to check if member has permissions to restore the file
-            parkingLotImageService.restoreImage(imageId)
-            return ResponseEntity.ok(
+            ResponseEntity.ok(
                 ApiResponse(
                     null,
                     HttpStatus.OK.value(),
