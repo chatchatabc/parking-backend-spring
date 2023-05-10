@@ -82,3 +82,11 @@ used as template for future projects needing `Android and iOS` implementation.
     - [x] Another UUID for notification ID
 
 https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object
+
+
+# Unit test
+
+* Spring Boot Test
+* Testcontainers integration with Spring Boot 3.1.0
+* Flyway for database schema
+* Database Rider for dataset
