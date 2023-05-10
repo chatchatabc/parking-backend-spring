@@ -80,6 +80,21 @@ CREATE TABLE IF NOT EXISTS member_logout_log
     FOREIGN KEY (member_id) REFERENCES member (member_id)
 );
 
+-- Create member_activity_log table
+CREATE TABLE IF NOT EXISTS member_activity_log
+(
+    id          VARCHAR(36) PRIMARY KEY,
+    member_id   VARCHAR(36) NOT NULL,
+    name        VARCHAR(255),
+    target_id   VARCHAR(36),
+    event_type  VARCHAR(255),
+    column_name VARCHAR(255),
+    data_before TEXT,
+    data_after  TEXT,
+    created_at  TIMESTAMP   NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES member (member_id)
+);
+
 -- Insert initial admin member
 INSERT INTO member (member_id, notification_id, email, username, phone, password, created_at, updated_at)
 SELECT 'ec4af6e9-ec57-434d-990d-ae83d9459a31',
