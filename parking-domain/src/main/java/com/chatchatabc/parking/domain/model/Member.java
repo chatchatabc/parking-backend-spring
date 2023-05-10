@@ -108,6 +108,7 @@ public class Member extends FlagEntity implements UserDetails {
         return true;
     }
 
+    // TODO: Use MemberBanHistoryLog to check if member is banned
     @Override
     public boolean isAccountNonLocked() {
         return true;
