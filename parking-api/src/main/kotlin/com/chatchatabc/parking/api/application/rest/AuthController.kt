@@ -59,7 +59,7 @@ class AuthController(
      */
     @Operation(
         summary = "Verify the OTP of a member logging in.",
-        description = "This API is used for both parking managers and members. Type = manager if verifying a parking manager. Type = member if verifying a member."
+        description = "This API is used for both parking owners and members. Type = owner if verifying a parking owner. Type = member if verifying a member."
     )
     @PostMapping("/verify/{type}")
     fun verifyOTP(
@@ -69,8 +69,8 @@ class AuthController(
         return try {
             val headers = HttpHeaders()
             var roleName: RoleNames = RoleNames.ROLE_MEMBER
-            if (type == "manager") {
-                roleName = RoleNames.ROLE_PARKING_MANAGER
+            if (type == "owner") {
+                roleName = RoleNames.ROLE_PARKING_OWNER
             }
             val member = memberService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
             val token: String = jwtService.generateToken(member.memberId)
