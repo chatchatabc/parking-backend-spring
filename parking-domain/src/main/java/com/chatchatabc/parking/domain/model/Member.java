@@ -61,6 +61,7 @@ public class Member extends FlagEntity implements UserDetails {
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Last name can only contain letters and spaces.")
     private String lastName;
 
+    @JsonIgnore
     @Column
     private String avatar;
 
