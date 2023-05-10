@@ -397,8 +397,11 @@ class ParkingLotController(
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findByMemberId(principal.memberId).get()
-            // TODO: Add verification to check if member has permissions to delete the file
+            // Only owner can delete image
+            val image = parkingLotImageRepository.findById(imageId).get()
+            if (image.parkingLot.owner.memberId != principal.memberId) {
+                throw Exception("You are not owner of this parking lot")
+            }
             parkingLotImageService.deleteImage(imageId)
             ResponseEntity.ok(
                 ApiResponse(
