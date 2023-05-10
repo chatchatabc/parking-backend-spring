@@ -19,6 +19,10 @@ class MemberController(
     private val memberRepository: MemberRepository,
     private val roleRepository: RoleRepository
 ) {
+    // TODO: Override member password
+
+    // TODO: Ban member
+
     /**
      * Create member
      */
