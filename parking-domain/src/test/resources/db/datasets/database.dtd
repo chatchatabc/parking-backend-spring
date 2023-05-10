@@ -1,0 +1,219 @@
+<!ELEMENT dataset (
+    flyway_schema_history*,
+    invoice*,
+    member*,
+    member_activity_log*,
+    member_ban_history_log*,
+    member_login_log*,
+    member_logout_log*,
+    member_role*,
+    member_vehicle*,
+    parking_lot*,
+    parking_lot_image*,
+    rate*,
+    report*,
+    report_status*,
+    role*,
+    vehicle*)>
+
+<!ELEMENT flyway_schema_history EMPTY>
+<!ATTLIST flyway_schema_history
+    installed_rank CDATA #REQUIRED
+    version CDATA #IMPLIED
+    description CDATA #REQUIRED
+    type CDATA #REQUIRED
+    script CDATA #REQUIRED
+    checksum CDATA #IMPLIED
+    installed_by CDATA #REQUIRED
+    installed_on CDATA #IMPLIED
+    execution_time CDATA #REQUIRED
+    success CDATA #REQUIRED
+>
+
+<!ELEMENT invoice EMPTY>
+<!ATTLIST invoice
+    id CDATA #REQUIRED
+    parking_lot_id CDATA #REQUIRED
+    vehicle_id CDATA #REQUIRED
+    plate_number CDATA #REQUIRED
+    estimated_parking_duration_in_hours CDATA #IMPLIED
+    total CDATA #REQUIRED
+    paid_at CDATA #IMPLIED
+    start_at CDATA #REQUIRED
+    end_at CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT member EMPTY>
+<!ATTLIST member
+    id CDATA #IMPLIED
+    member_id CDATA #REQUIRED
+    notification_id CDATA #REQUIRED
+    email CDATA #IMPLIED
+    username CDATA #IMPLIED
+    password CDATA #IMPLIED
+    phone CDATA #REQUIRED
+    first_name CDATA #IMPLIED
+    last_name CDATA #IMPLIED
+    avatar CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    status CDATA #IMPLIED
+    email_verified_at CDATA #IMPLIED
+    phone_verified_at CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT member_activity_log EMPTY>
+<!ATTLIST member_activity_log
+    id CDATA #REQUIRED
+    member_id CDATA #REQUIRED
+    name CDATA #IMPLIED
+    target_id CDATA #IMPLIED
+    event_type CDATA #IMPLIED
+    column_name CDATA #IMPLIED
+    data_before CDATA #IMPLIED
+    data_after CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT member_ban_history_log EMPTY>
+<!ATTLIST member_ban_history_log
+    id CDATA #REQUIRED
+    member_id CDATA #REQUIRED
+    banned_by CDATA #REQUIRED
+    until CDATA #REQUIRED
+    reason CDATA #IMPLIED
+    unban_reason CDATA #IMPLIED
+    unbanned_by CDATA #IMPLIED
+    status CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT member_login_log EMPTY>
+<!ATTLIST member_login_log
+    id CDATA #REQUIRED
+    member_id CDATA #REQUIRED
+    email CDATA #REQUIRED
+    phone CDATA #REQUIRED
+    type CDATA #IMPLIED
+    ip_address CDATA #REQUIRED
+    success CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT member_logout_log EMPTY>
+<!ATTLIST member_logout_log
+    id CDATA #REQUIRED
+    member_id CDATA #REQUIRED
+    email CDATA #REQUIRED
+    phone CDATA #REQUIRED
+    type CDATA #IMPLIED
+    ip_address CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT member_role EMPTY>
+<!ATTLIST member_role
+    member_id CDATA #REQUIRED
+    role_id CDATA #REQUIRED
+>
+
+<!ELEMENT member_vehicle EMPTY>
+<!ATTLIST member_vehicle
+    member_id CDATA #REQUIRED
+    vehicle_id CDATA #REQUIRED
+>
+
+<!ELEMENT parking_lot EMPTY>
+<!ATTLIST parking_lot
+    id CDATA #REQUIRED
+    owner_id CDATA #REQUIRED
+    rate_id CDATA #IMPLIED
+    name CDATA #REQUIRED
+    address CDATA #REQUIRED
+    latitude CDATA #REQUIRED
+    longitude CDATA #REQUIRED
+    description CDATA #IMPLIED
+    capacity CDATA #IMPLIED
+    available_slots CDATA #IMPLIED
+    business_hours_start CDATA #REQUIRED
+    business_hours_end CDATA #REQUIRED
+    open_days_flag CDATA #IMPLIED
+    verified_at CDATA #IMPLIED
+    verified_by CDATA #IMPLIED
+    status CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT parking_lot_image EMPTY>
+<!ATTLIST parking_lot_image
+    id CDATA #REQUIRED
+    parking_lot_id CDATA #REQUIRED
+    file_order CDATA #IMPLIED
+    filename CDATA #REQUIRED
+    filesize CDATA #REQUIRED
+    mimetype CDATA #REQUIRED
+    url CDATA #REQUIRED
+    status CDATA #IMPLIED
+    uploaded_by CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT rate EMPTY>
+<!ATTLIST rate
+    id CDATA #REQUIRED
+    type CDATA #IMPLIED
+    interval CDATA #IMPLIED
+    free_hours CDATA #IMPLIED
+    pay_for_free_hours_when_exceeding CDATA #IMPLIED
+    starting_rate CDATA #IMPLIED
+    rate CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT report EMPTY>
+<!ATTLIST report
+    id CDATA #REQUIRED
+    name CDATA #REQUIRED
+    description CDATA #REQUIRED
+    plate_number CDATA #REQUIRED
+    latitude CDATA #REQUIRED
+    longitude CDATA #REQUIRED
+    reported_by CDATA #REQUIRED
+    cancelled_at CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT report_status EMPTY>
+<!ATTLIST report_status
+    id CDATA #REQUIRED
+    report_id CDATA #REQUIRED
+    performed_by CDATA #REQUIRED
+    status CDATA #IMPLIED
+    remarks CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT role EMPTY>
+<!ATTLIST role
+    id CDATA #REQUIRED
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT vehicle EMPTY>
+<!ATTLIST vehicle
+    id CDATA #REQUIRED
+    name CDATA #REQUIRED
+    plate_number CDATA #REQUIRED
+    type CDATA #IMPLIED
+    owner_id CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
