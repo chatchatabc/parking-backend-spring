@@ -23,14 +23,13 @@ public class TestContainersConfiguration {
     }
 
     @Bean
-    @ServiceConnection
+    @ServiceConnection("redis")
     public GenericContainer<?> redisContainer() {
         return new GenericContainer<>("redis:7.0.10")
                 .withExposedPorts(6379);
     }
 
     @Bean
-    @ServiceConnection
     public GenericContainer<?> natsContainer(DynamicPropertyRegistry properties) {
         GenericContainer<?> natsContainer = new GenericContainer<>("nats:2.9.16").withExposedPorts(4222);
         properties.add("spring.nats.uri", () -> "nats://" + natsContainer.getHost() + ":" + natsContainer.getMappedPort(4222));
