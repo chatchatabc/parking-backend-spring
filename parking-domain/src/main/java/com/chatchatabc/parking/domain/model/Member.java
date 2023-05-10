@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -98,6 +99,10 @@ public class Member extends FlagEntity implements UserDetails {
     )
     private Collection<Vehicle> vehicles;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private Collection<MemberBanHistoryLog> memberBanHistoryLogs;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
@@ -108,9 +113,21 @@ public class Member extends FlagEntity implements UserDetails {
         return true;
     }
 
-    // TODO: Use MemberBanHistoryLog to check if member is banned
+    /**
+     * Check if member is banned, use MemberBanHistoryLog
+     *
+     * @return true if member is not banned, false otherwise
+     */
     @Override
     public boolean isAccountNonLocked() {
+        // Check if memberBanHistoryLogs has an active ban
+        if (this.memberBanHistoryLogs != null) {
+            for (MemberBanHistoryLog memberBanHistoryLog : this.memberBanHistoryLogs) {
+                if (memberBanHistoryLog.getStatus() == 0) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
