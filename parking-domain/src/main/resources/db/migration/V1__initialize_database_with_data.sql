@@ -5,23 +5,6 @@ CREATE TABLE IF NOT EXISTS role
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
--- Insert initial role data
-INSERT INTO role (id, name)
-SELECT '7d6312f7-149f-4320-9be9-7bb1171bdaa1', 'ROLE_ADMIN'
-WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ROLE_ADMIN');
-
-INSERT INTO role (id, name)
-SELECT '27cec7e4-58cd-4a78-b8b4-574a66a747a4', 'ROLE_PARKING_OWNER'
-WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ROLE_PARKING_OWNER');
-
-INSERT INTO role (id, name)
-SELECT 'a755bfee-c78b-4166-9b17-017409328060', 'ROLE_ENFORCER'
-WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ROLE_ENFORCER');
-
-INSERT INTO role (id, name)
-SELECT '9b9fd9be-bea0-44f5-98e0-18ea30d06a62', 'ROLE_MEMBER'
-WHERE NOT EXISTS (SELECT 1 FROM role WHERE name = 'ROLE_MEMBER');
-
 -- Create Member Table
 CREATE TABLE IF NOT EXISTS member
 (
@@ -49,8 +32,7 @@ CREATE TABLE IF NOT EXISTS member_role
     member_id VARCHAR(36) NOT NULL,
     role_id   VARCHAR(36) NOT NULL,
     PRIMARY KEY (member_id, role_id),
-    FOREIGN KEY (member_id) REFERENCES member (member_id),
-    FOREIGN KEY (role_id) REFERENCES role (id)
+    FOREIGN KEY (member_id) REFERENCES member (member_id)
 );
 
 -- Create member_login_log table
@@ -110,27 +92,6 @@ CREATE TABLE IF NOT EXISTS member_ban_history_log
     FOREIGN KEY (member_id) REFERENCES member (member_id),
     FOREIGN KEY (banned_by) REFERENCES member (member_id)
 );
-
--- Insert initial admin member
-INSERT INTO member (member_id, notification_id, email, username, phone, password, created_at, updated_at)
-SELECT 'ec4af6e9-ec57-434d-990d-ae83d9459a31',
-       'bdc2ae2c-fabf-4889-8110-f0ec4d406ff2',
-       'admin@gmail.com',
-       'admin',
-       '1234567890',
-       '$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK',
-       now(),
-       now()
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE username = 'admin');
-
--- Assign admin role to admin member
-INSERT INTO member_role (member_id, role_id)
-SELECT member.member_id, role.id
-FROM member,
-     role
-WHERE member.username = 'admin'
-  AND role.name = 'ROLE_ADMIN'
-ON CONFLICT DO NOTHING;
 
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
