@@ -21,4 +21,14 @@ public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage
      */
     @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.status = :status")
     Page<ParkingLotImage> findAllByParkingLotAndStatus(ParkingLot parkingLot, int status, Pageable pageable);
+
+    /**
+     * Find all parking lot images by parking lot and status value
+     *
+     * @param id     the parking lot id
+     * @param status the status
+     * @return the parking lot image
+     */
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.status = :status")
+    ParkingLotImage findByIdAndStatus(String id, int status);
 }
