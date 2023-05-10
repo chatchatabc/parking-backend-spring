@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = {RoleRepository.class} )
 @ActiveProfiles("test")
 public class RoleRepositoryTest {
 
