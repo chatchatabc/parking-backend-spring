@@ -46,7 +46,6 @@ class AuthController(
             val token: String = jwtService.generateToken(member.get().memberId)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
-            // TODO: Move as an event
             memberLoginLogRepository.save(
                 MemberLoginLog().apply {
                     this.member = member.get()
@@ -61,7 +60,6 @@ class AuthController(
                 .body(ApiResponse(member.get(), HttpStatus.OK.value(), ResponseNames.MEMBER_LOGIN_SUCCESS.name, false))
         } catch (e: Exception) {
             // Generate Failed Login Log
-            // TODO: Move as an event
             if (member.isPresent) {
                 memberLoginLogRepository.save(
                     MemberLoginLog().apply {

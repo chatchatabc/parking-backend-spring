@@ -1,5 +1,7 @@
 package com.chatchatabc.parking.admin.application.dto.member
 
+import java.time.LocalDateTime
+
 data class MemberLoginRequest(
     val username: String,
     val password: String
@@ -23,4 +25,9 @@ data class MemberUpdateRequest(
 
 data class MemberOverridePasswordRequest(
     val newPassword: String,
+)
+
+data class MemberBanRequest(
+    val until: LocalDateTime,
+    val reason: String
 )

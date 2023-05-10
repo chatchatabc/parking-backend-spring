@@ -1,16 +1,20 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.member.MemberBanRequest
 import com.chatchatabc.parking.admin.application.dto.member.MemberCreateRequest
 import com.chatchatabc.parking.admin.application.dto.member.MemberOverridePasswordRequest
 import com.chatchatabc.parking.admin.application.dto.member.MemberUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.RoleRepository
+import com.chatchatabc.parking.domain.repository.log.MemberBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
@@ -20,7 +24,8 @@ class MemberController(
     private val memberService: MemberService,
     private val memberRepository: MemberRepository,
     private val roleRepository: RoleRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val memberBanHistoryLogRepository: MemberBanHistoryLogRepository
 ) {
 
     /**
@@ -119,5 +124,38 @@ class MemberController(
         }
     }
 
-    // TODO: Ban member
+    /**
+     * Ban member
+     */
+    @PostMapping("/ban/{memberId}")
+    fun banMember(
+        @PathVariable memberId: String,
+        @RequestBody req: MemberBanRequest
+    ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
+        return try {
+            // Get principal
+            val principal = SecurityContextHolder.getContext().authentication.principal as Member
+            val bannedBy = memberRepository.findByMemberId(principal.memberId).get()
+            val member = memberRepository.findByMemberId(memberId).get()
+            val banLog = MemberBanHistoryLog().apply {
+                this.member = member
+                this.bannedBy = bannedBy
+                this.reason = req.reason
+                this.until = req.until
+                this.status = 0
+            }
+            ResponseEntity.ok().body(
+                ApiResponse(
+                    memberBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest().body(
+                ApiResponse(
+                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
+                )
+            )
+        }
+    }
 }
