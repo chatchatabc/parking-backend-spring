@@ -338,7 +338,7 @@ class ParkingLotController(
         response: HttpServletResponse
     ): ResponseEntity<Any> {
         return try {
-            val image = parkingLotImageRepository.findByIdAndStatus(imageId, 1)
+            val image = parkingLotImageRepository.findByIdAndStatus(imageId, 1).get()
             if (image.url == null) {
                 throw Exception("Image not found")
             }
