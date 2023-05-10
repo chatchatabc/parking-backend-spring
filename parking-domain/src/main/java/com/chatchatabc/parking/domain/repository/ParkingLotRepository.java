@@ -23,7 +23,7 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, String>,
     /**
      * Find parking lots by distance using Haversine formula
      */
-    @Query("SELECT p FROM ParkingLot p WHERE (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
+    @Query("SELECT p FROM ParkingLot p WHERE p.status > 1 AND (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
     List<ParkingLot> findByDistance(double latitude, double longitude, double distance);
 
     /**
