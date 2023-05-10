@@ -39,7 +39,7 @@ public class MemberBanHistoryLog {
     private String unbanReason;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @JoinColumn(name = "unbanned_by", referencedColumnName = "member_id")
     private Member unbannedBy;
 
     @Column
