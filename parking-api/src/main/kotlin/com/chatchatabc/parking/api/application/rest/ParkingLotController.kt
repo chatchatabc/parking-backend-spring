@@ -4,22 +4,25 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateRequest
 import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -323,6 +326,28 @@ class ParkingLotController(
                         true
                     )
                 )
+        }
+    }
+
+    /**
+     * Get member avatar by image id
+     */
+    @GetMapping("/get-image/{imageId}")
+    fun getParkingLotImage(
+        @PathVariable imageId: String,
+        response: HttpServletResponse
+    ): ResponseEntity<Any> {
+        return try {
+            val image = parkingLotImageRepository.findByIdAndStatus(imageId, 1)
+            if (image.url == null) {
+                throw Exception("Image not found")
+            }
+            val headers = HttpHeaders()
+            headers.location = URI.create(image.url)
+            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+        } catch (e: Exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
         }
     }
 
