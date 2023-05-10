@@ -94,7 +94,7 @@ public class ParkingLot extends FlagEntity {
         return this.images.stream()
                 .filter(image -> image.getStatus() > -1)
                 .sorted(Comparator.comparingInt(ParkingLotImage::getFileOrder))
-                .map(ParkingLotImage::getUrl)
+                .map(ParkingLotImage::getId)
                 .collect(Collectors.toList());
     }
 }
