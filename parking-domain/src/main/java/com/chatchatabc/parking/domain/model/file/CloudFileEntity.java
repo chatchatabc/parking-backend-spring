@@ -29,6 +29,7 @@ public class CloudFileEntity {
     @Column
     private String mimetype;
 
+    @JsonIgnore
     @Column
     private String url;
 
