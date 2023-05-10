@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -101,7 +102,8 @@ public class Member extends FlagEntity implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Collection<MemberBanHistoryLog> memberBanHistoryLogs;
+    @OrderBy("createdAt DESC")
+    private List<MemberBanHistoryLog> memberBanHistoryLogs;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -122,11 +124,8 @@ public class Member extends FlagEntity implements UserDetails {
     public boolean isAccountNonLocked() {
         // Check if memberBanHistoryLogs has an active ban
         if (this.memberBanHistoryLogs != null) {
-            for (MemberBanHistoryLog memberBanHistoryLog : this.memberBanHistoryLogs) {
-                if (memberBanHistoryLog.getStatus() == 0) {
-                    return false;
-                }
-            }
+            // Only check the latest ban
+            return this.memberBanHistoryLogs.get(0).getStatus() != 0;
         }
         return true;
     }
