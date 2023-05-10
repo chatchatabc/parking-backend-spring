@@ -38,4 +38,11 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, String>,
     @Query("SELECT p FROM ParkingLot p WHERE p.owner = :owner AND p.status = :status")
     Page<ParkingLot> findAllByOwnerAndStatus(Member owner, int status, Pageable pageable);
 
+    /**
+     * Count verified parking lots
+     *
+     * @return the count
+     */
+    @Query("SELECT COUNT(p.id) FROM ParkingLot p WHERE p.verifiedAt IS NOT NULL")
+    Long countVerified();
 }

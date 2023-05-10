@@ -44,4 +44,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>, JpaSpecif
      * @return the member
      */
     Optional<Member> findByMemberId(String memberId);
+
+    /**
+     * Count verified members
+     *
+     * @return the count
+     */
+    @Query("SELECT COUNT(u.id) FROM Member u WHERE u.emailVerifiedAt IS NOT NULL OR u.phoneVerifiedAt IS NOT NULL")
+    Long countVerified();
 }

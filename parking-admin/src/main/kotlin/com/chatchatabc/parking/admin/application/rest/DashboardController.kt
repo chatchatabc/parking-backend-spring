@@ -26,16 +26,24 @@ class DashboardController(
     @GetMapping("/get-numerical-statistics")
     fun getNumericalStatistics(): ResponseEntity<ApiResponse<DashboardStatistics>> {
         return try {
+            // Member data
             val totalMembers = memberRepository.count()
-            // TODO: Verified Members
+            val totalVerifiedMembers = memberRepository.countVerified()
+            val totalUnverifiedMembers = totalMembers - totalVerifiedMembers
             // TODO: New Members Today
             // TODO: Verified Members Today
-            // TODO: Banned Members
+            // TODO: Total Banned Members
+
+            // Vehicle Data
             val totalVehicles = vehicleRepository.count()
+
+            // Parking Lot Data
             val totalParkingLots = parkingLotRepository.count()
-            // TODO: Verified Parking Lots
-            // TODO: Unverified Parking Lots
+            val totalVerifiedParkingLots = parkingLotRepository.countVerified()
+            val totalUnverifiedParkingLots = totalParkingLots - totalVerifiedParkingLots
             // TODO: Verified Parking Lots Today
+
+            // Invoice Data
             val totalActiveInvoices = invoiceRepository.countActiveInvoices()
             // TODO: Active invoices today
             // TODO: Paid invoices today
@@ -45,8 +53,12 @@ class DashboardController(
                 ApiResponse(
                     DashboardStatistics(
                         totalMembers,
+                        totalVerifiedMembers,
+                        totalUnverifiedMembers,
                         totalVehicles,
                         totalParkingLots,
+                        totalVerifiedParkingLots,
+                        totalUnverifiedParkingLots,
                         totalActiveInvoices
                     ), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
