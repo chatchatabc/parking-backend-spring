@@ -60,6 +60,9 @@ class MemberController(
         }
     }
 
+    /**
+     * Update member
+     */
     @PutMapping("/update/{id}")
     fun updateMember(
         @RequestBody req: MemberUpdateRequest, @PathVariable id: String
