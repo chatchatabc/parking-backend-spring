@@ -1,0 +1,6 @@
+-- Create Role Table
+CREATE TABLE IF NOT EXISTS role
+(
+    id   VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL
+);
