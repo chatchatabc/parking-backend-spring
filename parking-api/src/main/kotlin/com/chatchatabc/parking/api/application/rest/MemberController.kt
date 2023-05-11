@@ -7,23 +7,24 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.MemberService
-import com.chatchatabc.parking.domain.service.service.CloudFileService
+import com.chatchatabc.parking.infra.service.FileStorageService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.net.URI
 
 @RestController
 @RequestMapping("/api/member")
 class MemberController(
     private val memberService: MemberService,
     private val memberRepository: MemberRepository,
-) : CloudFileService() {
+    private val fileStorageService: FileStorageService
+) {
 
     /**
      * Get member profile
@@ -67,7 +68,7 @@ class MemberController(
             val member = memberRepository.findById(principal.id).get()
             ResponseEntity.ok().body(
                 ApiResponse(
-                    MemberNotificationResponse(member.notificationId),
+                    MemberNotificationResponse(member.notificationUuid),
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
@@ -97,7 +98,7 @@ class MemberController(
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberService.updateMember(
-                principal.memberId,
+                principal.memberUuid,
                 request.phone,
                 request.username,
                 request.email,
@@ -127,7 +128,14 @@ class MemberController(
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findById(principal.id).get()
-            memberService.uploadImage(member, "avatar", file.inputStream)
+            memberService.uploadImage(
+                member,
+                "avatar",
+                file.inputStream,
+                file.originalFilename,
+                file.size,
+                file.contentType
+            )
             ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -142,40 +150,40 @@ class MemberController(
     fun getMemberAvatar(
         @PathVariable username: String,
         response: HttpServletResponse
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<InputStreamResource> {
         return try {
             val member = memberRepository.findByUsername(username).get()
             if (member.avatar == null) {
                 throw Exception("Avatar not found")
             }
             val headers = HttpHeaders()
-            headers.location = URI.create(member.avatar)
-            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+            val resource = InputStreamResource(fileStorageService.downloadFile(member.avatar.key))
+            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
         } catch (e: Exception) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
         }
     }
 
     /**
      * Get member avatar by memberId
      */
-    @GetMapping("/avatar/id/{memberId}")
+    @GetMapping("/avatar/id/{memberUuid}")
     fun getMemberAvatarById(
-        @PathVariable memberId: String,
+        @PathVariable memberUuid: String,
         response: HttpServletResponse
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<InputStreamResource> {
         return try {
-            val member = memberRepository.findByMemberId(memberId).get()
+            val member = memberRepository.findByMemberUuid(memberUuid).get()
             if (member.avatar == null) {
                 throw Exception("Avatar not found")
             }
             val headers = HttpHeaders()
-            headers.location = URI.create(member.avatar)
-            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+            val resource = InputStreamResource(fileStorageService.downloadFile(member.avatar.key))
+            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
         } catch (e: Exception) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
         }
     }
 }

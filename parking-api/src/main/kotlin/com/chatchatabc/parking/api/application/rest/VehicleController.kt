@@ -32,7 +32,7 @@ class VehicleController(
         return try {
             // Get member from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val vehicles = vehicleRepository.findAllByMember(principal.memberId, pageable)
+            val vehicles = vehicleRepository.findAllByMember(principal.memberUuid, pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicles,
@@ -102,7 +102,7 @@ class VehicleController(
         return try {
             // Get member from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val vehicle = vehicleService.registerVehicle(principal.memberId, req.name, req.plateNumber, req.type)
+            val vehicle = vehicleService.registerVehicle(principal.memberUuid, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
@@ -128,7 +128,8 @@ class VehicleController(
         return try {
             // Get member from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val vehicle = vehicleService.updateVehicle(principal.memberId, vehicleId, req.name, req.plateNumber, req.type)
+            val vehicle =
+                vehicleService.updateVehicle(principal.memberUuid, vehicleId, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -138,15 +139,15 @@ class VehicleController(
     /**
      * Add a member to a vehicle
      */
-    @PutMapping("/add-member/{vehicleId}/{memberId}")
+    @PutMapping("/add-member/{vehicleId}/{memberUuid}")
     fun addMemberToVehicle(
         @PathVariable vehicleId: String,
-        @PathVariable memberId: String
+        @PathVariable memberUuid: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get member from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val vehicle = vehicleService.addMemberToVehicle(principal.memberId, vehicleId, memberId)
+            val vehicle = vehicleService.addMemberToVehicle(principal.memberUuid, vehicleId, memberUuid)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -157,15 +158,15 @@ class VehicleController(
     /**
      * Remove a member from a vehicle
      */
-    @PutMapping("/remove-member/{vehicleId}/{memberId}")
+    @PutMapping("/remove-member/{vehicleId}/{memberUuid}")
     fun removeMemberFromVehicle(
         @PathVariable vehicleId: String,
-        @PathVariable memberId: String
+        @PathVariable memberUuid: String
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get member from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberId, vehicleId, memberId)
+            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberUuid, vehicleId, memberUuid)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,
