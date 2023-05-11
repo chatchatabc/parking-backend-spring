@@ -16,7 +16,7 @@ public class OSSMockClient extends OSSClient {
     private Map<String, byte[]> fileStore = new HashMap<>();
 
     public OSSMockClient() {
-        super("", null, new ClientConfiguration());
+        super("http://localhost", null, new ClientConfiguration());
     }
 
     @Override
