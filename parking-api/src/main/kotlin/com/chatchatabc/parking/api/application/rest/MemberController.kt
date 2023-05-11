@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.member.MemberNotificationResponse
-import com.chatchatabc.parking.api.application.dto.member.MemberProfileUpdateRequest
+import com.chatchatabc.parking.api.application.dto.MemberNotificationResponse
+import com.chatchatabc.parking.api.application.dto.MemberProfileUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
@@ -127,7 +127,7 @@ class MemberController(
             // Get principal from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findById(principal.id).get()
-            memberService.uploadImage(member, "avatar", file)
+            memberService.uploadImage(member, "avatar", file.inputStream)
             ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
         } catch (e: Exception) {
             e.printStackTrace()

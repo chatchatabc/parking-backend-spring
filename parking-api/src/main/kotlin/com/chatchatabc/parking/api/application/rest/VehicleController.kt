@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.vehicle.VehicleRegisterRequest
-import com.chatchatabc.parking.api.application.dto.vehicle.VehicleUpdateRequest
+import com.chatchatabc.parking.api.application.dto.VehicleRegisterRequest
+import com.chatchatabc.parking.api.application.dto.VehicleUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.Vehicle
