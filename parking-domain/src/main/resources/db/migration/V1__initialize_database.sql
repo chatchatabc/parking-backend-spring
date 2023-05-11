@@ -1,7 +1,7 @@
 -- Create Role Table
 CREATE TABLE IF NOT EXISTS role
 (
-    id   VARCHAR(36) PRIMARY KEY,
+    id   SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS role
 CREATE TABLE IF NOT EXISTS member
 (
     id                SERIAL PRIMARY KEY,
-    member_id         VARCHAR(36)   NOT NULL UNIQUE,
-    notification_id   VARCHAR(36)   NOT NULL UNIQUE,
+    member_uuid       VARCHAR(36)   NOT NULL UNIQUE,
+    notification_uuid VARCHAR(36)   NOT NULL UNIQUE,
     email             VARCHAR(255) UNIQUE,
     username          VARCHAR(15) UNIQUE,
     password          VARCHAR(255),
@@ -29,91 +29,79 @@ CREATE TABLE IF NOT EXISTS member
 -- Create member_role table
 CREATE TABLE IF NOT EXISTS member_role
 (
-    member_id VARCHAR(36) NOT NULL,
-    role_id   VARCHAR(36) NOT NULL,
-    PRIMARY KEY (member_id, role_id),
-    FOREIGN KEY (member_id) REFERENCES member (member_id)
+    member_id SERIAL NOT NULL,
+    role_id   SERIAL NOT NULL,
+    PRIMARY KEY (member_id, role_id)
 );
 
 -- Create member_login_log table
 CREATE TABLE IF NOT EXISTS member_login_log
 (
-    id         VARCHAR(36) PRIMARY KEY,
-    member_id  VARCHAR(36)        NOT NULL,
-    email      VARCHAR(255)       NOT NULL,
-    phone      VARCHAR(15)        NOT NULL,
+    id         SERIAL PRIMARY KEY,
+    member_id  SERIAL             NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
     ip_address VARCHAR(255)       NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
-    created_at TIMESTAMP          NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member (member_id)
+    created_at TIMESTAMP          NOT NULL
 );
 
 -- Create member_logout_log table
 CREATE TABLE IF NOT EXISTS member_logout_log
 (
-    id         VARCHAR(36) PRIMARY KEY,
-    member_id  VARCHAR(36)   NOT NULL,
-    email      VARCHAR(255)  NOT NULL,
-    phone      VARCHAR(15)   NOT NULL,
+    id         SERIAL PRIMARY KEY,
+    member_id  SERIAL        NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
     ip_address VARCHAR(255)  NOT NULL,
-    created_at TIMESTAMP     NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member (member_id)
+    created_at TIMESTAMP     NOT NULL
 );
 
 -- Create member_activity_log table
 CREATE TABLE IF NOT EXISTS member_activity_log
 (
-    id          VARCHAR(36) PRIMARY KEY,
-    member_id   VARCHAR(36) NOT NULL,
+    id          SERIAL PRIMARY KEY,
+    member_id   SERIAL    NOT NULL,
     name        VARCHAR(255),
     target_id   VARCHAR(36),
     event_type  VARCHAR(255),
     column_name VARCHAR(255),
     data_before TEXT,
     data_after  TEXT,
-    created_at  TIMESTAMP   NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member (member_id)
+    created_at  TIMESTAMP NOT NULL
 );
 
 -- Create member_ban_history_log table
 CREATE TABLE IF NOT EXISTS member_ban_history_log
 (
-    id           VARCHAR(36) PRIMARY KEY,
-    member_id    VARCHAR(36)   NOT NULL,
-    banned_by    VARCHAR(36)   NOT NULL,
+    id           SERIAL PRIMARY KEY,
+    member_id    SERIAL        NOT NULL,
+    banned_by    SERIAL        NOT NULL,
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
     unban_reason TEXT,
-    unbanned_by  VARCHAR(36),
+    unbanned_by  SERIAL,
     status       INT DEFAULT 0 NOT NULL,
-    created_at   TIMESTAMP     NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member (member_id),
-    FOREIGN KEY (banned_by) REFERENCES member (member_id)
+    created_at   TIMESTAMP     NOT NULL
 );
 
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
 (
-    id           VARCHAR(36) PRIMARY KEY,
+    id           SERIAL PRIMARY KEY,
+    vehicle_uuid VARCHAR(36)  NOT NULL UNIQUE,
     name         VARCHAR(255) NOT NULL,
     plate_number VARCHAR(255) NOT NULL UNIQUE,
     type         INT          NOT NULL DEFAULT 0,
-    owner_id     VARCHAR(36)  NOT NULL,
+    owner_id     SERIAL       NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
-    updated_at   TIMESTAMP    NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES member (member_id)
+    updated_at   TIMESTAMP    NOT NULL
 );
 
 -- Create member_vehicle table
 CREATE TABLE IF NOT EXISTS member_vehicle
 (
-    member_id  VARCHAR(36) NOT NULL,
-    vehicle_id VARCHAR(36) NOT NULL,
-    PRIMARY KEY (member_id, vehicle_id),
-    FOREIGN KEY (member_id) REFERENCES member (member_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
+    member_id  SERIAL NOT NULL,
+    vehicle_id SERIAL NOT NULL,
+    PRIMARY KEY (member_id, vehicle_id)
 );
 
 -- Create rate table
@@ -128,14 +116,14 @@ CREATE TABLE IF NOT EXISTS rate
     rate                              DECIMAL(10, 2) NOT NULL DEFAULT 0,
     created_at                        TIMESTAMP      NOT NULL,
     updated_at                        TIMESTAMP      NOT NULL
--- TODO: Add version for history
 );
 
 -- Create parking_lot table
 CREATE TABLE IF NOT EXISTS parking_lot
 (
-    id                   VARCHAR(36) PRIMARY KEY,
-    owner_id             VARCHAR(36)   NOT NULL,
+    id                   SERIAL PRIMARY KEY,
+    parking_lot_uuid     VARCHAR(36)   NOT NULL UNIQUE,
+    owner_id             SERIAL        NOT NULL,
     rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,
@@ -148,13 +136,10 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
-    verified_by          VARCHAR(36),
+    verified_by          SERIAL,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
-    updated_at           TIMESTAMP     NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES member (member_id),
-    FOREIGN KEY (rate_id) REFERENCES rate (id),
-    FOREIGN KEY (verified_by) REFERENCES member (member_id)
+    updated_at           TIMESTAMP     NOT NULL
 );
 
 -- Create cloud_file table
@@ -175,26 +160,19 @@ CREATE TABLE IF NOT EXISTS cloud_file
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
     id             VARCHAR(36) PRIMARY KEY,
-    parking_lot_id VARCHAR(36)  NOT NULL,
-    file_order     INT          NOT NULL DEFAULT 0,
-    filename       VARCHAR(255) NOT NULL,
-    filesize       INT          NOT NULL,
-    mimetype       VARCHAR(255) NOT NULL,
-    url            VARCHAR(255) NOT NULL,
-    status         INT          NOT NULL DEFAULT 0,
-    uploaded_by    VARCHAR(36)  NOT NULL,
-    created_at     TIMESTAMP    NOT NULL,
-    updated_at     TIMESTAMP    NOT NULL,
-    FOREIGN KEY (parking_lot_id) REFERENCES parking_lot (id),
-    FOREIGN KEY (uploaded_by) REFERENCES member (member_id)
+    cloud_file_id  SERIAL    NOT NULL,
+    parking_lot_id SERIAL    NOT NULL,
+    file_order     INT       NOT NULL DEFAULT 0,
+    created_at     TIMESTAMP NOT NULL,
+    updated_at     TIMESTAMP NOT NULL
 );
 
 -- Create invoice table
 CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      VARCHAR(36)    NOT NULL,
-    vehicle_id                          VARCHAR(36)    NOT NULL,
+    parking_lot_id                      SERIAL         NOT NULL,
+    vehicle_id                          SERIAL         NOT NULL,
     plate_number                        VARCHAR(255)   NOT NULL,
     estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
     total                               DECIMAL(10, 2) NOT NULL,
@@ -202,36 +180,31 @@ CREATE TABLE IF NOT EXISTS invoice
     start_at                            TIMESTAMP      NOT NULL,
     end_at                              TIMESTAMP      NOT NULL,
     created_at                          TIMESTAMP      NOT NULL,
-    updated_at                          TIMESTAMP      NOT NULL,
-    FOREIGN KEY (parking_lot_id) REFERENCES parking_lot (id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
+    updated_at                          TIMESTAMP      NOT NULL
 );
 
 -- Create report table
 CREATE TABLE IF NOT EXISTS report
 (
-    id           VARCHAR(36) PRIMARY KEY,
+    id           SERIAL PRIMARY KEY,
     name         VARCHAR(255) NOT NULL,
     description  VARCHAR(255) NOT NULL,
     plate_number VARCHAR(255) NOT NULL,
     latitude     FLOAT        NOT NULL,
     longitude    FLOAT        NOT NULL,
-    reported_by  VARCHAR(36)  NOT NULL,
+    reported_by  SERIAL       NOT NULL,
     cancelled_at TIMESTAMP,
     created_at   TIMESTAMP    NOT NULL,
-    updated_at   TIMESTAMP    NOT NULL,
-    FOREIGN KEY (reported_by) REFERENCES member (member_id)
+    updated_at   TIMESTAMP    NOT NULL
 );
 
 -- Create report_status table
 CREATE TABLE IF NOT EXISTS report_status
 (
     id           VARCHAR(36) PRIMARY KEY,
-    report_id    VARCHAR(36) NOT NULL,
-    performed_by VARCHAR(36) NOT NULL,
-    status       INT         NOT NULL DEFAULT 0,
+    report_id    SERIAL    NOT NULL,
+    performed_by SERIAL    NOT NULL,
+    status       INT       NOT NULL DEFAULT 0,
     remarks      VARCHAR(255),
-    created_at   TIMESTAMP   NOT NULL,
-    FOREIGN KEY (report_id) REFERENCES report (id),
-    FOREIGN KEY (performed_by) REFERENCES member (member_id)
+    created_at   TIMESTAMP NOT NULL
 );
