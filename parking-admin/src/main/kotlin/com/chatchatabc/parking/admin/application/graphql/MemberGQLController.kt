@@ -23,7 +23,7 @@ class MemberGQLController(
     fun getMemberById(
         @Argument id: String
     ): Optional<Member> {
-        return memberRepository.findByMemberId(id)
+        return memberRepository.findByMemberUuid(id)
     }
 
     /**

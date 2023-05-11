@@ -58,7 +58,7 @@ class VehicleGQLController(
         @Argument page: Int,
         @Argument size: Int
     ): PagedResponse<Vehicle> {
-        val user = memberRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberUuid(ownerId).get()
         val pr = PageRequest.of(page, size)
         val vehicles = vehicleRepository.findAllByOwner(user, pr)
         return PagedResponse(
