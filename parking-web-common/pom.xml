@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>web-common</artifactId>
+    <artifactId>parking-web-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Parking Web Common</name>
     <description>Parking Project Common Web Library</description>
@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>com.chatchatabc</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>parking-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

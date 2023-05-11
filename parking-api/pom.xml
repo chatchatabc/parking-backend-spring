@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>api</artifactId>
+    <artifactId>parking-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Parking API Backend</name>
     <description>Spring Boot API Backend for Parking Project</description>
@@ -102,7 +102,7 @@
 
         <dependency>
             <groupId>com.chatchatabc</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>parking-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

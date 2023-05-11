@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>domain</artifactId>
+    <artifactId>parking-domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Parking Domain</name>
     <description>Domain for Parking Project</description>
