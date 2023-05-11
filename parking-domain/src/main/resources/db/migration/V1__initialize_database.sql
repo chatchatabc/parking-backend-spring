@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS member
     phone             VARCHAR(15)   NOT NULL,
     first_name        VARCHAR(255),
     last_name         VARCHAR(255),
-    avatar            SERIAL,
+    avatar            SERIAL NULL,
     flag              INT DEFAULT 0 NOT NULL,
     status            INT DEFAULT 0 NOT NULL,
     email_verified_at TIMESTAMP,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS member_ban_history_log
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
     unban_reason TEXT,
-    unbanned_by  SERIAL,
+    unbanned_by  SERIAL NULL,
     status       INT DEFAULT 0 NOT NULL,
     created_at   TIMESTAMP     NOT NULL
 );
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
-    verified_by          SERIAL,
+    verified_by          SERIAL NULL,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL
