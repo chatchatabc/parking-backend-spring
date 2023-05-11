@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.member.*
+import com.chatchatabc.parking.admin.application.dto.*
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog

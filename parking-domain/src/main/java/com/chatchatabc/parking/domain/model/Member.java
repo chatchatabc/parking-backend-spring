@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,12 +34,12 @@ public class Member extends FlagEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_id", unique = true)
-    private String memberId = UUID.randomUUID().toString();
+    @Column(unique = true)
+    private String memberUuid = UUID.randomUUID().toString();
 
     @JsonIgnore
     @Column(unique = true)
-    private String notificationId = UUID.randomUUID().toString();
+    private String notificationUuid = UUID.randomUUID().toString();
 
     @Column(unique = true)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$", message = "Invalid email format.")
@@ -64,8 +65,9 @@ public class Member extends FlagEntity implements UserDetails {
     private String lastName;
 
     @JsonIgnore
-    @Column
-    private String avatar;
+    @OneToOne
+    @JoinColumn(name = "avatar")
+    private CloudFile avatar;
 
     @Column
     private Integer status = 0;
@@ -86,7 +88,7 @@ public class Member extends FlagEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "member_role",
-            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
+            joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
@@ -95,7 +97,7 @@ public class Member extends FlagEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "member_vehicle",
-            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
+            joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id")
     )
     private Collection<Vehicle> vehicles;

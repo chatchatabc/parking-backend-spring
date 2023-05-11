@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class ReportResolver(
+class ReportGQLController(
     private val reportRepository: ReportRepository
 ) {
     /**

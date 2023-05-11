@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class ParkingLotResolver(
+class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: MemberRepository
+    private val memberRepository: MemberRepository
 ) {
 
     /**
@@ -62,7 +62,7 @@ class ParkingLotResolver(
         @Argument ownerId: String
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberId(ownerId).get()
         val parkingLots = parkingLotRepository.findAllByOwner(user, pr)
         return PagedResponse(
             parkingLots.content,

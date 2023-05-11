@@ -3,7 +3,8 @@ package com.chatchatabc.parking.domain.service;
 import com.chatchatabc.parking.domain.enums.RoleNames;
 import com.chatchatabc.parking.domain.model.Member;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
 
 public interface MemberService extends UserDetailsService {
     /**
@@ -46,11 +47,11 @@ public interface MemberService extends UserDetailsService {
     /**
      * Upload a file to the storage service.
      *
-     * @param uploadedBy    the member who uploaded the file
-     * @param namespace     the namespace of the file
-     * @param multipartFile the file to upload
+     * @param uploadedBy  the member who uploaded the file
+     * @param namespace   the namespace of the file
+     * @param inputStream the file to upload
      * @return the updated member
      * @throws Exception if an error occurs
      */
-    Member uploadImage(Member uploadedBy, String namespace, MultipartFile multipartFile) throws Exception;
+    Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream) throws Exception;
 }

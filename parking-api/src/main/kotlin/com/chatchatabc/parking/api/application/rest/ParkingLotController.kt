@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotCreateRequest
-import com.chatchatabc.parking.api.application.dto.parking_lot.ParkingLotUpdateRequest
+import com.chatchatabc.parking.api.application.dto.ParkingLotCreateRequest
+import com.chatchatabc.parking.api.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -356,14 +356,14 @@ class ParkingLotController(
     @PostMapping("/upload-image/{parkingLotId}")
     fun uploadImage(
         @PathVariable parkingLotId: String,
-        @RequestParam("file", required = true) file: MultipartFile? = null,
+        @RequestParam("file", required = true) file: MultipartFile
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findByMemberId(principal.memberId).get()
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            val fileData = parkingLotImageService.uploadImage(member, parkingLot, fileNamespace, file)
+            val fileData = parkingLotImageService.uploadImage(member, parkingLot, fileNamespace, file.inputStream )
             return ResponseEntity.ok(
                 ApiResponse(
                     fileData,

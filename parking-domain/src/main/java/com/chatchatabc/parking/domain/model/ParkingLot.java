@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,11 +24,14 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String parkingLotUuid = UUID.randomUUID().toString();
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "member_id")
+    @JoinColumn(name = "owner_id")
     private Member owner;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -92,7 +96,7 @@ public class ParkingLot extends FlagEntity {
             return List.of();
         }
         return this.images.stream()
-                .filter(image -> image.getStatus() > -1)
+                .filter(image -> image.getCloudFile().getStatus() > -1)
                 .sorted(Comparator.comparingInt(ParkingLotImage::getFileOrder))
                 .map(ParkingLotImage::getId)
                 .collect(Collectors.toList());

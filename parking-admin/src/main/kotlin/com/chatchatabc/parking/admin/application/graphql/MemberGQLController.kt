@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class MemberResolver(
+class MemberGQLController(
     private val memberRepository: MemberRepository,
 ) {
 

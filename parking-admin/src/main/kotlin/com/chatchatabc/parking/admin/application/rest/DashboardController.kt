@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.dashboard.DashboardStatistics
+import com.chatchatabc.parking.admin.application.dto.DashboardStatistics
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

@@ -2,10 +2,11 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "rate")
-@EnableJpaAuditing
+@AllArgsConstructor
+@NoArgsConstructor
 public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,8 +48,4 @@ public class Rate {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-//    @Version
-//    @Column(name = "version", nullable = false)
-//    private Long version;
 }

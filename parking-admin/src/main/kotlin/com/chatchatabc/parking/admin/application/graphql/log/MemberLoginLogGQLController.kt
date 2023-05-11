@@ -11,9 +11,9 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class UserLoginLogResolver(
-    private val userLoginLogRepository: MemberLoginLogRepository,
-    private val userRepository: MemberRepository
+class MemberLoginLogGQLController(
+    private val memberLoginLogRepository: MemberLoginLogRepository,
+    private val memberRepository: MemberRepository
 ) {
     /**
      * Get user login logs
@@ -24,7 +24,7 @@ class UserLoginLogResolver(
         @Argument size: Int
     ): PagedResponse<MemberLoginLog> {
         val pr = PageRequest.of(page, size)
-        val logs = userLoginLogRepository.findAll(pr)
+        val logs = memberLoginLogRepository.findAll(pr)
         return PagedResponse(
             logs.content,
             PageInfo(
@@ -47,8 +47,8 @@ class UserLoginLogResolver(
         @Argument id: String
     ): PagedResponse<MemberLoginLog> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByMemberId(id).get()
-        val logs = userLoginLogRepository.findByMember(user, pr)
+        val user = memberRepository.findByMemberId(id).get()
+        val logs = memberLoginLogRepository.findByMember(user, pr)
         return PagedResponse(
             logs.content,
             PageInfo(

@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.member.MemberPhoneLoginRequest
-import com.chatchatabc.parking.api.application.dto.member.MemberVerifyOTPRequest
+import com.chatchatabc.parking.api.application.dto.MemberPhoneLoginRequest
+import com.chatchatabc.parking.api.application.dto.MemberVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.member.MemberLoginEvent
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames

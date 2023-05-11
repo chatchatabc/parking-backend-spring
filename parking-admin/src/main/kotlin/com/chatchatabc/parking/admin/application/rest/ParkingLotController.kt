@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.parking_lot.ParkingLotCreateRequest
-import com.chatchatabc.parking.admin.application.dto.parking_lot.ParkingLotUpdateRequest
+import com.chatchatabc.parking.admin.application.dto.ParkingLotCreateRequest
+import com.chatchatabc.parking.admin.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot

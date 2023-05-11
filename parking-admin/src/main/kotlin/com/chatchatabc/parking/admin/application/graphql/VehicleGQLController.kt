@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class VehicleResolver(
+class VehicleGQLController(
     private val vehicleRepository: VehicleRepository,
-    private val userRepository: MemberRepository
+    private val memberRepository: MemberRepository
 ) {
 
     /**
@@ -58,7 +58,7 @@ class VehicleResolver(
         @Argument page: Int,
         @Argument size: Int
     ): PagedResponse<Vehicle> {
-        val user = userRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberId(ownerId).get()
         val pr = PageRequest.of(page, size)
         val vehicles = vehicleRepository.findAllByOwner(user, pr)
         return PagedResponse(
