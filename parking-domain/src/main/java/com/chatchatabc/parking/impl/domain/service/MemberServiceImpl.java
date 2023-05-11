@@ -5,11 +5,10 @@ import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
+import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.domain.service.MemberService;
-import com.chatchatabc.parking.domain.service.service.CloudFileService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.chatchatabc.parking.infra.service.KVService;
-import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +22,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class MemberServiceImpl extends CloudFileService implements MemberService {
+public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -32,6 +31,8 @@ public class MemberServiceImpl extends CloudFileService implements MemberService
     private KVService kvService;
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private CloudFileRepository cloudFileRepository;
 
     private final Random random = new Random();
 
@@ -108,7 +109,7 @@ public class MemberServiceImpl extends CloudFileService implements MemberService
     /**
      * Update member
      *
-     * @param memberId  the user id
+     * @param memberUuid  the user id
      * @param username  the username
      * @param email     the email
      * @param firstName the first name
@@ -116,8 +117,8 @@ public class MemberServiceImpl extends CloudFileService implements MemberService
      * @return the member
      */
     @Override
-    public Member updateMember(String memberId, String phone, String username, String email, String firstName, String lastName) throws Exception {
-        Optional<Member> queriedMember = memberRepository.findByMemberId(memberId);
+    public Member updateMember(String memberUuid, String phone, String username, String email, String firstName, String lastName) throws Exception {
+        Optional<Member> queriedMember = memberRepository.findByMemberUuid(memberUuid);
         if (queriedMember.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -160,15 +161,16 @@ public class MemberServiceImpl extends CloudFileService implements MemberService
      * @param uploadedBy  the member who uploaded the file
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
-     * @return the uploaded file data
+     * @param filename    the filename
+     * @param filesize    the filesize
+     * @param mimetype    the mimetype
+     * @return the updated member
      * @throws Exception if an error occurs
      */
     @Override
-    public Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream) throws Exception {
-        // Generate UUID name to be used also as key for cloud storage and append the file extension
-        String uuid = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(inputStream);
+    public Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Update member avatar field
-        uploadedBy.setAvatar(fileStorageService.uploadFile(namespace + "/" + uuid, inputStream));
+        uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy, namespace, inputStream, filename, filesize, mimetype));
         return memberRepository.save(uploadedBy);
     }
 
