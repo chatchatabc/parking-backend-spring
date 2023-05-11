@@ -50,8 +50,11 @@ public interface MemberService extends UserDetailsService {
      * @param uploadedBy  the member who uploaded the file
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
+     * @param filename    the filename
+     * @param filesize    the filesize
+     * @param mimetype    the mimetype
      * @return the updated member
      * @throws Exception if an error occurs
      */
-    Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream) throws Exception;
+    Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception;
 }
