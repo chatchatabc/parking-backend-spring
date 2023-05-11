@@ -14,7 +14,7 @@ import java.io.InputStream;
 
 @Service
 public class FileStorageOSSImpl implements FileStorageService {
-    @Value("${aliyun.oss.bucket-name}")
+    @Value("${aliyun.oss.bucket-name:davao-parking}")
     private String bucketName;
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
