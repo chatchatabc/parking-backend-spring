@@ -21,6 +21,9 @@ public class CloudFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String key;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uploaded_by")
@@ -34,10 +37,6 @@ public class CloudFile {
 
     @Column
     private String mimetype;
-
-    @JsonIgnore
-    @Column
-    private String url;
 
     @Column
     private Integer status = 0;
