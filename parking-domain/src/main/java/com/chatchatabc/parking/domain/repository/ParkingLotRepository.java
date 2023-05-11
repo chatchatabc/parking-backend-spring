@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.domain.repository;
 
-import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.ParkingLot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +14,14 @@ import java.util.Optional;
 
 @Repository
 public interface ParkingLotRepository extends JpaRepository<ParkingLot, String>, JpaSpecificationExecutor<ParkingLot> {
+    /**
+     * Find Parking Lot by parking lot uuid
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @return the parking lot
+     */
+    Optional<ParkingLot> findByParkingLotUuid(String parkingLotUuid);
+
     /**
      * Find a parking lot by its id and owner
      */
