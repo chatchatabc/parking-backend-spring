@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.impl.domain.service;
 
-import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.InvoiceRepository;
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      */
     @Override
     public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
-        Optional<Member> owner = memberRepository.findByMemberId(ownerId);
+        Optional<Member> owner = memberRepository.findByMemberUuid(ownerId);
         if (owner.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -64,7 +64,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Update parking lot
      *
-     * @param memberId     the member id
+     * @param memberUuid   the member id
      * @param parkingLotId the parking lot id
      * @param name         the name of the parking lot
      * @param latitude     the latitude of the parking lot
@@ -75,8 +75,8 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @return the parking lot
      */
     @Override
-    public ParkingLot updateParkingLot(String memberId, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+    public ParkingLot updateParkingLot(String memberUuid, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -138,13 +138,13 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param memberId     the member id
+     * @param memberUuid   the member id
      * @param parkingLotId the parking lot id
      * @return the parking lot
      */
     @Override
-    public ParkingLot verifyParkingLot(String memberId, String parkingLotId) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+    public ParkingLot verifyParkingLot(String memberUuid, String parkingLotId) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
