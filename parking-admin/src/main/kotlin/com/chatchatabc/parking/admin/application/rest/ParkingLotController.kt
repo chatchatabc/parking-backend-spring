@@ -24,14 +24,14 @@ class ParkingLotController(
     /**
      * Admin create Parking Lot
      */
-    @PostMapping("/create/{memberId}")
+    @PostMapping("/create/{memberUuid}")
     fun createParkingLot(
-        @PathVariable memberId: String,
+        @PathVariable memberUuid: String,
         @RequestBody req: ParkingLotCreateRequest
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val createdParkingLot = parkingLotService.registerParkingLot(
-                memberId,
+                memberUuid,
                 req.name,
                 req.latitude,
                 req.longitude,
@@ -62,7 +62,7 @@ class ParkingLotController(
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val updatedParkingLot = parkingLotService.updateParkingLot(
-                principal.memberId,
+                principal.memberUuid,
                 parkingLotId,
                 req.name,
                 req.latitude,
@@ -100,7 +100,7 @@ class ParkingLotController(
         return try {
             // Get Member from Security Context Holder
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val parkingLot = parkingLotService.verifyParkingLot(principal.memberId, parkingLotId)
+            val parkingLot = parkingLotService.verifyParkingLot(principal.memberUuid, parkingLotId)
             ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(

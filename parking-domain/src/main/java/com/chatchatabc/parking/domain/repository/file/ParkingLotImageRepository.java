@@ -21,7 +21,7 @@ public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage
      * @param pageable   the pageable
      * @return the page of parking lot images
      */
-    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.status = :status")
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.cloudFile.status = :status")
     Page<ParkingLotImage> findAllByParkingLotAndStatus(ParkingLot parkingLot, int status, Pageable pageable);
 
     /**
@@ -31,6 +31,6 @@ public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage
      * @param status the status
      * @return the parking lot image
      */
-    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.id = :id AND pli.status = :status")
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.id = :id AND pli.cloudFile.status = :status")
     Optional<ParkingLotImage> findByIdAndStatus(String id, int status);
 }

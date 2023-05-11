@@ -12,8 +12,10 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
+import com.chatchatabc.parking.infra.service.FileStorageService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
@@ -22,7 +24,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.net.URI
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -32,19 +33,20 @@ class ParkingLotController(
     private val memberRepository: MemberRepository,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
+    private val fileStorageService: FileStorageService
 
-    ) {
+) {
     private val fileNamespace = "parkingLot"
 
     /**
-     * Get parking lots by id
+     * Get parking lots by uuid
      */
-    @GetMapping("/get/{parkingLotId}")
+    @GetMapping("/get/{parkingLotUuid}")
     fun get(
-        @PathVariable parkingLotId: String
+        @PathVariable parkingLotUuid: String
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(
@@ -215,7 +217,7 @@ class ParkingLotController(
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val createdParkingLot = parkingLotService.registerParkingLot(
-                principal.memberId,
+                principal.memberUuid,
                 req.name,
                 req.latitude,
                 req.longitude,
@@ -260,7 +262,7 @@ class ParkingLotController(
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val updatedParkingLot = parkingLotService.updateParkingLot(
-                principal.memberId,
+                principal.memberUuid,
                 parkingLotId,
                 req.name,
                 req.latitude,
@@ -335,18 +337,18 @@ class ParkingLotController(
     fun getParkingLotImage(
         @PathVariable imageId: String,
         response: HttpServletResponse
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<InputStreamResource> {
         return try {
             val image = parkingLotImageRepository.findByIdAndStatus(imageId, 1).get()
-            if (image.url == null) {
+            if (image.cloudFile == null) {
                 throw Exception("Image not found")
             }
             val headers = HttpHeaders()
-            headers.location = URI.create(image.url)
-            ResponseEntity<Any>(headers, HttpStatus.SEE_OTHER)
+            val resource = InputStreamResource(fileStorageService.downloadFile(image.cloudFile.key))
+            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
         } catch (e: Exception) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<Any>(HttpStatus.NOT_FOUND)
+            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
         }
     }
 
@@ -361,9 +363,17 @@ class ParkingLotController(
         return try {
             // Get principal from Security Context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findByMemberId(principal.memberId).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             val parkingLot = parkingLotRepository.findById(parkingLotId).get()
-            val fileData = parkingLotImageService.uploadImage(member, parkingLot, fileNamespace, file.inputStream )
+            val fileData = parkingLotImageService.uploadImage(
+                member,
+                parkingLot,
+                fileNamespace,
+                file.inputStream,
+                file.originalFilename,
+                file.size,
+                file.contentType
+            )
             return ResponseEntity.ok(
                 ApiResponse(
                     fileData,
@@ -398,7 +408,7 @@ class ParkingLotController(
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
             // Only owner can delete image
             val image = parkingLotImageRepository.findById(imageId).get()
-            if (image.parkingLot.owner.memberId != principal.memberId) {
+            if (image.parkingLot.owner.memberUuid != principal.memberUuid) {
                 throw Exception("You are not owner of this parking lot")
             }
             parkingLotImageService.deleteImage(imageId)

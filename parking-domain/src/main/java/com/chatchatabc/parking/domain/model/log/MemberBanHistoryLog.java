@@ -20,11 +20,11 @@ public class MemberBanHistoryLog {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "banned_by", referencedColumnName = "member_id")
+    @JoinColumn(name = "banned_by", referencedColumnName = "id")
     private Member bannedBy;
 
     @Column
@@ -39,7 +39,7 @@ public class MemberBanHistoryLog {
     private String unbanReason;
 
     @ManyToOne
-    @JoinColumn(name = "unbanned_by", referencedColumnName = "member_id")
+    @JoinColumn(name = "unbanned_by", referencedColumnName = "id")
     private Member unbannedBy;
 
     @Column

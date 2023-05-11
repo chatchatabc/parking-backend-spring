@@ -62,7 +62,7 @@ class ParkingLotGQLController(
         @Argument ownerId: String
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val user = memberRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberUuid(ownerId).get()
         val parkingLots = parkingLotRepository.findAllByOwner(user, pr)
         return PagedResponse(
             parkingLots.content,

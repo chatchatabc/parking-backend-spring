@@ -73,7 +73,7 @@ class AuthController(
                 roleName = RoleNames.ROLE_PARKING_OWNER
             }
             val member = memberService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(member.memberId)
+            val token: String = jwtService.generateToken(member.memberUuid)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)

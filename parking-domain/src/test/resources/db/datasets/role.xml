@@ -2,8 +2,8 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-    <role id="7d6312f7-149f-4320-9be9-7bb1171bdaa1" name="ROLE_ADMIN"/>
-    <role id="27cec7e4-58cd-4a78-b8b4-574a66a747a4" name="ROLE_PARKING_OWNER"/>
-    <role id="a755bfee-c78b-4166-9b17-017409328060" name="ROLE_ENFORCER"/>
-    <role id="9b9fd9be-bea0-44f5-98e0-18ea30d06a62" name="ROLE_MEMBER"/>
+    <role id="1" name="ROLE_ADMIN"/>
+    <role id="2" name="ROLE_PARKING_OWNER"/>
+    <role id="3" name="ROLE_ENFORCER"/>
+    <role id="4" name="ROLE_MEMBER"/>
 </dataset>

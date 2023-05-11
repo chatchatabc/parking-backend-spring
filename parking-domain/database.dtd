@@ -1,4 +1,5 @@
 <!ELEMENT dataset (
+    cloud_file*,
     flyway_schema_history*,
     invoice*,
     member*,
@@ -15,6 +16,18 @@
     report_status*,
     role*,
     vehicle*)>
+
+<!ELEMENT cloud_file EMPTY>
+<!ATTLIST cloud_file
+    id CDATA #IMPLIED
+    key CDATA #REQUIRED
+    filename CDATA #REQUIRED
+    filesize CDATA #REQUIRED
+    mimetype CDATA #REQUIRED
+    status CDATA #IMPLIED
+    uploaded_by CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+>
 
 <!ELEMENT flyway_schema_history EMPTY>
 <!ATTLIST flyway_schema_history
@@ -48,8 +61,8 @@
 <!ELEMENT member EMPTY>
 <!ATTLIST member
     id CDATA #IMPLIED
-    member_id CDATA #REQUIRED
-    notification_id CDATA #REQUIRED
+    member_uuid CDATA #REQUIRED
+    notification_uuid CDATA #REQUIRED
     email CDATA #IMPLIED
     username CDATA #IMPLIED
     password CDATA #IMPLIED
@@ -67,7 +80,7 @@
 
 <!ELEMENT member_activity_log EMPTY>
 <!ATTLIST member_activity_log
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     member_id CDATA #REQUIRED
     name CDATA #IMPLIED
     target_id CDATA #IMPLIED
@@ -80,7 +93,7 @@
 
 <!ELEMENT member_ban_history_log EMPTY>
 <!ATTLIST member_ban_history_log
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     member_id CDATA #REQUIRED
     banned_by CDATA #REQUIRED
     until CDATA #REQUIRED
@@ -93,10 +106,8 @@
 
 <!ELEMENT member_login_log EMPTY>
 <!ATTLIST member_login_log
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     member_id CDATA #REQUIRED
-    email CDATA #REQUIRED
-    phone CDATA #REQUIRED
     type CDATA #IMPLIED
     ip_address CDATA #REQUIRED
     success CDATA #IMPLIED
@@ -105,10 +116,8 @@
 
 <!ELEMENT member_logout_log EMPTY>
 <!ATTLIST member_logout_log
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     member_id CDATA #REQUIRED
-    email CDATA #REQUIRED
-    phone CDATA #REQUIRED
     type CDATA #IMPLIED
     ip_address CDATA #REQUIRED
     created_at CDATA #REQUIRED
@@ -128,7 +137,8 @@
 
 <!ELEMENT parking_lot EMPTY>
 <!ATTLIST parking_lot
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
+    parking_lot_uuid CDATA #REQUIRED
     owner_id CDATA #REQUIRED
     rate_id CDATA #IMPLIED
     name CDATA #REQUIRED
@@ -151,16 +161,9 @@
 <!ELEMENT parking_lot_image EMPTY>
 <!ATTLIST parking_lot_image
     id CDATA #REQUIRED
+    cloud_file_id CDATA #REQUIRED
     parking_lot_id CDATA #REQUIRED
     file_order CDATA #IMPLIED
-    filename CDATA #REQUIRED
-    filesize CDATA #REQUIRED
-    mimetype CDATA #REQUIRED
-    url CDATA #REQUIRED
-    status CDATA #IMPLIED
-    uploaded_by CDATA #REQUIRED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
 >
 
 <!ELEMENT rate EMPTY>
@@ -178,7 +181,7 @@
 
 <!ELEMENT report EMPTY>
 <!ATTLIST report
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     name CDATA #REQUIRED
     description CDATA #REQUIRED
     plate_number CDATA #REQUIRED
@@ -192,7 +195,7 @@
 
 <!ELEMENT report_status EMPTY>
 <!ATTLIST report_status
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     report_id CDATA #REQUIRED
     performed_by CDATA #REQUIRED
     status CDATA #IMPLIED
@@ -202,13 +205,14 @@
 
 <!ELEMENT role EMPTY>
 <!ATTLIST role
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
     name CDATA #REQUIRED
 >
 
 <!ELEMENT vehicle EMPTY>
 <!ATTLIST vehicle
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
+    vehicle_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
     plate_number CDATA #REQUIRED
     type CDATA #IMPLIED

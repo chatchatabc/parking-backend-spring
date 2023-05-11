@@ -37,7 +37,7 @@ class ProfileController(
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findByMemberId(principal.memberId).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             ResponseEntity.ok().body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
@@ -66,7 +66,7 @@ class ProfileController(
         return try {
             // Get ID from security context
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findByMemberId(principal.memberId).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             memberLogoutLogRepository.save(
                 MemberLogoutLog().apply {
                     this.member = member

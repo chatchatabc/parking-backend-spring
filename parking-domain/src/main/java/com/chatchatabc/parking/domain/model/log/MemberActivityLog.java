@@ -20,7 +20,7 @@ public class MemberActivityLog {
     private String id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member performedBy;
 
     @Column(nullable = false)
