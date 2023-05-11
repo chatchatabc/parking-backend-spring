@@ -1,10 +1,10 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.enums.RoleNames;
-import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.Member;
-import com.chatchatabc.parking.domain.repository.RoleRepository;
+import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.domain.service.MemberService;
 import com.chatchatabc.parking.domain.service.service.CloudFileService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Objects;
@@ -157,18 +157,18 @@ public class MemberServiceImpl extends CloudFileService implements MemberService
     /**
      * Upload a file to the storage service.
      *
-     * @param uploadedBy    the member who uploaded the file
-     * @param namespace     the namespace of the file
-     * @param multipartFile the file to upload
+     * @param uploadedBy  the member who uploaded the file
+     * @param namespace   the namespace of the file
+     * @param inputStream the file to upload
      * @return the uploaded file data
      * @throws Exception if an error occurs
      */
     @Override
-    public Member uploadImage(Member uploadedBy, String namespace, MultipartFile multipartFile) throws Exception {
+    public Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream) throws Exception {
         // Generate UUID name to be used also as key for cloud storage and append the file extension
-        String uuid = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(multipartFile);
+        String uuid = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(inputStream);
         // Update member avatar field
-        uploadedBy.setAvatar(fileStorageService.uploadFile(namespace + "/" + uuid, multipartFile));
+        uploadedBy.setAvatar(fileStorageService.uploadFile(namespace + "/" + uuid, inputStream));
         return memberRepository.save(uploadedBy);
     }
 
