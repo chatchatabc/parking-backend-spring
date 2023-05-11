@@ -17,6 +17,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <kotlin.version>1.8.21</kotlin.version>
         <spring-boot.version>3.1.0-RC2</spring-boot.version>
+        <jnats.version>2.16.11</jnats.version>
         <jackson.version>2.15.0</jackson.version>
         <junit5.version>5.9.3</junit5.version>
         <testcontainers.version>1.18.0</testcontainers.version>
@@ -77,6 +78,11 @@
                 <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.nats</groupId>
+                <artifactId>jnats</artifactId>
+                <version>${jnats.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
