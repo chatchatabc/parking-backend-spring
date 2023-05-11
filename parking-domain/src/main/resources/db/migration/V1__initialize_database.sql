@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS member
     phone             VARCHAR(15)   NOT NULL,
     first_name        VARCHAR(255),
     last_name         VARCHAR(255),
-    avatar            VARCHAR(255),
+    avatar            SERIAL,
     flag              INT DEFAULT 0 NOT NULL,
     status            INT DEFAULT 0 NOT NULL,
     email_verified_at TIMESTAMP,
@@ -152,19 +152,16 @@ CREATE TABLE IF NOT EXISTS cloud_file
     url         VARCHAR(255) NOT NULL,
     status      INT          NOT NULL DEFAULT 0,
     uploaded_by VARCHAR(36)  NOT NULL,
-    created_at  TIMESTAMP    NOT NULL,
-    updated_at  TIMESTAMP    NOT NULL
+    created_at  TIMESTAMP    NOT NULL
 );
 
 -- Create parking_lot_image table
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
     id             VARCHAR(36) PRIMARY KEY,
-    cloud_file_id  SERIAL    NOT NULL,
-    parking_lot_id SERIAL    NOT NULL,
-    file_order     INT       NOT NULL DEFAULT 0,
-    created_at     TIMESTAMP NOT NULL,
-    updated_at     TIMESTAMP NOT NULL
+    cloud_file_id  SERIAL NOT NULL,
+    parking_lot_id SERIAL NOT NULL,
+    file_order     INT    NOT NULL DEFAULT 0
 );
 
 -- Create invoice table
@@ -201,7 +198,7 @@ CREATE TABLE IF NOT EXISTS report
 -- Create report_status table
 CREATE TABLE IF NOT EXISTS report_status
 (
-    id           VARCHAR(36) PRIMARY KEY,
+    id           SERIAL PRIMARY KEY,
     report_id    SERIAL    NOT NULL,
     performed_by SERIAL    NOT NULL,
     status       INT       NOT NULL DEFAULT 0,
