@@ -28,7 +28,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @Override
     public Vehicle registerVehicle(String memberId, String name, String plateNumber, int type) throws Exception {
-        Optional<Member> owner = memberRepository.findByMemberId(memberId);
+        Optional<Member> owner = memberRepository.findByMemberUuid(memberId);
         if (owner.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -47,7 +47,7 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Update vehicle
      *
-     * @param memberId    the member id
+     * @param memberUuid  the member id
      * @param vehicleId   the vehicle id
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
@@ -55,8 +55,8 @@ public class VehicleServiceImpl implements VehicleService {
      * @return the vehicle
      */
     @Override
-    public Vehicle updateVehicle(String memberId, String vehicleId, String name, String plateNumber, Integer type) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+    public Vehicle updateVehicle(String memberUuid, String vehicleId, String name, String plateNumber, Integer type) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -86,15 +86,15 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Add a member to a vehicle
      *
-     * @param memberId      the member id
+     * @param memberUuid    the member id
      * @param vehicleId     the vehicle id
      * @param memberToAddId the member to add id
      * @return the vehicle
      * @throws Exception the exception
      */
     @Override
-    public Vehicle addMemberToVehicle(String memberId, String vehicleId, String memberToAddId) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+    public Vehicle addMemberToVehicle(String memberUuid, String vehicleId, String memberToAddId) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -108,7 +108,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Vehicle not found");
         }
 
-        Optional<Member> memberToAdd = memberRepository.findByMemberId(memberToAddId);
+        Optional<Member> memberToAdd = memberRepository.findByMemberUuid(memberToAddId);
         if (memberToAdd.isEmpty()) {
             throw new Exception("Member to add not found");
         }
@@ -127,15 +127,15 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Remove a member from a vehicle
      *
-     * @param memberId         the member id
+     * @param memberUuid       the member id
      * @param vehicleId        the vehicle id
      * @param memberToRemoveId the member to remove id
      * @return the vehicle
      * @throws Exception the exception
      */
     @Override
-    public Vehicle removeMemberFromVehicle(String memberId, String vehicleId, String memberToRemoveId) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+    public Vehicle removeMemberFromVehicle(String memberUuid, String vehicleId, String memberToRemoveId) throws Exception {
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -153,7 +153,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Cannot remove owner");
         }
 
-        Optional<Member> memberToRemove = memberRepository.findByMemberId(memberToRemoveId);
+        Optional<Member> memberToRemove = memberRepository.findByMemberUuid(memberToRemoveId);
         if (memberToRemove.isEmpty()) {
             throw new Exception("Member to add not found");
         }
