@@ -38,12 +38,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>, JpaSpecif
 
 
     /**
-     * Find member by member id
+     * Find member by member uuid
      *
-     * @param memberId the member id
+     * @param memberUuid the member id
      * @return the member
      */
-    Optional<Member> findByMemberId(String memberId);
+    Optional<Member> findByMemberUuid(String memberUuid);
 
     /**
      * Count verified members
