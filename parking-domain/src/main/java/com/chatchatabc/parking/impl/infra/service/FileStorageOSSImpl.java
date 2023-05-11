@@ -1,40 +1,54 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
+import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.file.CloudFile;
+import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.infra.service.FileStorageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 @Service
 public class FileStorageOSSImpl implements FileStorageService {
     @Value("${aliyun.oss.bucket-name:davao-parking}")
     private String bucketName;
-    @Value("${aliyun.oss.endpoint}")
-    private String endpoint;
 
     @Autowired
     private OSS ossClient;
 
-    private final Logger log = LoggerFactory.getLogger(FileStorageOSSImpl.class);
+    @Autowired
+    private CloudFileRepository cloudFileRepository;
+
 
     /**
      * Upload file to cloud storage
      *
-     * @param key         file name
-     * @param inputStream inputStream  to upload
-     * @return file url
+     * @param uploadedBy  the member who uploaded the file
+     * @param namespace   the file namespace
+     * @param inputStream inputStream to upload
+     * @param filename    file name
+     * @param filesize    file size
+     * @param mimetype    file mime type
+     * @return cloud file
      */
     @Override
-    public String uploadFile(String key, InputStream inputStream) throws IOException {
+    public CloudFile uploadFile(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) {
+        // Generate UUID name to be used also as key for cloud storage and append the file extension
+        String key = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(filename);
+        // Create cloud file
+        CloudFile cloudFile = new CloudFile();
+        cloudFile.setKey(key);
+        cloudFile.setFilename(filename);
+        cloudFile.setFilesize(filesize);
+        cloudFile.setMimetype(mimetype);
+
         // Upload file to storage service
         ossClient.putObject(bucketName, key, inputStream);
-        return "https://" + bucketName + "." + endpoint.substring(endpoint.indexOf("://") + 3) + "/" + key;
+        return cloudFileRepository.save(cloudFile);
     }
 
     /**
@@ -56,5 +70,21 @@ public class FileStorageOSSImpl implements FileStorageService {
     @Override
     public void deleteFile(String key) {
         ossClient.deleteObject(bucketName, key);
+    }
+
+    /**
+     * Get the file extension name of a file
+     *
+     * @param filename the filename
+     * @return the file extension name
+     */
+    public String getFileExtension(String filename) {
+        if (filename != null) {
+            int lastIndexOfDot = filename.lastIndexOf('.');
+            if (lastIndexOfDot > 0 && lastIndexOfDot < filename.length() - 1) {
+                return filename.substring(lastIndexOfDot + 1);
+            }
+        }
+        return "";
     }
 }

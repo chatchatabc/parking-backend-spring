@@ -1,5 +1,8 @@
 package com.chatchatabc.parking.infra.service;
 
+import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.file.CloudFile;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -8,11 +11,15 @@ public interface FileStorageService {
     /**
      * Upload file to cloud storage
      *
-     * @param key         file name
+     * @param uploadedBy  the member who uploaded the file
+     * @param namespace   the namespace of the file
      * @param inputStream inputStream to upload
-     * @return file url
+     * @param filename    file name
+     * @param filesize    file size
+     * @param mimetype    file mime type
+     * @return cloud file
      */
-    String uploadFile(String key, InputStream inputStream) throws IOException;
+    CloudFile uploadFile(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws IOException;
 
     /**
      * Download file from cloud storage
