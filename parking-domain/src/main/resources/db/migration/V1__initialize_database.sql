@@ -157,6 +157,20 @@ CREATE TABLE IF NOT EXISTS parking_lot
     FOREIGN KEY (verified_by) REFERENCES member (member_id)
 );
 
+-- Create cloud_file table
+CREATE TABLE IF NOT EXISTS cloud_file
+(
+    id          SERIAL PRIMARY KEY,
+    filename    VARCHAR(255) NOT NULL,
+    filesize    INT          NOT NULL,
+    mimetype    VARCHAR(255) NOT NULL,
+    url         VARCHAR(255) NOT NULL,
+    status      INT          NOT NULL DEFAULT 0,
+    uploaded_by VARCHAR(36)  NOT NULL,
+    created_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL
+);
+
 -- Create parking_lot_image table
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
