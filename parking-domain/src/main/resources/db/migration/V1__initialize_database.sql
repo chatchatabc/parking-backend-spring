@@ -150,7 +150,6 @@ CREATE TABLE IF NOT EXISTS cloud_file
     filename    VARCHAR(255) NOT NULL,
     filesize    INT          NOT NULL,
     mimetype    VARCHAR(255) NOT NULL,
-    url         VARCHAR(255) NOT NULL,
     status      INT          NOT NULL DEFAULT 0,
     uploaded_by VARCHAR(36)  NOT NULL,
     created_at  TIMESTAMP    NOT NULL
