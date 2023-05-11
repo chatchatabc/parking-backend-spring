@@ -61,7 +61,7 @@ public class JwtServiceImpl implements JwtService {
     public Member validateTokenAndGetMember(String token) {
         try {
             String memberId = verifier.verify(token).getSubject();
-            return memberRepository.findByMemberId(memberId).orElse(null);
+            return memberRepository.findByMemberUuid(memberId).orElse(null);
         } catch (Exception e) {
             return null;
         }

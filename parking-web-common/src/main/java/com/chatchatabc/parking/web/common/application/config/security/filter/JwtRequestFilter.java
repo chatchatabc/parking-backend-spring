@@ -66,7 +66,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // Continue flow with the member in the security context
         filterChain.doFilter(request, response);
-        logRequest(request, response, member.getMemberId());
+        logRequest(request, response, member.getMemberUuid());
     }
 
     /**

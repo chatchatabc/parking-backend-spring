@@ -41,13 +41,13 @@ class JwtServiceImplTest {
     void validateTokenAndGetMember_shouldReturnMember_whenValidToken() {
         String memberId = "memberId";
         Member member = new Member();
-        member.setMemberId(memberId);
+        member.setMemberUuid(memberId);
         String token = jwtService.generateToken(memberId);
-        when(memberRepository.findByMemberId(memberId)).thenReturn(Optional.of(member));
+        when(memberRepository.findByMemberUuid(memberId)).thenReturn(Optional.of(member));
         Member result = jwtService.validateTokenAndGetMember(token);
         assertNotNull(result);
         assertEquals(member, result);
-        verify(memberRepository, times(1)).findByMemberId(memberId);
+        verify(memberRepository, times(1)).findByMemberUuid(memberId);
     }
 
     @Test
