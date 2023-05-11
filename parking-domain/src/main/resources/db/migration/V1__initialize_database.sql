@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS member
     phone             VARCHAR(15)   NOT NULL,
     first_name        VARCHAR(255),
     last_name         VARCHAR(255),
-    avatar            SERIAL NULL,
+    avatar            INT,
     flag              INT DEFAULT 0 NOT NULL,
     status            INT DEFAULT 0 NOT NULL,
     email_verified_at TIMESTAMP,
@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS member
 -- Create member_role table
 CREATE TABLE IF NOT EXISTS member_role
 (
-    member_id SERIAL NOT NULL,
-    role_id   SERIAL NOT NULL,
+    member_id INT NOT NULL,
+    role_id   INT NOT NULL,
     PRIMARY KEY (member_id, role_id)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS member_role
 CREATE TABLE IF NOT EXISTS member_login_log
 (
     id         SERIAL PRIMARY KEY,
-    member_id  SERIAL             NOT NULL,
+    member_id  INT                NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
     ip_address VARCHAR(255)       NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS member_login_log
 CREATE TABLE IF NOT EXISTS member_logout_log
 (
     id         SERIAL PRIMARY KEY,
-    member_id  SERIAL        NOT NULL,
+    member_id  INT           NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
     ip_address VARCHAR(255)  NOT NULL,
     created_at TIMESTAMP     NOT NULL
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS member_logout_log
 CREATE TABLE IF NOT EXISTS member_activity_log
 (
     id          SERIAL PRIMARY KEY,
-    member_id   SERIAL    NOT NULL,
+    member_id   INT       NOT NULL,
     name        VARCHAR(255),
     target_id   VARCHAR(36),
     event_type  VARCHAR(255),
@@ -73,12 +73,12 @@ CREATE TABLE IF NOT EXISTS member_activity_log
 CREATE TABLE IF NOT EXISTS member_ban_history_log
 (
     id           SERIAL PRIMARY KEY,
-    member_id    SERIAL        NOT NULL,
-    banned_by    SERIAL        NOT NULL,
+    member_id    INT           NOT NULL,
+    banned_by    INT           NOT NULL,
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
     unban_reason TEXT,
-    unbanned_by  SERIAL NULL,
+    unbanned_by  INT,
     status       INT DEFAULT 0 NOT NULL,
     created_at   TIMESTAMP     NOT NULL
 );
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS vehicle
     name         VARCHAR(255) NOT NULL,
     plate_number VARCHAR(255) NOT NULL UNIQUE,
     type         INT          NOT NULL DEFAULT 0,
-    owner_id     SERIAL       NOT NULL,
+    owner_id     INT          NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
 );
@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS vehicle
 -- Create member_vehicle table
 CREATE TABLE IF NOT EXISTS member_vehicle
 (
-    member_id  SERIAL NOT NULL,
-    vehicle_id SERIAL NOT NULL,
+    member_id  INT NOT NULL,
+    vehicle_id INT NOT NULL,
     PRIMARY KEY (member_id, vehicle_id)
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 (
     id                   SERIAL PRIMARY KEY,
     parking_lot_uuid     VARCHAR(36)   NOT NULL UNIQUE,
-    owner_id             SERIAL        NOT NULL,
+    owner_id             INT           NOT NULL,
     rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
-    verified_by          SERIAL NULL,
+    verified_by          INT,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL
@@ -159,17 +159,17 @@ CREATE TABLE IF NOT EXISTS cloud_file
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
     id             VARCHAR(36) PRIMARY KEY,
-    cloud_file_id  SERIAL NOT NULL,
-    parking_lot_id SERIAL NOT NULL,
-    file_order     INT    NOT NULL DEFAULT 0
+    cloud_file_id  INT NOT NULL,
+    parking_lot_id INT NOT NULL,
+    file_order     INT NOT NULL DEFAULT 0
 );
 
 -- Create invoice table
 CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      SERIAL         NOT NULL,
-    vehicle_id                          SERIAL         NOT NULL,
+    parking_lot_id                      INT            NOT NULL,
+    vehicle_id                          INT            NOT NULL,
     plate_number                        VARCHAR(255)   NOT NULL,
     estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
     total                               DECIMAL(10, 2) NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS report
     plate_number VARCHAR(255) NOT NULL,
     latitude     FLOAT        NOT NULL,
     longitude    FLOAT        NOT NULL,
-    reported_by  SERIAL       NOT NULL,
+    reported_by  INT          NOT NULL,
     cancelled_at TIMESTAMP,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
@@ -199,8 +199,8 @@ CREATE TABLE IF NOT EXISTS report
 CREATE TABLE IF NOT EXISTS report_status
 (
     id           SERIAL PRIMARY KEY,
-    report_id    SERIAL    NOT NULL,
-    performed_by SERIAL    NOT NULL,
+    report_id    INT       NOT NULL,
+    performed_by INT       NOT NULL,
     status       INT       NOT NULL DEFAULT 0,
     remarks      VARCHAR(255),
     created_at   TIMESTAMP NOT NULL
