@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 CREATE TABLE IF NOT EXISTS cloud_file
 (
     id          SERIAL PRIMARY KEY,
+    key         VARCHAR(255) NOT NULL UNIQUE,
     filename    VARCHAR(255) NOT NULL,
     filesize    INT          NOT NULL,
     mimetype    VARCHAR(255) NOT NULL,
