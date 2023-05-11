@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -14,8 +13,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "parking_lot_image")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ParkingLotImage extends CloudFileEntity {
+public class ParkingLotImage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "cloud_file_id")
+    private CloudFile cloudFile;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parking_lot_id")

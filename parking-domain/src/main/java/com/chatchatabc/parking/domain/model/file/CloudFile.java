@@ -3,17 +3,23 @@ package com.chatchatabc.parking.domain.model.file;
 import com.chatchatabc.parking.domain.model.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
-@MappedSuperclass
-public class CloudFileEntity {
+@Entity
+@Table(name = "cloud_file")
+@AllArgsConstructor
+@NoArgsConstructor
+public class CloudFile {
     @JsonIgnore
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
