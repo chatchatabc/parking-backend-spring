@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class VehicleResolver(
+class VehicleController(
     private val vehicleRepository: VehicleRepository,
     private val userRepository: MemberRepository
 ) {

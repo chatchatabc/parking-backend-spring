@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class InvoiceResolver(
+class InvoiceController(
     private val invoiceRepository: InvoiceRepository
 ) {
     /**
