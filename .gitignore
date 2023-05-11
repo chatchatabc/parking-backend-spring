@@ -145,4 +145,6 @@ buildNumber.properties
 outdated.txt
 http-client.private.env.json
 dependency-tree.txt
+application-dev.properties
 application-prod.properties
+parking-domain/src/test/resources/application.properties
