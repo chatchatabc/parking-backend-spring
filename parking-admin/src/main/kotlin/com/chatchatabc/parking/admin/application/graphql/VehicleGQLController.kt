@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class VehicleController(
+class VehicleGQLController(
     private val vehicleRepository: VehicleRepository,
     private val memberRepository: MemberRepository
 ) {

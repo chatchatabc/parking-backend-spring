@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class ParkingLotController(
+class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
     private val memberRepository: MemberRepository
 ) {
