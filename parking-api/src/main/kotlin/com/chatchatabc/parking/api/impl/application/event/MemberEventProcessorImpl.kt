@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
 @Component
-class UserEventProcessorImpl(
+class MemberEventProcessorImpl(
     private val memberSchedule: MemberSchedule
 ) : MemberEventProcessor {
     /**

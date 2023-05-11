@@ -14,7 +14,7 @@ import java.util.*
 @Controller
 class VehicleController(
     private val vehicleRepository: VehicleRepository,
-    private val userRepository: MemberRepository
+    private val memberRepository: MemberRepository
 ) {
 
     /**
@@ -58,7 +58,7 @@ class VehicleController(
         @Argument page: Int,
         @Argument size: Int
     ): PagedResponse<Vehicle> {
-        val user = userRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberId(ownerId).get()
         val pr = PageRequest.of(page, size)
         val vehicles = vehicleRepository.findAllByOwner(user, pr)
         return PagedResponse(

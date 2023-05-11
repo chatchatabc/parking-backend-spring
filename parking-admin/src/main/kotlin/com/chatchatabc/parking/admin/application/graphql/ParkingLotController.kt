@@ -15,7 +15,7 @@ import java.util.*
 @Controller
 class ParkingLotController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: MemberRepository
+    private val memberRepository: MemberRepository
 ) {
 
     /**
@@ -62,7 +62,7 @@ class ParkingLotController(
         @Argument ownerId: String
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByMemberId(ownerId).get()
+        val user = memberRepository.findByMemberId(ownerId).get()
         val parkingLots = parkingLotRepository.findAllByOwner(user, pr)
         return PagedResponse(
             parkingLots.content,
