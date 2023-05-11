@@ -29,5 +29,5 @@ public class ParkingLotImage {
     private ParkingLot parkingLot;
 
     @Column
-    private int fileOrder;
+    private int fileOrder = 0;
 }
