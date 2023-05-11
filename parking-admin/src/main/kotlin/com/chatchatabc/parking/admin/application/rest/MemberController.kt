@@ -96,13 +96,13 @@ class MemberController(
     /**
      * Override member password
      */
-    @PutMapping("/override-password/{memberId}")
+    @PutMapping("/override-password/{memberUuid}")
     fun overrideMemberPassword(
-        @PathVariable memberId: String,
+        @PathVariable memberUuid: String,
         @RequestBody req: MemberOverridePasswordRequest
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val member = memberRepository.findByMemberId(memberId).get().apply {
+            val member = memberRepository.findByMemberUuid(memberUuid).get().apply {
                 this.password = passwordEncoder.encode(req.newPassword)
             }
             return ResponseEntity.ok(
@@ -123,16 +123,16 @@ class MemberController(
     /**
      * Ban member
      */
-    @PostMapping("/ban/{memberId}")
+    @PostMapping("/ban/{memberUuid}")
     fun banMember(
-        @PathVariable memberId: String,
+        @PathVariable memberUuid: String,
         @RequestBody req: MemberBanRequest
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
             // Get principal
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val bannedBy = memberRepository.findByMemberId(principal.memberId).get()
-            val member = memberRepository.findByMemberId(memberId).get()
+            val bannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(memberUuid).get()
             val banLog = MemberBanHistoryLog().apply {
                 this.member = member
                 this.bannedBy = bannedBy
@@ -158,16 +158,16 @@ class MemberController(
     /**
      * Unban member
      */
-    @PostMapping("/unban/{memberId}")
+    @PostMapping("/unban/{memberUuid}")
     fun unbanMember(
-        @PathVariable memberId: String,
+        @PathVariable memberUuid: String,
         @RequestBody req: MemberUnbanRequest
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
             // Get principal
             val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val unbannedBy = memberRepository.findByMemberId(principal.memberId).get()
-            val member = memberRepository.findByMemberId(memberId).get()
+            val unbannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(memberUuid).get()
             // Get latest ban log
             val banLog = memberBanHistoryLogRepository.findLatestBanLog(member).get().apply {
                 this.unbannedBy = unbannedBy

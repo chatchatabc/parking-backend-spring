@@ -43,7 +43,7 @@ class AuthController(
             )
             // Generate JWT Token
             val headers = HttpHeaders()
-            val token: String = jwtService.generateToken(member.get().memberId)
+            val token: String = jwtService.generateToken(member.get().memberUuid)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             memberLoginLogRepository.save(
