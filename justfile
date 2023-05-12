@@ -2,9 +2,9 @@
 build:
   mvn -DskipTests clean package
 
-# check oudated dependencies
-outdated:
-  mvn compile versions:display-dependency-updates > outdated.txt
+# check dependencies updates
+dependency-updates:
+  mvn compile versions:display-dependency-updates > dependency-updates.txt
 
 # display dependency tree
 dependency-tree:
