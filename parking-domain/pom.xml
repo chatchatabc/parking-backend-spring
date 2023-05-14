@@ -97,4 +97,28 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <username>postgres</username>
+                    <password>postgres</password>
+                    <dbconfig>
+                        <datatypeFactory>org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</datatypeFactory>
+                    </dbconfig>
+                    <type>CLEAN_INSERT</type>
+                    <format>flat</format>
+                    <sources>
+                        <src>src/test/resources/db/datasets/role.xml</src>
+                    </sources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
