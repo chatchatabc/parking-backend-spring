@@ -146,3 +146,4 @@ http-client.private.env.json
 dependency-tree.txt
 dependency-updates.txt
 .env*
+outdated.txt
