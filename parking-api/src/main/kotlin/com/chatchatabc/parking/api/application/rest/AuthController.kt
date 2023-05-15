@@ -66,6 +66,7 @@ class AuthController(
         @RequestBody request: MemberVerifyOTPRequest,
         @PathVariable type: String,
     ): ResponseEntity<ApiResponse<Member>> {
+        // TODO: Add login logging here
         return try {
             val headers = HttpHeaders()
             var roleName: RoleNames = RoleNames.ROLE_MEMBER
@@ -73,7 +74,12 @@ class AuthController(
                 roleName = RoleNames.ROLE_PARKING_OWNER
             }
             val member = memberService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
-            val token: String = jwtService.generateToken(member.memberUuid)
+            // Convert granted authority roles to list of string roles
+            val roleStrings: List<String> = member.roles.stream()
+                .map { it.authority }
+                .toList()
+
+            val token: String = jwtService.generateToken(member.memberUuid, member.username, roleStrings)
             headers.set("X-Access-Token", token)
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)

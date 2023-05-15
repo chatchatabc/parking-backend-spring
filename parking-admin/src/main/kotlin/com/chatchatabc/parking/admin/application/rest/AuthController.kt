@@ -43,7 +43,12 @@ class AuthController(
             )
             // Generate JWT Token
             val headers = HttpHeaders()
-            val token: String = jwtService.generateToken(member.get().memberUuid)
+            // Convert granted authority roles to list of string roles
+            val roleStrings: List<String> = member.get().roles.stream()
+                .map { it.authority }
+                .toList()
+
+            val token: String = jwtService.generateToken(member.get().memberUuid, member.get().username, roleStrings)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             memberLoginLogRepository.save(
