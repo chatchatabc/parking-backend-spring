@@ -50,8 +50,6 @@ class AuthController(
                 MemberLoginLog().apply {
                     this.member = member.get()
                     this.ipAddress = request.remoteAddr
-                    this.email = member.get().email
-                    this.phone = member.get().phone
                     this.type = 1
                     this.success = true
                 }
@@ -65,8 +63,6 @@ class AuthController(
                     MemberLoginLog().apply {
                         this.member = member.get()
                         this.ipAddress = request.remoteAddr
-                        this.email = member.get().email
-                        this.phone = member.get().phone
                         this.type = 1
                         this.success = false
                     }
