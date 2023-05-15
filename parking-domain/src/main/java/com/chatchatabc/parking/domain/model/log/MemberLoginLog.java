@@ -16,18 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MemberLoginLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
-
-    @Column
-    private String email;
-
-    @Column
-    private String phone;
 
     /**
      * 0: KMM Mobile

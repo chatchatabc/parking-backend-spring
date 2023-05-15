@@ -70,8 +70,6 @@ class ProfileController(
             memberLogoutLogRepository.save(
                 MemberLogoutLog().apply {
                     this.member = member
-                    this.email = member.email
-                    this.phone = member.phone
                     this.type = 1
                     this.ipAddress = request.remoteAddr
                 }
