@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,13 +63,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String memberUuid = payload.getSubject();
         String username = payload.getClaim("username").asString();
         MemberPrincipal member = MemberPrincipal.of(memberUuid, username);
-        String[] roles = payload.getClaim("roles").asArray(String.class);
+        String[] roles = payload.getClaim("role").asArray(String.class);
         List<GrantedAuthority> authorities = Arrays.stream(roles)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+        JwtAuthenticationToken authentication = new JwtAuthenticationToken(
                 member,
                 null,
                 authorities
