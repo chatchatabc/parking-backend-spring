@@ -3,24 +3,18 @@ package com.chatchatabc.parking.web.common.impl.application.rest.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.chatchatabc.parking.domain.model.Member;
-import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.auth0.jwt.interfaces.Payload;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-    @Value("${server.jwt.secret}")
-    private String secret;
-    @Value("${server.jwt.expiration}")
-    private String expiration;
+    private final Long expiration;
 
-    @Autowired
-    private MemberRepository memberRepository;
 
     private final Algorithm hmac512;
     private final JWTVerifier verifier;
@@ -29,9 +23,8 @@ public class JwtServiceImpl implements JwtService {
             @Value("${server.jwt.secret}")
             String secret,
             @Value("${server.jwt.expiration}")
-            String expiration
+            Long expiration
     ) {
-        this.secret = secret;
         this.expiration = expiration;
         hmac512 = Algorithm.HMAC512(secret);
         verifier = JWT.require(hmac512).build();
@@ -41,27 +34,32 @@ public class JwtServiceImpl implements JwtService {
      * Generate a JWT token for the given member id
      *
      * @param memberId the member id
+     * @param username the username
+     * @param roles    the roles
      * @return the JWT token
      */
     @Override
-    public String generateToken(String memberId) {
+    public String generateToken(String memberId, String username, List<String> roles) {
         return JWT.create()
                 .withSubject(memberId)
-                .withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(expiration)))
+                .withIssuer("DavaoParking")
+                .withClaim("username", username)
+                .withClaim("role", roles)
+                .withIssuedAt(new Date(System.currentTimeMillis()))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
                 .sign(hmac512);
     }
 
     /**
-     * Validate the given token and return the member
+     * Validate the given token and return the jwt payload
      *
      * @param token the token
-     * @return the member
+     * @return the jwt payload
      */
     @Override
-    public Member validateTokenAndGetMember(String token) {
+    public Payload validateTokenAndGetPayload(String token) {
         try {
-            String memberId = verifier.verify(token).getSubject();
-            return memberRepository.findByMemberUuid(memberId).orElse(null);
+            return verifier.verify(token);
         } catch (Exception e) {
             return null;
         }

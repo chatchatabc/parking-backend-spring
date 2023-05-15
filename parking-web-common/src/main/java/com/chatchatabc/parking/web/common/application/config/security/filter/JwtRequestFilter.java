@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.web.common.application.config.security.filter;
 
-import com.chatchatabc.parking.domain.model.Member;
+import com.auth0.jwt.interfaces.Payload;
+import com.chatchatabc.parking.web.common.application.common.MemberPrincipal;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,12 +11,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -46,19 +52,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String token = header.substring(7);
-        final Member member = jwtService.validateTokenAndGetMember(token);
+        final String token = header.substring(7); // skip "Bearer "
+        final Payload payload = jwtService.validateTokenAndGetPayload(token);
 
-        if (member == null) {
+        if (payload == null) {
             filterChain.doFilter(request, response);
             logRequest(request, response);
             return;
         }
 
+        String memberUuid = payload.getSubject();
+        String username = payload.getClaim("username").asString();
+        MemberPrincipal member = MemberPrincipal.of(memberUuid, username);
+        String[] roles = payload.getClaim("roles").asArray(String.class);
+        List<GrantedAuthority> authorities = Arrays.stream(roles)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 member,
                 null,
-                member.getAuthorities()
+                authorities
         );
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -85,7 +100,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      *
      * @param request  the request
      * @param response the response
-     * @param memberId   the member id
+     * @param memberId the member id
      */
     private void logRequest(HttpServletRequest request, HttpServletResponse response, String memberId) {
         log.info("Request path: {} {} Member ID {} from {} with code {}",
