@@ -17,7 +17,7 @@ class MemberRepositoryTest extends TestContainersBaseTest {
     private MemberRepository memberRepository;
 
     @Test
-    void testFindByUsername() {
+    void testFindByUsername_UsernameIsFound() {
         String username = "admin";
         Optional<Member> member = memberRepository.findByUsername(username);
         assertThat(member).isPresent();
@@ -32,11 +32,18 @@ class MemberRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testFindByPhone() {
+    void testFindByPhone_PhoneIsFound() {
         String phone = "1234567890";
         Optional<Member> member = memberRepository.findByPhone(phone);
         assertThat(member).isPresent();
         assertThat(member.get().getPhone()).isEqualTo(phone);
+    }
+
+    @Test
+    void testFindByPhone_PhoneNotFound() {
+        String phone = "9999999999";
+        Optional<Member> member = memberRepository.findByPhone(phone);
+        assertThat(member).isNotPresent();
     }
 
     @Test
