@@ -62,6 +62,14 @@ class MemberRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByMemberUuid_UuidNotFound() {
+        String memberUuid = "00000000-0000-0000-0000-000000000000";
+        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
+        assertThat(member).isNotPresent();
+    }
+
+
+    @Test
     void testCountVerified() {
         Long count = memberRepository.countVerified();
         assertThat(count).isEqualTo(4L);
