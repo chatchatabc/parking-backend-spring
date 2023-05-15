@@ -126,7 +126,7 @@ public class Member extends FlagEntity implements UserDetails {
     // TODO: Maybe theres a more simpler system than this
     public boolean isAccountNonLocked() {
         // Check if memberBanHistoryLogs has an active ban
-        if (this.memberBanHistoryLogs != null) {
+        if (this.memberBanHistoryLogs != null && this.memberBanHistoryLogs.size() > 0) {
             // Only check the latest ban
             return this.memberBanHistoryLogs.get(0).getStatus() != 0;
         }
