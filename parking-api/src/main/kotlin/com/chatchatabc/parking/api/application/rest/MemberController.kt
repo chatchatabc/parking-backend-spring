@@ -8,13 +8,13 @@ import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -34,11 +34,11 @@ class MemberController(
         description = "Member to get the profile of the logged in member."
     )
     @GetMapping("/me")
-    fun getProfile(): ResponseEntity<ApiResponse<Member>> {
+    fun getProfile(
+        principal: MemberPrincipal
+    ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            // Get ID from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findById(principal.id).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             ResponseEntity.ok().body(
                 ApiResponse(
                     member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
@@ -61,11 +61,11 @@ class MemberController(
         description = "Get notification id of the logged in member. This is used for push notifications and should not be available to other members."
     )
     @GetMapping("/get-notification-id")
-    fun getNotificationId(): ResponseEntity<ApiResponse<MemberNotificationResponse>> {
+    fun getNotificationId(
+        principal: MemberPrincipal
+    ): ResponseEntity<ApiResponse<MemberNotificationResponse>> {
         return try {
-            // Get member from security context holder
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findById(principal.id).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             ResponseEntity.ok().body(
                 ApiResponse(
                     MemberNotificationResponse(member.notificationUuid),
@@ -92,11 +92,10 @@ class MemberController(
     )
     @PutMapping("/update")
     fun updateMember(
-        @RequestBody request: MemberProfileUpdateRequest
+        @RequestBody request: MemberProfileUpdateRequest,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            // Get principal from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberService.updateMember(
                 principal.memberUuid,
                 request.phone,
@@ -122,12 +121,11 @@ class MemberController(
      */
     @PostMapping("/upload-avatar")
     fun uploadAvatar(
-        @RequestParam("file", required = true) file: MultipartFile
+        @RequestParam("file", required = true) file: MultipartFile,
+        principal: MemberPrincipal
     ): ApiResponse<Member> {
         return try {
-            // Get principal from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
-            val member = memberRepository.findById(principal.id).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             memberService.uploadImage(
                 member,
                 "avatar",

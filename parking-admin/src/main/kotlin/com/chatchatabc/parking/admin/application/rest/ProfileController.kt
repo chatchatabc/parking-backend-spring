@@ -6,12 +6,12 @@ import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.log.MemberLogoutLog
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.log.MemberLogoutLogRepository
+import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,11 +32,10 @@ class ProfileController(
     )
     @GetMapping("/me")
     fun getProfile(
-        request: HttpServletRequest
+        request: HttpServletRequest,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            // Get ID from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             ResponseEntity.ok().body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
@@ -61,11 +60,10 @@ class ProfileController(
     @PostMapping("/logout")
     fun logoutMember(
         request: HttpServletRequest,
-        response: HttpServletResponse
+        response: HttpServletResponse,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            // Get ID from security context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             memberLogoutLogRepository.save(
                 MemberLogoutLog().apply {

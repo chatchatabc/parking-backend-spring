@@ -8,9 +8,9 @@ import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.MemberBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
+import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
@@ -126,11 +126,10 @@ class MemberController(
     @PostMapping("/ban/{memberUuid}")
     fun banMember(
         @PathVariable memberUuid: String,
-        @RequestBody req: MemberBanRequest
+        @RequestBody req: MemberBanRequest,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
-            // Get principal
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val bannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             val banLog = MemberBanHistoryLog().apply {
@@ -161,11 +160,10 @@ class MemberController(
     @PostMapping("/unban/{memberUuid}")
     fun unbanMember(
         @PathVariable memberUuid: String,
-        @RequestBody req: MemberUnbanRequest
+        @RequestBody req: MemberUnbanRequest,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
-            // Get principal
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val unbannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             // Get latest ban log

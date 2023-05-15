@@ -4,14 +4,13 @@ import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.ParkingLotCreateRequest
 import com.chatchatabc.parking.admin.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
+import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -56,11 +55,10 @@ class ParkingLotController(
     @PutMapping("/update/{parkingLotId}")
     fun updateParkingLot(
         @PathVariable parkingLotId: String,
-        @RequestBody req: ParkingLotUpdateRequest
+        @RequestBody req: ParkingLotUpdateRequest,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            // Get principal from Security Context
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val updatedParkingLot = parkingLotService.updateParkingLot(
                 principal.memberUuid,
                 parkingLotId,
@@ -95,11 +93,10 @@ class ParkingLotController(
      */
     @PutMapping("/verify/{parkingLotId}")
     fun verifyParkingLot(
-        @PathVariable parkingLotId: String
+        @PathVariable parkingLotId: String,
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            // Get Member from Security Context Holder
-            val principal = SecurityContextHolder.getContext().authentication.principal as Member
             val parkingLot = parkingLotService.verifyParkingLot(principal.memberUuid, parkingLotId)
             ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
