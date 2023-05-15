@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataSet("db/datasets/role.xml")
 public class RoleRepositoryTest extends TestContainersBaseTest {
@@ -28,7 +27,6 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
         // Invoke the method being tested
         List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER"));
         assertThat(result).hasSize(2);
-        assertTrue(result.stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN")));
-        assertTrue(result.stream().anyMatch(role -> role.getName().equals("ROLE_MEMBER")));
+        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
     }
 }
