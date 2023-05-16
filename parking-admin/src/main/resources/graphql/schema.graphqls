@@ -50,7 +50,7 @@ type RoleList {
 
 # Member Related
 type Member {
-    memberId: String
+    memberUuid: String
     # Notification ID should be retrieved in a private manner
     # notificationId: String
     username: String
@@ -73,9 +73,7 @@ type MemberList {
 # member Login Log Related
 type MemberLoginLog {
     id: String
-    member: Member
-    email: String
-    phone: String
+#    member: Member
     type: Int
     ipAddress: String
     success: Boolean
@@ -90,9 +88,7 @@ type MemberLoginLogList {
 # Member Logout Log Related
 type MemberLogoutLog {
     id: String
-    member: Member
-    email: String
-    phone: String
+#    member: Member
     type: Int
     ipAddress: String
     createdAt: String
@@ -110,7 +106,7 @@ type Authorities {
 
 # Vehicle
 type Vehicle {
-    id: String!
+    vehicleUuid: String!
     owner: Member
     name: String
     plateNumber: String
