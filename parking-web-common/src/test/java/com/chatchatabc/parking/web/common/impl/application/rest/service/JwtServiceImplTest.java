@@ -5,9 +5,6 @@ import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
