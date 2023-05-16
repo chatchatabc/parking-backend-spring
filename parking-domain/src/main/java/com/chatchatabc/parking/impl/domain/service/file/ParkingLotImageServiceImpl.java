@@ -5,7 +5,7 @@ import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
-import com.chatchatabc.parking.domain.service.service.ParkingLotImageService;
+import com.chatchatabc.parking.domain.service.file.ParkingLotImageService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

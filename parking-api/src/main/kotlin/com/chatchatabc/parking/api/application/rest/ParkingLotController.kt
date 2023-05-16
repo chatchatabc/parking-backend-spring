@@ -10,7 +10,7 @@ import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
-import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
+import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation

@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.domain.service.service;
+package com.chatchatabc.parking.domain.service.file;
 
 import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.ParkingLot;
