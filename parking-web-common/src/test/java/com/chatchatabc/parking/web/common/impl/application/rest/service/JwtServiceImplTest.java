@@ -1,15 +1,14 @@
 package com.chatchatabc.parking.web.common.impl.application.rest.service;
 
-import com.chatchatabc.parking.domain.model.Member;
-import com.chatchatabc.parking.domain.repository.MemberRepository;
-import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
+import com.auth0.jwt.interfaces.Payload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JwtServiceImplTest {
 
