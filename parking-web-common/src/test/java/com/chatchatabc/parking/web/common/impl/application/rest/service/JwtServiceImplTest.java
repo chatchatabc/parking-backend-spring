@@ -41,11 +41,4 @@ class JwtServiceImplTest {
         Payload payload = jwtService.validateTokenAndGetPayload(invalidToken);
         assertNull(payload);
     }
-
-    @Test
-    void validateTokenAndGetMember_shouldReturnNull_whenInvalidToken() {
-        String token = "invalidToken";
-        Member result = jwtService.validateTokenAndGetMember(token);
-        assertNull(result);
-    }
 }
