@@ -28,8 +28,7 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    public void testFindRolesIn() {
-        // Invoke the method being tested
+    public void testFindRolesIn_ExactNameMatch() {
         List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER"));
         assertThat(result).hasSize(2);
         assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
