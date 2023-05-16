@@ -36,16 +36,10 @@ class JwtServiceImplTest {
     }
 
     @Test
-    void validateTokenAndGetMember_shouldReturnMember_whenValidToken() {
-        String memberId = "memberId";
-        Member member = new Member();
-        member.setMemberUuid(memberId);
-        String token = jwtService.generateToken(memberId);
-        when(memberRepository.findByMemberUuid(memberId)).thenReturn(Optional.of(member));
-        Member result = jwtService.validateTokenAndGetMember(token);
-        assertNotNull(result);
-        assertEquals(member, result);
-        verify(memberRepository, times(1)).findByMemberUuid(memberId);
+    void validateTokenAndGetPayload_shouldReturnNullForInvalidToken() {
+        String invalidToken = "invalid-token";
+        Payload payload = jwtService.validateTokenAndGetPayload(invalidToken);
+        assertNull(payload);
     }
 
     @Test
