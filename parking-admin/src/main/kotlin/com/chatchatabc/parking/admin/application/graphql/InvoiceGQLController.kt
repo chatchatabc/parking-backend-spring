@@ -37,12 +37,12 @@ class InvoiceGQLController(
     }
 
     /**
-     * Get invoice by id
+     * Get invoice by uuid
      */
     @QueryMapping
-    fun getInvoiceById(
-        @Argument id: String
+    fun getInvoiceByUuid(
+        @Argument uuid: String
     ): Optional<Invoice> {
-        return invoiceRepository.findById(id)
+        return invoiceRepository.findById(uuid)
     }
 }
