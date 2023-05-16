@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -55,19 +56,19 @@ class ParkingLotController(
     }
 
     /**
-     * Get Parking Lots Managed By Member
+     * Get Parking Lot by Owner
      */
-    @GetMapping("/get-managing")
+    @GetMapping("/get")
     fun getByManaging(
         pageable: Pageable,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            val parkingLots = parkingLotRepository.findAllByOwner(member, pageable)
-            return ResponseEntity.ok(
+            val parkingLot = parkingLotRepository.findByOwner(member.id).getOrNull()
+            ResponseEntity.ok(
                 ApiResponse(
-                    parkingLots,
+                    parkingLot,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
