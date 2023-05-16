@@ -21,19 +21,24 @@ class JwtServiceImplTest {
     }
 
     @Test
-    void generateToken_shouldReturnValidToken() {
+    void testGenerateToken_shouldReturnValidTokenWithCorrectPayload() {
         String memberId = "1";
         String username = "testuser";
         String role1 = "admin";
         String role2 = "user";
         String expectedToken = jwtService.generateToken(memberId, username, Arrays.asList(role1, role2));
+
         assertNotNull(expectedToken);
+
         Payload payload = jwtService.validateTokenAndGetPayload(expectedToken);
-        assertEquals(memberId, payload.getSubject());
-        assertEquals("DavaoParking", payload.getIssuer());
-        assertEquals(username, payload.getClaim("username").asString());
-        assertEquals(Arrays.asList(role1, role2), payload.getClaim("role").asList(String.class));
+        assertNotNull(payload);
+
+        assertEquals(memberId, payload.getSubject(), "Token subject should match memberId");
+        assertEquals("DavaoParking", payload.getIssuer(), "Token issuer should match 'DavaoParking'");
+        assertEquals(username, payload.getClaim("username").asString(), "Token username claim should match");
+        assertEquals(Arrays.asList(role1, role2), payload.getClaim("role").asList(String.class), "Token role claim should match");
     }
+
 
     @Test
     void validateTokenAndGetPayload_shouldReturnNullForInvalidToken() {
