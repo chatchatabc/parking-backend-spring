@@ -17,3 +17,9 @@ redis-cli:
 # PostgreSQL shell for container
 psql:
   docker compose exec postgres psql -U postgres
+
+# Flyway clean and migrate, and DBUnit operation
+db-clean-migrate:
+    mvn -f parking-domain/pom.xml flyway:clean
+    mvn -f parking-domain/pom.xml flyway:migrate
+    mvn -f parking-domain/pom.xml dbunit:operation
