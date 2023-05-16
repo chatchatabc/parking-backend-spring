@@ -1,5 +1,5 @@
 type Query {
-    getMemberById(id: String!): Member
+    getMemberByUuid(uuid: String!): Member
     getMemberByPhone(phone: String!): Member
     getMemberByUsername(username: String!): Member
     getMembers(page: Int size: Int, keyword: String): MemberList!

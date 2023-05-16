@@ -17,13 +17,13 @@ class MemberGQLController(
 ) {
 
     /**
-     * Get member by id
+     * Get member by uuid
      */
     @QueryMapping
-    fun getMemberById(
-        @Argument id: String
+    fun getMemberByUuid(
+        @Argument uuid: String
     ): Optional<Member> {
-        return memberRepository.findByMemberUuid(id)
+        return memberRepository.findByMemberUuid(uuid)
     }
 
     /**
