@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS role
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
+ALTER SEQUENCE role_id_seq RESTART WITH 10;
+
 -- Create Member Table
 CREATE TABLE IF NOT EXISTS member
 (
@@ -32,6 +34,8 @@ create index idx_member_on_username on member (username);
 create index idx_member_on_phone on member (phone);
 create index idx_member_on_email_verified_at on member (email_verified_at);
 create index idx_member_on_phone_verified_at on member (phone_verified_at);
+
+ALTER SEQUENCE member_id_seq RESTART WITH 1000;
 
 -- Create member_role table
 CREATE TABLE IF NOT EXISTS member_role
