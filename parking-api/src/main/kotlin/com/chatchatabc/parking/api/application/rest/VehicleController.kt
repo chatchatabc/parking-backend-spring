@@ -55,14 +55,14 @@ class VehicleController(
     /**
      * Get a vehicle by id
      */
-    @GetMapping("/get/{vehicleId}")
+    @GetMapping("/get/{vehicleUuid}")
     fun getVehicleById(
-        @PathVariable vehicleId: String,
+        @PathVariable vehicleUuid: String,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get member from security context
-            val vehicle = vehicleRepository.findById(vehicleId)
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid)
             if (vehicle.isEmpty) {
                 throw Exception("Vehicle not found")
             }

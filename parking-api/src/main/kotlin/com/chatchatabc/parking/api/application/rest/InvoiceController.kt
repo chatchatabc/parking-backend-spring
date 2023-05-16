@@ -79,15 +79,15 @@ class InvoiceController(
     }
 
     /**
-     * Get invoices by parking lot id
+     * Get invoices by parking lot uuid
      */
-    @GetMapping("/get/parking-lot/{parkingLotId}")
+    @GetMapping("/get/parking-lot/{parkingLotUuid}")
     fun getInvoicesByParkingLot(
-        @PathVariable parkingLotId: String,
+        @PathVariable parkingLotUuid: String,
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
-            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val invoices = invoiceRepository.findAllByParkingLot(parkingLot, pageable)
             return ResponseEntity.ok(
                 ApiResponse(
