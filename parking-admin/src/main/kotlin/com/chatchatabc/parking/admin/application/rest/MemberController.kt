@@ -133,8 +133,8 @@ class MemberController(
             val bannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             val banLog = MemberBanHistoryLog().apply {
-                this.member = member
-                this.bannedBy = bannedBy
+                this.member = member.id
+                this.bannedBy = bannedBy.id
                 this.reason = req.reason
                 this.until = req.until
                 this.status = 0
@@ -168,7 +168,7 @@ class MemberController(
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             // Get latest ban log
             val banLog = memberBanHistoryLogRepository.findLatestBanLog(member).get().apply {
-                this.unbannedBy = unbannedBy
+                this.unbannedBy = unbannedBy.id
                 this.unbanReason = req.unbanReason
                 this.status = -1
             }

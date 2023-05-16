@@ -169,15 +169,15 @@ class ParkingLotController(
     }
 
     /**
-     * Get Images of a Parking Lot By Id and active status
+     * Get Images of a Parking Lot By Uuid and active status
      */
-    @GetMapping("/get-images/{parkingLotId}")
+    @GetMapping("/get-images/{parkingLotUuid}")
     fun getImages(
-        @PathVariable parkingLotId: String,
+        @PathVariable parkingLotUuid: String,
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<ParkingLotImage>>> {
         return try {
-            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
                 parkingLot,
                 0,
@@ -295,12 +295,12 @@ class ParkingLotController(
     /**
      * Set parking lot status to pending
      */
-    @PutMapping("/set-pending/{parkingLotId}")
+    @PutMapping("/set-pending/{parkingLotUuid}")
     fun setPending(
-        @PathVariable parkingLotId: String
+        @PathVariable parkingLotUuid: String
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(
@@ -350,15 +350,15 @@ class ParkingLotController(
     /**
      * Upload image
      */
-    @PostMapping("/upload-image/{parkingLotId}")
+    @PostMapping("/upload-image/{parkingLotUuid}")
     fun uploadImage(
-        @PathVariable parkingLotId: String,
+        @PathVariable parkingLotUuid: String,
         @RequestParam("file", required = true) file: MultipartFile,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            val parkingLot = parkingLotRepository.findById(parkingLotId).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val fileData = parkingLotImageService.uploadImage(
                 member,
                 parkingLot,
@@ -401,7 +401,9 @@ class ParkingLotController(
         return try {
             // Only owner can delete image
             val image = parkingLotImageRepository.findById(imageId).get()
-            if (image.parkingLot.owner.memberUuid != principal.memberUuid) {
+            val currentMember = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val parkingLot = parkingLotRepository.findById(image.parkingLot).get()
+            if (parkingLot.owner != currentMember.id) {
                 throw Exception("You are not owner of this parking lot")
             }
             parkingLotImageService.deleteImage(imageId)

@@ -64,7 +64,7 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            memberLogoutLogService.createLog(member, 1, request.remoteAddr)
+            memberLogoutLogService.createLog(member.id, 1, request.remoteAddr)
             ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
