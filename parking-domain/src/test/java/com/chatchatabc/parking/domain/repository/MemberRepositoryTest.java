@@ -47,10 +47,17 @@ class MemberRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testCountMembersByRole() {
+    void testCountMembersByRole_RoleNameExists() {
         String roleName = "ROLE_ADMIN";
         Long count = memberRepository.countMembersByRole(roleName);
         assertThat(count).isEqualTo(1L);
+    }
+
+    @Test
+    void testCountMembersByRole_RoleNameDoesNotExist() {
+        String roleName = "ROLE_NONEXISTENT";
+        Long count = memberRepository.countMembersByRole(roleName);
+        assertThat(count).isEqualTo(0L);
     }
 
     @Test
