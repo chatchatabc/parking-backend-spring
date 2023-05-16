@@ -13,10 +13,10 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     /**
-     * Find a vehicle by its id and owner
+     * Find a vehicle by its uuid and owner
      */
-    @Query("SELECT v FROM Vehicle v WHERE v.id = ?1 AND v.owner = ?2")
-    Optional<Vehicle> findByIdAndOwner(String vehicleId, Member owner);
+    @Query("SELECT v FROM Vehicle v WHERE v.vehicleUuid = ?1 AND v.owner = ?2")
+    Optional<Vehicle> findByVehicleUuidAndOwner(String vehicleUuid, Member owner);
 
     /**
      * Find a vehicle by its uuid
