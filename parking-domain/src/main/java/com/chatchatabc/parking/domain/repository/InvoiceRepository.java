@@ -47,8 +47,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
      * @param parkingLotId the parking lot id
      * @return the number of active invoices
      */
-    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot.id = ?1 AND i.endAt IS NULL")
-    Long countActiveInvoicesByParkingLotId(String parkingLotId);
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot = ?1 AND i.endAt IS NULL")
+    Long countActiveInvoicesByParkingLotId(Long parkingLotId);
 
     /**
      * Find all invoices by parking lot

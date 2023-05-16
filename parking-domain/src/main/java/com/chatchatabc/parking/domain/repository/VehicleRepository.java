@@ -19,6 +19,14 @@ public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     Optional<Vehicle> findByIdAndOwner(String vehicleId, Member owner);
 
     /**
+     * Find a vehicle by its uuid
+     *
+     * @param vehicleUuid the vehicle uuid
+     * @return the vehicle
+     */
+    Optional<Vehicle> findByVehicleUuid(String vehicleUuid);
+
+    /**
      * Find all vehicles of a owner
      */
     @Query("SELECT v FROM Vehicle v WHERE v.owner = ?1")

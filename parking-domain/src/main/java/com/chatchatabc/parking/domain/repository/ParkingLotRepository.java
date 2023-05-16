@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ParkingLotRepository extends JpaRepository<ParkingLot, String>, JpaSpecificationExecutor<ParkingLot> {
+public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, JpaSpecificationExecutor<ParkingLot> {
     /**
      * Find Parking Lot by parking lot uuid
      *
