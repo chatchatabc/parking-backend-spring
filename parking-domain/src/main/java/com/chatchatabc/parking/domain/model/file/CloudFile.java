@@ -1,12 +1,12 @@
 package com.chatchatabc.parking.domain.model.file;
 
-import com.chatchatabc.parking.domain.model.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -21,26 +21,33 @@ public class CloudFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "bucket")
+    private String bucket;
+
     @Column(unique = true)
     private String key;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uploaded_by")
-    private Member uploadedBy;
+    @Column("uploaded_by")
+    private Long uploadedBy;
 
     @Column
-    private String filename;
+    private String name;
 
     @Column
-    private Long filesize;
+    private Long size;
 
+    @Column("mime_type")
+    private String mimeType;
+    
     @Column
-    private String mimetype;
+    private String tags;
 
     @Column
     private Integer status = 0;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

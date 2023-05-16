@@ -146,13 +146,16 @@ CREATE TABLE IF NOT EXISTS parking_lot
 CREATE TABLE IF NOT EXISTS cloud_file
 (
     id          SERIAL PRIMARY KEY,
-    key         VARCHAR(255) NOT NULL UNIQUE,
-    filename    VARCHAR(255) NOT NULL,
-    filesize    INT          NOT NULL,
-    mimetype    VARCHAR(255) NOT NULL,
+    bucket      VARCHAR(127),
+    key         VARCHAR(127) NOT NULL UNIQUE, -- key to access file with ext name
+    name        VARCHAR(255) NOT NULL,        -- original file name
+    size        INT          NOT NULL,
+    mime_type   VARCHAR(127) NOT NULL,
+    tags        VARCHAR(255),
     status      INT          NOT NULL DEFAULT 0,
-    uploaded_by VARCHAR(36)  NOT NULL,
-    created_at  TIMESTAMP    NOT NULL
+    uploaded_by BIGINT       NOT NULL,
+    created_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP
 );
 
 -- Create parking_lot_image table
