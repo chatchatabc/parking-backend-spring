@@ -35,9 +35,8 @@ public class Vehicle {
     private Collection<Member> members;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private Member owner;
+    @Column(name = "owner_id")
+    private Long owner;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

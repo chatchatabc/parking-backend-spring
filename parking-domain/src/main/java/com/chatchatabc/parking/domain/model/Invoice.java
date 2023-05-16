@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,13 +21,13 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "parking_lot_id")
-    private ParkingLot parkingLot;
+    @JsonIgnore
+    @Column(name = "parking_lot_id")
+    private Long parkingLot;
 
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    @JsonIgnore
+    @Column(name = "vehicle_id")
+    private Long vehicle;
 
     @Column
     private String plateNumber;

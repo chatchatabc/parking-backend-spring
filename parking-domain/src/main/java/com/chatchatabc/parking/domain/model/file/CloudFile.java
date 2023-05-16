@@ -27,6 +27,7 @@ public class CloudFile {
     @Column(unique = true)
     private String key;
 
+    @JsonIgnore
     @Column(name = "uploaded_by")
     private Long uploadedBy;
 

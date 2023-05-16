@@ -20,13 +20,12 @@ public class ReportStatus {
     private String id;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
+    @Column(name = "report_id")
+    private Long report;
 
-    @ManyToOne
-    @JoinColumn(name = "performed_by")
-    private Member performedBy;
+    @JsonIgnore
+    @Column(name = "performed_by")
+    private Long performedBy;
 
     @Column
     private int status;

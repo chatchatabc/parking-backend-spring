@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.model.log;
 
-import com.chatchatabc.parking.domain.model.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +19,9 @@ public class MemberLogoutLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member member;
+    @JsonIgnore
+    @Column(name = "member_id")
+    private Long member;
 
     /**
      * 0: KMM Mobile

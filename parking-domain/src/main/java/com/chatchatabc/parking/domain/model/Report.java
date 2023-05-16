@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,9 +36,9 @@ public class Report {
     @Column
     private Double longitude;
 
-    @ManyToOne
-    @JoinColumn(name = "reported_by")
-    private Member reportedBy;
+    @JsonIgnore
+    @Column(name = "reported_by")
+    private Long reportedBy;
 
     @Column
     private LocalDateTime cancelledAt;
