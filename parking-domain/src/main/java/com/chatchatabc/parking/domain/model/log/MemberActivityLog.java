@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.model.log;
 
-import com.chatchatabc.parking.domain.model.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +19,9 @@ public class MemberActivityLog {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member performedBy;
+    @JsonIgnore
+    @Column(name = "performed_by")
+    private Long performedBy;
 
     @Column(nullable = false)
     private String name;

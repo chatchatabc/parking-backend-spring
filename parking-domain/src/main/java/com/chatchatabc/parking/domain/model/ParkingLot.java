@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,9 +31,9 @@ public class ParkingLot extends FlagEntity {
     @Column(unique = true)
     private String parkingLotUuid = UUID.randomUUID().toString();
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Member owner;
+    @JsonIgnore
+    @Column(name = "owner_id")
+    private Long owner;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rate_id")
@@ -74,11 +75,9 @@ public class ParkingLot extends FlagEntity {
     @Column
     private LocalDateTime verifiedAt;
 
-    // Verified by member
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "verified_by")
-    private Member verifiedBy;
+    @Column(name = "verified_by")
+    private Long verifiedBy;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

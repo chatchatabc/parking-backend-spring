@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.model.log;
 
-import com.chatchatabc.parking.domain.model.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +19,13 @@ public class MemberBanHistoryLog {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member member;
+    @JsonIgnore
+    @Column(name = "member_id")
+    private Long member;
 
-    @ManyToOne
-    @JoinColumn(name = "banned_by", referencedColumnName = "id")
-    private Member bannedBy;
+    @JsonIgnore
+    @Column(name = "banned_by")
+    private Long bannedBy;
 
     @Column
     private LocalDateTime until;
@@ -38,9 +38,9 @@ public class MemberBanHistoryLog {
     @Column(columnDefinition = "TEXT")
     private String unbanReason;
 
-    @ManyToOne
-    @JoinColumn(name = "unbanned_by", referencedColumnName = "id")
-    private Member unbannedBy;
+    @JsonIgnore
+    @Column(name = "unbanned_by")
+    private Long unbannedBy;
 
     @Column
     private Integer status = 0;

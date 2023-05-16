@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.domain.model.file;
 
-import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,9 +23,8 @@ public class ParkingLotImage {
     private CloudFile cloudFile;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "parking_lot_id")
-    private ParkingLot parkingLot;
+    @Column(name = "parking_lot_id")
+    private Long parkingLot;
 
     @Column
     private int fileOrder = 0;
