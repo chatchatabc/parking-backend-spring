@@ -39,7 +39,6 @@ class JwtServiceImplTest {
         assertEquals(Arrays.asList(role1, role2), payload.getClaim("role").asList(String.class), "Token role claim should match");
     }
 
-
     @Test
     void testValidateTokenAndGetPayload_shouldReturnNullForInvalidToken() {
         String invalidToken = "invalid-token";
