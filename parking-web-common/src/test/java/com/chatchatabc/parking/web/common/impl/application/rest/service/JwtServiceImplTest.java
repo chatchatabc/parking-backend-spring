@@ -21,10 +21,18 @@ class JwtServiceImplTest {
     }
 
     @Test
-    void generateToken_shouldCreateToken() {
-        String memberId = "memberId";
-        String token = jwtService.generateToken(memberId);
-        assertNotNull(token);
+    void generateToken_shouldReturnValidToken() {
+        String memberId = "1";
+        String username = "testuser";
+        String role1 = "admin";
+        String role2 = "user";
+        String expectedToken = jwtService.generateToken(memberId, username, Arrays.asList(role1, role2));
+        assertNotNull(expectedToken);
+        Payload payload = jwtService.validateTokenAndGetPayload(expectedToken);
+        assertEquals(memberId, payload.getSubject());
+        assertEquals("DavaoParking", payload.getIssuer());
+        assertEquals(username, payload.getClaim("username").asString());
+        assertEquals(Arrays.asList(role1, role2), payload.getClaim("role").asList(String.class));
     }
 
     @Test
