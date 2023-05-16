@@ -75,11 +75,10 @@ class MemberRepositoryTest extends TestContainersBaseTest {
         assertThat(member).isNotPresent();
     }
 
-
     @Test
-    void testCountVerified() {
-        Long count = memberRepository.countVerified();
-        assertThat(count).isEqualTo(4L);
+    void testCountVerified_MembersWithVerification() {
+        Long verifiedMembersCount = memberRepository.countVerified();
+        assertThat(verifiedMembersCount).isEqualTo(3);
     }
 
     @Test
