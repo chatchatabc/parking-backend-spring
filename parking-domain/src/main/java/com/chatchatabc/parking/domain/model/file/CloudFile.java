@@ -27,7 +27,7 @@ public class CloudFile {
     @Column(unique = true)
     private String key;
 
-    @Column("uploaded_by")
+    @Column(name = "uploaded_by")
     private Long uploadedBy;
 
     @Column
@@ -36,7 +36,7 @@ public class CloudFile {
     @Column
     private Long size;
 
-    @Column("mime_type")
+    @Column(name = "mime_type")
     private String mimeType;
     
     @Column
