@@ -7,9 +7,12 @@ import com.chatchatabc.parking.api.application.event.member.MemberLoginEvent
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.domain.model.log.MemberLoginLog
+import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -21,7 +24,8 @@ import org.springframework.web.bind.annotation.*
 class AuthController(
     private val memberService: MemberService,
     private val jwtService: JwtService,
-    private val applicationEventPublisher: ApplicationEventPublisher
+    private val applicationEventPublisher: ApplicationEventPublisher,
+    private val memberLoginLogRepository: MemberLoginLogRepository
 ) {
 
     /**
@@ -63,17 +67,18 @@ class AuthController(
     )
     @PostMapping("/verify/{type}")
     fun verifyOTP(
-        @RequestBody request: MemberVerifyOTPRequest,
+        @RequestBody req: MemberVerifyOTPRequest,
         @PathVariable type: String,
+        request: HttpServletRequest
     ): ResponseEntity<ApiResponse<Member>> {
-        // TODO: Add login logging here
+        var member: Member? = null
         return try {
             val headers = HttpHeaders()
             var roleName: RoleNames = RoleNames.ROLE_MEMBER
             if (type == "owner") {
                 roleName = RoleNames.ROLE_PARKING_OWNER
             }
-            val member = memberService.verifyOTPAndAddRole(request.phone, request.otp, roleName)
+            member = memberService.verifyOTPAndAddRole(req.phone, req.otp, roleName)
             // Convert granted authority roles to list of string roles
             val roleStrings: List<String> = member.roles.stream()
                 .map { it.authority }
@@ -81,11 +86,31 @@ class AuthController(
 
             val token: String = jwtService.generateToken(member.memberUuid, member.username, roleStrings)
             headers.set("X-Access-Token", token)
+            // Generate Successful Login Log
+            memberLoginLogRepository.save(
+                MemberLoginLog().apply {
+                    this.member = member
+                    this.ipAddress = request.remoteAddr
+                    this.type = 0
+                    this.success = true
+                }
+            )
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
+            // Generate Failed Login Log
+            if (member != null) {
+                memberLoginLogRepository.save(
+                    MemberLoginLog().apply {
+                        this.member = member
+                        this.ipAddress = request.remoteAddr
+                        this.type = 0
+                        this.success = false
+                    }
+                )
+            }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                     ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
