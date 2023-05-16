@@ -26,6 +26,13 @@ CREATE TABLE IF NOT EXISTS member
     updated_at        TIMESTAMP     NOT NULL
 );
 
+create index idx_member_on_member_uuid on member (member_uuid);
+create index idx_member_on_email on member (email);
+create index idx_member_on_username on member (username);
+create index idx_member_on_phone on member (phone);
+create index idx_member_on_email_verified_at on member (email_verified_at);
+create index idx_member_on_phone_verified_at on member (phone_verified_at);
+
 -- Create member_role table
 CREATE TABLE IF NOT EXISTS member_role
 (
@@ -83,6 +90,8 @@ CREATE TABLE IF NOT EXISTS member_ban_history_log
     created_at   TIMESTAMP     NOT NULL
 );
 
+create index idx_member_ban_history_log_on_banned_by on member_ban_history_log (banned_by);
+
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
 (
@@ -95,6 +104,10 @@ CREATE TABLE IF NOT EXISTS vehicle
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
 );
+
+create index idx_vehicle_on_type on vehicle (type);
+create index idx_vehicle_on_owner_id on vehicle (owner_id);
+
 
 -- Create member_vehicle table
 CREATE TABLE IF NOT EXISTS member_vehicle
@@ -142,6 +155,10 @@ CREATE TABLE IF NOT EXISTS parking_lot
     updated_at           TIMESTAMP     NOT NULL
 );
 
+create index idx_parking_lot_on_owner_id on parking_lot (owner_id);
+create index idx_parking_lot_on_status on parking_lot (status);
+create index idx_parking_lot_on_verified_at on parking_lot (verified_at);
+
 -- Create cloud_file table
 CREATE TABLE IF NOT EXISTS cloud_file
 (
@@ -169,6 +186,8 @@ CREATE TABLE IF NOT EXISTS parking_lot_image
     file_order     INT NOT NULL DEFAULT 0
 );
 
+create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parking_lot_id);
+
 -- Create invoice table
 CREATE TABLE IF NOT EXISTS invoice
 (
@@ -185,6 +204,9 @@ CREATE TABLE IF NOT EXISTS invoice
     updated_at                          TIMESTAMP      NOT NULL
 );
 
+create index idx_invoice_on_parking_lot_id on invoice (parking_lot_id);
+create index idx_invoice_on_vehicle_id on invoice (vehicle_id);
+
 -- Create report table
 CREATE TABLE IF NOT EXISTS report
 (
@@ -200,6 +222,8 @@ CREATE TABLE IF NOT EXISTS report
     updated_at   TIMESTAMP    NOT NULL
 );
 
+create index idx_report_on_reported_by on report (reported_by);
+
 -- Create report_status table
 CREATE TABLE IF NOT EXISTS report_status
 (
@@ -210,3 +234,7 @@ CREATE TABLE IF NOT EXISTS report_status
     remarks      VARCHAR(255),
     created_at   TIMESTAMP NOT NULL
 );
+
+create index idx_report_status_on_report_id on report_status (report_id);
+create index idx_report_status_on_performed_by on report_status (performed_by);
+create index idx_report_status_on_status on report_status (status);
