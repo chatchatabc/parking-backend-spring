@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS member_role
 CREATE TABLE IF NOT EXISTS member_login_log
 (
     id         SERIAL PRIMARY KEY,
-    member_id  INT                NOT NULL,
+    member_id  BIGINT             NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
-    ip_address VARCHAR(39)       NOT NULL,
+    ip_address VARCHAR(39)        NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP          NOT NULL
 );
@@ -58,34 +58,34 @@ CREATE TABLE IF NOT EXISTS member_logout_log
     id         SERIAL PRIMARY KEY,
     member_id  INT           NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
-    ip_address VARCHAR(39)  NOT NULL,
+    ip_address VARCHAR(39)   NOT NULL,
     created_at TIMESTAMP     NOT NULL
 );
 
 -- Create member_activity_log table
 CREATE TABLE IF NOT EXISTS member_activity_log
 (
-    id          SERIAL PRIMARY KEY,
-    member_id   INT       NOT NULL,
-    name        VARCHAR(255),
-    target_id   VARCHAR(36),
-    event_type  VARCHAR(255),
-    column_name VARCHAR(255),
-    data_before TEXT,
-    data_after  TEXT,
-    created_at  TIMESTAMP NOT NULL
+    id           SERIAL PRIMARY KEY,
+    performed_by BIGINT    NOT NULL,
+    name         VARCHAR(255),
+    target_id    VARCHAR(36),
+    event_type   VARCHAR(255),
+    column_name  VARCHAR(255),
+    data_before  TEXT,
+    data_after   TEXT,
+    created_at   TIMESTAMP NOT NULL
 );
 
 -- Create member_ban_history_log table
 CREATE TABLE IF NOT EXISTS member_ban_history_log
 (
     id           SERIAL PRIMARY KEY,
-    member_id    INT           NOT NULL,
-    banned_by    INT           NOT NULL,
+    member_id    BIGINT        NOT NULL,
+    banned_by    BIGINT        NOT NULL,
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
     unban_reason TEXT,
-    unbanned_by  INT,
+    unbanned_by  BIGINT,
     status       INT DEFAULT 0 NOT NULL,
     created_at   TIMESTAMP     NOT NULL
 );
@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS vehicle
     id           SERIAL PRIMARY KEY,
     vehicle_uuid VARCHAR(36)  NOT NULL UNIQUE,
     name         VARCHAR(255) NOT NULL,
-    plate_number VARCHAR(255) NOT NULL UNIQUE,
+    plate_number VARCHAR(20)  NOT NULL UNIQUE,
     type         INT          NOT NULL DEFAULT 0,
-    owner_id     INT          NOT NULL,
+    owner_id     BIGINT       NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
 );
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 (
     id                   SERIAL PRIMARY KEY,
     parking_lot_uuid     VARCHAR(36)   NOT NULL UNIQUE,
-    owner_id             INT           NOT NULL,
+    owner_id             BIGINT        NOT NULL,
     rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
-    verified_by          INT,
+    verified_by          BIGINT,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL
@@ -181,9 +181,9 @@ create index idx_cloud_file_on_uploaded_by on cloud_file (uploaded_by);
 CREATE TABLE IF NOT EXISTS parking_lot_image
 (
     id             VARCHAR(36) PRIMARY KEY,
-    cloud_file_id  INT NOT NULL,
-    parking_lot_id INT NOT NULL,
-    file_order     INT NOT NULL DEFAULT 0
+    cloud_file_id  BIGINT NOT NULL,
+    parking_lot_id BIGINT NOT NULL,
+    file_order     INT    NOT NULL DEFAULT 0
 );
 
 create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parking_lot_id);
@@ -192,9 +192,9 @@ create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parki
 CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      INT            NOT NULL,
-    vehicle_id                          INT            NOT NULL,
-    plate_number                        VARCHAR(255)   NOT NULL,
+    parking_lot_id                      BIGINT         NOT NULL,
+    vehicle_id                          BIGINT         NOT NULL,
+    plate_number                        VARCHAR(20)    NOT NULL,
     estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
     total                               DECIMAL(10, 2) NOT NULL,
     paid_at                             TIMESTAMP,
@@ -213,10 +213,10 @@ CREATE TABLE IF NOT EXISTS report
     id           SERIAL PRIMARY KEY,
     name         VARCHAR(255) NOT NULL,
     description  VARCHAR(255) NOT NULL,
-    plate_number VARCHAR(255) NOT NULL,
+    plate_number VARCHAR(20)  NOT NULL,
     latitude     FLOAT        NOT NULL,
     longitude    FLOAT        NOT NULL,
-    reported_by  INT          NOT NULL,
+    reported_by  BIGINT       NOT NULL,
     cancelled_at TIMESTAMP,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
@@ -228,8 +228,8 @@ create index idx_report_on_reported_by on report (reported_by);
 CREATE TABLE IF NOT EXISTS report_status
 (
     id           SERIAL PRIMARY KEY,
-    report_id    INT       NOT NULL,
-    performed_by INT       NOT NULL,
+    report_id    BIGINT    NOT NULL,
+    performed_by BIGINT    NOT NULL,
     status       INT       NOT NULL DEFAULT 0,
     remarks      VARCHAR(255),
     created_at   TIMESTAMP NOT NULL
