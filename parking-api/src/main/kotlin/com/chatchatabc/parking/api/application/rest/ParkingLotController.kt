@@ -295,12 +295,13 @@ class ParkingLotController(
     /**
      * Set parking lot status to pending
      */
-    @PutMapping("/set-pending/{parkingLotUuid}")
+    @PutMapping("/set-pending")
     fun setPending(
-        @PathVariable parkingLotUuid: String
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val parkingLot = parkingLotRepository.findByOwner(member.id).get()
             parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(
