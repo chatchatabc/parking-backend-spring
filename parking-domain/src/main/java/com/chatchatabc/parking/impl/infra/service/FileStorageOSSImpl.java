@@ -42,9 +42,9 @@ public class FileStorageOSSImpl implements FileStorageService {
         // Create cloud file
         CloudFile cloudFile = new CloudFile();
         cloudFile.setKey(key);
-        cloudFile.setFilename(filename);
-        cloudFile.setFilesize(filesize);
-        cloudFile.setMimetype(mimetype);
+        cloudFile.setName(filename);
+        cloudFile.setSize(filesize);
+        cloudFile.setMimeType(mimetype);
 
         // Upload file to storage service
         ossClient.putObject(bucketName, key, inputStream);

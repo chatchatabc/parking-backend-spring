@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,15 +19,32 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
     private RoleRepository roleRepository;
 
     @Test
-    public void testFindByName() {
+    public void testFindByName_NameIsFound() {
         assertThat(roleRepository.findByName("ROLE_ADMIN")).isPresent();
     }
 
     @Test
-    public void testFindRolesIn() {
-        // Invoke the method being tested
+    public void testFindByName_NameNotFound() {
+        assertThat(roleRepository.findByName("ROLE_NON_EXISTENT")).isEmpty();
+    }
+
+    @Test
+    public void testFindRolesIn_ExactNameMatch() {
         List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER"));
         assertThat(result).hasSize(2);
         assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
+    }
+
+    @Test
+    public void testFindRolesIn_PartialNamesMatch() {
+        List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER", "ROLE_NON_EXISTENT"));
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
+    }
+
+    @Test
+    public void testFindRolesIn_NoMatches() {
+        List<Role> result = roleRepository.findRolesIn(Collections.singletonList("ROLE_NON_EXISTENT"));
+        assertThat(result).isEmpty();
     }
 }

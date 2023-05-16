@@ -14,6 +14,13 @@
     <name>Parking Domain</name>
     <description>Domain for Parking Project</description>
 
+    <properties>
+        <dbHost>localhost</dbHost>
+        <dbPort>5432</dbPort>
+        <dbUser>postgres</dbUser>
+        <dbPass>postgres</dbPass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,9 +112,9 @@
                 <version>1.2.0</version>
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                    <username>postgres</username>
-                    <password>postgres</password>
+                    <url>jdbc:postgresql://${dbHost}:${dbPort}/postgres</url>
+                    <username>${dbUser}</username>
+                    <password>${dbPass}</password>
                     <dbconfig>
                         <datatypeFactory>org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</datatypeFactory>
                     </dbconfig>
@@ -115,7 +122,22 @@
                     <format>flat</format>
                     <sources>
                         <src>src/test/resources/db/datasets/role.xml</src>
+                        <src>src/test/resources/db/datasets/member.xml</src>
                     </sources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://${dbHost}:${dbPort}/postgres</url>
+                    <user>${dbUser}</user>
+                    <password>${dbPass}</password>
+                    <cleanDisabled>false</cleanDisabled>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
                 </configuration>
             </plugin>
         </plugins>
