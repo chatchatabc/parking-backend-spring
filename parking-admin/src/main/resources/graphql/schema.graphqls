@@ -13,11 +13,11 @@ type Query {
     getMemberLogoutLogsByMember(page: Int size: Int, id: String!): MemberLoginLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
-    getVehicleById(id: String!): Vehicle
+    getVehicleByUuid(uuid: String!): Vehicle
     getVehiclesByOwner(page: Int size: Int, ownerId: String!): VehicleList!
 
     getParkingLots(page: Int size: Int, keyword: String): ParkingLotList!
-    getParkingLotById(id: String!): ParkingLot
+    getParkingLotByUuid(uuid: String!): ParkingLot
     getParkingLotsByOwner(page: Int size: Int, ownerId: String!): ParkingLotList!
 
     getInvoices(page: Int size: Int): InvoiceList!

@@ -40,13 +40,13 @@ class VehicleGQLController(
     }
 
     /**
-     * Get vehicle by id
+     * Get vehicle by uuid
      */
     @QueryMapping
-    fun getVehicleById(
-        @Argument id: String
+    fun getVehicleByUuid(
+        @Argument uuid: String
     ): Optional<Vehicle> {
-        return vehicleRepository.findById(id)
+        return vehicleRepository.findByVehicleUuid(uuid)
     }
 
     /**

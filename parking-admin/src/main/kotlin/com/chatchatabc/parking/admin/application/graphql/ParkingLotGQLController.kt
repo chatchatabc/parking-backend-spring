@@ -46,10 +46,10 @@ class ParkingLotGQLController(
      * Get parking lot by id
      */
     @QueryMapping
-    fun getParkingLotById(
-        @Argument id: String
+    fun getParkingLotByUuid(
+        @Argument uuid: String
     ): Optional<ParkingLot> {
-        return parkingLotRepository.findById(id)
+        return parkingLotRepository.findByParkingLotUuid(uuid)
     }
 
     /**
