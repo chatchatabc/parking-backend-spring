@@ -23,6 +23,11 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    public void testFindByName_NameNotFound() {
+        assertThat(roleRepository.findByName("ROLE_NON_EXISTENT")).isEmpty();
+    }
+
+    @Test
     public void testFindRolesIn() {
         // Invoke the method being tested
         List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER"));
