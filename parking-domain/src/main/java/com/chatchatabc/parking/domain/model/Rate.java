@@ -25,9 +25,11 @@ public class Rate {
     @OneToOne(mappedBy = "rate", fetch = FetchType.LAZY)
     private ParkingLot parkingLot;
 
+    // TODO: add javadoc
     @Column
     private int type;
 
+    // TODO: Add javadoc
     @Column
     private int interval;
 

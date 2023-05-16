@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.dto
 
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(
@@ -76,4 +77,13 @@ data class ParkingLotUpdateRequest(
     val businessHoursEnd: LocalDateTime?,
     val openDaysFlag: Int?,
     val images: List<ParkingLotImage>?
+)
+
+data class RateUpdateRequest(
+    val type: Int?,
+    val interval: Int?,
+    val freeHours: Int?,
+    val payForFreeHoursWhenExceeding: Boolean?,
+    val startingRate: BigDecimal?,
+    val rate: BigDecimal?
 )
