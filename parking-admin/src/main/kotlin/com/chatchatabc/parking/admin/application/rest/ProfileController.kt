@@ -3,9 +3,8 @@ package com.chatchatabc.parking.admin.application.rest
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
-import com.chatchatabc.parking.domain.model.log.MemberLogoutLog
 import com.chatchatabc.parking.domain.repository.MemberRepository
-import com.chatchatabc.parking.domain.repository.log.MemberLogoutLogRepository
+import com.chatchatabc.parking.domain.service.log.MemberLogoutLogService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/profile")
 class ProfileController(
     private val memberRepository: MemberRepository,
-    private val memberLogoutLogRepository: MemberLogoutLogRepository
+    private val memberLogoutLogService: MemberLogoutLogService
 ) {
     /**
      * Get Member Profile
@@ -65,13 +64,7 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            memberLogoutLogRepository.save(
-                MemberLogoutLog().apply {
-                    this.member = member
-                    this.type = 1
-                    this.ipAddress = request.remoteAddr
-                }
-            )
+            memberLogoutLogService.createLog(member, 1, request.remoteAddr)
             ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
