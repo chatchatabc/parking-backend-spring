@@ -24,8 +24,8 @@ class JwtServiceImplTest {
     void testGenerateToken_shouldReturnValidTokenWithCorrectPayload() {
         String memberId = "1";
         String username = "testuser";
-        String role1 = "admin";
-        String role2 = "user";
+        String role1 = "ROLE_ADMIN";
+        String role2 = "ROLE_MEMBER";
         String expectedToken = jwtService.generateToken(memberId, username, Arrays.asList(role1, role2));
 
         assertNotNull(expectedToken);
