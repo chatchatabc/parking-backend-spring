@@ -41,7 +41,7 @@ class JwtServiceImplTest {
 
 
     @Test
-    void validateTokenAndGetPayload_shouldReturnNullForInvalidToken() {
+    void testValidateTokenAndGetPayload_shouldReturnNullForInvalidToken() {
         String invalidToken = "invalid-token";
         Payload payload = jwtService.validateTokenAndGetPayload(invalidToken);
         assertNull(payload);
