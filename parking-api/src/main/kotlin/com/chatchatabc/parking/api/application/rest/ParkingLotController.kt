@@ -60,7 +60,6 @@ class ParkingLotController(
      */
     @GetMapping("/get")
     fun getByManaging(
-        pageable: Pageable,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
