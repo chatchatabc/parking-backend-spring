@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.infra.service.FileStorageService;
@@ -27,16 +26,16 @@ public class FileStorageOSSImpl implements FileStorageService {
     /**
      * Upload file to cloud storage
      *
-     * @param uploadedBy  the member who uploaded the file
-     * @param namespace   the file namespace
-     * @param inputStream inputStream to upload
-     * @param filename    file name
-     * @param filesize    file size
-     * @param mimetype    file mime type
+     * @param uploadedById the member who uploaded the file
+     * @param namespace    the file namespace
+     * @param inputStream  inputStream to upload
+     * @param filename     file name
+     * @param filesize     file size
+     * @param mimetype     file mime type
      * @return cloud file
      */
     @Override
-    public CloudFile uploadFile(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) {
+    public CloudFile uploadFile(Long uploadedById, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) {
         // Generate UUID name to be used also as key for cloud storage and append the file extension
         String key = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(filename);
         // Create cloud file
@@ -45,6 +44,7 @@ public class FileStorageOSSImpl implements FileStorageService {
         cloudFile.setName(filename);
         cloudFile.setSize(filesize);
         cloudFile.setMimeType(mimetype);
+        cloudFile.setUploadedBy(uploadedById);
 
         // Upload file to storage service
         ossClient.putObject(bucketName, key, inputStream);

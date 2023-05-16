@@ -35,7 +35,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     @Override
     public ParkingLotImage uploadImage(Member uploadedBy, ParkingLot parkingLot, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Upload file to cloud storage
-        CloudFile cloudFile = fileStorageService.uploadFile(uploadedBy, namespace, inputStream, filename, filesize, mimetype);
+        CloudFile cloudFile = fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype);
 
         // Create new parking lot image
         ParkingLotImage parkingLotImage = new ParkingLotImage();
