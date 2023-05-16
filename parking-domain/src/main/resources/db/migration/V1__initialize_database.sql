@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS member_login_log
     id         SERIAL PRIMARY KEY,
     member_id  INT                NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
-    ip_address VARCHAR(255)       NOT NULL,
+    ip_address VARCHAR(39)       NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP          NOT NULL
 );
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS member_logout_log
     id         SERIAL PRIMARY KEY,
     member_id  INT           NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
-    ip_address VARCHAR(255)  NOT NULL,
+    ip_address VARCHAR(39)  NOT NULL,
     created_at TIMESTAMP     NOT NULL
 );
 
