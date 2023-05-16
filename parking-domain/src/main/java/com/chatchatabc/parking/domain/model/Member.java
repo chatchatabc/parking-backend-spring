@@ -51,7 +51,7 @@ public class Member extends FlagEntity implements UserDetails {
     private String password;
 
     @Column(unique = true, nullable = false)
-    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Invalid phone number format.")
+    @Pattern(regexp = "^\\+?[0-9]\\d{1,14}$", message = "Invalid phone number format.")
     private String phone;
 
     @Column
