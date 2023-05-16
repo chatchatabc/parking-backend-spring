@@ -40,7 +40,7 @@ public interface ParkingLotService {
      * Update parking lot
      *
      * @param memberId           the member id
-     * @param parkingLotId       the parking lot id
+     * @param parkingLotUuid     the parking lot uuid
      * @param name               the name of the parking lot
      * @param latitude           the latitude of the parking lot
      * @param longitude          the longitude of the parking lot
@@ -54,7 +54,7 @@ public interface ParkingLotService {
      */
     ParkingLot updateParkingLot(
             String memberId,
-            String parkingLotId,
+            String parkingLotUuid,
             String name,
             Double latitude,
             Double longitude,
@@ -70,12 +70,12 @@ public interface ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param memberId     the member id
-     * @param parkingLotId the parking lot id
+     * @param memberId       the member id
+     * @param parkingLotUuid the parking lot uuid
      * @return the parking lot
      */
     ParkingLot verifyParkingLot(
             String memberId,
-            String parkingLotId
+            String parkingLotUuid
     ) throws Exception;
 }

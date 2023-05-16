@@ -36,7 +36,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setName(name);
         vehicle.setPlateNumber(plateNumber);
         vehicle.setType(type);
-        vehicle.setOwner(owner.get());
+        vehicle.setOwner(owner.get().getId());
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         // Add member to member vehicles table
         owner.get().getVehicles().add(savedVehicle);
@@ -149,9 +149,10 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Vehicle not found");
         }
         // Check if member is the owner, do not remove
-        if (vehicle.get().getOwner().getId().equals(memberToRemoveId)) {
-            throw new Exception("Cannot remove owner");
-        }
+        // TODO: Fix this since there is no relationship anymore
+//        if (vehicle.get().getOwner().getId().equals(memberToRemoveId)) {
+//            throw new Exception("Cannot remove owner");
+//        }
 
         Optional<Member> memberToRemove = memberRepository.findByMemberUuid(memberToRemoveId);
         if (memberToRemove.isEmpty()) {

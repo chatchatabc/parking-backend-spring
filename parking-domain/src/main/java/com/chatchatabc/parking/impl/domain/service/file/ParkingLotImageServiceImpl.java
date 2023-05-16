@@ -39,7 +39,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
 
         // Create new parking lot image
         ParkingLotImage parkingLotImage = new ParkingLotImage();
-        parkingLotImage.setParkingLot(parkingLot);
+        parkingLotImage.setParkingLot(parkingLot.getId());
         parkingLotImage.setFileOrder(0);
         parkingLotImage.setCloudFile(cloudFile);
 

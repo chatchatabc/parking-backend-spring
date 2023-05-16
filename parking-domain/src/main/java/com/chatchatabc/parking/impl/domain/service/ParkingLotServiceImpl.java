@@ -46,7 +46,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             throw new Exception("Member not found");
         }
         ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setOwner(owner.get());
+        parkingLot.setOwner(owner.get().getId());
         parkingLot.setName(name);
         parkingLot.setLatitude(latitude);
         parkingLot.setLongitude(longitude);
@@ -64,23 +64,23 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Update parking lot
      *
-     * @param memberUuid   the member id
-     * @param parkingLotId the parking lot id
-     * @param name         the name of the parking lot
-     * @param latitude     the latitude of the parking lot
-     * @param longitude    the longitude of the parking lot
-     * @param address      the address of the parking lot
-     * @param description  the description of the parking lot
-     * @param capacity     the capacity of the parking lot
+     * @param memberUuid     the member id
+     * @param parkingLotUuid the parking lot uuid
+     * @param name           the name of the parking lot
+     * @param latitude       the latitude of the parking lot
+     * @param longitude      the longitude of the parking lot
+     * @param address        the address of the parking lot
+     * @param description    the description of the parking lot
+     * @param capacity       the capacity of the parking lot
      * @return the parking lot
      */
     @Override
-    public ParkingLot updateParkingLot(String memberUuid, String parkingLotId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
+    public ParkingLot updateParkingLot(String memberUuid, String parkingLotUuid, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, List<ParkingLotImage> images) throws Exception {
         Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
-        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
+        Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
@@ -104,7 +104,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         if (capacity != null) {
             parkingLot.get().setCapacity(capacity);
             // Get active invoices and update available slots
-            Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId);
+            Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLot.get().getId());
             parkingLot.get().setAvailableSlots(capacity - activeInvoices.intValue());
         }
         if (businessHoursStart != null) {
@@ -138,17 +138,17 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param memberUuid   the member id
-     * @param parkingLotId the parking lot id
+     * @param memberUuid     the member id
+     * @param parkingLotUuid the parking lot uuid
      * @return the parking lot
      */
     @Override
-    public ParkingLot verifyParkingLot(String memberUuid, String parkingLotId) throws Exception {
+    public ParkingLot verifyParkingLot(String memberUuid, String parkingLotUuid) throws Exception {
         Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
-        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
+        Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
