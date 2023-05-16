@@ -23,10 +23,13 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
     Optional<ParkingLot> findByParkingLotUuid(String parkingLotUuid);
 
     /**
-     * Find a parking lot by its id and owner
+     * Find parking lot by owner
+     *
+     * @param owner the owner id
+     * @return parking lot
      */
-    @Query("SELECT p FROM ParkingLot p WHERE p.id = ?1 AND p.owner = ?2")
-    Optional<ParkingLot> findByIdAndOwner(String id, Member owner);
+    Optional<ParkingLot> findByOwner(Long owner);
+
 
     /**
      * Find parking lots by distance using Haversine formula
