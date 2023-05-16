@@ -18,7 +18,7 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
     private RoleRepository roleRepository;
 
     @Test
-    public void testFindByName() {
+    public void testFindByName_NameIsFound() {
         assertThat(roleRepository.findByName("ROLE_ADMIN")).isPresent();
     }
 
