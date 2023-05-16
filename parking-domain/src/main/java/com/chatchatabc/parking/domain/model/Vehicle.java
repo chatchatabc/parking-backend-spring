@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -18,8 +19,11 @@ import java.util.Collection;
 @NoArgsConstructor
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String vehicleUuid = UUID.randomUUID().toString();
 
     @Column
     private String name;

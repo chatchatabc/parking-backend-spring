@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
@@ -42,9 +41,6 @@ public class Report {
 
     @Column
     private LocalDateTime cancelledAt;
-
-    @OneToMany(mappedBy = "report", fetch = FetchType.EAGER)
-    private List<ReportStatus> statuses;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
 import com.chatchatabc.parking.domain.model.file.CloudFile;
-import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -102,11 +100,6 @@ public class Member extends FlagEntity implements UserDetails {
     )
     private Collection<Vehicle> vehicles;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    @OrderBy("createdAt DESC")
-    private List<MemberBanHistoryLog> memberBanHistoryLogs;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
@@ -123,13 +116,8 @@ public class Member extends FlagEntity implements UserDetails {
      * @return true if member is not banned, false otherwise
      */
     @Override
-    // TODO: Maybe theres a more simpler system than this
+    // TODO: Implement feature
     public boolean isAccountNonLocked() {
-        // Check if memberBanHistoryLogs has an active ban
-        if (this.memberBanHistoryLogs != null && this.memberBanHistoryLogs.size() > 0) {
-            // Only check the latest ban
-            return this.memberBanHistoryLogs.get(0).getStatus() != 0;
-        }
         return true;
     }
 
