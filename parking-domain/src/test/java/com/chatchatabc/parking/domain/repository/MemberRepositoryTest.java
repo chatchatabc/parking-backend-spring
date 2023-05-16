@@ -54,6 +54,13 @@ class MemberRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testCountMembersByRole_RoleNameDoesNotExist() {
+        String roleName = "ROLE_NONEXISTENT";
+        Long count = memberRepository.countMembersByRole(roleName);
+        assertThat(count).isEqualTo(0L);
+    }
+
+    @Test
     void testFindByMemberUuid_UuidIsFound() {
         String memberUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
         Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
