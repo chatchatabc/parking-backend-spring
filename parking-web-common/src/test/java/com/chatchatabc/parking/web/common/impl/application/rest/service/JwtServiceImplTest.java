@@ -11,15 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JwtServiceImplTest {
-
-    private final String secret = "test-secret";
-    private final String expiration = "3600000"; // 1 hour in milliseconds
-
-    @Mock
-    private MemberRepository memberRepository;
-
-    @InjectMocks
-    private JwtService jwtService = new JwtServiceImpl(secret, expiration);
+    private static final String SECRET = "my-secret";
+    private static final long EXPIRATION = 60000L;
+    private JwtServiceImpl jwtService;
 
     @BeforeEach
     void setUp() {
