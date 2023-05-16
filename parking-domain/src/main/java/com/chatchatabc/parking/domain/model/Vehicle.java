@@ -31,6 +31,10 @@ public class Vehicle {
     @Column(unique = true)
     private String plateNumber;
 
+    /**
+     * 0 - motorcycle
+     * 1 - car
+     */
     @Column
     private int type;
 
