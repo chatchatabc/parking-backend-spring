@@ -81,4 +81,18 @@ class MemberRepositoryTest extends TestContainersBaseTest {
         Long count = memberRepository.countVerified();
         assertThat(count).isEqualTo(4L);
     }
+
+    @Test
+    @DataSet("db/datasets/member_without_verification.xml")
+    void testCountVerified_NoMembersVerified() {
+        Optional<Member> member = memberRepository.findById(1L);
+        member.ifPresent(m -> {
+            m.setEmailVerifiedAt(null);
+            m.setPhoneVerifiedAt(null);
+            memberRepository.save(m);
+        });
+
+        Long count = memberRepository.countVerified();
+        assertThat(count).isEqualTo(0L);
+    }
 }
