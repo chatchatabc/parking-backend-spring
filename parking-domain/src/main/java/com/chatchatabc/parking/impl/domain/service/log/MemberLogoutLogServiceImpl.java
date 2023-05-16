@@ -1,0 +1,31 @@
+package com.chatchatabc.parking.impl.domain.service.log;
+
+import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.log.MemberLogoutLog;
+import com.chatchatabc.parking.domain.repository.log.MemberLogoutLogRepository;
+import com.chatchatabc.parking.domain.service.log.MemberLogoutLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MemberLogoutLogServiceImpl implements MemberLogoutLogService {
+    @Autowired
+    MemberLogoutLogRepository memberLogoutLogRepository;
+
+    /**
+     * Create member logout log
+     *
+     * @param member    the member
+     * @param type      the type
+     * @param ipAddress the ip address
+     */
+    @Override
+    public void createLog(Member member, Integer type, String ipAddress) {
+        MemberLogoutLog log = new MemberLogoutLog();
+        log.setMember(member);
+        log.setType(type);
+        log.setIpAddress(ipAddress);
+
+        memberLogoutLogRepository.save(log);
+    }
+}

@@ -7,7 +7,7 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.service.ParkingLotService
-import com.chatchatabc.parking.domain.service.service.ParkingLotImageService
+import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

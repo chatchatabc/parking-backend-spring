@@ -5,7 +5,7 @@ import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
-import com.chatchatabc.parking.domain.service.service.ParkingLotImageService;
+import com.chatchatabc.parking.domain.service.file.ParkingLotImageService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     @Override
     public ParkingLotImage uploadImage(Member uploadedBy, ParkingLot parkingLot, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Upload file to cloud storage
-        CloudFile cloudFile = fileStorageService.uploadFile(uploadedBy, namespace, inputStream, filename, filesize, mimetype);
+        CloudFile cloudFile = fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype);
 
         // Create new parking lot image
         ParkingLotImage parkingLotImage = new ParkingLotImage();

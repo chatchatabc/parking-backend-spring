@@ -5,7 +5,6 @@ import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
-import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.domain.service.MemberService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.chatchatabc.parking.infra.service.KVService;
@@ -31,8 +30,6 @@ public class MemberServiceImpl implements MemberService {
     private KVService kvService;
     @Autowired
     private FileStorageService fileStorageService;
-    @Autowired
-    private CloudFileRepository cloudFileRepository;
 
     private final Random random = new Random();
 
@@ -170,7 +167,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Update member avatar field
-        uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy, namespace, inputStream, filename, filesize, mimetype));
+        uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
         return memberRepository.save(uploadedBy);
     }
 
