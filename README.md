@@ -3,6 +3,12 @@
 This repository showcases a demo using `Kotlin Multiplatform Mobile` and `Kotlin Spring Boot`. This demo can also be
 used as template for future projects needing `Android and iOS` implementation.
 
+## Get Started
+
+``` shell
+mvn -DdbHost=${$(docker compose port postgres 5432)#*:}
+```
+
 ## Tech Stack
 
 ## Diagrams and Flowchart
@@ -83,10 +89,11 @@ used as template for future projects needing `Android and iOS` implementation.
 
 https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object
 
-
 # Unit test
 
 * Spring Boot Test
 * Testcontainers integration with Spring Boot 3.1.0
 * Flyway for database schema
 * Database Rider for dataset
+
+[//]: # (jbang)
