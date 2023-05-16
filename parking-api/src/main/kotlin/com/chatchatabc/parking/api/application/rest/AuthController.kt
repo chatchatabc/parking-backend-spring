@@ -7,9 +7,8 @@ import com.chatchatabc.parking.api.application.event.member.MemberLoginEvent
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.enums.RoleNames
 import com.chatchatabc.parking.domain.model.Member
-import com.chatchatabc.parking.domain.model.log.MemberLoginLog
-import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
+import com.chatchatabc.parking.domain.service.log.MemberLoginLogService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
@@ -25,7 +24,7 @@ class AuthController(
     private val memberService: MemberService,
     private val jwtService: JwtService,
     private val applicationEventPublisher: ApplicationEventPublisher,
-    private val memberLoginLogRepository: MemberLoginLogRepository
+    private val memberLoginLogService: MemberLoginLogService
 ) {
 
     /**
@@ -87,14 +86,7 @@ class AuthController(
             val token: String = jwtService.generateToken(member.memberUuid, member.username, roleStrings)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
-            memberLoginLogRepository.save(
-                MemberLoginLog().apply {
-                    this.member = member
-                    this.ipAddress = request.remoteAddr
-                    this.type = 0
-                    this.success = true
-                }
-            )
+            memberLoginLogService.createdLog(member, request.remoteAddr, 0, true)
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)
             )
@@ -102,14 +94,7 @@ class AuthController(
             e.printStackTrace()
             // Generate Failed Login Log
             if (member != null) {
-                memberLoginLogRepository.save(
-                    MemberLoginLog().apply {
-                        this.member = member
-                        this.ipAddress = request.remoteAddr
-                        this.type = 0
-                        this.success = false
-                    }
-                )
+                memberLoginLogService.createdLog(member, request.remoteAddr, 0, false)
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
