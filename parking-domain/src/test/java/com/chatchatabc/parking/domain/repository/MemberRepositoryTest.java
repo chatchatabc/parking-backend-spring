@@ -26,7 +26,7 @@ class MemberRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByUsername_UsernameNotFound() {
-        String username = "nonexistent";
+        String username = "NON-EXISTENT";
         Optional<Member> member = memberRepository.findByUsername(username);
         assertThat(member).isNotPresent();
     }
