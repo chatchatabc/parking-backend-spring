@@ -17,7 +17,7 @@ class JwtServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        jwtService = new JwtServiceImpl(SECRET, EXPIRATION);
     }
 
     @Test
