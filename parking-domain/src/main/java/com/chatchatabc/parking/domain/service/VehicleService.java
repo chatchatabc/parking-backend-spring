@@ -17,14 +17,9 @@ public interface VehicleService {
     /**
      * Update vehicle
      *
-     * @param memberId    the member id
-     * @param vehicleId   the vehicle id
-     * @param name        the name of the vehicle
-     * @param plateNumber the plate number of the vehicle
-     * @param type        the type of the vehicle
-     * @return the vehicle
+     * @param updatedVehicle the updated vehicle
      */
-    Vehicle updateVehicle(String memberId, String vehicleId, String name, String plateNumber, Integer type) throws Exception;
+    void updateVehicle(Vehicle updatedVehicle) throws Exception;
 
     /**
      * Add a member to a vehicle
