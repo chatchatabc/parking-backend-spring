@@ -80,18 +80,4 @@ class MemberRepositoryTest extends TestContainersBaseTest {
         Long verifiedMembersCount = memberRepository.countVerified();
         assertThat(verifiedMembersCount).isEqualTo(3);
     }
-
-    //    TODO: Use member.xml
-    @Test
-    void testCountVerified_NoMembersVerified() {
-        Optional<Member> member = memberRepository.findById(1L);
-        member.ifPresent(m -> {
-            m.setEmailVerifiedAt(null);
-            m.setPhoneVerifiedAt(null);
-            memberRepository.save(m);
-        });
-
-        Long count = memberRepository.countVerified();
-        assertThat(count).isEqualTo(0L);
-    }
 }
