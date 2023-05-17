@@ -30,6 +30,12 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByOwner_ParkingLotIsNotFound() {
+        Long ownerId = 0L;
+        assertThat(parkingLotRepository.findByOwner(ownerId)).isEmpty();
+    }
+
+    @Test
     void findByDistance() {
     }
 
