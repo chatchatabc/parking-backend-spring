@@ -2,17 +2,6 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-    <role id="1" name="ROLE_ADMIN"/>
-    <role id="2" name="ROLE_PARKING_OWNER"/>
-    <role id="3" name="ROLE_ENFORCER"/>
-    <role id="4" name="ROLE_MEMBER"/>
-
-    <member id="4" status="0" member_uuid="ec4af6e9-ec57-434d-990d-ae83d9459a31" notification_uuid="bdc2ae2c-fabf-4889-8110-f0ec4d406ff2" email="admin@gmail.com" username="admin" phone="1234567890" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-11 16:14:47.307160"/>
-    <member_role member_id="1" role_id="1"/>
-
-    <member id="4" status="0" member_uuid="b69bf0f3-3a3a-4079-94e6-776f747fd3de" notification_uuid="c9e085dc-4dda-462b-8bab-a5dedd62f1a9" email="owner@gmail.com" email_verified_at="2023-05-09 16:14:47.307160" username="owner" phone="9906345322" phone_verified_at="2023-05-10 16:14:47.307160" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
-    <member_role member_id="2" role_id="2"/>
-
-    <vehicle vehicle_uuid="" name="" plate_number="" owner_id="" created_at="" updated_at=""></vehicle>
-    <member_vehicle member_id="" vehicle_id=""/>
+    <vehicle id="1" type="0" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" name="Lightning McQueen" plate_number="ASD1234" owner_id="5" created_at="2023-05-02 16:14:47.307160" updated_at="2023-05-05 16:14:47.307160"></vehicle>
+    <member_vehicle member_id="5" vehicle_id="1"/>
 </dataset>
