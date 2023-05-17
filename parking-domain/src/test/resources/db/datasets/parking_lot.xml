@@ -3,6 +3,11 @@
 
 <dataset>
     <parking_lot id="1" parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" owner_id="2" name="SM Lanang"
+                 address="Lanang" status="0" flag="0" verified_at="2023-05-10 16:14:47.307160" verified_by="1"
+                 latitude="7.1" longitude="7.1" capacity="100" available_slots="100" open_days_flag="20"
+                 business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
+                 created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <parking_lot id="2" parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1" owner_id="2" name="Abreeza"
                  address="Lanang" status="0" flag="0"
                  latitude="7.1" longitude="7.1" capacity="100" available_slots="100" open_days_flag="20"
                  business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
