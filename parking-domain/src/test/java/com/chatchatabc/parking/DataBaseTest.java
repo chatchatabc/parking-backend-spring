@@ -1,6 +1,5 @@
 package com.chatchatabc.parking;
 
-import com.github.database.rider.core.api.dataset.DataSet;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
