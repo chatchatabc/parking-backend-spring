@@ -40,10 +40,6 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findAllByOwner() {
-    }
-
-    @Test
     void findAllByOwnerAndStatus() {
     }
 
