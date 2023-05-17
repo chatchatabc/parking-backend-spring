@@ -18,7 +18,21 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findByOwner() {
+    void testFindByParkingLotUuid_ParkingLotIsNotFound() {
+        String parkingLotUuid = "non-existent-parking-lot-uuid";
+        assertThat(parkingLotRepository.findByParkingLotUuid(parkingLotUuid)).isEmpty();
+    }
+
+    @Test
+    void testFindByOwner_ParkingLotIsFound() {
+        Long ownerId = 2L;
+        assertThat(parkingLotRepository.findByOwner(ownerId)).isPresent();
+    }
+
+    @Test
+    void testFindByOwner_ParkingLotIsNotFound() {
+        Long ownerId = 0L;
+        assertThat(parkingLotRepository.findByOwner(ownerId)).isEmpty();
     }
 
     @Test
