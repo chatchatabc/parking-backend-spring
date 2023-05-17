@@ -64,12 +64,3 @@ data class ParkingLotUpdateRequest(
     val openDaysFlag: Int?,
     val images: List<ParkingLotImage>?
 )
-
-data class RateUpdateRequest(
-    val type: Int?,
-    val interval: Int?,
-    val freeHours: Int?,
-    val payForFreeHoursWhenExceeding: Boolean?,
-    val startingRate: BigDecimal?,
-    val rate: BigDecimal?
-)
