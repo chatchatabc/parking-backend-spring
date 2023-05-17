@@ -9,6 +9,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Import(TestContainersConfiguration.class)
 @Testcontainers
 @DBRider
-@DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, columnSensing = true, schema = "public" )
+@DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, columnSensing = true, schema = "public")
 public abstract class TestContainersBaseTest extends SpringBootBaseTest {
 }
