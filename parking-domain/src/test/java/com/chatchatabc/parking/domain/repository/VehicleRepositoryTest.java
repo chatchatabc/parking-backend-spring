@@ -70,6 +70,18 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    public void testFindAllByOwner_ShouldReturnVehiclesWhenExist() {
+        Member owner = new Member();
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(owner, pageable);
+        List<Vehicle> vehicles = vehiclePage.getContent();
+
+        assertEquals(2, vehiclePage.getTotalElements());
+        assertEquals(2, vehicles.size());
+    }
+
+    @Test
     void findAllByMember() {
     }
 }
