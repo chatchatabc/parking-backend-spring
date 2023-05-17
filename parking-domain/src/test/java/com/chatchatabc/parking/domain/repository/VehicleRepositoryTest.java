@@ -42,7 +42,18 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findByVehicleUuid() {
+    public void testFindByVehicleUuid_ShouldReturnMatchingVehicleWhenExists() {
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
+
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVehicleUuid(vehicleUuid);
+
+        assertTrue(vehicleOptional.isPresent());
+        Vehicle vehicle = vehicleOptional.get();
+        assertEquals(vehicleUuid, vehicle.getVehicleUuid());
+        assertEquals("Lightning McQueen", vehicle.getName());
+        assertEquals("ASD1234", vehicle.getPlateNumber());
+        assertEquals(0, vehicle.getType());
+        assertEquals(5L, vehicle.getOwner());
     }
 
     @Test
