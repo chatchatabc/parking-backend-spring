@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     flag                 INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
     verified_by          BIGINT,
-    rejectionReason      TEXT,
+    rejection_reason     TEXT,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL
