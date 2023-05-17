@@ -44,6 +44,15 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByDistance_ParkingLotsNotFound() {
+        // Function works, but there are no parking lots in the specified radius
+        double latitude = 0.0;
+        double longitude = 0.0;
+        double radius = 0.1;
+        assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius)).isEmpty();
+    }
+
+    @Test
     void findAllByOwnerAndStatus() {
     }
 
