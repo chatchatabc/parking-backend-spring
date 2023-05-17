@@ -18,6 +18,12 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByParkingLotUuid_ParkingLotIsNotFound() {
+        String parkingLotUuid = "non-existent-parking-lot-uuid";
+        assertThat(parkingLotRepository.findByParkingLotUuid(parkingLotUuid)).isEmpty();
+    }
+
+    @Test
     void findByOwner() {
     }
 
