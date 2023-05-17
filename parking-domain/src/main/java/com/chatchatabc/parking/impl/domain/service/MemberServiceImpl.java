@@ -106,37 +106,11 @@ public class MemberServiceImpl implements MemberService {
     /**
      * Update member
      *
-     * @param memberUuid  the user id
-     * @param username  the username
-     * @param email     the email
-     * @param firstName the first name
-     * @param lastName  the last name
-     * @return the member
+     * @param updatedMember the updated member
      */
     @Override
-    public Member updateMember(String memberUuid, String phone, String username, String email, String firstName, String lastName) throws Exception {
-        Optional<Member> queriedMember = memberRepository.findByMemberUuid(memberUuid);
-        if (queriedMember.isEmpty()) {
-            throw new Exception("Member not found");
-        }
-
-        // Apply Changes
-        if (phone != null) {
-            queriedMember.get().setPhone(phone);
-        }
-        if (username != null) {
-            queriedMember.get().setUsername(username);
-        }
-        if (email != null) {
-            queriedMember.get().setEmail(email);
-        }
-        if (firstName != null) {
-            queriedMember.get().setFirstName(firstName);
-        }
-        if (lastName != null) {
-            queriedMember.get().setLastName(lastName);
-        }
-        return memberRepository.save(queriedMember.get());
+    public void updateMember(Member updatedMember) {
+        memberRepository.save(updatedMember);
     }
 
     /**
