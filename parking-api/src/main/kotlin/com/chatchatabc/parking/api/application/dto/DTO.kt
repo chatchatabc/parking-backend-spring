@@ -5,7 +5,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(
-    val data: T?,
+    val data: T? = null,
     val code: Int = 0,
     val message: String?,
     val error: Boolean = false
@@ -29,12 +29,6 @@ data class VehicleRegisterRequest(
     val name: String,
     val plateNumber: String,
     val type: Int,
-)
-
-data class VehicleUpdateRequest(
-    val name: String?,
-    val plateNumber: String?,
-    val type: Int?,
 )
 
 data class ReportCreateRequest(
