@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE dataset SYSTEM "database.dtd">
+
+<dataset>
+    <parking_lot id="1" parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" owner_id="2" name="SM Lanang"
+                 address="Lanang" status="0" flag="0"
+                 latitude="7.1" longitude="7.1" capacity="100" available_slots="100" open_days_flag="20"
+                 business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
+                 created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+</dataset>
