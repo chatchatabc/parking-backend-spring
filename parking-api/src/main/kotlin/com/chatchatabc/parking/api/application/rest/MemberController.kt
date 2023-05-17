@@ -2,7 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.MemberNotificationResponse
-import com.chatchatabc.parking.api.application.dto.MemberProfileUpdateRequest
+import com.chatchatabc.parking.api.application.mapper.MemberMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
@@ -11,6 +11,7 @@ import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
+import org.mapstruct.factory.Mappers
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -23,8 +24,9 @@ import org.springframework.web.multipart.MultipartFile
 class MemberController(
     private val memberService: MemberService,
     private val memberRepository: MemberRepository,
-    private val fileStorageService: FileStorageService
+    private val fileStorageService: FileStorageService,
 ) {
+    private val memberMapper =  Mappers.getMapper(MemberMapper::class.java)
 
     /**
      * Get member profile
@@ -83,6 +85,13 @@ class MemberController(
         }
     }
 
+    data class MemberProfileUpdateRequest(
+        val username: String?,
+        val email: String?,
+        val firstName: String?,
+        val lastName: String?,
+    )
+
     /**
      * Update member
      */
@@ -96,16 +105,11 @@ class MemberController(
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val member = memberService.updateMember(
-                principal.memberUuid,
-                request.phone,
-                request.username,
-                request.email,
-                request.firstName,
-                request.lastName
-            )
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            memberMapper.updateMemberFromUpdateProfileRequest(request, member)
+            memberService.updateMember(member)
             ResponseEntity.ok().body(
-                ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
+                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -115,6 +119,8 @@ class MemberController(
                 )
         }
     }
+
+    // TODO: Implement update phone number api
 
     /**
      * Upload member avatar

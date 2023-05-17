@@ -16,14 +16,6 @@ data class MemberPhoneLoginRequest(
     val username: String?
 )
 
-data class MemberProfileUpdateRequest(
-    val username: String?,
-    val phone: String?,
-    val email: String?,
-    val firstName: String?,
-    val lastName: String?
-)
-
 data class MemberVerifyOTPRequest(
     val phone: String,
     val otp: String
