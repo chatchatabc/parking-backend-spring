@@ -157,6 +157,7 @@
     flag CDATA #IMPLIED
     verified_at CDATA #IMPLIED
     verified_by CDATA #IMPLIED
+    rejectionreason CDATA #IMPLIED
     status CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
