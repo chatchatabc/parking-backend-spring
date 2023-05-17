@@ -13,7 +13,6 @@ import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
-import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.Page
