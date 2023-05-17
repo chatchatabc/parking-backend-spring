@@ -37,14 +37,6 @@ data class MemberCreateRequest(
     val enabled: Boolean = true
 )
 
-data class MemberUpdateRequest(
-    val email: String?,
-    val phone: String?,
-    val username: String?,
-    val firstName: String?,
-    val lastName: String?,
-)
-
 data class MemberOverridePasswordRequest(
     val newPassword: String,
 )

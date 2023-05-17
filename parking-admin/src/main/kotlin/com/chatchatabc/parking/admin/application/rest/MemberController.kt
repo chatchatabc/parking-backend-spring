@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.*
+import com.chatchatabc.parking.admin.application.mapper.MemberMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog
@@ -9,6 +10,7 @@ import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.MemberBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
+import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -23,6 +25,7 @@ class MemberController(
     private val passwordEncoder: PasswordEncoder,
     private val memberBanHistoryLogRepository: MemberBanHistoryLogRepository
 ) {
+    private val memberMapper = Mappers.getMapper(MemberMapper::class.java)
 
     /**
      * Create member
@@ -62,25 +65,29 @@ class MemberController(
     }
 
     /**
+     * Update Member Request
+     */
+    data class MemberUpdateRequest(
+        val email: String?,
+        val username: String?,
+        val firstName: String?,
+        val lastName: String?,
+    )
+
+    /**
      * Update member
      */
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{memberUuid}")
     fun updateMember(
-        @RequestBody req: MemberUpdateRequest, @PathVariable id: String
+        @RequestBody req: MemberUpdateRequest,
+        @PathVariable memberUuid: String
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val updatedMember = memberService.updateMember(
-                id,
-                req.phone,
-                req.username,
-                req.email,
-                req.firstName,
-                req.lastName
-            )
+            val member = memberRepository.findByMemberUuid(memberUuid).get()
+            memberMapper.updateMemberFromUpdateRequest(req, member)
+            memberService.updateMember(member)
             return ResponseEntity.ok(
-                ApiResponse(
-                    updatedMember, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
+                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -92,6 +99,8 @@ class MemberController(
                 )
         }
     }
+
+    // TODO: Implement update phone number api
 
     /**
      * Override member password
