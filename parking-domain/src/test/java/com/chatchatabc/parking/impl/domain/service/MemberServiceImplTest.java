@@ -7,7 +7,6 @@ import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.infra.service.KVService;
-import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-
-@DataSet("db/datasets/role.xml")
 class MemberServiceImplTest extends TestContainersBaseTest {
 
     @Mock
