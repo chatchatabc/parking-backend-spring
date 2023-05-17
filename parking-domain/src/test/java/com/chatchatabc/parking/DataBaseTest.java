@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.sql.DataSource;
 import java.io.FileOutputStream;
 
-@DataSet({"db/datasets/role.xml", "db/datasets/member.xml", "db/datasets/vehicle.xml"})
 public class DataBaseTest extends TestContainersBaseTest {
     @Autowired
     private DataSource dataSource;
