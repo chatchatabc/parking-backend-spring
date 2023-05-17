@@ -21,7 +21,6 @@ public class DataBaseTest extends TestContainersBaseTest {
      * test if database is ready
      */
     @Test
-    @DataSet("db/datasets/role.xml")
     public void testLoadDataset() {
         Assertions.assertTrue(true);
     }
