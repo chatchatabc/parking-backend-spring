@@ -154,6 +154,7 @@
     business_hours_start CDATA #REQUIRED
     business_hours_end CDATA #REQUIRED
     open_days_flag CDATA #IMPLIED
+    flag CDATA #IMPLIED
     verified_at CDATA #IMPLIED
     verified_by CDATA #IMPLIED
     status CDATA #IMPLIED
