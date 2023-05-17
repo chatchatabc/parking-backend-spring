@@ -38,12 +38,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
     List<ParkingLot> findByDistance(double latitude, double longitude, double distance);
 
     /**
-     * Find all parking lots by owner and status value
-     */
-    @Query("SELECT p FROM ParkingLot p WHERE p.owner = :owner AND p.status = :status")
-    Page<ParkingLot> findAllByOwnerAndStatus(Member owner, int status, Pageable pageable);
-
-    /**
      * Count verified parking lots
      *
      * @return the count

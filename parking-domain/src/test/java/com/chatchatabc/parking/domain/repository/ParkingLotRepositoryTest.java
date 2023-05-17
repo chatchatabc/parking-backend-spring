@@ -53,10 +53,6 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findAllByOwnerAndStatus() {
-    }
-
-    @Test
     void countVerified() {
     }
 }
