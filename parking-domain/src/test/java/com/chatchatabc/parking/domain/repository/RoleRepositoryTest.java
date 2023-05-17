@@ -2,7 +2,6 @@ package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
 import com.chatchatabc.parking.domain.model.Role;
-import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +11,6 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataSet("db/datasets/role.xml")
 public class RoleRepositoryTest extends TestContainersBaseTest {
 
     @Autowired
