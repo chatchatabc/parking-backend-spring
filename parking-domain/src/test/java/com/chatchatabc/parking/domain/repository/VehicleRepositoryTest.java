@@ -82,6 +82,18 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    public void testFindAllByOwner_ShouldReturnEmptyPageWhenNoVehiclesExist() {
+        Member owner = new Member(); // Create the owner object as needed
+        PageRequest pageable = PageRequest.of(0, 10); // Pageable configuration
+
+        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(owner, pageable);
+
+        assertEquals(0, vehiclePage.getTotalElements());
+        assertTrue(vehiclePage.isEmpty());
+    }
+
+
+    @Test
     void findAllByMember() {
     }
 }
