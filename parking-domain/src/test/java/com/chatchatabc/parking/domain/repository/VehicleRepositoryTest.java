@@ -1,10 +1,14 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Vehicle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,7 +61,12 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findAllByOwner() {
+    public void testFindByVehicleUuid_ShouldReturnEmptyOptionalWhenVehicleDoesNotExist() {
+        String vehicleUuid = "non-existent-uuid";
+
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVehicleUuid(vehicleUuid);
+
+        assertTrue(vehicleOptional.isEmpty());
     }
 
     @Test
