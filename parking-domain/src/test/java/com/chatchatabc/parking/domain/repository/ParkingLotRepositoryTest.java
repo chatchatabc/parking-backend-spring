@@ -53,10 +53,7 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findAllByOwnerAndStatus() {
-    }
-
-    @Test
-    void countVerified() {
+    void testCountVerified() {
+        assertThat(parkingLotRepository.countVerified()).isGreaterThan(0L);
     }
 }

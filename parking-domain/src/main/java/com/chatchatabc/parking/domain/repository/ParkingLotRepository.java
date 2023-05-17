@@ -1,9 +1,6 @@
 package com.chatchatabc.parking.domain.repository;
 
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -36,12 +33,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
      */
     @Query("SELECT p FROM ParkingLot p WHERE p.status > 1 AND (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
     List<ParkingLot> findByDistance(double latitude, double longitude, double distance);
-
-    /**
-     * Find all parking lots by owner and status value
-     */
-    @Query("SELECT p FROM ParkingLot p WHERE p.owner = :owner AND p.status = :status")
-    Page<ParkingLot> findAllByOwnerAndStatus(Member owner, int status, Pageable pageable);
 
     /**
      * Count verified parking lots
