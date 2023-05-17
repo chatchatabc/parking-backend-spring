@@ -4,23 +4,45 @@
 <dataset>
     <!-- with verification -->
 
-    <member id="1" status="0" member_uuid="ec4af6e9-ec57-434d-990d-ae83d9459a31" notification_uuid="bdc2ae2c-fabf-4889-8110-f0ec4d406ff2" email="admin@gmail.com" username="admin" phone="1234567890" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-11 16:14:47.307160"/>
+    <member id="1" status="0" member_uuid="ec4af6e9-ec57-434d-990d-ae83d9459a31"
+            notification_uuid="bdc2ae2c-fabf-4889-8110-f0ec4d406ff2" email="admin@gmail.com" username="admin"
+            phone="1234567890" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-11 16:14:47.307160"/>
     <member_role member_id="1" role_id="1"/>
 
-    <member id="2" status="0" member_uuid="b69bf0f3-3a3a-4079-94e6-776f747fd3de" notification_uuid="c9e085dc-4dda-462b-8bab-a5dedd62f1a9" email="owner@gmail.com" username="owner" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345322" phone_verified_at="2023-05-10 16:14:47.307160" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <member id="2" status="0" member_uuid="b69bf0f3-3a3a-4079-94e6-776f747fd3de"
+            notification_uuid="c9e085dc-4dda-462b-8bab-a5dedd62f1a9" email="owner@gmail.com" username="owner"
+            email_verified_at="2023-05-09 16:14:47.307160" phone="9906345322"
+            phone_verified_at="2023-05-10 16:14:47.307160"
+            password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
     <member_role member_id="2" role_id="2"/>
 
-    <member id="3" status="0" member_uuid="448d6e75-00c2-4177-a29f-e78f9aabc2a9" notification_uuid="afbdab42-8596-48d0-8aaa-7504a5a97882" email="enforcer@gmail.com" username="enforcer" email_verified_at="2023-05-08 16:14:47.307160" phone="7688453415" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
+    <member id="3" status="0" member_uuid="448d6e75-00c2-4177-a29f-e78f9aabc2a9"
+            notification_uuid="afbdab42-8596-48d0-8aaa-7504a5a97882" email="enforcer@gmail.com" username="enforcer"
+            email_verified_at="2023-05-08 16:14:47.307160" phone="7688453415"
+            password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
     <member_role member_id="3" role_id="3"/>
 
-    <member id="4" status="0" member_uuid="dfc3cd78-9c89-4da2-8749-253afed080af" notification_uuid="ffa2b156-70d3-48a8-929e-63752beee96b" email="member@gmail.com" username="member" phone="5512355678" phone_verified_at="2023-05-10 16:14:47.307160" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
+    <member id="4" status="0" member_uuid="dfc3cd78-9c89-4da2-8749-253afed080af"
+            notification_uuid="ffa2b156-70d3-48a8-929e-63752beee96b" email="member@gmail.com" username="member"
+            phone="5512355678" phone_verified_at="2023-05-10 16:14:47.307160"
+            password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
     <member_role member_id="4" role_id="4"/>
 
     <!-- without verification -->
 
-    <member id="5" status="0" member_uuid="b0c50381-d0bd-455d-9e46-2b0bd599320b" notification_uuid="d387a2fd-d42a-4b9b-9c62-a9ace442cce4" email="raphael14@gmail.com" username="raph" phone="9976744351" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
+    <member id="5" status="0" member_uuid="b0c50381-d0bd-455d-9e46-2b0bd599320b"
+            notification_uuid="d387a2fd-d42a-4b9b-9c62-a9ace442cce4" email="raphael14@gmail.com" username="raph"
+            phone="9976744351" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
     <member_role member_id="5" role_id="4"/>
 
-    <member id="6" status="0" member_uuid="7285d869-d9b5-40dc-a459-1d6a951505ac" notification_uuid="ef33078d-1726-4897-be08-b3756ea65602" email="matthew@gmail.com" username="matt" phone="1266784472" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0" created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
+    <member id="6" status="0" member_uuid="7285d869-d9b5-40dc-a459-1d6a951505ac"
+            notification_uuid="ef33078d-1726-4897-be08-b3756ea65602" email="matthew@gmail.com" username="matt"
+            phone="1266784472" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
     <member_role member_id="6" role_id="4"/>
 </dataset>
