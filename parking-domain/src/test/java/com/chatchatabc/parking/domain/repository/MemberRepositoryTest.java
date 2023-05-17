@@ -2,7 +2,6 @@ package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
 import com.chatchatabc.parking.domain.model.Member;
-import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +9,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataSet("db/datasets/member.xml")
 class MemberRepositoryTest extends TestContainersBaseTest {
 
     @Autowired
@@ -81,8 +79,8 @@ class MemberRepositoryTest extends TestContainersBaseTest {
         assertThat(verifiedMembersCount).isEqualTo(3);
     }
 
+    //    TODO: Use member.xml
     @Test
-    @DataSet("db/datasets/member_without_verification.xml")
     void testCountVerified_NoMembersVerified() {
         Optional<Member> member = memberRepository.findById(1L);
         member.ifPresent(m -> {
