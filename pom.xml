@@ -54,6 +54,14 @@
             </roles>
             <organizationUrl>https://github.com/chatchatabc</organizationUrl>
         </developer>
+        <developer>
+            <id>audreycj</id>
+            <name>Audrey Nanual</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organizationUrl>https://github.com/chatchatabc</organizationUrl>
+        </developer>
     </developers>
 
     <dependencyManagement>
