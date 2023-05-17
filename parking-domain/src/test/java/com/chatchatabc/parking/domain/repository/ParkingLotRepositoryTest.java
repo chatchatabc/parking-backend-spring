@@ -1,13 +1,20 @@
 package com.chatchatabc.parking.domain.repository;
 
+import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-class ParkingLotRepositoryTest {
+class ParkingLotRepositoryTest extends TestContainersBaseTest {
+
+    @Autowired
+    private ParkingLotRepository parkingLotRepository;
 
     @Test
-    void findByParkingLotUuid() {
+    void testFindByParkingLotUuid_ParkingLotIsFound() {
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        assertThat(parkingLotRepository.findByParkingLotUuid(parkingLotUuid)).isPresent();
     }
 
     @Test
