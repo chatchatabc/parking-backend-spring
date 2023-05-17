@@ -70,7 +70,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Member not found");
         }
 
-        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }
@@ -111,7 +111,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new Exception("Member not found");
         }
 
-        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }
