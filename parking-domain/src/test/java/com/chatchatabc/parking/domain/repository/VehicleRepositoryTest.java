@@ -32,6 +32,16 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    public void testFindByVehicleUuidAndOwner_ShouldReturnEmptyOptionalWhenVehicleDoesNotExist() {
+        String vehicleUuid = "non-existent-uuid";
+        Long ownerId = 5L;
+
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVehicleUuidAndOwner(vehicleUuid, ownerId);
+
+        assertTrue(vehicleOptional.isEmpty());
+    }
+
+    @Test
     void findByVehicleUuid() {
     }
 
