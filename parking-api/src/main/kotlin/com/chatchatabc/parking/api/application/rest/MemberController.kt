@@ -26,7 +26,7 @@ class MemberController(
     private val memberRepository: MemberRepository,
     private val fileStorageService: FileStorageService,
 ) {
-    private val memberMapper =  Mappers.getMapper(MemberMapper::class.java)
+    private val memberMapper = Mappers.getMapper(MemberMapper::class.java)
 
     /**
      * Get member profile
@@ -103,7 +103,7 @@ class MemberController(
     fun updateMember(
         @RequestBody request: MemberProfileUpdateRequest,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<Member>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             memberMapper.updateMemberFromUpdateProfileRequest(request, member)
