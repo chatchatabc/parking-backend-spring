@@ -26,7 +26,8 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void countActiveInvoices() {
+    void testCountActiveInvoices_ShouldReturnGreaterThan0() {
+        assertThat(invoiceRepository.countActiveInvoices()).isGreaterThan(0L);
     }
 
     @Test
