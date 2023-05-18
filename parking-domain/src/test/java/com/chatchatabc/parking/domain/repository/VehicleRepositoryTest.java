@@ -99,4 +99,11 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         PageRequest pageable = PageRequest.of(0, 10);
         assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isGreaterThan(0);
     }
+
+    @Test
+    void testFindAllByMember_ShouldReturn0() {
+        String memberUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
+        PageRequest pageable = PageRequest.of(0, 10);
+        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isEqualTo(0);
+    }
 }
