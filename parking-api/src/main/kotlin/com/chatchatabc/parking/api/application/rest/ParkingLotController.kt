@@ -223,7 +223,7 @@ class ParkingLotController(
             )
             return ResponseEntity.ok(
                 ApiResponse(
-                    updatedParkingLot,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_UPDATE.name,
                     false
