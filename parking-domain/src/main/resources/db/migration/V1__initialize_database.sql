@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS vehicle
 );
 
 create index idx_vehicle_on_type on vehicle (type);
+create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
 
 
