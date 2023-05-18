@@ -51,7 +51,6 @@
     id CDATA #REQUIRED
     parking_lot_id CDATA #REQUIRED
     vehicle_id CDATA #REQUIRED
-    plate_number CDATA #REQUIRED
     estimated_parking_duration_in_hours CDATA #IMPLIED
     total CDATA #REQUIRED
     paid_at CDATA #IMPLIED
