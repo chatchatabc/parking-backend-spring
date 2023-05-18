@@ -30,4 +30,9 @@
              start_at="2023-05-13 17:20:00.000000" estimated_parking_duration_in_hours="0"
              created_at="2023-05-13 17:20:00.000000" updated_at="2023-05-14 10:10:00.000000"/>
 
+    <invoice id="4e3f7c6b-5a4d-3e3f-1a0b-cd9e8f7a6b9c" parking_lot_id="1" vehicle_id="1" total="150"
+             start_at="2023-05-14 09:00:00.000000"
+             estimated_parking_duration_in_hours="12"
+             created_at="2023-05-14 09:00:00.000000" updated_at="2023-05-14 09:00:00.000000"/>
+
 </dataset>
