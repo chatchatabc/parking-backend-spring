@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS cloud_file
 );
 
 create index idx_cloud_file_on_uploaded_by on cloud_file (uploaded_by);
+create index idx_cloud_file_on_key on cloud_file (key);
 
 -- Create parking_lot_image table
 CREATE TABLE IF NOT EXISTS parking_lot_image
