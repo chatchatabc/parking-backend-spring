@@ -1,5 +1,21 @@
 # Parking Backend Spring
 
+## Table of Contents
+
+- [Project Description and Structure](#project-description-and-structure)
+- [Project Terminologies](#project-terminologies)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+    - [Step 1: Clone the repository](#step-1-clone-the-repository)
+    - [Step 2: Set Up Docker](#step-2-set-up-docker)
+    - [Step 3: Configure Environment Variables](#step-3-configure-environment-variables)
+    - [Step 4: Add "dev" as a Spring Boot Profile](#step-4-add-dev-as-a-spring-boot-profile)
+    - [Step 5: Run Maven Clean Install](#step-5-run-maven-clean-install)
+    - [Step 6: Set Up the Database with Flyway](#step-6-set-up-the-database-with-flyway)
+    - [Step 7: Seed the Database with DbUnit](#step-7-seed-the-database-with-dbunit)
+    - [Step 8: Run the Main Class](#step-8-run-the-main-class)
+    - [Done!](#done)
+
 ## Project Description and Structure
 
 This repository contains the backend for the ChatChatABC parking system. The backend system currently contains 4
@@ -98,11 +114,114 @@ This project is built using a variety of tools, libraries, and technologies. Lis
     - [Docker](https://docs.docker.com/)
     - [Docker Compose](https://docs.docker.com/compose/)
 
-## Get Started
+## Getting Started
+
+To set up and run this project locally, follow the steps below:
+
+### Step 1. Clone The Repository
+
+First, you need to clone this project. Open a terminal window and run the following command:
 
 ``` shell
-mvn -DdbHost=${$(docker compose port postgres 5432)#*:}
+git clone https://github.com/chatchatabc/parking-backend-spring.git
 ```
+
+### Step 2. Set Up Docker
+
+This project uses [Docker](https://docs.docker.com/get-docker/) for containerization.
+Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+if you haven't done so yet.
+
+Once Docker and Docker Compose are installed, navigate to the project directory and start the services defined in
+[docker-compose.yml](docker-compose.yml):
+
+```shell
+cd parking-backend-spring
+docker-compose up
+```
+
+### Step 3: Configure Environment Variables
+
+Create a `.env.properties` file in the root of your project and input your Aliyun OSS credentials like so:
+
+```properties
+### oss
+aliyun.region.id=ap-southeast-6
+aliyun.access.key=YourAccessKeyId
+aliyun.access.secret=YourAccessKeySecret
+aliyun.oss.bucket-name=YourBucketName
+aliyun.oss.endpoint=YourEndpoint
+```
+
+Replace `YourAccessKeyId`, `YourAccessKeySecret`, `YourBucketName`, and `YourEndpoint` with your actual credentials.
+
+### Step 4: Add "dev" as a Spring Boot Profile
+
+To set up your Spring Boot profile for development, configure your IDE to use `dev` as the active profile or add
+`-Dspring.profiles.active=dev` to your VM options.
+
+### Step 5: Run Maven Clean Install
+
+This project uses MapStruct, which requires code generation before running the application. To generate the
+implementation classes, run the following command in the root directory of the project:
+
+```shell
+mvn clean install
+
+```
+
+NOTES:
+
+- Adding more MapStruct mappers may require you to run `mvn clean install` again.
+- Implementations are generated in the `target/generated-sources/annotations` directory.
+
+### Step 6: Set Up the Database with Flyway
+
+Flyway is used in this project for database migrations. After installing all the project dependencies, it's time to set
+up the database schema. Navigate to the parking-domain module, and run the following commands in the terminal:
+
+```shell
+cd parking-domain
+mvn flyway:clean
+mvn flyway:migrate
+cd ..
+
+```
+
+This will clean any existing schema and migrate the latest version of the schema to your database.
+
+NOTE: IF you are using IntelliJ IDEA, you can also run the Flyway migrations through the Maven tab.
+
+### Step 7: Seed the Database with DbUnit
+
+DbUnit is used in this project to seed initial data into the database. Still in the parking-domain module, run the
+DbUnit operation to load the seed data:
+
+```shell
+cd parking-domain
+mvn dbunit:operation
+
+```
+
+### Step 8: Run the Main Class
+
+To run the application, navigate to the main class of either the API or Admin module and run it:
+
+```shell
+cd parking-api # or parking-admin, depending on which module you want to run
+mvn spring-boot:run
+
+```
+
+NOTE: If you are using IntelliJ IDEA, you can also run the application using the IDE's built-in run configuration.
+
+### Done!
+
+At this point, your application should be running locally. By default `Parking API` should be running
+on http://localhost:5080 (or whichever port you configured) to verify the application is running correctly.
+Meanwhile, `Parking Admin` should be running on http://localhost:5180 (or whichever port you configured).
+
+Enjoy exploring and contributing to the Parking Backend Spring project!
 
 ## Diagrams and Flowchart
 
@@ -113,17 +232,6 @@ mvn -DdbHost=${$(docker compose port postgres 5432)#*:}
 ### Flowchart
 
 ![Flowchart](./src/site/images/flowchart.png)
-
-## Goals
-
-- Two Apps
-    - Member App
-    - Parking Owner App
-- One Admin Dashboard
-- QR Code Scanning
-- Invoicing
-- Real Time Map
-- Spring Boot Backend
 
 ## TODOs
 
@@ -180,17 +288,6 @@ mvn -DdbHost=${$(docker compose port postgres 5432)#*:}
     - [x] Another UUID member id
     - [x] Another UUID for notification ID
 
-https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object
-
-# Unit test
-
-* Spring Boot Test
-* Testcontainers integration with Spring Boot 3.1.0
-* Flyway for database schema
-* Database Rider for dataset
-
-[//]: # (jbang)
-
 # References
 
 * [Parking Admin Dashboard](https://github.com/chatchatabc/parking-admin-react)
@@ -222,3 +319,11 @@ https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object
 * [GitHub Actions](https://docs.github.com/en/actions)
 * [Docker](https://docs.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
+
+[//]: # (jbang)
+
+[//]: # (``` shell)
+
+[//]: # (mvn -DdbHost=${$&#40;docker compose port postgres 5432&#41;#*:})
+
+[//]: # (```)
