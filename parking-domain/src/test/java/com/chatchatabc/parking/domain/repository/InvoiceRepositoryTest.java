@@ -57,6 +57,9 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void countActiveInvoicesByVehicle() {
+    void testCountActiveInvoicesByParkingLotAndVehicle_ShouldContainInvoices() {
+        Long parkingLotId = 3L;
+        Long vehicleId = 2L;
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId)).isGreaterThan(0L);
     }
 }
