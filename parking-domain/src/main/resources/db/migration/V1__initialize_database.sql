@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 );
 
 create index idx_parking_lot_on_owner_id on parking_lot (owner_id);
-create index idx_parking_lot_on_status on parking_lot (status);
+create index idx_parking_lot_on_name on parking_lot (name);
 create index idx_parking_lot_on_verified_at on parking_lot (verified_at);
 
 -- Create cloud_file table
