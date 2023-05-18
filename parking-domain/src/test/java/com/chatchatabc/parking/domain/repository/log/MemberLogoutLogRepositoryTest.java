@@ -1,10 +1,9 @@
 package com.chatchatabc.parking.domain.repository.log;
 
+import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class MemberLogoutLogRepositoryTest {
+class MemberLogoutLogRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void findByMember() {

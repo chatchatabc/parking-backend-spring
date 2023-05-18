@@ -1,10 +1,9 @@
 package com.chatchatabc.parking.domain.repository.file;
 
+import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ParkingLotImageRepositoryTest {
+class ParkingLotImageRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void findAllByParkingLotAndStatus() {

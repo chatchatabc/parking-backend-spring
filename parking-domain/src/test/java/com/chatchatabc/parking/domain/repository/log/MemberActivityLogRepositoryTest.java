@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.domain.repository.log;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.chatchatabc.parking.TestContainersBaseTest;
 
-class MemberActivityLogRepositoryTest {
+class MemberActivityLogRepositoryTest extends TestContainersBaseTest {
 
 }

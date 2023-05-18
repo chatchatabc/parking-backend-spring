@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.domain.repository.file;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.chatchatabc.parking.TestContainersBaseTest;
 
-class CloudFileRepositoryTest {
+class CloudFileRepositoryTest extends TestContainersBaseTest {
 
 }

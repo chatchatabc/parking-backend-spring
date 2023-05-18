@@ -1,10 +1,9 @@
 package com.chatchatabc.parking.domain.repository;
 
+import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class InvoiceRepositoryTest {
+class InvoiceRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void findByIdAndParkingLot() {
