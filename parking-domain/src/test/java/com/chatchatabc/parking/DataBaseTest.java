@@ -1,5 +1,6 @@
 package com.chatchatabc.parking;
 
+import com.github.database.rider.core.api.dataset.DataSet;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
@@ -14,11 +15,11 @@ public class DataBaseTest extends TestContainersBaseTest {
     @Autowired
     private DataSource dataSource;
 
-    /**
-     * Database Rider and JUnit5
-     * test if database is ready
-     */
     @Test
+    @DataSet({"db/datasets/role.xml",
+            "db/datasets/member.xml",
+            "db/datasets/vehicle.xml",
+            "db/datasets/parking_lot.xml"})
     public void testLoadDataset() {
         Assertions.assertTrue(true);
     }
