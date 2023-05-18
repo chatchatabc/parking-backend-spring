@@ -15,15 +15,6 @@ import java.util.Optional;
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     /**
-     * Find invoice by id and parking lot
-     *
-     * @param id         the invoice id
-     * @param parkingLot the parking lot
-     * @return the invoice
-     */
-    Optional<Invoice> findByIdAndParkingLot(String id, ParkingLot parkingLot);
-
-    /**
      * Find invoice by vehicle
      *
      * @param vehicle  the vehicle

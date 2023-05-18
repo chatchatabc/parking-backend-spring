@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 class InvoiceRepositoryTest extends TestContainersBaseTest {
 
     @Test
-    void findByIdAndParkingLot() {
-    }
-
-    @Test
     void findAllByVehicle() {
     }
 
