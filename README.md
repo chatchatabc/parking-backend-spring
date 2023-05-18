@@ -64,6 +64,9 @@ This project is built using a variety of tools, libraries, and technologies. Lis
     - [Kotlin 1.8](https://kotlinlang.org/docs/home.html)
 - Framework:
     - [Spring Boot 3.1.0-RC2](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0-RC2)
+- Technologies:
+    - [NATS](https://nats.io/)
+    - [Aliyun OSS](https://www.alibabacloud.com/product/oss)
 - Build Tool:
     - [Maven 3.8.1](https://maven.apache.org/guides/index.html)
 - API:
@@ -72,14 +75,17 @@ This project is built using a variety of tools, libraries, and technologies. Lis
 - Authentication and Authorization:
     - [JWT](https://jwt.io/)
     - [Spring Security](https://spring.io/projects/spring-security)
-- Libraries:
-    - [Spring Security](https://spring.io/projects/spring-security)
-    - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-    - [Swagger UI](https://swagger.io/tools/swagger-ui/)
-    - [Quartz Scheduler](https://www.quartz-scheduler.org/)
 - Database:
     - [PostgreSQL 15.2](https://www.postgresql.org/docs/15/index.html)
-    - [Redis 7.0.11](https://redis.io/documentation)
+    - [Redis 7.0.11](https://redis.io/documentation)-
+- Libraries:
+    - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+    - [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
+    - [Swagger UI](https://swagger.io/tools/swagger-ui/)
+    - [Quartz Scheduler](https://www.quartz-scheduler.org/)
+    - [Hibernate](https://hibernate.org/)
+    - [MapStruct](https://mapstruct.org/)
+    - [Lombok](https://projectlombok.org/)
 - Testing and Tools:
     - [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
     - [Testcontainers](https://www.testcontainers.org/)
@@ -189,9 +195,30 @@ https://oss.console.aliyun.com/bucket/oss-ap-southeast-6/davao-parking/object
 
 * [Parking Admin Dashboard](https://github.com/chatchatabc/parking-admin-react)
 * [Parking Mobile App](https://github.com/chatchatabc/parking-mobile-kmm)
-* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Spring Boot 3.1.0-RC2](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0-RC2)
 * [Java 17](https://docs.oracle.com/en/java/)
 * [Kotlin 1.8.21](https://kotlinlang.org/docs/home.html)
+* [NATS](https://nats.io/)
+* [Aliyun OSS](https://www.alibabacloud.com/product/oss)
+* [Maven 3.8.1](https://maven.apache.org/guides/index.html)
+* [GraphQL](https://graphql.org/)
+* [REST](https://restfulapi.net/)
+* [JWT](https://jwt.io/)
 * [Spring Security](https://spring.io/projects/spring-security)
+* [PostgreSQL 15.2](https://www.postgresql.org/docs/15/index.html)
+* [Redis 7.0.11](https://redis.io/documentation)
 * [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
 * [Swagger UI](https://swagger.io/tools/swagger-ui/)
+* [Quartz Scheduler](https://www.quartz-scheduler.org/)
+* [Hibernate](https://hibernate.org/)
+* [MapStruct](https://mapstruct.org/)
+* [Lombok](https://projectlombok.org/)
+* [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
+* [Testcontainers](https://www.testcontainers.org/)
+* [Flyway](https://flywaydb.org/documentation/)
+* [DBUnit](http://dbunit.sourceforge.net/)
+* [DBRider](https://database-rider.github.io/database-rider/latest/documentation.html?theme=foundation)
+* [GitHub Actions](https://docs.github.com/en/actions)
+* [Docker](https://docs.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
