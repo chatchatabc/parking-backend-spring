@@ -43,7 +43,10 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void findAllByParkingLot() {
+    void testFindAllByParkingLot_ShouldContainInvoices() {
+        Long parkingLotId = 1L;
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        assertThat(invoiceRepository.findAllByParkingLot(parkingLotId, pageRequest).getNumberOfElements()).isGreaterThan(0);
     }
 
     @Test
