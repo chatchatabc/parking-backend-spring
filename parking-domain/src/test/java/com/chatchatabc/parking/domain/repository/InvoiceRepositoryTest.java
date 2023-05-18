@@ -50,6 +50,13 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindAllByParkingLot_ShouldNotContainInvoices() {
+        Long parkingLotId = 4L;
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        assertThat(invoiceRepository.findAllByParkingLot(parkingLotId, pageRequest).getNumberOfElements()).isEqualTo(0);
+    }
+
+    @Test
     void countActiveInvoicesByVehicle() {
     }
 }
