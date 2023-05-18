@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -92,8 +93,10 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         assertTrue(vehiclePage.isEmpty());
     }
 
-
     @Test
-    void findAllByMember() {
+    void testFindAllByMember_ShouldReturnGreaterThan0() {
+        String memberUuid = "b0c50381-d0bd-455d-9e46-2b0bd599320b";
+        PageRequest pageable = PageRequest.of(0, 10);
+        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isGreaterThan(0);
     }
 }
