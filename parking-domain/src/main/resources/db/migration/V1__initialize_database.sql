@@ -198,15 +198,15 @@ create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parki
 CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      BIGINT         NOT NULL,
-    vehicle_id                          BIGINT         NOT NULL,
-    estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
-    total                               DECIMAL(10, 2) NOT NULL,
+    parking_lot_id                      BIGINT    NOT NULL,
+    vehicle_id                          BIGINT    NOT NULL,
+    estimated_parking_duration_in_hours INT DEFAULT 0,
+    total                               DECIMAL(10, 2),
     paid_at                             TIMESTAMP,
-    start_at                            TIMESTAMP      NOT NULL,
-    end_at                              TIMESTAMP      NOT NULL,
-    created_at                          TIMESTAMP      NOT NULL,
-    updated_at                          TIMESTAMP      NOT NULL
+    start_at                            TIMESTAMP NOT NULL,
+    end_at                              TIMESTAMP,
+    created_at                          TIMESTAMP NOT NULL,
+    updated_at                          TIMESTAMP NOT NULL
 );
 
 create index idx_invoice_on_parking_lot_id on invoice (parking_lot_id);
