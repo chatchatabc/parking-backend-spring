@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Vehicle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
