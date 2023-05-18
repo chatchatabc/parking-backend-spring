@@ -30,7 +30,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * Find all vehicles of a owner
      */
     @Query("SELECT v FROM Vehicle v WHERE v.owner = ?1")
-    Page<Vehicle> findAllByOwner(Member owner, Pageable pageable);
+    Page<Vehicle> findAllByOwner(Long owner, Pageable pageable);
 
     /**
      * Find all vehicles of an owner by member uuid
