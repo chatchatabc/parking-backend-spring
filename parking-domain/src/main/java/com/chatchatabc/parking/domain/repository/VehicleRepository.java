@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, String> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     /**
-     * Find a vehicle by its uuid and owner
+     * Find a vehicle by its uuid and owner id
      */
     @Query("SELECT v FROM Vehicle v WHERE v.vehicleUuid = ?1 AND v.owner = ?2")
-    Optional<Vehicle> findByVehicleUuidAndOwner(String vehicleUuid, Member owner);
+    Optional<Vehicle> findByVehicleUuidAndOwner(String vehicleUuid, Long owner);
 
     /**
      * Find a vehicle by its uuid

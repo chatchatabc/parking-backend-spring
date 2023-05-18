@@ -22,6 +22,7 @@
         <junit5.version>5.9.3</junit5.version>
         <testcontainers.version>1.18.0</testcontainers.version>
         <database-rider.version>1.37.1</database-rider.version>
+        <mapstruct.version>1.5.5.FINAL</mapstruct.version>
     </properties>
 
     <modules>
@@ -49,6 +50,14 @@
         <developer>
             <id>linux_china</id>
             <name>Jacky Chan</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organizationUrl>https://github.com/chatchatabc</organizationUrl>
+        </developer>
+        <developer>
+            <id>audreycj</id>
+            <name>Audrey Nanual</name>
             <roles>
                 <role>Developer</role>
             </roles>

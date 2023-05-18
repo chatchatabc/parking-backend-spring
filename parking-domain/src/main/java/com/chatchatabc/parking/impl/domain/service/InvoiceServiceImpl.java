@@ -36,7 +36,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
-        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }

@@ -5,7 +5,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(
-    val data: T?,
+    val data: T? = null,
     val code: Int = 0,
     val message: String?,
     val error: Boolean = false
@@ -35,14 +35,6 @@ data class MemberCreateRequest(
     val email: String?,
     val roles: List<String>,
     val enabled: Boolean = true
-)
-
-data class MemberUpdateRequest(
-    val email: String?,
-    val phone: String?,
-    val username: String?,
-    val firstName: String?,
-    val lastName: String?,
 )
 
 data class MemberOverridePasswordRequest(
@@ -93,13 +85,4 @@ data class ParkingLotUpdateRequest(
     val businessHoursEnd: LocalDateTime?,
     val openDaysFlag: Int?,
     val images: List<ParkingLotImage>?
-)
-
-data class RateUpdateRequest(
-    val type: Int?,
-    val interval: Int?,
-    val freeHours: Int?,
-    val payForFreeHoursWhenExceeding: Boolean?,
-    val startingRate: BigDecimal?,
-    val rate: BigDecimal?
 )

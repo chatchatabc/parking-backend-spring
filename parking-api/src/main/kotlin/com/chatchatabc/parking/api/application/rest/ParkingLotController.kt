@@ -13,7 +13,6 @@ import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
-import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.Page
@@ -60,7 +59,6 @@ class ParkingLotController(
      */
     @GetMapping("/get")
     fun getByManaging(
-        pageable: Pageable,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
@@ -69,53 +67,6 @@ class ParkingLotController(
             ResponseEntity.ok(
                 ApiResponse(
                     parkingLot,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
-        }
-    }
-
-    /**
-     * Get Draft Parking Lots Managed By Member
-     */
-    @Operation(
-        summary = "Get list of parking lots by status.",
-        description = "Get parking lots by status. status=draft to get parking lots that are drafts. status=pending to get pending parking lots."
-    )
-    @GetMapping("/get-managing/{status}")
-    fun getDraftByManaging(
-        pageable: Pageable,
-        @PathVariable status: String,
-        principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
-        return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-
-            // Draft is the default status
-            var statusVal = 0
-            if (status == "pending") {
-                statusVal = 1
-            }
-
-            val parkingLots = parkingLotRepository.findAllByOwnerAndStatus(
-                member,
-                statusVal,
-                pageable
-            )
-            return ResponseEntity.ok(
-                ApiResponse(
-                    parkingLots,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
@@ -296,12 +247,13 @@ class ParkingLotController(
     /**
      * Set parking lot status to pending
      */
-    @PutMapping("/set-pending/{parkingLotUuid}")
+    @PutMapping("/set-pending")
     fun setPending(
-        @PathVariable parkingLotUuid: String
+        principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val parkingLot = parkingLotRepository.findByOwner(member.id).get()
             parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(

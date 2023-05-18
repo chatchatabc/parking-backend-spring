@@ -152,8 +152,10 @@ CREATE TABLE IF NOT EXISTS parking_lot
     business_hours_start TIMESTAMP     NOT NULL,
     business_hours_end   TIMESTAMP     NOT NULL,
     open_days_flag       INT DEFAULT 0 NOT NULL,
+    flag                 INT DEFAULT 0 NOT NULL,
     verified_at          TIMESTAMP,
     verified_by          BIGINT,
+    rejection_reason     TEXT,
     status               INT DEFAULT 0 NOT NULL,
     created_at           TIMESTAMP     NOT NULL,
     updated_at           TIMESTAMP     NOT NULL

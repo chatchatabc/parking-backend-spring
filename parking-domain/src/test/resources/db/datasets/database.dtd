@@ -20,13 +20,16 @@
 <!ELEMENT cloud_file EMPTY>
 <!ATTLIST cloud_file
     id CDATA #IMPLIED
+    bucket CDATA #IMPLIED
     key CDATA #REQUIRED
-    filename CDATA #REQUIRED
-    filesize CDATA #REQUIRED
-    mimetype CDATA #REQUIRED
+    name CDATA #REQUIRED
+    size CDATA #REQUIRED
+    mime_type CDATA #REQUIRED
+    tags CDATA #IMPLIED
     status CDATA #IMPLIED
     uploaded_by CDATA #REQUIRED
     created_at CDATA #REQUIRED
+    updated_at CDATA #IMPLIED
 >
 
 <!ELEMENT flyway_schema_history EMPTY>
@@ -81,7 +84,7 @@
 <!ELEMENT member_activity_log EMPTY>
 <!ATTLIST member_activity_log
     id CDATA #IMPLIED
-    member_id CDATA #REQUIRED
+    performed_by CDATA #REQUIRED
     name CDATA #IMPLIED
     target_id CDATA #IMPLIED
     event_type CDATA #IMPLIED
@@ -151,8 +154,10 @@
     business_hours_start CDATA #REQUIRED
     business_hours_end CDATA #REQUIRED
     open_days_flag CDATA #IMPLIED
+    flag CDATA #IMPLIED
     verified_at CDATA #IMPLIED
     verified_by CDATA #IMPLIED
+    rejection_reason CDATA #IMPLIED
     status CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED

@@ -2,12 +2,13 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.VehicleRegisterRequest
-import com.chatchatabc.parking.api.application.dto.VehicleUpdateRequest
+import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
+import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -20,6 +21,7 @@ class VehicleController(
     private val vehicleRepository: VehicleRepository,
     private val vehicleService: VehicleService
 ) {
+    private val vehicleMapper = Mappers.getMapper(VehicleMapper::class.java)
 
     /**
      * Get all vehicles by member
@@ -116,18 +118,29 @@ class VehicleController(
     }
 
     /**
+     * Update vehicle request
+     */
+    data class VehicleUpdateRequest(
+        val name: String?,
+        val plateNumber: String?,
+        val type: Int?,
+    )
+
+    /**
      * Update a vehicle
      */
-    @PutMapping("/update/{vehicleId}")
+    @PutMapping("/update/{vehicleUuid}")
     fun updateVehicle(
-        @PathVariable vehicleId: String,
+        @PathVariable vehicleUuid: String,
         @RequestBody req: VehicleUpdateRequest,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<Vehicle>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val vehicle =
-                vehicleService.updateVehicle(principal.memberUuid, vehicleId, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
+            // TODO: check if member has access to vehicle or maybe make it so that the only is the only one that can update vehicle
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
+            vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
+            vehicleService.updateVehicle(vehicle)
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
         }

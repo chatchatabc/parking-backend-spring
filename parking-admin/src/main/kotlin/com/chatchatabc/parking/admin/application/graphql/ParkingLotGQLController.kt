@@ -51,28 +51,4 @@ class ParkingLotGQLController(
     ): Optional<ParkingLot> {
         return parkingLotRepository.findByParkingLotUuid(uuid)
     }
-
-    /**
-     * Get parking lots by owner
-     */
-    @QueryMapping
-    fun getParkingLotsByOwner(
-        @Argument page: Int,
-        @Argument size: Int,
-        @Argument ownerId: String
-    ): PagedResponse<ParkingLot> {
-        val pr = PageRequest.of(page, size)
-        val user = memberRepository.findByMemberUuid(ownerId).get()
-        val parkingLots = parkingLotRepository.findAllByOwner(user, pr)
-        return PagedResponse(
-            parkingLots.content,
-            PageInfo(
-                parkingLots.size,
-                parkingLots.totalElements,
-                parkingLots.isFirst,
-                parkingLots.isLast,
-                parkingLots.isEmpty
-            )
-        )
-    }
 }

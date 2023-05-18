@@ -65,6 +65,13 @@ public class ParkingLot extends FlagEntity {
     @Column
     private Integer openDaysFlag = 0;
 
+    /**
+     * -1: Deleted
+     * 0: Draft
+     * 1: Pending
+     * 2: Rejected
+     * 3: Verified
+     */
     @Column
     private Integer status = 0;
 
@@ -74,6 +81,9 @@ public class ParkingLot extends FlagEntity {
     @JsonIgnore
     @Column(name = "verified_by")
     private Long verifiedBy;
+
+    @Column(columnDefinition = "TEXT")
+    private String rejectionReason = null;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

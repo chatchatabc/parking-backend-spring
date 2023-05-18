@@ -27,15 +27,9 @@ public interface MemberService extends UserDetailsService {
     /**
      * Update member
      *
-     * @param phone     the phone
-     * @param memberId  the member id
-     * @param username  the username
-     * @param email     the email
-     * @param firstName the first name
-     * @param lastName  the last name
-     * @return the member
+     * @param updatedMember the updated member
      */
-    Member updateMember(String memberId, String phone, String username, String email, String firstName, String lastName) throws Exception;
+    void updateMember(Member updatedMember) throws Exception;
 
     /**
      * Generate OTP and save to KV
