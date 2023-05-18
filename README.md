@@ -15,6 +15,7 @@
     - [Step 7: Seed the Database with DbUnit](#step-7-seed-the-database-with-dbunit)
     - [Step 8: Run the Main Class](#step-8-run-the-main-class)
     - [Done!](#done)
+    - [OPTIONAL STEP: Test GitHub Actions Locally with Act](#optional-step-test-github-actions-locally-with-act)
 
 ## Project Description and Structure
 
@@ -223,6 +224,28 @@ Meanwhile, `Parking Admin` should be running on http://localhost:5180 (or whiche
 
 Enjoy exploring and contributing to the Parking Backend Spring project!
 
+## OPTIONAL STEP: Test GitHub Actions Locally with Act
+
+[Act](https://github.com/nektos/act) is a tool that enables you to run your GitHub Actions workflows locally. This can
+be particularly helpful for testing your workflows before pushing them to your GitHub repository. In this case, we use
+it to local test deployment workflows.
+
+Follow these steps to run your workflows locally using Act:
+
+1. Install Act: Follow the [installation instructions](https://github.com/nektos/act#installation) on the Act GitHub
+   page to install Act on your machine.
+
+2. Run Act: Once Act is installed, you can use it to run your workflows. In this project, use the following command to
+   run the act-build job:
+
+```shell
+act -j act-build -r
+
+```
+
+The -j option specifies the job to run (in this case, act-build). The -r option makes Act use the real size for the
+Docker image, which is important since the image used in this project is large.
+
 ## Diagrams and Flowchart
 
 ### Entity Relationship Diagram
@@ -319,6 +342,7 @@ Enjoy exploring and contributing to the Parking Backend Spring project!
 * [GitHub Actions](https://docs.github.com/en/actions)
 * [Docker](https://docs.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
+* [Act](https://github.com/nektos/act)
 
 [//]: # (jbang)
 
