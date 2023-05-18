@@ -32,8 +32,6 @@ create index idx_member_on_member_uuid on member (member_uuid);
 create index idx_member_on_email on member (email);
 create index idx_member_on_username on member (username);
 create index idx_member_on_phone on member (phone);
-create index idx_member_on_email_verified_at on member (email_verified_at);
-create index idx_member_on_phone_verified_at on member (phone_verified_at);
 
 ALTER SEQUENCE member_id_seq RESTART WITH 1000;
 
