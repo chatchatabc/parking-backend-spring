@@ -27,16 +27,16 @@ public class InvoiceServiceImpl implements InvoiceService {
      * Create invoice for vehicle
      *
      * @param parkingLotUuid the parking lot uuid
-     * @param vehicleId      the vehicle id
+     * @param vehicleUuid    the vehicle uuid
      * @return the invoice
      */
     @Override
-    public Invoice createInvoice(String parkingLotUuid, String vehicleId) throws Exception {
+    public Invoice createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
-        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }

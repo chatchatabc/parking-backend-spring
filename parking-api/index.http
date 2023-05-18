@@ -44,7 +44,7 @@ Content-Type: application/json
 GET {{memberBaseUrl}}/api/invoice/get/0f2014a2-0752-4548-9166-afa1a8b1f55a
 Authorization: Bearer {{memberToken}}
 
-### Get Invoice By Vehicle ID
+### Get Invoice By Vehicle UUID
 GET {{memberBaseUrl}}/api/invoice/get/vehicle/d8d31413-5e18-448d-8337-d5b5da9624e8
 Authorization: Bearer {{memberToken}}
 
