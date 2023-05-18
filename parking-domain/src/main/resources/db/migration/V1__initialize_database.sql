@@ -241,4 +241,3 @@ CREATE TABLE IF NOT EXISTS report_status
 
 create index idx_report_status_on_report_id on report_status (report_id);
 create index idx_report_status_on_performed_by on report_status (performed_by);
-create index idx_report_status_on_status on report_status (status);
