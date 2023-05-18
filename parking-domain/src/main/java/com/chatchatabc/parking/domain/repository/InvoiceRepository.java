@@ -43,7 +43,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
      * Find all invoices by parking lot
      */
     @Query("SELECT i FROM Invoice i WHERE i.parkingLot = ?1")
-    Page<Invoice> findAllByParkingLot(ParkingLot parkingLot, Pageable pageable);
+    Page<Invoice> findAllByParkingLot(Long parkingLot, Pageable pageable);
 
     /**
      * Find all active invoices by parking lot and by vehicle

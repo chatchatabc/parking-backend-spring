@@ -58,7 +58,7 @@ class InvoiceController(
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             return ResponseEntity.ok(
                 ApiResponse(
-                    invoiceRepository.findAllByVehicle(vehicle, pageable),
+                    invoiceRepository.findAllByVehicle(vehicle.id, pageable),
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
@@ -88,7 +88,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            val invoices = invoiceRepository.findAllByParkingLot(parkingLot, pageable)
+            val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pageable)
             return ResponseEntity.ok(
                 ApiResponse(
                     invoices,
