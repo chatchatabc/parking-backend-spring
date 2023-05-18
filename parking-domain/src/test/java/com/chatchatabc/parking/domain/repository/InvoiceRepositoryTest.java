@@ -31,7 +31,9 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void countActiveInvoicesByParkingLotId() {
+    void testCountActiveInvoicesByParkingLotId_ShouldReturnGreaterThan0() {
+        Long parkingLotId = 1L;
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId)).isGreaterThan(0L);
     }
 
     @Test
