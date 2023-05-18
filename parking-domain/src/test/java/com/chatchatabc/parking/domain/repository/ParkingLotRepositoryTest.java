@@ -40,7 +40,7 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
         double latitude = 7.1;
         double longitude = 7.1;
         double radius = 0.1;
-        assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius)).isNotEmpty();
+        assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius).size()).isGreaterThan(0);
     }
 
     @Test
