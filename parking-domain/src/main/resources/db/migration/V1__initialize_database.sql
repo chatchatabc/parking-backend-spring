@@ -199,7 +199,6 @@ CREATE TABLE IF NOT EXISTS invoice
     id                                  VARCHAR(36) PRIMARY KEY,
     parking_lot_id                      BIGINT         NOT NULL,
     vehicle_id                          BIGINT         NOT NULL,
-    plate_number                        VARCHAR(20)    NOT NULL,
     estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
     total                               DECIMAL(10, 2) NOT NULL,
     paid_at                             TIMESTAMP,
