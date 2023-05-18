@@ -37,6 +37,12 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testCountActiveInvoicesByParkingLotId_ShouldReturn0() {
+        Long parkingLotId = 4L;
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId)).isEqualTo(0L);
+    }
+
+    @Test
     void findAllByParkingLot() {
     }
 
