@@ -62,8 +62,7 @@ class ParkingLotController(
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            val parkingLot = parkingLotRepository.findByOwner(member.id).getOrNull()
+            val parkingLot = parkingLotRepository.findByOwnerUuid(principal.memberUuid).getOrNull()
             ResponseEntity.ok(
                 ApiResponse(
                     parkingLot,
