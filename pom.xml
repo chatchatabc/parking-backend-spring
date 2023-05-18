@@ -22,7 +22,7 @@
         <junit5.version>5.9.3</junit5.version>
         <testcontainers.version>1.18.0</testcontainers.version>
         <database-rider.version>1.37.1</database-rider.version>
-        <mapstruct.version>1.5.5.FINAL</mapstruct.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
     <modules>
