@@ -19,6 +19,13 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindAllByVehicle_InvoicesAreNotFound() {
+        Long vehicleId = 3L;
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        assertThat(invoiceRepository.findAllByVehicle(vehicleId, pageRequest).getNumberOfElements()).isEqualTo(0);
+    }
+
+    @Test
     void countActiveInvoices() {
     }
 
