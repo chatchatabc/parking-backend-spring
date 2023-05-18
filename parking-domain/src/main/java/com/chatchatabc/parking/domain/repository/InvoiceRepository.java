@@ -1,8 +1,6 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.domain.model.Invoice;
-import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.model.Vehicle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,5 +47,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
      * Find all active invoices by parking lot and by vehicle
      */
     @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot = ?1 AND i.vehicle = ?2 AND i.endAt IS NULL")
-    Long countActiveInvoicesByVehicle(ParkingLot parkingLot, Vehicle vehicle);
+    Long countActiveInvoicesByParkingLotAndVehicle(Long parkingLot, Long vehicle);
 }

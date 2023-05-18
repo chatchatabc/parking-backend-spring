@@ -42,7 +42,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         // Check if vehicle has active invoice on this parking lot and return an error
-        Long activeInvoices = invoiceRepository.countActiveInvoicesByVehicle(parkingLot.get(), vehicle.get());
+        Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.get().getId(), vehicle.get().getId());
         if (activeInvoices > 0) {
             throw new Exception("Vehicle has active invoice on this parking lot");
         }
