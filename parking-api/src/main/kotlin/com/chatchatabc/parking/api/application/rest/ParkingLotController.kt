@@ -200,16 +200,16 @@ class ParkingLotController(
     /**
      * Update a parking lot and image order
      */
-    @PutMapping("/update/{parkingLotId}")
+    @PutMapping("/update")
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
-        @PathVariable parkingLotId: String,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
+    ): ResponseEntity<ApiResponse<Unit>> {
         return try {
-            val updatedParkingLot = parkingLotService.updateParkingLot(
+            val parkingLotUuid = parkingLotRepository.findByOwnerUuid(principal.memberUuid).get().parkingLotUuid
+            parkingLotService.updateParkingLot(
                 principal.memberUuid,
-                parkingLotId,
+                parkingLotUuid,
                 req.name,
                 req.latitude,
                 req.longitude,
@@ -302,15 +302,14 @@ class ParkingLotController(
     /**
      * Upload image
      */
-    @PostMapping("/upload-image/{parkingLotUuid}")
+    @PostMapping("/upload-image")
     fun uploadImage(
-        @PathVariable parkingLotUuid: String,
         @RequestParam("file", required = true) file: MultipartFile,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            val parkingLot = parkingLotRepository.findByOwner(member.id).get()
             val fileData = parkingLotImageService.uploadImage(
                 member,
                 parkingLot,
