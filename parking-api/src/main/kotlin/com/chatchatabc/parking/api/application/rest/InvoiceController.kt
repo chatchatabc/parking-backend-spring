@@ -47,18 +47,18 @@ class InvoiceController(
     }
 
     /**
-     * Get invoices by vehicle id
+     * Get invoices by vehicle uuid
      */
-    @GetMapping("/get/vehicle/{vehicleId}")
+    @GetMapping("/get/vehicle/{vehicleUuid}")
     fun getInvoicesByVehicle(
-        @PathVariable vehicleId: String,
+        @PathVariable vehicleUuid: String,
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
-            val vehicle = vehicleRepository.findById(vehicleId).get()
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             return ResponseEntity.ok(
                 ApiResponse(
-                    invoiceRepository.findAllByVehicle(vehicle, pageable),
+                    invoiceRepository.findAllByVehicle(vehicle.id, pageable),
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS.name,
                     false
@@ -88,7 +88,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            val invoices = invoiceRepository.findAllByParkingLot(parkingLot, pageable)
+            val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pageable)
             return ResponseEntity.ok(
                 ApiResponse(
                     invoices,
@@ -114,13 +114,13 @@ class InvoiceController(
     /**
      * Create an invoice
      */
-    @PostMapping("/create/{parkingLotId}/{vehicleId}")
+    @PostMapping("/create/{parkingLotId}/{vehicleUuid}")
     fun createInvoice(
         @PathVariable parkingLotId: String,
-        @PathVariable vehicleId: String
+        @PathVariable vehicleUuid: String
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
-            val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleId)
+            val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleUuid)
             ResponseEntity.ok(
                 ApiResponse(
                     createdInvoice,

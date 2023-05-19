@@ -35,12 +35,25 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
         assertThat(parkingLotRepository.findByOwner(ownerId)).isEmpty();
     }
 
+
+    @Test
+    void testFindByOwnerUuid_ParkingLotIsFound() {
+        String ownerUuid = "b69bf0f3-3a3a-4079-94e6-776f747fd3de";
+        assertThat(parkingLotRepository.findByOwnerUuid(ownerUuid)).isPresent();
+    }
+
+    @Test
+    void testFindByOwnerUuid_ParkingLotIsNotFound() {
+        String ownerUuid = "non-existent-owner-uuid";
+        assertThat(parkingLotRepository.findByOwnerUuid(ownerUuid)).isEmpty();
+    }
+
     @Test
     void testFindByDistance_ParkingLotsAreFound() {
         double latitude = 7.1;
         double longitude = 7.1;
         double radius = 0.1;
-        assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius)).isNotEmpty();
+        assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius).size()).isGreaterThan(0);
     }
 
     @Test

@@ -51,12 +51,11 @@
     id CDATA #REQUIRED
     parking_lot_id CDATA #REQUIRED
     vehicle_id CDATA #REQUIRED
-    plate_number CDATA #REQUIRED
     estimated_parking_duration_in_hours CDATA #IMPLIED
-    total CDATA #REQUIRED
+    total CDATA #IMPLIED
     paid_at CDATA #IMPLIED
     start_at CDATA #REQUIRED
-    end_at CDATA #REQUIRED
+    end_at CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
 >

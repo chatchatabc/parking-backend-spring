@@ -29,9 +29,19 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
 
 
     /**
+     * Find parking lot by owner
+     *
+     * @param ownerUuid the owner 'UUID
+     * @return parking lot
+     */
+    @Query("SELECT p FROM ParkingLot p WHERE p.owner IN (SELECT m.id FROM Member m WHERE m.memberUuid = :ownerUuid)")
+    Optional<ParkingLot> findByOwnerUuid(String ownerUuid);
+
+
+    /**
      * Find parking lots by distance using Haversine formula
      */
-    @Query("SELECT p FROM ParkingLot p WHERE p.status > 1 AND (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
+    @Query("SELECT p FROM ParkingLot p WHERE p.status > 2 AND (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * cos(radians(p.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
     List<ParkingLot> findByDistance(double latitude, double longitude, double distance);
 
     /**

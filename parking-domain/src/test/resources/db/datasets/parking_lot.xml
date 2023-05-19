@@ -2,14 +2,25 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-    <parking_lot id="1" parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" owner_id="2" name="SM Lanang"
-                 address="Lanang" status="0" flag="0" verified_at="2023-05-10 16:14:47.307160" verified_by="1"
+    <parking_lot id="1" parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" owner_id="1" name="SM Lanang"
+                 address="Lanang" status="3" flag="0" verified_at="2023-05-10 16:14:47.307160" verified_by="1"
                  latitude="7.1" longitude="7.1" capacity="100" available_slots="100" open_days_flag="20"
                  business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
                  created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
     <parking_lot id="2" parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1" owner_id="2" name="Abreeza"
-                 address="Lanang" status="0" flag="0"
+                 address="Lanang" status="3" flag="0"
                  latitude="7.1" longitude="7.1" capacity="100" available_slots="100" open_days_flag="20"
                  business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
                  created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <parking_lot id="3" parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p" owner_id="3" name="SM City"
+                 address="Ecoland" status="0" flag="0"
+                 latitude="6.9" longitude="7.0" capacity="200" available_slots="200" open_days_flag="31"
+                 business_hours_start="2023-05-18 08:00:00.000000" business_hours_end="2023-05-18 22:00:00.000000"
+                 created_at="2023-05-18 14:30:00.000000" updated_at="2023-05-18 14:30:00.000000"/>
+    <parking_lot id="4" parking_lot_uuid="b3c4d5e6-f7g8-h9i0-j1k2-l3m4n5o6p7q" owner_id="4" name="Central Park"
+                 address="Downtown" status="1" flag="1"
+                 latitude="6.5" longitude="7.3" capacity="150" available_slots="50" open_days_flag="1111100"
+                 business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
+                 created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
+
 </dataset>

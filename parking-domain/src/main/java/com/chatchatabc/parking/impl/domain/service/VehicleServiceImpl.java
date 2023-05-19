@@ -20,15 +20,15 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Register vehicle
      *
-     * @param memberId    the member id
+     * @param memberUuid  the member uuid
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
      * @param type        the type of the vehicle
      * @return the vehicle
      */
     @Override
-    public Vehicle registerVehicle(String memberId, String name, String plateNumber, int type) throws Exception {
-        Optional<Member> owner = memberRepository.findByMemberUuid(memberId);
+    public Vehicle registerVehicle(String memberUuid, String name, String plateNumber, int type) throws Exception {
+        Optional<Member> owner = memberRepository.findByMemberUuid(memberUuid);
         if (owner.isEmpty()) {
             throw new Exception("Member not found");
         }
@@ -57,20 +57,20 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Add a member to a vehicle
      *
-     * @param memberUuid    the member id
-     * @param vehicleId     the vehicle id
+     * @param memberUuid    the member uuid
+     * @param vehicleUuid   the vehicle uuid
      * @param memberToAddId the member to add id
      * @return the vehicle
      * @throws Exception the exception
      */
     @Override
-    public Vehicle addMemberToVehicle(String memberUuid, String vehicleId, String memberToAddId) throws Exception {
+    public Vehicle addMemberToVehicle(String memberUuid, String vehicleUuid, String memberToAddId) throws Exception {
         Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
 
-        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }
@@ -98,20 +98,20 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * Remove a member from a vehicle
      *
-     * @param memberUuid       the member id
-     * @param vehicleId        the vehicle id
+     * @param memberUuid       the member uuid
+     * @param vehicleUuid      the vehicle uuid
      * @param memberToRemoveId the member to remove id
      * @return the vehicle
      * @throws Exception the exception
      */
     @Override
-    public Vehicle removeMemberFromVehicle(String memberUuid, String vehicleId, String memberToRemoveId) throws Exception {
+    public Vehicle removeMemberFromVehicle(String memberUuid, String vehicleUuid, String memberToRemoveId) throws Exception {
         Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
         if (member.isEmpty()) {
             throw new Exception("Member not found");
         }
 
-        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleId);
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid);
         if (vehicle.isEmpty()) {
             throw new Exception("Vehicle not found");
         }

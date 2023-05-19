@@ -41,40 +41,32 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void softRegisterMember_NewMember_SuccessfullyRegistered() throws Exception {
-        // Arrange
         String phone = "1234567890";
         String username = "john_doe";
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.empty());
 
-        // Act
         memberService.softRegisterMember(phone, username);
 
-        // Assert
         verify(memberRepository, times(1)).findByPhone(phone);
         verify(memberRepository, times(1)).save(any(Member.class));
     }
 
     @Test
     void softRegisterMember_ExistingMemberWithCorrectUsername_NoExceptionThrown() throws Exception {
-        // Arrange
         String phone = "1234567890";
         String username = "john_doe";
         Member existingMember = new Member();
         existingMember.setUsername(username);
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(existingMember));
 
-
-        // Act
         memberService.softRegisterMember(phone, username);
 
-        // Assert
         verify(memberRepository, times(1)).findByPhone(phone);
         verify(memberRepository, never()).save(any(Member.class));
     }
 
     @Test
     void softRegisterMember_ExistingMemberWithIncorrectUsername_ExceptionThrown() {
-        // Arrange
         String phone = "1234567890";
         String existingUsername = "john_doe";
         String incorrectUsername = "jane_smith";
@@ -82,7 +74,6 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         existingMember.setUsername(existingUsername);
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(existingMember));
 
-        // Act & Assert
         assertThrows(Exception.class, () ->
                 memberService.softRegisterMember(phone, incorrectUsername));
 
@@ -92,7 +83,6 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testVerifyOTPAndAddRole_WithInvalidOTP_ShouldThrowException() {
-        // Arrange
         String phone = "1234567890";
         String otp = "123456";
         String savedOTP = "654321";
@@ -100,13 +90,12 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
         Member member = new Member();
         member.setPhone(phone);
-        member.setRoles(new ArrayList<>()); // Initialize the roles collection
+        member.setRoles(new ArrayList<>());
 
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
         when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(new Role()));
         when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
 
-        // Act & Assert
         assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
     }
 
@@ -120,19 +109,17 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
         Member member = new Member();
         member.setPhone(phone);
-        member.setRoles(new ArrayList<>()); // Initialize the roles collection
+        member.setRoles(new ArrayList<>());
 
         when(memberRepository.findByPhone(phone)).thenReturn(Optional.of(member));
         when(roleRepository.findByName(roleName.name())).thenReturn(Optional.of(new Role()));
         when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
 
-        // Act & Assert
         assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
     }
 
     @Test
     void testVerifyOTPAndAddRole_WithValidOTPAndExistingRole_ShouldNotAddRole() throws Exception {
-        // Arrange
         String phone = "1234567890";
         String otp = "123456";
         String savedOTP = "123456";
@@ -146,10 +133,8 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         when(roleRepository.findByName(RoleNames.ROLE_MEMBER.name())).thenReturn(Optional.of(memberRole));
         when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
 
-        // Act
         Member result = memberService.verifyOTPAndAddRole(phone, otp, RoleNames.ROLE_MEMBER);
 
-        // Assert
         verify(memberRepository, times(1)).findByPhone(phone);
         verify(roleRepository, times(1)).findByName(RoleNames.ROLE_MEMBER.name());
         verify(kvService, times(1)).get("otp_" + phone);
@@ -157,9 +142,9 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         assertEquals(1, result.getRoles().size());
     }
 
+
     @Test
     void testVerifyOTPAndAddRole_WithValidOTPAndNewRole_ShouldAddRoleToMember() throws Exception {
-        // Arrange
         String phone = "1234567890";
         String otp = "123456";
         String savedOTP = "123456";
@@ -175,10 +160,8 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         when(roleRepository.findByName(RoleNames.ROLE_MEMBER.name())).thenReturn(Optional.of(memberRole));
         when(kvService.get("otp_" + phone)).thenReturn(savedOTP);
 
-        // Act
         Member result = memberService.verifyOTPAndAddRole(phone, otp, RoleNames.ROLE_MEMBER);
 
-        // Assert
         verify(memberRepository, times(1)).findByPhone(phone);
         verify(roleRepository, times(1)).findByName(RoleNames.ROLE_MEMBER.name());
         verify(kvService, times(1)).get("otp_" + phone);

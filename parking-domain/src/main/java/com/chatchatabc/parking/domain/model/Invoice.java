@@ -30,9 +30,6 @@ public class Invoice {
     private Long vehicle;
 
     @Column
-    private String plateNumber;
-
-    @Column
     private int estimatedParkingDurationInHours;
 
     @Column(columnDefinition = "DECIMAL(10,2)")

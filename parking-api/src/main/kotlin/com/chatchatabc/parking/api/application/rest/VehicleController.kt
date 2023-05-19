@@ -149,14 +149,14 @@ class VehicleController(
     /**
      * Add a member to a vehicle
      */
-    @PutMapping("/add-member/{vehicleId}/{memberUuid}")
+    @PutMapping("/add-member/{vehicleUuid}/{memberUuid}")
     fun addMemberToVehicle(
-        @PathVariable vehicleId: String,
+        @PathVariable vehicleUuid: String,
         @PathVariable memberUuid: String,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.addMemberToVehicle(principal.memberUuid, vehicleId, memberUuid)
+            val vehicle = vehicleService.addMemberToVehicle(principal.memberUuid, vehicleUuid, memberUuid)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -167,14 +167,14 @@ class VehicleController(
     /**
      * Remove a member from a vehicle
      */
-    @PutMapping("/remove-member/{vehicleId}/{memberUuid}")
+    @PutMapping("/remove-member/{vehicleUuid}/{memberUuid}")
     fun removeMemberFromVehicle(
-        @PathVariable vehicleId: String,
+        @PathVariable vehicleUuid: String,
         @PathVariable memberUuid: String,
         principal: MemberPrincipal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberUuid, vehicleId, memberUuid)
+            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberUuid, vehicleUuid, memberUuid)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,

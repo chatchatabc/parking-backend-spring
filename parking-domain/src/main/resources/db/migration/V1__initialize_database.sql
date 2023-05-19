@@ -32,8 +32,6 @@ create index idx_member_on_member_uuid on member (member_uuid);
 create index idx_member_on_email on member (email);
 create index idx_member_on_username on member (username);
 create index idx_member_on_phone on member (phone);
-create index idx_member_on_email_verified_at on member (email_verified_at);
-create index idx_member_on_phone_verified_at on member (phone_verified_at);
 
 ALTER SEQUENCE member_id_seq RESTART WITH 1000;
 
@@ -110,6 +108,7 @@ CREATE TABLE IF NOT EXISTS vehicle
 );
 
 create index idx_vehicle_on_type on vehicle (type);
+create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
 
 
@@ -162,7 +161,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 );
 
 create index idx_parking_lot_on_owner_id on parking_lot (owner_id);
-create index idx_parking_lot_on_status on parking_lot (status);
+create index idx_parking_lot_on_name on parking_lot (name);
 create index idx_parking_lot_on_verified_at on parking_lot (verified_at);
 
 -- Create cloud_file table
@@ -182,6 +181,7 @@ CREATE TABLE IF NOT EXISTS cloud_file
 );
 
 create index idx_cloud_file_on_uploaded_by on cloud_file (uploaded_by);
+create index idx_cloud_file_on_key on cloud_file (key);
 
 -- Create parking_lot_image table
 CREATE TABLE IF NOT EXISTS parking_lot_image
@@ -198,16 +198,15 @@ create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parki
 CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      BIGINT         NOT NULL,
-    vehicle_id                          BIGINT         NOT NULL,
-    plate_number                        VARCHAR(20)    NOT NULL,
-    estimated_parking_duration_in_hours INT            NOT NULL DEFAULT 0,
-    total                               DECIMAL(10, 2) NOT NULL,
+    parking_lot_id                      BIGINT    NOT NULL,
+    vehicle_id                          BIGINT    NOT NULL,
+    estimated_parking_duration_in_hours INT DEFAULT 0,
+    total                               DECIMAL(10, 2),
     paid_at                             TIMESTAMP,
-    start_at                            TIMESTAMP      NOT NULL,
-    end_at                              TIMESTAMP      NOT NULL,
-    created_at                          TIMESTAMP      NOT NULL,
-    updated_at                          TIMESTAMP      NOT NULL
+    start_at                            TIMESTAMP NOT NULL,
+    end_at                              TIMESTAMP,
+    created_at                          TIMESTAMP NOT NULL,
+    updated_at                          TIMESTAMP NOT NULL
 );
 
 create index idx_invoice_on_parking_lot_id on invoice (parking_lot_id);
@@ -243,4 +242,3 @@ CREATE TABLE IF NOT EXISTS report_status
 
 create index idx_report_status_on_report_id on report_status (report_id);
 create index idx_report_status_on_performed_by on report_status (performed_by);
-create index idx_report_status_on_status on report_status (status);

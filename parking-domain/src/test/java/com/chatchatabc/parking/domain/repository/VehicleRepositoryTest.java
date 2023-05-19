@@ -1,16 +1,16 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Vehicle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -70,30 +70,36 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    public void testFindAllByOwner_ShouldReturnVehiclesWhenExist() {
-        Member owner = new Member();
-        PageRequest pageable = PageRequest.of(0, 10);
+    public void testFindAllByOwner_ShouldReturnMatchingVehiclesWhenExist() {
+        Long ownerId = 5L;
 
-        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(owner, pageable);
-        List<Vehicle> vehicles = vehiclePage.getContent();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(ownerId, pageable);
 
-        assertEquals(2, vehiclePage.getTotalElements());
-        assertEquals(2, vehicles.size());
+        assertEquals(3, vehiclePage.getTotalElements());
     }
 
     @Test
     public void testFindAllByOwner_ShouldReturnEmptyPageWhenNoVehiclesExist() {
-        Member owner = new Member(); // Create the owner object as needed
-        PageRequest pageable = PageRequest.of(0, 10); // Pageable configuration
+        Long ownerId = 10L;
 
-        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(owner, pageable);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAllByOwner(ownerId, pageable);
 
         assertEquals(0, vehiclePage.getTotalElements());
-        assertTrue(vehiclePage.isEmpty());
     }
 
+    @Test
+    void testFindAllByMember_ShouldReturnGreaterThan0() {
+        String memberUuid = "b0c50381-d0bd-455d-9e46-2b0bd599320b";
+        PageRequest pageable = PageRequest.of(0, 10);
+        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isGreaterThan(0);
+    }
 
     @Test
-    void findAllByMember() {
+    void testFindAllByMember_ShouldReturn0() {
+        String memberUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
+        PageRequest pageable = PageRequest.of(0, 10);
+        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isEqualTo(0);
     }
 }
