@@ -68,4 +68,10 @@
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
+    <parking_lot id="12" parking_lot_uuid="db56718d-1fa2-4eb1-9cc6-dc491355a5eb" owner_id="4" name="Ateneo de Davao Matina Parking Building"
+                 address="3H6W+GM5, Talomo, Davao City, Davao del Sur" status="1" flag="1"
+                 latitude="7.061263" longitude="125.596734" capacity="150" available_slots="50" open_days_flag="1111100"
+                 business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
+                 created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
+
 </dataset>
