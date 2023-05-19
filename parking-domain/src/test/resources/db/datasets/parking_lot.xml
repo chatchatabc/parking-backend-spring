@@ -26,4 +26,12 @@
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
+    <parking_lot id="5" parking_lot_uuid="20102dd6-9bec-48c2-abba-7f0fecde1e7d" owner_id="4" name="Gaisano Mall of Davao"
+                 address="J.P. Laurel Ave, Bajada, Davao City, 8000 Davao del Sur" status="1" flag="1"
+                 latitude="7.098737" longitude="125.624212" capacity="150" available_slots="50" open_days_flag="1111100"
+                 business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
+                 created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
+
+
+
 </dataset>
