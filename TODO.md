@@ -11,3 +11,4 @@
 - Registration
 - Sync all parking lots to local
 - Display on Map and click to display detail
+- Navigation to target parking lot
