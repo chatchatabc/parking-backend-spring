@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     updated_at           TIMESTAMP     NOT NULL
 );
 
+ALTER SEQUENCE parking_lot_id_seq RESTART WITH 1000;
 create index idx_parking_lot_on_owner_id on parking_lot (owner_id);
 create index idx_parking_lot_on_name on parking_lot (name);
 create index idx_parking_lot_on_verified_at on parking_lot (verified_at);
