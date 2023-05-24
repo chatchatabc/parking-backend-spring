@@ -113,4 +113,12 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
         assertThrows(Exception.class, () -> memberService.updateMember(member));
     }
+
+    @Test
+    void testGenerateOTPAndSaveToKV_ShouldBeSuccessful() {
+        String phone = "1266784472";
+        String otp = memberService.generateOTPAndSaveToKV(phone, 900L);
+        assertThat(otp).isNotNull();
+        assertThat(kvService.get("otp_" + phone)).isEqualTo(otp);
+    }
 }
