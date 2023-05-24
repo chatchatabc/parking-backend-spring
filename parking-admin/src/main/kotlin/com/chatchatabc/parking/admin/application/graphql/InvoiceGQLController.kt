@@ -15,7 +15,7 @@ class InvoiceGQLController(
     private val invoiceRepository: InvoiceRepository
 ) {
     /**
-      * Get invoices
+     * Get invoices
      */
     @QueryMapping
     fun getInvoices(

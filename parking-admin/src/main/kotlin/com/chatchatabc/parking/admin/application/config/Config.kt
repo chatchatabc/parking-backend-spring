@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class Config(
     // Aliyun OSS
-    @Value("\${aliyun.access-id}")
+    @Value("\${aliyun.access.key}")
     private val accessKeyId: String,
-    @Value("\${aliyun.access-secret}")
+    @Value("\${aliyun.access.secret}")
     private val accessKeySecret: String,
     @Value("\${aliyun.oss.endpoint}")
     private val ossEndpoint: String,

@@ -72,7 +72,7 @@ type MemberList {
 # member Login Log Related
 type MemberLoginLog {
     id: String
-#    member: Member
+    #    member: Member
     type: Int
     ipAddress: String
     success: Boolean
@@ -87,7 +87,7 @@ type MemberLoginLogList {
 # Member Logout Log Related
 type MemberLogoutLog {
     id: String
-#    member: Member
+    #    member: Member
     type: Int
     ipAddress: String
     createdAt: String

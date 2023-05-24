@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.api.application.dto
 
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
-import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(
@@ -37,18 +36,6 @@ data class ReportCreateRequest(
     val plateNumber: String,
     val latitude: Double,
     val longitude: Double,
-)
-
-data class ParkingLotCreateRequest(
-    val name: String,
-    val latitude: Double,
-    val longitude: Double,
-    val address: String,
-    val description: String,
-    val capacity: Int,
-    val businessHoursStart: LocalDateTime?,
-    val businessHoursEnd: LocalDateTime?,
-    val openDaysFlag: Int = 0
 )
 
 data class ParkingLotUpdateRequest(

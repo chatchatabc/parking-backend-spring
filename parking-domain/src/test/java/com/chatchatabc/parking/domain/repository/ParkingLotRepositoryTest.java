@@ -25,7 +25,7 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByOwner_ParkingLotIsFound() {
-        Long ownerId = 2L;
+        Long ownerId = 7L;
         assertThat(parkingLotRepository.findByOwner(ownerId)).isPresent();
     }
 
@@ -38,7 +38,7 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByOwnerUuid_ParkingLotIsFound() {
-        String ownerUuid = "b69bf0f3-3a3a-4079-94e6-776f747fd3de";
+        String ownerUuid = "10f1ac81-4eff-4fa2-855e-84b03a348623";
         assertThat(parkingLotRepository.findByOwnerUuid(ownerUuid)).isPresent();
     }
 
@@ -50,8 +50,8 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByDistance_ParkingLotsAreFound() {
-        double latitude = 7.1;
-        double longitude = 7.1;
+        double latitude = 7.100576;
+        double longitude = 125.630625;
         double radius = 0.1;
         assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius).size()).isGreaterThan(0);
     }

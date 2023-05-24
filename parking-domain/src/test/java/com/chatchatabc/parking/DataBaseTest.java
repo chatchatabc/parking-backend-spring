@@ -20,7 +20,9 @@ public class DataBaseTest extends TestContainersBaseTest {
             "db/datasets/member.xml",
             "db/datasets/vehicle.xml",
             "db/datasets/parking_lot.xml",
-            "db/datasets/invoice.xml",})
+            "db/datasets/invoice.xml",
+            "db/datasets/log/member_login_log.xml"
+    })
     public void testLoadDataset() {
         Assertions.assertTrue(true);
     }

@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.api.application.event.member
 
 
-
 interface MemberEventProcessor {
 
     /**

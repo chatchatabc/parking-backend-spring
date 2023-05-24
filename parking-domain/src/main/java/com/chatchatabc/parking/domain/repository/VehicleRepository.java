@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.domain.repository;
 
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Vehicle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

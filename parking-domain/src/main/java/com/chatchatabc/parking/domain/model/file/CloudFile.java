@@ -39,7 +39,7 @@ public class CloudFile {
 
     @Column(name = "mime_type")
     private String mimeType;
-    
+
     @Column
     private String tags;
 
@@ -48,7 +48,7 @@ public class CloudFile {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

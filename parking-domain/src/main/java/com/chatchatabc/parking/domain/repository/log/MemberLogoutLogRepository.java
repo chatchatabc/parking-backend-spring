@@ -13,7 +13,7 @@ public interface MemberLogoutLogRepository extends JpaRepository<MemberLogoutLog
     /**
      * Find all member login logs by member
      *
-     * @param member     the member
+     * @param member   the member
      * @param pageable the pageable
      * @return the Page<MemberLoginLog>
      */

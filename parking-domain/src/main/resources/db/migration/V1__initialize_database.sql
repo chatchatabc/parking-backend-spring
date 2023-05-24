@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS member_login_log
     created_at TIMESTAMP          NOT NULL
 );
 
+ALTER SEQUENCE member_login_log_id_seq RESTART WITH 1000;
+
 -- Create member_logout_log table
 CREATE TABLE IF NOT EXISTS member_logout_log
 (
@@ -63,6 +65,8 @@ CREATE TABLE IF NOT EXISTS member_logout_log
     ip_address VARCHAR(39)   NOT NULL,
     created_at TIMESTAMP     NOT NULL
 );
+
+ALTER SEQUENCE member_logout_log_id_seq RESTART WITH 1000;
 
 -- Create member_activity_log table
 CREATE TABLE IF NOT EXISTS member_activity_log
@@ -78,6 +82,8 @@ CREATE TABLE IF NOT EXISTS member_activity_log
     created_at   TIMESTAMP NOT NULL
 );
 
+ALTER SEQUENCE member_activity_log_id_seq RESTART WITH 1000;
+
 -- Create member_ban_history_log table
 CREATE TABLE IF NOT EXISTS member_ban_history_log
 (
@@ -92,6 +98,7 @@ CREATE TABLE IF NOT EXISTS member_ban_history_log
     created_at   TIMESTAMP     NOT NULL
 );
 
+ALTER SEQUENCE member_ban_history_log_id_seq RESTART WITH 1000;
 create index idx_member_ban_history_log_on_banned_by on member_ban_history_log (banned_by);
 
 -- Create Vehicle table
@@ -139,7 +146,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 (
     id                   SERIAL PRIMARY KEY,
     parking_lot_uuid     VARCHAR(36)   NOT NULL UNIQUE,
-    owner_id             BIGINT        NOT NULL,
+    owner_id             BIGINT        NOT NULL UNIQUE,
     rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,
@@ -160,6 +167,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
     updated_at           TIMESTAMP     NOT NULL
 );
 
+ALTER SEQUENCE parking_lot_id_seq RESTART WITH 1000;
 create index idx_parking_lot_on_owner_id on parking_lot (owner_id);
 create index idx_parking_lot_on_name on parking_lot (name);
 create index idx_parking_lot_on_verified_at on parking_lot (verified_at);

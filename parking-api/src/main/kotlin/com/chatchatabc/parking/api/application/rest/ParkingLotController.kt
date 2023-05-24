@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ParkingLotCreateRequest
 import com.chatchatabc.parking.api.application.dto.ParkingLotUpdateRequest
+import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
@@ -14,6 +14,7 @@ import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import jakarta.servlet.http.HttpServletResponse
+import org.mapstruct.factory.Mappers
 import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrNull
 
 @RestController
@@ -36,6 +38,7 @@ class ParkingLotController(
 
 ) {
     private val fileNamespace = "parkingLot"
+    private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
 
     /**
      * Get parking lots by uuid
@@ -155,29 +158,37 @@ class ParkingLotController(
     }
 
     /**
+     * Create parking lot data class
+     */
+    data class ParkingLotCreateRequest(
+        val name: String,
+        val latitude: Double,
+        val longitude: Double,
+        val address: String,
+        val description: String,
+        val capacity: Int,
+        val businessHoursStart: LocalDateTime?,
+        val businessHoursEnd: LocalDateTime?,
+        val openDaysFlag: Int = 0
+    )
+
+    /**
      * Register a parking lot
      */
     @PostMapping("/register")
     fun register(
         @RequestBody req: ParkingLotCreateRequest,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val createdParkingLot = parkingLotService.registerParkingLot(
-                principal.memberUuid,
-                req.name,
-                req.latitude,
-                req.longitude,
-                req.address,
-                req.description,
-                req.capacity,
-                req.businessHoursStart,
-                req.businessHoursEnd,
-                req.openDaysFlag
-            )
+            val owner = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val createdParkingLot = ParkingLot()
+            createdParkingLot.owner = owner.id
+            parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
+            parkingLotService.saveParkingLot(createdParkingLot)
             return ResponseEntity.ok(
                 ApiResponse(
-                    createdParkingLot,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_CREATE.name,
                     false

@@ -28,37 +28,13 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     private ParkingLotImageRepository parkingLotImageRepository;
 
     /**
-     * Register a new parking lot
+     * Save parking lot
      *
-     * @param ownerId     the owner of the parking lot
-     * @param name        the name of the parking lot
-     * @param latitude    the latitude of the parking lot
-     * @param longitude   the longitude of the parking lot
-     * @param address     the address of the parking lot
-     * @param description the description of the parking lot
-     * @param capacity    the capacity of the parking lot
-     * @return the parking lot
+     * @param parkingLot the parking lot
      */
     @Override
-    public ParkingLot registerParkingLot(String ownerId, String name, Double latitude, Double longitude, String address, String description, Integer capacity, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag) throws Exception {
-        Optional<Member> owner = memberRepository.findByMemberUuid(ownerId);
-        if (owner.isEmpty()) {
-            throw new Exception("Member not found");
-        }
-        ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setOwner(owner.get().getId());
-        parkingLot.setName(name);
-        parkingLot.setLatitude(latitude);
-        parkingLot.setLongitude(longitude);
-        parkingLot.setAddress(address);
-        parkingLot.setDescription(description);
-        parkingLot.setCapacity(capacity);
-        parkingLot.setAvailableSlots(capacity);
-        parkingLot.setStatus(0);
-        parkingLot.setBusinessHoursStart(businessHoursStart);
-        parkingLot.setBusinessHoursEnd(businessHoursEnd);
-        parkingLot.setOpenDaysFlag(openDaysFlag);
-        return parkingLotRepository.save(parkingLot);
+    public void saveParkingLot(ParkingLot parkingLot) {
+        parkingLotRepository.save(parkingLot);
     }
 
     /**

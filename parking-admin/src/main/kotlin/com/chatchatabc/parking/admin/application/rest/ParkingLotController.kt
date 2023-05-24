@@ -1,24 +1,44 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.ParkingLotCreateRequest
 import com.chatchatabc.parking.admin.application.dto.ParkingLotUpdateRequest
+import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
+import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
+import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotImageService: ParkingLotImageService,
+    private val memberRepository: MemberRepository
 ) {
+    private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
+
+    /**
+     * Admin create Parking Lot Request
+     */
+    data class ParkingLotCreateRequest(
+        val name: String,
+        val latitude: Double,
+        val longitude: Double,
+        val address: String,
+        val description: String,
+        val capacity: Int,
+        val businessHoursStart: LocalDateTime?,
+        val businessHoursEnd: LocalDateTime?,
+        val openDaysFlag: Int = 0
+    )
 
     /**
      * Admin create Parking Lot
@@ -27,21 +47,14 @@ class ParkingLotController(
     fun createParkingLot(
         @PathVariable memberUuid: String,
         @RequestBody req: ParkingLotCreateRequest
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val createdParkingLot = parkingLotService.registerParkingLot(
-                memberUuid,
-                req.name,
-                req.latitude,
-                req.longitude,
-                req.address,
-                req.description,
-                req.capacity,
-                req.businessHoursStart,
-                req.businessHoursEnd,
-                req.openDaysFlag
-            )
-            ResponseEntity.ok(ApiResponse(createdParkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            val owner = memberRepository.findByMemberUuid(memberUuid).get()
+            val createdParkingLot = ParkingLot()
+            createdParkingLot.owner = owner.id
+            parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
+            parkingLotService.saveParkingLot(createdParkingLot)
+            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)

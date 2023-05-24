@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.domain.specification;
 
-import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.ParkingLot;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
