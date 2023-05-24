@@ -42,6 +42,28 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testRegisterParkingLot_WhenOwnerHasParkingLot_ShouldNotRegisterParkingLot() {
+        Long longOwnerId = 7L;
+        String ownerId = "10f1ac81-4eff-4fa2-855e-84b03a348623";
+        assertThat(parkingLotRepository.findByOwnerUuid(ownerId)).isPresent();
+
+        ParkingLot parkingLot = new ParkingLot();
+        parkingLot.setOwner(longOwnerId);
+        parkingLot.setName("Test Parking Lot");
+        parkingLot.setLatitude(1.0);
+        parkingLot.setLongitude(1.0);
+        parkingLot.setAddress("Test Address");
+        parkingLot.setDescription("Test Description");
+        parkingLot.setCapacity(100);
+        parkingLot.setAvailableSlots(100);
+        parkingLot.setStatus(0);
+        parkingLot.setBusinessHoursStart(LocalDateTime.now());
+        parkingLot.setBusinessHoursEnd(LocalDateTime.now());
+
+        assertThrows(Exception.class, () -> parkingLotService.saveParkingLot(parkingLot));
+    }
+
+    @Test
     void updateParkingLot() {
     }
 
