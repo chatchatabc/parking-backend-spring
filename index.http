@@ -3,5 +3,21 @@ GET https://httpbin.org/ip
 ### helath check for member api
 GET https://member-api.parking.davao.page/health
 
-### Actuator Health check
-GET http://localhost:5081/actuator/health
+### API Actuator Health check
+GET {{memberActuatorBaseUrl}}/actuator/health
+
+### Admin Actuator Health check
+GET {{adminActuatorBaseUrl}}/actuator/health
+
+### API Actuator Bean Check
+GET {{memberActuatorBaseUrl}}/actuator/beans
+
+### Admin Actuator Bean Check
+GET {{adminActuatorBaseUrl}}/actuator/beans
+
+### API Actuator Flyway Check
+GET {{memberActuatorBaseUrl}}/actuator/flyway
+
+### Admin Actuator Flyway Check
+GET {{adminActuatorBaseUrl}}/actuator/flyway
+
