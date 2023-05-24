@@ -37,8 +37,8 @@ jobs:
         with:
           host: ${{ secrets.SCP_HOST }}
           username: ${{ secrets.SCP_USERNAME }}
+          password: ${{ secrets.SCP_PASSWORD }}
           port: ${{ secrets.SCP_PORT }}
-          key: ${{ secrets.SCP_KEY }}
           source: parking-admin/target/parking-admin-0.0.1-SNAPSHOT.jar
           target: /var/www/parking/admin/parking-admin-0.0.1-SNAPSHOT.jar
 
@@ -47,8 +47,8 @@ jobs:
         with:
           host: ${{ secrets.SCP_HOST }}
           username: ${{ secrets.SCP_USERNAME }}
+          password: ${{ secrets.SCP_PASSWORD }}
           port: ${{ secrets.SCP_PORT }}
-          key: ${{ secrets.SCP_KEY }}
           source: parking-api/target/parking-api-0.0.1-SNAPSHOT.jar
           target: /var/www/parking/api/parking-api-0.0.1-SNAPSHOT.jar
 
