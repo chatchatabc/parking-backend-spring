@@ -60,18 +60,6 @@ data class DashboardStatistics(
     val totalActiveInvoices: Long?
 )
 
-data class ParkingLotCreateRequest(
-    val name: String,
-    val latitude: Double,
-    val longitude: Double,
-    val address: String,
-    val description: String,
-    val capacity: Int,
-    val businessHoursStart: LocalDateTime?,
-    val businessHoursEnd: LocalDateTime?,
-    val openDaysFlag: Int = 0
-)
-
 data class ParkingLotUpdateRequest(
     val name: String?,
     val latitude: Double?,
