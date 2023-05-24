@@ -1,18 +1,21 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.model.ObjectMetadata;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
 @Service
-public class FileStorageOSSImpl implements FileStorageService {
+public class FileStorageOSSImpl implements FileStorageService, HealthIndicator {
     @Value("${aliyun.oss.bucket-name:davao-parking}")
     private String bucketName;
 
@@ -86,5 +89,19 @@ public class FileStorageOSSImpl implements FileStorageService {
             }
         }
         return "";
+    }
+
+    @Override
+    public Health health() {
+        try {
+            final ObjectMetadata objectMetadata = ossClient.getObject(bucketName, "health.txt").getObjectMetadata();
+            if (objectMetadata == null) {
+                return Health.down().build();
+            } else {
+                return Health.up().build();
+            }
+        } catch (Exception e) {
+            return Health.down(e).build();
+        }
     }
 }
