@@ -5,17 +5,19 @@ import com.chatchatabc.parking.domain.model.Vehicle;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.VehicleRepository;
 import com.chatchatabc.parking.domain.service.VehicleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
-    @Autowired
-    private VehicleRepository vehicleRepository;
-    @Autowired
-    private MemberRepository memberRepository;
+    private final VehicleRepository vehicleRepository;
+    private final MemberRepository memberRepository;
+
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, MemberRepository memberRepository) {
+        this.vehicleRepository = vehicleRepository;
+        this.memberRepository = memberRepository;
+    }
 
     /**
      * Register vehicle

@@ -3,13 +3,15 @@ package com.chatchatabc.parking.impl.domain.service.log;
 import com.chatchatabc.parking.domain.model.log.MemberLoginLog;
 import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository;
 import com.chatchatabc.parking.domain.service.log.MemberLoginLogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberLoginLogServiceImpl implements MemberLoginLogService {
-    @Autowired
-    MemberLoginLogRepository memberLoginLogRepository;
+    private final MemberLoginLogRepository memberLoginLogRepository;
+
+    public MemberLoginLogServiceImpl(MemberLoginLogRepository memberLoginLogRepository) {
+        this.memberLoginLogRepository = memberLoginLogRepository;
+    }
 
     /**
      * Created member login log

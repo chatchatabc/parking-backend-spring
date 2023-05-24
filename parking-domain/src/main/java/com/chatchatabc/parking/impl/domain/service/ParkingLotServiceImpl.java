@@ -8,7 +8,6 @@ import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,14 +17,17 @@ import java.util.Optional;
 
 @Service
 public class ParkingLotServiceImpl implements ParkingLotService {
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private ParkingLotRepository parkingLotRepository;
-    @Autowired
-    private InvoiceRepository invoiceRepository;
-    @Autowired
-    private ParkingLotImageRepository parkingLotImageRepository;
+    private final MemberRepository memberRepository;
+    private final ParkingLotRepository parkingLotRepository;
+    private final InvoiceRepository invoiceRepository;
+    private final ParkingLotImageRepository parkingLotImageRepository;
+
+    public ParkingLotServiceImpl(MemberRepository memberRepository, ParkingLotRepository parkingLotRepository, InvoiceRepository invoiceRepository, ParkingLotImageRepository parkingLotImageRepository) {
+        this.memberRepository = memberRepository;
+        this.parkingLotRepository = parkingLotRepository;
+        this.invoiceRepository = invoiceRepository;
+        this.parkingLotImageRepository = parkingLotImageRepository;
+    }
 
     /**
      * Save parking lot

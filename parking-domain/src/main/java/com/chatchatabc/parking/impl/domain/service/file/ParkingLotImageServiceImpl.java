@@ -7,17 +7,19 @@ import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
 @Service
 public class ParkingLotImageServiceImpl implements ParkingLotImageService {
-    @Autowired
-    private FileStorageService fileStorageService;
-    @Autowired
-    private ParkingLotImageRepository parkingLotImageRepository;
+    private final FileStorageService fileStorageService;
+    private final ParkingLotImageRepository parkingLotImageRepository;
+
+    public ParkingLotImageServiceImpl(FileStorageService fileStorageService, ParkingLotImageRepository parkingLotImageRepository) {
+        this.fileStorageService = fileStorageService;
+        this.parkingLotImageRepository = parkingLotImageRepository;
+    }
 
     /**
      * Upload a file to the storage service.

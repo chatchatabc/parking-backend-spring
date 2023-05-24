@@ -8,7 +8,6 @@ import com.chatchatabc.parking.domain.repository.RoleRepository;
 import com.chatchatabc.parking.domain.service.MemberService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.chatchatabc.parking.infra.service.KVService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,17 @@ import java.util.Random;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private KVService kvService;
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
+    private final KVService kvService;
+    private final FileStorageService fileStorageService;
+
+    public MemberServiceImpl(MemberRepository memberRepository, RoleRepository roleRepository, KVService kvService, FileStorageService fileStorageService) {
+        this.memberRepository = memberRepository;
+        this.roleRepository = roleRepository;
+        this.kvService = kvService;
+        this.fileStorageService = fileStorageService;
+    }
 
     private final Random random = new Random();
 

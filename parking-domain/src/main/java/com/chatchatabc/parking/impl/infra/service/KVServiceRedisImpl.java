@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.chatchatabc.parking.infra.service.KVService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -10,8 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class KVServiceRedisImpl implements KVService {
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public KVServiceRedisImpl(RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * Set key value pair

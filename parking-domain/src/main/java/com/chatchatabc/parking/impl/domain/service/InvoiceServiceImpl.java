@@ -7,7 +7,6 @@ import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.VehicleRepository;
 import com.chatchatabc.parking.domain.service.InvoiceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -16,12 +15,15 @@ import java.util.Optional;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-    @Autowired
-    private ParkingLotRepository parkingLotRepository;
-    @Autowired
-    private VehicleRepository vehicleRepository;
-    @Autowired
-    private InvoiceRepository invoiceRepository;
+    private final ParkingLotRepository parkingLotRepository;
+    private final VehicleRepository vehicleRepository;
+    private final InvoiceRepository invoiceRepository;
+
+    public InvoiceServiceImpl(ParkingLotRepository parkingLotRepository, VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository) {
+        this.parkingLotRepository = parkingLotRepository;
+        this.vehicleRepository = vehicleRepository;
+        this.invoiceRepository = invoiceRepository;
+    }
 
     /**
      * Create invoice for vehicle

@@ -2,12 +2,10 @@ package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.ObjectMetadata;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.fasterxml.uuid.Generators;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -20,12 +18,13 @@ public class FileStorageOSSImpl implements FileStorageService, HealthIndicator {
     @Value("${aliyun.oss.bucket-name:davao-parking}")
     private String bucketName;
 
-    @Autowired
-    private OSS ossClient;
+    private final OSS ossClient;
+    private final CloudFileRepository cloudFileRepository;
 
-    @Autowired
-    private CloudFileRepository cloudFileRepository;
-
+    public FileStorageOSSImpl(OSS ossClient, CloudFileRepository cloudFileRepository) {
+        this.ossClient = ossClient;
+        this.cloudFileRepository = cloudFileRepository;
+    }
 
     /**
      * Upload file to cloud storage
