@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.impl.infra.service;
 
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.repository.file.CloudFileRepository;
@@ -94,8 +95,8 @@ public class FileStorageOSSImpl implements FileStorageService, HealthIndicator {
     @Override
     public Health health() {
         try {
-            final ObjectMetadata objectMetadata = ossClient.getObject(bucketName, "health.txt").getObjectMetadata();
-            if (objectMetadata == null) {
+            final OSSObject ossObject = ossClient.getObject(bucketName, "health.txt");
+            if (ossObject == null) {
                 return Health.down().build();
             } else {
                 return Health.up().build();
