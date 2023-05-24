@@ -73,6 +73,10 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void verifyParkingLot() {
+    void testVerifyParkingLot_WhenParkingLotNotVerified_ShouldSuccessfullyUpdate() throws Exception {
+        String adminUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
+        String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
+        parkingLotService.verifyParkingLot(adminUuid, parkingLotUuid);
+        assertNotNull(parkingLotRepository.findById(1L).get().getVerifiedBy());
     }
 }
