@@ -11,6 +11,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @DBRider
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, columnSensing = true, schema = "public")
-@DataSet({"db/datasets/role.xml", "db/datasets/member.xml", "db/datasets/vehicle.xml", "db/datasets/parking_lot.xml", "db/datasets/invoice.xml",})
+@DataSet({"db/datasets/role.xml", "db/datasets/member.xml", "db/datasets/vehicle.xml", "db/datasets/parking_lot.xml", "db/datasets/invoice.xml", "db/datasets/log/member_login_log.xml"})
 public abstract class TestContainersBaseTest extends SpringBootBaseTest {
 }
