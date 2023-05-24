@@ -2,3 +2,6 @@ GET https://httpbin.org/ip
 
 ### helath check for member api
 GET https://member-api.parking.davao.page/health
+
+### Actuator Health check
+GET http://localhost:5081/actuator/health
