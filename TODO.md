@@ -55,3 +55,6 @@
 - Finish Repository Unit Tests
 - Finish Service Unit Tests
 - Finish Controller Unit Tests
+
+## Repository and Entity Models
+- Refactor some fields to use @NaturalId
