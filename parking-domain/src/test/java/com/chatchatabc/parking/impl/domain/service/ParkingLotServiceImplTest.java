@@ -64,7 +64,12 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void updateParkingLot() {
+    void testUpdateParkingLot_ShouldSuccessfullyUpdate() {
+        String newName = "SM Lanang Premier!";
+        ParkingLot parkingLot = parkingLotRepository.findById(1L).get();
+        parkingLot.setName(newName);
+        parkingLotService.saveParkingLot(parkingLot);
+        assertThat(parkingLotRepository.findById(1L).get().getName()).isEqualTo(newName);
     }
 
     @Test
