@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS parking_lot
 (
     id                   SERIAL PRIMARY KEY,
     parking_lot_uuid     VARCHAR(36)   NOT NULL UNIQUE,
-    owner_id             BIGINT        NOT NULL,
+    owner_id             BIGINT        NOT NULL UNIQUE,
     rate_id              VARCHAR(36),
     name                 VARCHAR(255)  NOT NULL,
     address              VARCHAR(255)  NOT NULL,

@@ -28,7 +28,7 @@ public class ParkingLot extends FlagEntity {
     private String parkingLotUuid = UUID.randomUUID().toString();
 
     @JsonIgnore
-    @Column(name = "owner_id")
+    @Column(name = "owner_id", unique = true)
     private Long owner;
 
     @OneToOne(fetch = FetchType.EAGER)
