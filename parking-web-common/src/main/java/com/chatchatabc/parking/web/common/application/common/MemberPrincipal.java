@@ -6,7 +6,7 @@ public interface MemberPrincipal extends Principal {
 
     String getMemberUuid();
 
-    static MemberPrincipal of (String memberUuid, String username) {
+    static MemberPrincipal of(String memberUuid, String username) {
         return new MemberPrincipal() {
             @Override
             public String getMemberUuid() {

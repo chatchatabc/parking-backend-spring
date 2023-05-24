@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.api.application.dto
 
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
-import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(

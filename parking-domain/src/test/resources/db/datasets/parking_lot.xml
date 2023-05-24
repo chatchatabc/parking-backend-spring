@@ -3,7 +3,8 @@
 
 <dataset>
     <parking_lot id="1" parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" owner_id="1" name="SM Lanang Premier"
-                 address="J.P. Laurel Ave, Agdao, Davao City, 8000 Davao del Sur" status="3" flag="0" verified_at="2023-05-10 16:14:47.307160" verified_by="1"
+                 address="J.P. Laurel Ave, Agdao, Davao City, 8000 Davao del Sur" status="3" flag="0"
+                 verified_at="2023-05-10 16:14:47.307160" verified_by="1"
                  latitude="7.100576" longitude="125.630625" capacity="100" available_slots="100" open_days_flag="20"
                  business_hours_start="2023-05-10 12:00:47.307160" business_hours_end="2023-05-15 12:00:47.307160"
                  created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
@@ -15,7 +16,8 @@
                  created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
 
     <parking_lot id="3" parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p" owner_id="3" name="SM City Davao"
-                 address="Ecoland Subdivision Basketball Court, Quimpo Blvd cor. Tulip and Ecoland Drive, Matina Pangi Road, Davao City, 8000 Davao del Sur" status="0" flag="0"
+                 address="Ecoland Subdivision Basketball Court, Quimpo Blvd cor. Tulip and Ecoland Drive, Matina Pangi Road, Davao City, 8000 Davao del Sur"
+                 status="0" flag="0"
                  latitude="7.074942" longitude="125.565025" capacity="200" available_slots="200" open_days_flag="31"
                  business_hours_start="2023-05-18 08:00:00.000000" business_hours_end="2023-05-18 22:00:00.000000"
                  created_at="2023-05-18 14:30:00.000000" updated_at="2023-05-18 14:30:00.000000"/>
@@ -26,7 +28,8 @@
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
-    <parking_lot id="5" parking_lot_uuid="20102dd6-9bec-48c2-abba-7f0fecde1e7d" owner_id="4" name="Gaisano Mall of Davao"
+    <parking_lot id="5" parking_lot_uuid="20102dd6-9bec-48c2-abba-7f0fecde1e7d" owner_id="4"
+                 name="Gaisano Mall of Davao"
                  address="J.P. Laurel Ave, Bajada, Davao City, 8000 Davao del Sur" status="1" flag="1"
                  latitude="7.098737" longitude="125.624212" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
@@ -38,7 +41,8 @@
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
-    <parking_lot id="7" parking_lot_uuid="354767d4-b4f2-45f3-8e4c-53d8ecaf0e37" owner_id="4" name="Eden Nature Park \u0026 Resort"
+    <parking_lot id="7" parking_lot_uuid="354767d4-b4f2-45f3-8e4c-53d8ecaf0e37" owner_id="4"
+                 name="Eden Nature Park \u0026 Resort"
                  address="29HX+MPJ, Toril, Davao City, 8000 Davao del Sur" status="1" flag="1"
                  latitude="7.029203" longitude="125.399269" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
@@ -50,25 +54,30 @@
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
-    <parking_lot id="9" parking_lot_uuid="123a21f3-7d8d-4348-8db7-89c6e859b89e" owner_id="4" name="Davao Doctors Hospital"
-                 address="118 Elpidio Quirino Ave, Poblacion District, Davao City, 8000 Davao del Sur" status="1" flag="1"
+    <parking_lot id="9" parking_lot_uuid="123a21f3-7d8d-4348-8db7-89c6e859b89e" owner_id="4"
+                 name="Davao Doctors Hospital"
+                 address="118 Elpidio Quirino Ave, Poblacion District, Davao City, 8000 Davao del Sur" status="1"
+                 flag="1"
                  latitude="7.070036" longitude="125.604716" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
     <parking_lot id="10" parking_lot_uuid="f3a84f19-d308-4439-8727-6b199bea8d48" owner_id="4" name="Victoria Plaza"
-                 address="J.P. Laurel Avenue Bajada, J.P. Laurel Ave, Poblacion District, Dávao, Dávao del Sur" status="1" flag="1"
+                 address="J.P. Laurel Avenue Bajada, J.P. Laurel Ave, Poblacion District, Dávao, Dávao del Sur"
+                 status="1" flag="1"
                  latitude="7.096709" longitude="125.618406" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
-    <parking_lot id="11" parking_lot_uuid="e435521a-a0e2-47d8-87c1-dddb2ce8ed9f" owner_id="4" name="NHA Buhangin Car Parking Area"
+    <parking_lot id="11" parking_lot_uuid="e435521a-a0e2-47d8-87c1-dddb2ce8ed9f" owner_id="4"
+                 name="NHA Buhangin Car Parking Area"
                  address="4J7G+4HF, NHA Buhangin Entrance, Buhangin, Davao City, Davao del Sur" status="1" flag="1"
                  latitude="7.113968" longitude="125.624732" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
                  created_at="2023-05-18 16:45:00.000000" updated_at="2023-05-18 16:45:00.000000"/>
 
-    <parking_lot id="12" parking_lot_uuid="db56718d-1fa2-4eb1-9cc6-dc491355a5eb" owner_id="4" name="Ateneo de Davao Matina Parking Building"
+    <parking_lot id="12" parking_lot_uuid="db56718d-1fa2-4eb1-9cc6-dc491355a5eb" owner_id="4"
+                 name="Ateneo de Davao Matina Parking Building"
                  address="3H6W+GM5, Talomo, Davao City, Davao del Sur" status="1" flag="1"
                  latitude="7.061263" longitude="125.596734" capacity="150" available_slots="50" open_days_flag="1111100"
                  business_hours_start="2023-05-18 09:00:00.000000" business_hours_end="2023-05-18 18:00:00.000000"
