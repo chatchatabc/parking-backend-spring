@@ -2,6 +2,7 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
 import com.chatchatabc.parking.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.infra.service.KVService;
 import org.junit.jupiter.api.Test;
@@ -87,5 +88,18 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
         // OTP not saved to KV since expired OTPs are deleted
         assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
+    }
+
+    @Test
+    void testUpdateMember_ShouldSuccessfullyUpdate() {
+        String username = "raph";
+        Member member = memberRepository.findByUsername(username).get();
+
+        String newUsername = "raph2";
+        member.setUsername(newUsername);
+
+        memberService.updateMember(member);
+
+        assertThat(memberRepository.findByUsername(newUsername)).isPresent();
     }
 }
