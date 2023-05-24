@@ -80,7 +80,7 @@ This project is built using a variety of tools, libraries, and technologies. Lis
     - [Java 17](https://docs.oracle.com/en/java/)
     - [Kotlin 1.8](https://kotlinlang.org/docs/home.html)
 - Framework:
-    - [Spring Boot 3.1.0-RC2](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0-RC2)
+    - [Spring Boot 3.1.0](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0)
 - Technologies:
     - [NATS](https://nats.io/)
     - [Aliyun OSS](https://www.alibabacloud.com/product/oss)
@@ -256,66 +256,11 @@ Docker image, which is important since the image used in this project is large.
 
 ![Flowchart](./src/site/images/flowchart.png)
 
-## TODOs
-
-- [x] Flowchart
-- [x] UI Wireframe
-- [x] Entity Relationship Diagram
-- [ ] Redis
-    - [ ] for Forgot Password
-    - [x] for OTP
-- [ ] Member App
-    - [ ] Android App
-    - [ ] iOS App
-- [ ] Parking Owner App
-    - [ ] Android App
-    - [ ] iOS App
-- [ ] Admin Dashboard
-    - [ ] Spring Boot Backend
-    - [ ] React Frontend
-- [ ] Spring Boot Backend
-    - [x] Member Registration
-    - [x] Owner Registration
-    - [x] Authentication
-    - [ ] Logout (just delete token?)
-    - [x] Vehicle API
-    - [x] Parking Lot API
-    - [x] Invoicing API
-    - [ ] Scanning of QR Code
-    - [ ] Real Time Map
-- [ ] Add Surefire Plugin as dependency
-    - sequence of plugins for pom
-    - compiler first on build
-    - maven surefire testing plugin
-    - packaging
-- [x] Add actuator dependency to all spring boots
-    - [x] Admin
-    - [x] API
-- [ ] Unit Testing with Audrey
-    - [ ] Database Track
-    - [ ] Test Container
-    - [ ] Spring Boot Test
-    - [ ] MVC Test
-    - [ ] DB Test
-    - [ ] Unit Test on Domain
-- [x] use flyway for init of data (dont use init or data init)
-
-## Security TODO:
-
-- [ ] NATS use same JWT as API
-- [ ] NATS use same JWT as Admin
-- [ ] JWT Auth on GraphQL
-- [ ] Members with NATS should only be "listen" only
-- [ ] Add more fields to member
-    - [x] Integer ID (hidden, don't expose)
-    - [x] Another UUID member id
-    - [x] Another UUID for notification ID
-
 # References
 
-* [Parking Admin Dashboard](https://github.com/chatchatabc/parking-admin-react)
-* [Parking Mobile App](https://github.com/chatchatabc/parking-mobile-kmm)
-* [Spring Boot 3.1.0-RC2](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0-RC2)
+* [Parking Admin Dashboard Repository](https://github.com/chatchatabc/parking-admin-react)
+* [Parking Mobile App Repository](https://github.com/chatchatabc/parking-mobile-kmm)
+* [Spring Boot 3.1.0](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot/3.1.0)
 * [Java 17](https://docs.oracle.com/en/java/)
 * [Kotlin 1.8.21](https://kotlinlang.org/docs/home.html)
 * [NATS](https://nats.io/)
