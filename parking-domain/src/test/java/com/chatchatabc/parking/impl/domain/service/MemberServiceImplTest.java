@@ -94,7 +94,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
     @Test
     void testUpdateMember_ShouldSuccessfullyUpdate() {
         String username = "raph";
-        Member member = memberRepository.findByUsername(username).get();
+        Member member = memberRepository.findByUsername(username).orElseThrow();
 
         String newUsername = "raph2";
         member.setUsername(newUsername);
@@ -107,7 +107,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
     @Test
     void testUpdateMember_WhenUsernameIsAlreadyUsed_ShouldFail() {
         String username = "raph";
-        Member member = memberRepository.findByUsername(username).get();
+        Member member = memberRepository.findByUsername(username).orElseThrow();
 
         String newUsername = "matt";
         member.setUsername(newUsername);

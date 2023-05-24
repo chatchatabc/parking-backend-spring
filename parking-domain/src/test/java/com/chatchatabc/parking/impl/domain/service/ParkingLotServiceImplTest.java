@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParkingLotServiceImplTest extends TestContainersBaseTest {
@@ -66,10 +67,10 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
     @Test
     void testUpdateParkingLot_ShouldSuccessfullyUpdate() {
         String newName = "SM Lanang Premier!";
-        ParkingLot parkingLot = parkingLotRepository.findById(1L).get();
+        ParkingLot parkingLot = parkingLotRepository.findById(1L).orElseThrow();
         parkingLot.setName(newName);
         parkingLotService.saveParkingLot(parkingLot);
-        assertThat(parkingLotRepository.findById(1L).get().getName()).isEqualTo(newName);
+        assertThat(parkingLotRepository.findById(1L).orElseThrow().getName()).isEqualTo(newName);
     }
 
     @Test
@@ -77,6 +78,13 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
         String adminUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
         String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
         parkingLotService.verifyParkingLot(adminUuid, parkingLotUuid);
-        assertNotNull(parkingLotRepository.findById(1L).get().getVerifiedBy());
+        assertNotNull(parkingLotRepository.findById(1L).orElseThrow().getVerifiedBy());
+    }
+
+    @Test
+    void testVerifyParkingLot_WhenParkingLotAlreadyVerified_ShouldThrowException() {
+        String adminUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        assertThrows(Exception.class, () -> parkingLotService.verifyParkingLot(adminUuid, parkingLotUuid));
     }
 }
