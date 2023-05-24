@@ -102,4 +102,15 @@ class MemberServiceImplTest extends TestContainersBaseTest {
 
         assertThat(memberRepository.findByUsername(newUsername)).isPresent();
     }
+
+    @Test
+    void testUpdateMember_WhenUsernameIsAlreadyUsed_ShouldFail() {
+        String username = "raph";
+        Member member = memberRepository.findByUsername(username).get();
+
+        String newUsername = "matt";
+        member.setUsername(newUsername);
+
+        assertThrows(Exception.class, () -> memberService.updateMember(member));
+    }
 }
