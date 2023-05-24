@@ -121,4 +121,12 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         assertThat(otp).isNotNull();
         assertThat(kvService.get("otp_" + phone)).isEqualTo(otp);
     }
+
+    // TODO: Upload Image Unit Test
+
+    @Test
+    void testLoadUserByUsername_ShouldReturnUserDetails() {
+        String username = "admin";
+        assertThat(memberService.loadUserByUsername(username)).isNotNull();
+    }
 }
