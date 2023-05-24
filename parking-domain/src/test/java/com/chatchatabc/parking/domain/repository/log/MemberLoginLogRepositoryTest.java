@@ -17,4 +17,11 @@ class MemberLoginLogRepositoryTest extends TestContainersBaseTest {
         PageRequest pr = PageRequest.of(0, 10);
         assertThat(memberLoginLogRepository.findByMember(memberId, pr).getTotalElements()).isGreaterThan(0L);
     }
+
+    @Test
+    void testFindByMember_ShouldReturn0() {
+        Long memberId = 5L;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(memberLoginLogRepository.findByMember(memberId, pr).getTotalElements()).isEqualTo(0L);
+    }
 }
