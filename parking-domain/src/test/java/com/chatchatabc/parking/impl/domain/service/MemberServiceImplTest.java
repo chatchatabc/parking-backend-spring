@@ -7,6 +7,7 @@ import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.infra.service.KVService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -128,5 +129,11 @@ class MemberServiceImplTest extends TestContainersBaseTest {
     void testLoadUserByUsername_ShouldReturnUserDetails() {
         String username = "admin";
         assertThat(memberService.loadUserByUsername(username)).isNotNull();
+    }
+
+    @Test
+    void testLoadUserByUsername_WhenUsernameDoesNotExist_ShouldThrowUsernameNotFoundException() {
+        String username = "adminWrong";
+        assertThrows(UsernameNotFoundException.class, () -> memberService.loadUserByUsername(username));
     }
 }
