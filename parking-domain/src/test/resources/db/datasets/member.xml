@@ -45,4 +45,12 @@
             phone="1266784472" password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
             created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
     <member_role member_id="6" role_id="4"/>
+
+    <member id="7" status="0" member_uuid="10f1ac81-4eff-4fa2-855e-84b03a348623"
+            notification_uuid="642bfd96-b233-4577-a4f7-79cf864416a1" email="owner_no_pl@gmail.com" username="owner_no_pl"
+            email_verified_at="2023-05-09 16:14:47.307160" phone="9906345322"
+            phone_verified_at="2023-05-10 16:14:47.307160"
+            password="$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+            created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <member_role member_id="7" role_id="2"/>
 </dataset>
