@@ -9,6 +9,13 @@ import java.util.List;
 public interface ParkingLotService {
 
     /**
+     * Save parking lot
+     *
+     * @param parkingLot the parking lot
+     */
+    void saveParkingLot(ParkingLot parkingLot);
+
+    /**
      * Register a new parking lot
      *
      * @param ownerId            the owner of the parking lot

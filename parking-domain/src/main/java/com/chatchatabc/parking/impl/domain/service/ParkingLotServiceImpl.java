@@ -28,6 +28,16 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     private ParkingLotImageRepository parkingLotImageRepository;
 
     /**
+     * Save parking lot
+     *
+     * @param parkingLot the parking lot
+     */
+    @Override
+    public void saveParkingLot(ParkingLot parkingLot) {
+        parkingLotRepository.save(parkingLot);
+    }
+
+    /**
      * Register a new parking lot
      *
      * @param ownerId     the owner of the parking lot
