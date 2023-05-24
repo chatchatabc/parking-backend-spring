@@ -28,11 +28,9 @@ public class TestContainersConfiguration {
                 .withExposedPorts(6379);
     }
 
-  /*  @Bean
-    public GenericContainer<?> natsContainer(DynamicPropertyRegistry properties) {
-        GenericContainer<?> natsContainer = new GenericContainer<>("nats:2.9.16").withExposedPorts(4222);
-        properties.add("spring.nats.uri", () -> "nats://" + natsContainer.getHost() + ":" + natsContainer.getMappedPort(4222));
-        return natsContainer;
-    }*/
-
+//    @Bean
+//    @ServiceConnection
+//    public GenericContainer<?> natsContainer() {
+//        return new GenericContainer<>("nats:2.9.16").withExposedPorts(4222);
+//    }
 }
