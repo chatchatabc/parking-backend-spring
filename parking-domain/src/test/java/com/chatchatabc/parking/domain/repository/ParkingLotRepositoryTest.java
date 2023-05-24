@@ -50,8 +50,8 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByDistance_ParkingLotsAreFound() {
-        double latitude = 7.1;
-        double longitude = 7.1;
+        double latitude = 7.100576;
+        double longitude = 125.630625;
         double radius = 0.1;
         assertThat(parkingLotRepository.findByDistance(latitude, longitude, radius).size()).isGreaterThan(0);
     }
