@@ -9,9 +9,8 @@ public interface InvoiceService {
      *
      * @param parkingLotUuid the parking lot uuid
      * @param vehicleUuid    the vehicle uuid
-     * @return the invoice
      */
-    Invoice createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception;
+    void createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception;
 
     /**
      * End invoice

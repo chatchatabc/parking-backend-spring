@@ -30,10 +30,9 @@ public class InvoiceServiceImpl implements InvoiceService {
      *
      * @param parkingLotUuid the parking lot uuid
      * @param vehicleUuid    the vehicle uuid
-     * @return the invoice
      */
     @Override
-    public Invoice createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception {
+    public void createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
@@ -57,7 +56,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         parkingLot.get().setCapacity(parkingLot.get().getCapacity() - 1);
         parkingLotRepository.save(parkingLot.get());
         // TODO: Sent NATS notification to update capacity of parking lot
-        return savedInvoice;
     }
 
     /**

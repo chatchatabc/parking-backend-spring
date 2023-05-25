@@ -118,12 +118,12 @@ class InvoiceController(
     fun createInvoice(
         @PathVariable parkingLotId: String,
         @PathVariable vehicleUuid: String
-    ): ResponseEntity<ApiResponse<Invoice>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val createdInvoice = invoiceService.createInvoice(parkingLotId, vehicleUuid)
+            invoiceService.createInvoice(parkingLotId, vehicleUuid)
             ResponseEntity.ok(
                 ApiResponse(
-                    createdInvoice,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_CREATE.name,
                     false
