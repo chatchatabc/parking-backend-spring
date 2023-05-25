@@ -114,6 +114,7 @@ CREATE TABLE IF NOT EXISTS vehicle
     updated_at   TIMESTAMP    NOT NULL
 );
 
+ALTER SEQUENCE vehicle_id_seq RESTART WITH 1000;
 create index idx_vehicle_on_type on vehicle (type);
 create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
