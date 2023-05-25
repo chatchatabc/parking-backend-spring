@@ -24,9 +24,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
+
+    public JwtRequestFilter(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     /**
      * Filter the request and add the member to the security context if the token is valid
