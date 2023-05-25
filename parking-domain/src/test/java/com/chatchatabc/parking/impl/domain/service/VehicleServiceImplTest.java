@@ -24,6 +24,11 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testRegisterVehicle_WhenVehicleAlreadyExists_ShouldThrowException() throws Exception {
+        assertThrows(Exception.class, () -> vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning McQueen", "ASD1234", 0));
+    }
+
+    @Test
     void updateVehicle() {
     }
 
