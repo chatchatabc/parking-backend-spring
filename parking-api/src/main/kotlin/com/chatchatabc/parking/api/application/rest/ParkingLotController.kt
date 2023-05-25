@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
+import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
@@ -34,8 +34,8 @@ class ParkingLotController(
     private val memberRepository: MemberRepository,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
-    private val fileStorageService: FileStorageService
-
+    private val fileStorageService: FileStorageService,
+    private val invoiceRepository: InvoiceRepository
 ) {
     private val fileNamespace = "parkingLot"
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
@@ -209,29 +209,48 @@ class ParkingLotController(
     }
 
     /**
+     * Update parking lot data class
+     */
+    data class ParkingLotUpdateRequest(
+        val name: String?,
+        val latitude: Double?,
+        val longitude: Double?,
+        val address: String?,
+        val description: String?,
+        val capacity: Int?,
+        val availableSlots: Int?,
+        val businessHoursStart: LocalDateTime?,
+        val businessHoursEnd: LocalDateTime?,
+        val openDaysFlag: Int?,
+        val images: List<ParkingLotImage>?
+    )
+
+    /**
      * Update a parking lot and image order
      */
     @PutMapping("/update")
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<Unit>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
+            // Map request to parking lot
             val parkingLotUuid = parkingLotRepository.findByOwnerUuid(principal.memberUuid).get().parkingLotUuid
-            parkingLotService.updateParkingLot(
-                principal.memberUuid,
-                parkingLotUuid,
-                req.name,
-                req.latitude,
-                req.longitude,
-                req.address,
-                req.description,
-                req.capacity,
-                req.businessHoursStart,
-                req.businessHoursEnd,
-                req.openDaysFlag,
-                req.images
-            )
+            val updatedParkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            parkingLotMapper.updateParkingLotFromUpdateRequest(req, updatedParkingLot)
+
+            // Update available slots if there are active invoices and if capacity is updated
+            if (req.capacity != null) {
+                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(updatedParkingLot.id)
+                updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
+            }
+
+            // Update images
+            parkingLotImageService.updateOrderOfImages(req.images)
+
+            // Save
+            parkingLotService.saveParkingLot(updatedParkingLot)
+
             return ResponseEntity.ok(
                 ApiResponse(
                     null,
