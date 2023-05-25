@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
+import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -43,12 +44,23 @@ class ParkingLotGQLController(
     }
 
     /**
-     * Get parking lot by id
+     * Get parking lot by UUID
      */
     @QueryMapping
     fun getParkingLotByUuid(
         @Argument uuid: String
     ): Optional<ParkingLot> {
         return parkingLotRepository.findByParkingLotUuid(uuid)
+    }
+
+    /**
+     * Get Member by Parking Lot UUID
+     */
+    @QueryMapping
+    fun getMemberByParkingLotUuid(
+        @Argument uuid: String
+    ): Optional<Member> {
+        val memberId = parkingLotRepository.findByParkingLotUuid(uuid).get().owner
+        return memberRepository.findById(memberId)
     }
 }
