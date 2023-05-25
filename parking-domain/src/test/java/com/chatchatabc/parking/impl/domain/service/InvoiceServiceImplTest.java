@@ -33,7 +33,11 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testEndInvoice() {
+    void testEndInvoice_ShouldEndSuccessfully() throws Exception {
+        String invoiceUuid = "9e8f7c6b-5a4d-3e2f-1a0b-cd9e8f7a6b5c";
+        String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
+        invoiceService.endInvoice(invoiceUuid, parkingLotUuid);
+        assertThat(invoiceRepository.findById(invoiceUuid).orElseThrow().getEndAt()).isNotNull();
     }
 
     @Test
