@@ -11,7 +11,7 @@ import org.mapstruct.Mappings
 interface ParkingLotMapper {
 
     /**
-     * Parking Lot Mapper
+     * Parking Lot Create Mapper
      */
     @Mappings(
         Mapping(target = "name", source = "request.name"),
@@ -26,6 +26,25 @@ interface ParkingLotMapper {
     )
     fun createParkingLotFromCreateRequest(
         request: ParkingLotController.ParkingLotCreateRequest,
+        @MappingTarget parkingLot: ParkingLot
+    )
+
+    /**
+     * Parking Lot Update Mapper
+     */
+    @Mappings(
+        Mapping(target = "name", source = "request.name"),
+        Mapping(target = "latitude", source = "request.latitude"),
+        Mapping(target = "longitude", source = "request.longitude"),
+        Mapping(target = "address", source = "request.address"),
+        Mapping(target = "description", source = "request.description"),
+        Mapping(target = "capacity", source = "request.capacity"),
+        Mapping(target = "businessHoursStart", source = "request.businessHoursStart"),
+        Mapping(target = "businessHoursEnd", source = "request.businessHoursEnd"),
+        Mapping(target = "openDaysFlag", source = "request.openDaysFlag"),
+    )
+    fun updateParkingLotFromUpdateRequest(
+        request: ParkingLotController.ParkingLotUpdateRequest,
         @MappingTarget parkingLot: ParkingLot
     )
 }
