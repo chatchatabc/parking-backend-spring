@@ -135,9 +135,9 @@ type ParkingLot {
     #    createdAt: String
     updatedAt: String
     verifiedAt: String
-    owner: Member
+    # owner: Member
     rate: Rate
-    verifiedBy: Member
+    # verifiedBy: Member
 }
 
 type ParkingLotList {
