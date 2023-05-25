@@ -33,11 +33,25 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testEndInvoice_ShouldEndSuccessfully() throws Exception {
+    void testEndInvoice_WhenInvoiceIsActive_ShouldEndSuccessfully() throws Exception {
         String invoiceUuid = "9e8f7c6b-5a4d-3e2f-1a0b-cd9e8f7a6b5c";
         String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
         invoiceService.endInvoice(invoiceUuid, parkingLotUuid);
         assertThat(invoiceRepository.findById(invoiceUuid).orElseThrow().getEndAt()).isNotNull();
+    }
+
+    @Test
+    void testEndInvoice_WhenInvoiceNotFound_ShouldThrowException() {
+        String invoiceUuid = "non-existent-uuid";
+        String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
+        assertThrows(Exception.class, () -> invoiceService.endInvoice(invoiceUuid, parkingLotUuid));
+    }
+
+    @Test
+    void testEndInvoice_WhenInvoiceIsAlreadyEnded_ShouldThrowException() {
+        String invoiceUuid = "8d2e1f3a-4b5c-6a7b-9c8d-e0f1a2d3b4c5";
+        String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
+        assertThrows(Exception.class, () -> invoiceService.endInvoice(invoiceUuid, parkingLotUuid));
     }
 
     @Test
