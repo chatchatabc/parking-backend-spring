@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "database.dtd">
+
+<dataset>
+    <member_ban_history_log id="1" member_id="5" banned_by="1" until="2023-05-10 16:14:47.307160" status="0"
+                            created_at="2023-05-07 16:14:47.307160"/>
+</dataset>
