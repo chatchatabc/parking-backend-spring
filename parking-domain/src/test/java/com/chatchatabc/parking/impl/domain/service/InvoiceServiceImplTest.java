@@ -1,18 +1,42 @@
 package com.chatchatabc.parking.impl.domain.service;
 
+import com.chatchatabc.parking.TestContainersBaseTest;
+import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-class InvoiceServiceImplTest {
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class InvoiceServiceImplTest extends TestContainersBaseTest {
+    @Autowired
+    private InvoiceServiceImpl invoiceService;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Test
-    void createInvoice() {
+    void testCreateInvoice_WhenVehicleHasNoActiveInvoiceToParkingLot_ShouldCreateInvoice() throws Exception {
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        Long parkingLotId = 1L;
+        String vehicleUuid = "f8e5e1d2-4c3b-2a1f-0e9d-8c7b6a5f4e3d";
+        Long vehicleId = 3L;
+        Long currentCount = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId);
+        invoiceService.createInvoice(parkingLotUuid, vehicleUuid);
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId)).isGreaterThan(currentCount);
     }
 
     @Test
-    void endInvoice() {
+    void testCreateInvoice_WhenVehicleHasActiveInvoiceToParkingLot_ShouldThrowException() {
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
+        assertThrows(Exception.class, () -> invoiceService.createInvoice(parkingLotUuid, vehicleUuid));
     }
 
     @Test
-    void payInvoice() {
+    void testEndInvoice() {
+    }
+
+    @Test
+    void testPayInvoice() {
     }
 }
