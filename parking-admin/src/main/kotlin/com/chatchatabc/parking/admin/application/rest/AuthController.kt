@@ -50,13 +50,13 @@ class AuthController(
             val token: String = jwtService.generateToken(member.get().memberUuid, member.get().username, roleStrings)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
-            memberLoginLogService.createdLog(member.get().id, request.remoteAddr, 1, true)
+            memberLoginLogService.createLog(member.get().id, request.remoteAddr, 1, true)
             ResponseEntity.ok().headers(headers)
                 .body(ApiResponse(member.get(), HttpStatus.OK.value(), ResponseNames.MEMBER_LOGIN_SUCCESS.name, false))
         } catch (e: Exception) {
             // Generate Failed Login Log
             if (member.isPresent) {
-                memberLoginLogService.createdLog(member.get().id, request.remoteAddr, 1, false)
+                memberLoginLogService.createLog(member.get().id, request.remoteAddr, 1, false)
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(

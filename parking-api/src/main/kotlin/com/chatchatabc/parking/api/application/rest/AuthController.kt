@@ -86,7 +86,7 @@ class AuthController(
             val token: String = jwtService.generateToken(member.memberUuid, member.username, roleStrings)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
-            memberLoginLogService.createdLog(member.id, request.remoteAddr, 0, true)
+            memberLoginLogService.createLog(member.id, request.remoteAddr, 0, true)
             ResponseEntity.ok().headers(headers).body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.MEMBER_VERIFY_OTP_SUCCESS.name, false)
             )
@@ -94,7 +94,7 @@ class AuthController(
             e.printStackTrace()
             // Generate Failed Login Log
             if (member != null) {
-                memberLoginLogService.createdLog(member.id, request.remoteAddr, 0, false)
+                memberLoginLogService.createLog(member.id, request.remoteAddr, 0, false)
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(

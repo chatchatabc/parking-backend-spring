@@ -22,7 +22,7 @@ public class MemberLoginLogServiceImpl implements MemberLoginLogService {
      * @param success   the success
      */
     @Override
-    public void createdLog(Long memberId, String ipAddress, Integer type, Boolean success) {
+    public void createLog(Long memberId, String ipAddress, Integer type, Boolean success) {
         MemberLoginLog log = new MemberLoginLog();
         log.setMember(memberId);
         log.setIpAddress(ipAddress);

@@ -10,5 +10,5 @@ public interface MemberLoginLogService {
      * @param type      the type
      * @param success   the success
      */
-    void createdLog(Long memberId, String ipAddress, Integer type, Boolean success);
+    void createLog(Long memberId, String ipAddress, Integer type, Boolean success);
 }
