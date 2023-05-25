@@ -55,6 +55,17 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testPayInvoice() {
+    void testPayInvoice_WhenInvoiceIsNotPaid_ShouldPaySuccessfully() throws Exception {
+        String invoiceUuid = "8d2e1f3a-4b5c-6a7b-9c8d-e0f1a2d3b4c5";
+        String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
+        invoiceService.payInvoice(invoiceUuid, parkingLotUuid);
+        assertThat(invoiceRepository.findById(invoiceUuid).orElseThrow().getPaidAt()).isNotNull();
+    }
+
+    @Test
+    void testPayInvoice_WhenInvoiceNotFound_ShouldThrowException() {
+        String invoiceUuid = "non-existent-uuid";
+        String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
+        assertThrows(Exception.class, () -> invoiceService.payInvoice(invoiceUuid, parkingLotUuid));
     }
 }
