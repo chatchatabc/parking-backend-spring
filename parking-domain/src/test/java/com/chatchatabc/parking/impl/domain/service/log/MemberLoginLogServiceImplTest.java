@@ -20,10 +20,9 @@ class MemberLoginLogServiceImplTest extends TestContainersBaseTest {
         String ipAddress = "127.0.0.1";
         Integer type = 1;
         Boolean success = true;
+
         Long currentCount = memberLoginLogRepository.count();
-
         memberLoginLogService.createLog(memberId, ipAddress, type, success);
-
         assertThat(memberLoginLogRepository.count()).isGreaterThan(currentCount);
     }
 }
