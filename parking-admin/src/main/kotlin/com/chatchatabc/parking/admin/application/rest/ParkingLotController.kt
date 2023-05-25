@@ -1,12 +1,13 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.ParkingLotUpdateRequest
 import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
+import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
@@ -21,7 +22,9 @@ import java.time.LocalDateTime
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotImageService: ParkingLotImageService,
-    private val memberRepository: MemberRepository
+    private val parkingLotRepository: ParkingLotRepository,
+    private val memberRepository: MemberRepository,
+    private val invoiceRepository: InvoiceRepository
 ) {
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
 
@@ -62,33 +65,53 @@ class ParkingLotController(
         }
     }
 
+
+    /**
+     * Admin update Parking Lot Request
+     */
+    data class ParkingLotUpdateRequest(
+        val name: String?,
+        val latitude: Double?,
+        val longitude: Double?,
+        val address: String?,
+        val description: String?,
+        val capacity: Int?,
+        val availableSlots: Int?,
+        val businessHoursStart: LocalDateTime?,
+        val businessHoursEnd: LocalDateTime?,
+        val openDaysFlag: Int?,
+        val images: List<ParkingLotImage>?
+    )
+
     /**
      * Admin update Parking Lot
      */
-    @PutMapping("/update/{parkingLotId}")
+    @PutMapping("/update/{parkingLotUuid}")
     fun updateParkingLot(
-        @PathVariable parkingLotId: String,
+        @PathVariable parkingLotUuid: String,
         @RequestBody req: ParkingLotUpdateRequest,
         principal: MemberPrincipal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val updatedParkingLot = parkingLotService.updateParkingLot(
-                principal.memberUuid,
-                parkingLotId,
-                req.name,
-                req.latitude,
-                req.longitude,
-                req.address,
-                req.description,
-                req.capacity,
-                req.businessHoursStart,
-                req.businessHoursEnd,
-                req.openDaysFlag,
-                req.images
-            )
+            // Map request to parking lot
+            val updatedParkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            parkingLotMapper.updateParkingLotFromUpdateRequest(req, updatedParkingLot)
+
+            // Update available slots if there are active invoices and if capacity is updated
+            if (req.capacity != null) {
+                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(updatedParkingLot.id)
+                updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
+            }
+
+            // Update images
+            parkingLotImageService.updateOrderOfImages(req.images)
+
+            // Save
+            parkingLotService.saveParkingLot(updatedParkingLot)
+
             return ResponseEntity.ok(
                 ApiResponse(
-                    updatedParkingLot,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.SUCCESS_UPDATE.name,
                     false
