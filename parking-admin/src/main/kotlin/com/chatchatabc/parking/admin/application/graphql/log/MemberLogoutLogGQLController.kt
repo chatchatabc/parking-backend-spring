@@ -48,7 +48,7 @@ class MemberLogoutLogGQLController(
     ): PagedResponse<MemberLogoutLog> {
         val pr = PageRequest.of(page, size)
         val user = memberRepository.findByMemberUuid(id).get()
-        val logs = memberLogoutLogRepository.findByMember(user, pr)
+        val logs = memberLogoutLogRepository.findByMember(user.id, pr)
         return PagedResponse(
             logs.content,
             PageInfo(
