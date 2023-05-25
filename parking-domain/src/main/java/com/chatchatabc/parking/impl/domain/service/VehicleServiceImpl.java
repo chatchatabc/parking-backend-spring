@@ -52,7 +52,7 @@ public class VehicleServiceImpl implements VehicleService {
      * @param updatedVehicle the updated vehicle
      */
     @Override
-    public void updateVehicle(Vehicle updatedVehicle) throws Exception {
+    public void updateVehicle(Vehicle updatedVehicle) {
         vehicleRepository.save(updatedVehicle);
     }
 

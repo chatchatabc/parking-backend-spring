@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
+import com.chatchatabc.parking.domain.model.Vehicle;
 import com.chatchatabc.parking.domain.repository.VehicleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,20 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void updateVehicle() {
+    void testUpdateVehicle_WhenVehicleExist_ShouldUpdateVehicle() {
+        Vehicle updatedVehicle = vehicleRepository.findById(1L).orElseThrow();
+        updatedVehicle.setName("Hyperion");
+        vehicleService.updateVehicle(updatedVehicle);
+        assertThat(vehicleRepository.findById(1L).orElseThrow().getName()).isEqualTo("Hyperion");
     }
 
     @Test
+    // TODO:
     void addMemberToVehicle() {
     }
 
     @Test
+    // TODO:
     void removeMemberFromVehicle() {
     }
 }
