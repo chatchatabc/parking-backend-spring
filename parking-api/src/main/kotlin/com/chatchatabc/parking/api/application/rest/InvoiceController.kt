@@ -150,12 +150,12 @@ class InvoiceController(
     fun endInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse<Invoice>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val endedInvoice = invoiceService.endInvoice(parkingLotId, invoiceId)
+            invoiceService.endInvoice(parkingLotId, invoiceId)
             ResponseEntity.ok(
                 ApiResponse(
-                    endedInvoice,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.INVOICE_END_SUCCESS.name,
                     false
@@ -182,12 +182,12 @@ class InvoiceController(
     fun payInvoice(
         @PathVariable invoiceId: String,
         @PathVariable parkingLotId: String
-    ): ResponseEntity<ApiResponse<Invoice>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val paidInvoice = invoiceService.payInvoice(parkingLotId, invoiceId)
+            invoiceService.payInvoice(parkingLotId, invoiceId)
             ResponseEntity.ok(
                 ApiResponse(
-                    paidInvoice,
+                    null,
                     HttpStatus.OK.value(),
                     ResponseNames.INVOICE_PAY_SUCCESS.name,
                     false

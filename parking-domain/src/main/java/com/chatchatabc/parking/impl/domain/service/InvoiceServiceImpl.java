@@ -63,10 +63,9 @@ public class InvoiceServiceImpl implements InvoiceService {
      *
      * @param invoiceId      the invoice id
      * @param parkingLotUuid the parking lot uuid
-     * @return the invoice
      */
     @Override
-    public Invoice endInvoice(String invoiceId, String parkingLotUuid) throws Exception {
+    public void endInvoice(String invoiceId, String parkingLotUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
@@ -84,12 +83,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         Duration duration = Duration.between(invoice.get().getStartAt(), invoice.get().getEndAt());
         Long hours = duration.toHours();
         // TODO: Calculate rate based on rate formula
-        Invoice savedInvoice = invoiceRepository.save(invoice.get());
+        invoiceRepository.save(invoice.get());
         // Update parking lot capacity
         parkingLot.get().setCapacity(parkingLot.get().getCapacity() + 1);
         parkingLotRepository.save(parkingLot.get());
         // TODO: Nats notification to update capacity of parking lot
-        return savedInvoice;
     }
 
     /**
@@ -97,10 +95,9 @@ public class InvoiceServiceImpl implements InvoiceService {
      *
      * @param invoiceId      the invoice id
      * @param parkingLotUuid the parking lot uuid
-     * @return the invoice
      */
     @Override
-    public Invoice payInvoice(String invoiceId, String parkingLotUuid) throws Exception {
+    public void payInvoice(String invoiceId, String parkingLotUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
@@ -117,6 +114,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         invoice.get().setPaidAt(LocalDateTime.now());
         // TODO: Send NATS notification to update invoice status
-        return invoiceRepository.save(invoice.get());
+        invoiceRepository.save(invoice.get());
     }
 }
