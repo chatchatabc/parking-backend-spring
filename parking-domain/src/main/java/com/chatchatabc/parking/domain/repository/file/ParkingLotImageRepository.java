@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.domain.repository.file;
 
-import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,15 +13,15 @@ import java.util.Optional;
 public interface ParkingLotImageRepository extends JpaRepository<ParkingLotImage, String> {
 
     /**
-     * Find all parking lot images by parking lot and status value
+     * Find all parking lot images by parking lot id and status value
      *
-     * @param parkingLot the parking lot
-     * @param status     the status
-     * @param pageable   the pageable
+     * @param parkingLotId the id of the parking lot
+     * @param status       the status
+     * @param pageable     the pageable
      * @return the page of parking lot images
      */
-    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLot AND pli.cloudFile.status = :status")
-    Page<ParkingLotImage> findAllByParkingLotAndStatus(ParkingLot parkingLot, int status, Pageable pageable);
+    @Query("SELECT pli FROM ParkingLotImage pli WHERE pli.parkingLot = :parkingLotId AND pli.cloudFile.status = :status")
+    Page<ParkingLotImage> findAllByParkingLotAndStatus(Long parkingLotId, int status, Pageable pageable);
 
     /**
      * Find all parking lot images by id and status value

@@ -133,7 +133,7 @@ class ParkingLotController(
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
-                parkingLot,
+                parkingLot.id,
                 0,
                 pageable
             )
