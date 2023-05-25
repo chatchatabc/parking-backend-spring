@@ -26,6 +26,16 @@ class ParkingLotImageRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testFindByIdAndStatus() {
+    void testFindByIdAndStatus_WhenParkingLotImageExist_ShouldReturnParkingLotImage() {
+        String imageId = "5810590b-6a23-481f-888b-0919fad5864d";
+        int status = 0;
+        assertThat(parkingLotImageRepository.findByIdAndStatus(imageId, status)).isPresent();
+    }
+
+    @Test
+    void testFindByIdAndStatus_WhenParkingLotImageDoesNotExist_ShouldReturnEmpty() {
+        String imageId = "nonexistent_id";
+        int status = 1;
+        assertThat(parkingLotImageRepository.findByIdAndStatus(imageId, status)).isEmpty();
     }
 }
