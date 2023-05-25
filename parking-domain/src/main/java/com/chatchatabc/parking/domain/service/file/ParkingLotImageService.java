@@ -5,8 +5,17 @@ import com.chatchatabc.parking.domain.model.ParkingLot;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 
 import java.io.InputStream;
+import java.util.List;
 
 public interface ParkingLotImageService {
+
+    /**
+     * Update order of images of a Parking Lot
+     *
+     * @param images the images
+     */
+    void updateOrderOfImages(List<ParkingLotImage> images) throws Exception;
+
     /**
      * Upload a file to the storage service.
      *

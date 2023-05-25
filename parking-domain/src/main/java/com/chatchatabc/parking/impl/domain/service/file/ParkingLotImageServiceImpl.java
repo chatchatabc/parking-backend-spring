@@ -10,6 +10,9 @@ import com.chatchatabc.parking.infra.service.FileStorageService;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParkingLotImageServiceImpl implements ParkingLotImageService {
@@ -19,6 +22,25 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     public ParkingLotImageServiceImpl(FileStorageService fileStorageService, ParkingLotImageRepository parkingLotImageRepository) {
         this.fileStorageService = fileStorageService;
         this.parkingLotImageRepository = parkingLotImageRepository;
+    }
+
+    /**
+     * Update order of images of a Parking Lot
+     *
+     * @param images the images
+     */
+    @Override
+    public void updateOrderOfImages(List<ParkingLotImage> images) throws Exception {
+        List<ParkingLotImage> updatedImages = new ArrayList<>();
+        for (ParkingLotImage image : images) {
+            Optional<ParkingLotImage> parkingLotImage = parkingLotImageRepository.findById(image.getId());
+            if (parkingLotImage.isEmpty()) {
+                throw new Exception("Image not found");
+            }
+            parkingLotImage.get().setFileOrder(image.getFileOrder());
+            updatedImages.add(parkingLotImage.get());
+        }
+        parkingLotImageRepository.saveAll(updatedImages);
     }
 
     /**
