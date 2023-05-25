@@ -68,4 +68,11 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
         String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
         assertThrows(Exception.class, () -> invoiceService.payInvoice(invoiceUuid, parkingLotUuid));
     }
+
+    @Test
+    void testPayInvoice_WhenInvoiceIsAlreadyPaid_ShouldThrowException() {
+        String invoiceUuid = "d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f";
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        assertThrows(Exception.class, () -> invoiceService.payInvoice(invoiceUuid, parkingLotUuid));
+    }
 }
