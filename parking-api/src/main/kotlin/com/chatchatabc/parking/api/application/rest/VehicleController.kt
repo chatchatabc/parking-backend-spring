@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/vehicle")
@@ -60,7 +61,7 @@ class VehicleController(
     @GetMapping("/get/{vehicleUuid}")
     fun getVehicleById(
         @PathVariable vehicleUuid: String,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get member from security context
@@ -69,7 +70,7 @@ class VehicleController(
                 throw Exception("Vehicle not found")
             }
             // Member should have access to this vehicle. If member is not inside vehicle members array
-            if (vehicle.get().members.find { it.memberUuid == principal.memberUuid } == null) {
+            if (vehicle.get().members.find { it.memberUuid == principal.name } == null) {
                 throw Exception("Member does not have access to this vehicle")
             }
 
