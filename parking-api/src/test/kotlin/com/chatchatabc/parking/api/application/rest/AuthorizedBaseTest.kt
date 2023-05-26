@@ -1,14 +1,16 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import com.chatchatabc.parking.web.common.impl.application.rest.service.JwtServiceImpl
-import org.springframework.context.annotation.Import
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 
-@WithMockUser(username = "member", password = "123456")
-@Import(JwtServiceImpl::class)
+@WithMockUser(username = "dfc3cd78-9c89-4da2-8749-253afed080af", password = "123456", roles = ["MEMBER"])
 open class AuthorizedBaseTest {
+    @MockBean
+    lateinit var jwtService: JwtService
 
     fun get(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
         return MockMvcRequestBuilders.get(urlTemplate, *uriVariables).header("Authorization", "Bearer ${getToken()}")
