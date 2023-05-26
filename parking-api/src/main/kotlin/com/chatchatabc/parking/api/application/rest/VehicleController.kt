@@ -7,7 +7,6 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -29,12 +28,12 @@ class VehicleController(
      */
     @GetMapping("/get-my-vehicles")
     fun getMyVehicles(
-        principal: MemberPrincipal,
+        principal: Principal,
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
         return try {
             // Get member from security context
-            val vehicles = vehicleRepository.findAllByMember(principal.memberUuid, pageable)
+            val vehicles = vehicleRepository.findAllByMember(principal.name, pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicles,
@@ -100,10 +99,10 @@ class VehicleController(
     @PostMapping("/register")
     fun registerVehicle(
         @RequestBody req: VehicleRegisterRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.registerVehicle(principal.memberUuid, req.name, req.plateNumber, req.type)
+            val vehicle = vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
@@ -134,7 +133,7 @@ class VehicleController(
     fun updateVehicle(
         @PathVariable vehicleUuid: String,
         @RequestBody req: VehicleUpdateRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             // TODO: check if member has access to vehicle or maybe make it so that the only is the only one that can update vehicle
@@ -154,10 +153,10 @@ class VehicleController(
     fun addMemberToVehicle(
         @PathVariable vehicleUuid: String,
         @PathVariable memberUuid: String,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.addMemberToVehicle(principal.memberUuid, vehicleUuid, memberUuid)
+            val vehicle = vehicleService.addMemberToVehicle(principal.name, vehicleUuid, memberUuid)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -172,10 +171,10 @@ class VehicleController(
     fun removeMemberFromVehicle(
         @PathVariable vehicleUuid: String,
         @PathVariable memberUuid: String,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.removeMemberFromVehicle(principal.memberUuid, vehicleUuid, memberUuid)
+            val vehicle = vehicleService.removeMemberFromVehicle(principal.name, vehicleUuid, memberUuid)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,
