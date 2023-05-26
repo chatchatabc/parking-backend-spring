@@ -10,11 +10,11 @@ import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import java.time.LocalDateTime
 
 @RestController
@@ -90,7 +90,7 @@ class ParkingLotController(
     fun updateParkingLot(
         @PathVariable parkingLotUuid: String,
         @RequestBody req: ParkingLotUpdateRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             // Map request to parking lot
@@ -130,10 +130,10 @@ class ParkingLotController(
     @PutMapping("/verify/{parkingLotId}")
     fun verifyParkingLot(
         @PathVariable parkingLotId: String,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotService.verifyParkingLot(principal.memberUuid, parkingLotId)
+            val parkingLot = parkingLotService.verifyParkingLot(principal.name, parkingLotId)
             ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
