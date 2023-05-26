@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.web.common.impl.application.rest.service;
 
 import com.auth0.jwt.interfaces.Payload;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -9,13 +9,20 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JwtServiceImplTest {
-    private static final String SECRET = "my-secret";
-    private static final long EXPIRATION = 60000L;
-    private JwtServiceImpl jwtService;
+    private static final String SECRET = "your-jwt-hmac512-secret";
+    private static final long EXPIRATION = 43200000L;
+    private static JwtServiceImpl jwtService;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    public static void setUp() {
         jwtService = new JwtServiceImpl(SECRET, EXPIRATION);
+    }
+
+    @Test
+    public void testGenerateJwtToken() {
+        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "member", Arrays.asList("ROLE_MEMBER"));
+        System.out.println(token);
+        jwtService.validateTokenAndGetPayload(token);
     }
 
     @Test
