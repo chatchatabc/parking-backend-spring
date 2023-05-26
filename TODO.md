@@ -44,6 +44,7 @@
 - NATS use same JWT as API and Admin
 - JWT Auth on GraphQL
 - Members with NATS should only be "listen" only
+- Refactor MemberPrincipal to standard Spring Security Principal
 
 ## SMS Sending
 
@@ -57,4 +58,9 @@
 - Finish Controller Unit Tests
 
 ## Repository and Entity Models
+
 - Refactor some fields to use @NaturalId
+
+## REST
+
+- Refactor ApiResponse to be unified with GraphQL (https://graphql.org/learn/serving-over-http/)
