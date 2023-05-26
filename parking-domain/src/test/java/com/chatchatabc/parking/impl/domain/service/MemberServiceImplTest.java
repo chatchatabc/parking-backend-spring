@@ -99,7 +99,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         String newUsername = "raph2";
         member.setUsername(newUsername);
 
-        memberService.updateMember(member);
+        memberService.saveMember(member);
 
         assertThat(memberRepository.findByUsername(newUsername)).isPresent();
     }
@@ -112,7 +112,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         String newUsername = "matt";
         member.setUsername(newUsername);
 
-        assertThrows(Exception.class, () -> memberService.updateMember(member));
+        assertThrows(Exception.class, () -> memberService.saveMember(member));
     }
 
     @Test

@@ -106,7 +106,6 @@ class AuthControllerTest {
 
         // When
         val responseEntity = authController.loginMember(memberLoginRequest, request)
-        println(responseEntity)
 
         // Then
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.statusCode)
