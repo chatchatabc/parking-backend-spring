@@ -5,5 +5,5 @@
     <role id="1" name="ROLE_ADMIN"/>
     <role id="2" name="ROLE_PARKING_OWNER"/>
     <role id="3" name="ROLE_ENFORCER"/>
-    <role id="4" name="ROLE_MEMBER"/>
+    <role id="4" name="ROLE_USER"/>
 </dataset>
