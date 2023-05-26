@@ -27,14 +27,6 @@ data class MemberLoginRequest(
     val password: String
 )
 
-data class MemberCreateRequest(
-    val phone: String,
-    val username: String?,
-    val email: String?,
-    val roles: List<String>,
-    val enabled: Boolean = true
-)
-
 data class MemberOverridePasswordRequest(
     val newPassword: String,
 )
