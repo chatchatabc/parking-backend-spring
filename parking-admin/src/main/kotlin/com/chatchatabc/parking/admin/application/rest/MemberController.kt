@@ -9,12 +9,12 @@ import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.MemberBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.MemberService
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/member")
@@ -144,10 +144,10 @@ class MemberController(
     fun banMember(
         @PathVariable memberUuid: String,
         @RequestBody req: MemberBanRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
-            val bannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val bannedBy = memberRepository.findByMemberUuid(principal.name).get()
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             val banLog = MemberBanHistoryLog().apply {
                 this.member = member.id
@@ -178,10 +178,10 @@ class MemberController(
     fun unbanMember(
         @PathVariable memberUuid: String,
         @RequestBody req: MemberUnbanRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
         return try {
-            val unbannedBy = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val unbannedBy = memberRepository.findByMemberUuid(principal.name).get()
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             // Get latest ban log
             val banLog = memberBanHistoryLogRepository.findLatestBanLog(member.id).get().apply {
