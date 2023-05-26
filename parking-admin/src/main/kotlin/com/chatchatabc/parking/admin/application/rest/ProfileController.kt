@@ -5,7 +5,6 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.log.MemberLogoutLogService
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/profile")
@@ -32,10 +32,10 @@ class ProfileController(
     @GetMapping("/me")
     fun getProfile(
         request: HttpServletRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             ResponseEntity.ok().body(
                 ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
@@ -60,10 +60,10 @@ class ProfileController(
     fun logoutMember(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             memberLogoutLogService.createLog(member.id, 1, request.remoteAddr)
             ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
