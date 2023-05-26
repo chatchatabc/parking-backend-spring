@@ -107,7 +107,7 @@ class MemberController(
         return try {
             val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
             memberMapper.updateMemberFromUpdateProfileRequest(request, member)
-            memberService.updateMember(member)
+            memberService.saveMember(member)
             ResponseEntity.ok().body(
                 ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
             )

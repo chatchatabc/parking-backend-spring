@@ -28,29 +28,37 @@ class MemberController(
     private val memberMapper = Mappers.getMapper(MemberMapper::class.java)
 
     /**
+     * Create Member Request
+     */
+    data class MemberCreateRequest(
+        val email: String?,
+        val phone: String,
+        val username: String?,
+        val roles: List<String>,
+        val enabled: Boolean = true
+    )
+
+    /**
      * Create member
      */
     @PostMapping("/create")
     fun createMember(
         @RequestBody req: MemberCreateRequest
-    ): ResponseEntity<ApiResponse<Member>> {
+    ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val roles = roleRepository.findRolesIn(req.roles)
             val member = Member().apply {
-                this.phone = req.phone
-                this.username = req.username
-                this.email = req.email
-                this.roles = roles
+                this.roles = roleRepository.findRolesIn(req.roles)
                 if (req.enabled) {
                     this.status = 0
                 } else {
-                    this.status = 1
+                    this.status = -1
                 }
             }
-            val createdMember = memberRepository.save(member)
+            memberMapper.createMemberFromCreateRequest(req, member)
+            memberService.saveMember(member)
             return ResponseEntity.ok(
                 ApiResponse(
-                    createdMember, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {
@@ -85,7 +93,7 @@ class MemberController(
         return try {
             val member = memberRepository.findByMemberUuid(memberUuid).get()
             memberMapper.updateMemberFromUpdateRequest(req, member)
-            memberService.updateMember(member)
+            memberService.saveMember(member)
             return ResponseEntity.ok(
                 ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )

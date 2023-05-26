@@ -29,7 +29,7 @@ public interface MemberService extends UserDetailsService {
      *
      * @param updatedMember the updated member
      */
-    void updateMember(Member updatedMember) throws Exception;
+    void saveMember(Member updatedMember) throws Exception;
 
     /**
      * Generate OTP and save to KV

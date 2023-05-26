@@ -9,6 +9,20 @@ import org.mapstruct.Mappings
 
 @Mapper(componentModel = "spring")
 interface MemberMapper {
+    /**
+     * Create member from request
+     */
+    @Mappings(
+        Mapping(target = "email", source = "request.email"),
+        Mapping(target = "phone", source = "request.phone"),
+        Mapping(target = "username", source = "request.username"),
+        Mapping(target = "roles", ignore = true),
+    )
+    fun createMemberFromCreateRequest(
+        request: MemberController.MemberCreateRequest,
+        @MappingTarget member: Member
+    ): Member
+
 
     /**
      * Update member from request

@@ -111,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
      * @param updatedMember the updated member
      */
     @Override
-    public void updateMember(Member updatedMember) {
+    public void saveMember(Member updatedMember) {
         memberRepository.save(updatedMember);
     }
 
