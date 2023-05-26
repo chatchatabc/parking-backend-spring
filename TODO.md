@@ -44,7 +44,6 @@
 - NATS use same JWT as API and Admin
 - JWT Auth on GraphQL
 - Members with NATS should only be "listen" only
-- Refactor MemberPrincipal to standard Spring Security Principal
 
 ## SMS Sending
 
