@@ -2,7 +2,6 @@ package com.chatchatabc.parking.impl.domain.service.log;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
 import com.chatchatabc.parking.domain.repository.log.MemberLoginLogRepository;
-import com.chatchatabc.parking.domain.service.log.MemberLoginLogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberLoginLogServiceImplTest extends TestContainersBaseTest {
     @Autowired
-    private MemberLoginLogService memberLoginLogService;
+    private MemberLoginLogServiceImpl memberLoginLogService;
     @Autowired
     private MemberLoginLogRepository memberLoginLogRepository;
 
