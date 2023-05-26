@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,7 @@ class JwtServiceImplTest {
 
     @Test
     public void testGenerateJwtToken() {
-        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "member", Arrays.asList("ROLE_MEMBER"));
+        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "member", List.of("ROLE_USER"));
         System.out.println(token);
         jwtService.validateTokenAndGetPayload(token);
     }
@@ -30,7 +31,7 @@ class JwtServiceImplTest {
         String memberId = "1";
         String username = "testuser";
         String role1 = "ROLE_ADMIN";
-        String role2 = "ROLE_MEMBER";
+        String role2 = "ROLE_USER";
         String expectedToken = jwtService.generateToken(memberId, username, Arrays.asList(role1, role2));
 
         assertNotNull(expectedToken);

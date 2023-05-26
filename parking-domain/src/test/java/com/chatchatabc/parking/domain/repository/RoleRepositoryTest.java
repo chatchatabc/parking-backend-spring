@@ -28,16 +28,16 @@ public class RoleRepositoryTest extends TestContainersBaseTest {
 
     @Test
     public void testFindRolesIn_ExactNameMatch() {
-        List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER"));
+        List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_USER"));
         assertThat(result).hasSize(2);
-        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
+        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER");
     }
 
     @Test
     public void testFindRolesIn_PartialNamesMatch() {
-        List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_MEMBER", "ROLE_NON_EXISTENT"));
+        List<Role> result = roleRepository.findRolesIn(Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_NON_EXISTENT"));
         assertThat(result).hasSize(2);
-        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_MEMBER");
+        assertThat(result).extracting(Role::getName).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER");
     }
 
     @Test

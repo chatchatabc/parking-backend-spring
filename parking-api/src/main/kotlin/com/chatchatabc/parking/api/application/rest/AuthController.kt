@@ -73,7 +73,7 @@ class AuthController(
         var member: Member? = null
         return try {
             val headers = HttpHeaders()
-            var roleName: RoleNames = RoleNames.ROLE_MEMBER
+            var roleName: RoleNames = RoleNames.ROLE_USER
             if (type == "owner") {
                 roleName = RoleNames.ROLE_PARKING_OWNER
             }
