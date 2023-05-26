@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,47 +42,44 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        // Get authorization header and validate
-        final String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            logRequest(request, response);
-            return;
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Get authorization header and validate
+            final String header = request.getHeader("Authorization");
+            if (header == null || !header.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                logRequest(request, response);
+                return;
+            }
+
+            final String token = header.substring(7); // skip "Bearer "
+            final Payload payload = jwtService.validateTokenAndGetPayload(token);
+            if (payload != null) {
+
+                String memberUuid = payload.getSubject();
+                String username = payload.getClaim("username").asString();
+                MemberPrincipal member = MemberPrincipal.of(memberUuid, username);
+                String[] roles = payload.getClaim("role").asArray(String.class);
+                List<GrantedAuthority> authorities = Arrays.stream(roles)
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+                JwtAuthenticationToken authentication = new JwtAuthenticationToken(
+                        member,
+                        null,
+                        authorities
+                );
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                logRequest(request, response, member.getMemberUuid());
+            }
         }
-
-        final String token = header.substring(7); // skip "Bearer "
-        final Payload payload = jwtService.validateTokenAndGetPayload(token);
-
-        if (payload == null) {
-            filterChain.doFilter(request, response);
-            logRequest(request, response);
-            return;
-        }
-
-        String memberUuid = payload.getSubject();
-        String username = payload.getClaim("username").asString();
-        MemberPrincipal member = MemberPrincipal.of(memberUuid, username);
-        String[] roles = payload.getClaim("role").asArray(String.class);
-        List<GrantedAuthority> authorities = Arrays.stream(roles)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        JwtAuthenticationToken authentication = new JwtAuthenticationToken(
-                member,
-                null,
-                authorities
-        );
-
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         // Continue flow with the member in the security context
         filterChain.doFilter(request, response);
-        logRequest(request, response, member.getMemberUuid());
     }
 
     /**
