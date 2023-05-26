@@ -8,7 +8,6 @@ import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.service.MemberService
 import com.chatchatabc.parking.infra.service.FileStorageService
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
@@ -18,6 +17,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/member")
@@ -37,10 +37,10 @@ class MemberController(
     )
     @GetMapping("/me")
     fun getProfile(
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Member>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             ResponseEntity.ok().body(
                 ApiResponse(
                     member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
@@ -64,10 +64,10 @@ class MemberController(
     )
     @GetMapping("/get-notification-id")
     fun getNotificationId(
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<MemberNotificationResponse>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             ResponseEntity.ok().body(
                 ApiResponse(
                     MemberNotificationResponse(member.notificationUuid),
@@ -102,10 +102,10 @@ class MemberController(
     @PutMapping("/update")
     fun updateMember(
         @RequestBody request: MemberProfileUpdateRequest,
-        principal: MemberPrincipal
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             memberMapper.updateMemberFromUpdateProfileRequest(request, member)
             memberService.saveMember(member)
             ResponseEntity.ok().body(
@@ -128,10 +128,10 @@ class MemberController(
     @PostMapping("/upload-avatar")
     fun uploadAvatar(
         @RequestParam("file", required = true) file: MultipartFile,
-        principal: MemberPrincipal
+        principal: Principal
     ): ApiResponse<Member> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.memberUuid).get()
+            val member = memberRepository.findByMemberUuid(principal.name).get()
             memberService.uploadImage(
                 member,
                 "avatar",
