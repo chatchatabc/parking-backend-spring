@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.web.common.application.config.security.filter;
 
 import com.auth0.jwt.interfaces.Payload;
-import com.chatchatabc.parking.web.common.application.common.MemberPrincipal;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,22 +60,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (payload != null) {
 
                 String memberUuid = payload.getSubject();
-                String username = payload.getClaim("username").asString();
-                MemberPrincipal member = MemberPrincipal.of(memberUuid, username);
                 String[] roles = payload.getClaim("role").asArray(String.class);
                 List<GrantedAuthority> authorities = Arrays.stream(roles)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-                JwtAuthenticationToken authentication = new JwtAuthenticationToken(
-                        member,
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        memberUuid,
                         null,
                         authorities
                 );
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logRequest(request, response, member.getMemberUuid());
+                logRequest(request, response, memberUuid);
             }
         }
         // Continue flow with the member in the security context
