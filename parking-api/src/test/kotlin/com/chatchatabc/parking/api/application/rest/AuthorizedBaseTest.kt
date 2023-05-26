@@ -1,27 +1,47 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
-import com.chatchatabc.parking.web.common.impl.application.rest.service.JwtServiceImpl
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import java.util.*
 
-@WithMockUser(username = "dfc3cd78-9c89-4da2-8749-253afed080af", password = "123456", roles = ["MEMBER"])
+@WithMockUser(username = "dfc3cd78-9c89-4da2-8749-253afed080af", password = "123456", roles = ["ADMIN"])
 open class AuthorizedBaseTest {
     @MockBean
     lateinit var jwtService: JwtService
 
+    private val token: String by lazy { generateToken() }
+
     fun get(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
-        return MockMvcRequestBuilders.get(urlTemplate, *uriVariables).header("Authorization", "Bearer ${getToken()}")
+        return MockMvcRequestBuilders.get(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
     }
 
     fun post(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
-        return MockMvcRequestBuilders.post(urlTemplate, *uriVariables).header("Authorization", "Bearer ${getToken()}")
+        return MockMvcRequestBuilders.post(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
     }
 
-    open fun getToken(): String {
-        // member uuid: "dfc3cd78-9c89-4da2-8749-253afed080af",  name: "member"
-        return "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZmMzY2Q3OC05Yzg5LTRkYTItODc0OS0yNTNhZmVkMDgwYWYiLCJpc3MiOiJEYXZhb1BhcmtpbmciLCJ1c2VybmFtZSI6Im1lbWJlciIsInJvbGUiOlsiUk9MRV9NRU1CRVIiXSwiaWF0IjoxNjg1MDgxMjU5LCJleHAiOjE2ODUxMjQ0NTl9.O75eDzGRgdkWxL-7hVwFwAwZvLERHtBkAhZMvSYT4N2gf4KMsYdVDNyx8LrCW2MvQ5W1dPRbc_NlhopFOk7YvA"
+    // Based on JwtService generateToken
+    open fun generateToken(): String {
+        val jwtSecret = "your-hmac512-secret"
+        val hmac512 = Algorithm.HMAC512(jwtSecret)
+
+        val userDetails = SecurityContextHolder.getContext().authentication.principal as UserDetails
+        val username = userDetails.username // the uuid
+        val roles = userDetails.authorities.map { it.authority }
+
+        return JWT.create()
+            .withSubject(username)
+            .withIssuer("DavaoParking")
+            .withClaim("username", username)
+            .withClaim("role", roles)
+            .withIssuedAt(Date(System.currentTimeMillis()))
+            .withExpiresAt(Date(System.currentTimeMillis() + 43200000))
+            .sign(hmac512)
     }
 }
