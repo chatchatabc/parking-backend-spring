@@ -2,10 +2,8 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import com.chatchatabc.parking.domain.repository.MemberRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
-import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +14,10 @@ import java.util.Optional;
 public class ParkingLotServiceImpl implements ParkingLotService {
     private final MemberRepository memberRepository;
     private final ParkingLotRepository parkingLotRepository;
-    private final InvoiceRepository invoiceRepository;
-    private final ParkingLotImageRepository parkingLotImageRepository;
 
-    public ParkingLotServiceImpl(MemberRepository memberRepository, ParkingLotRepository parkingLotRepository, InvoiceRepository invoiceRepository, ParkingLotImageRepository parkingLotImageRepository) {
+    public ParkingLotServiceImpl(MemberRepository memberRepository, ParkingLotRepository parkingLotRepository) {
         this.memberRepository = memberRepository;
         this.parkingLotRepository = parkingLotRepository;
-        this.invoiceRepository = invoiceRepository;
-        this.parkingLotImageRepository = parkingLotImageRepository;
     }
 
     /**
