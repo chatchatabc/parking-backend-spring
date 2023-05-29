@@ -34,7 +34,7 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
      * @param ownerUuid the owner 'UUID
      * @return parking lot
      */
-    @Query("SELECT p FROM ParkingLot p WHERE p.owner IN (SELECT m.id FROM Member m WHERE m.memberUuid = :ownerUuid)")
+    @Query("SELECT p FROM ParkingLot p WHERE p.owner IN (SELECT m.id FROM User m WHERE m.userUuid = :ownerUuid)")
     Optional<ParkingLot> findByOwnerUuid(String ownerUuid);
 
 
