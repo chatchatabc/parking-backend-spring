@@ -308,7 +308,7 @@ class ParkingLotController(
     }
 
     /**
-     * Get member avatar by image id
+     * Get parking lot avatar by image id
      */
     @GetMapping("/get-image/{imageId}")
     fun getParkingLotImage(
