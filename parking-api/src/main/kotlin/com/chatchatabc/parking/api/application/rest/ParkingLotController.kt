@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -49,10 +50,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {
             ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_NOT_FOUND.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
             )
         }
     }
@@ -66,23 +67,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).getOrNull()
-            ResponseEntity.ok(
-                ApiResponse(
-                    parkingLot,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
+            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -102,23 +90,9 @@ class ParkingLotController(
                 inputDistance = 0.1
             }
             val parkingLots = parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
-            return ResponseEntity.ok(
-                ApiResponse(
-                    parkingLots,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(parkingLots, null))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -137,23 +111,9 @@ class ParkingLotController(
                 0,
                 pageable
             )
-            ResponseEntity.ok(
-                ApiResponse(
-                    images,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(images, null))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -186,25 +146,10 @@ class ParkingLotController(
             createdParkingLot.owner = owner.id
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
             parkingLotService.saveParkingLot(createdParkingLot)
-            return ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_CREATE.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_CREATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
         }
     }
 
@@ -251,25 +196,10 @@ class ParkingLotController(
             // Save
             parkingLotService.saveParkingLot(updatedParkingLot)
 
-            return ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_UPDATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -285,25 +215,10 @@ class ParkingLotController(
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
-            ResponseEntity.ok(
-                ApiResponse(
-                    parkingLot,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_UPDATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -349,25 +264,11 @@ class ParkingLotController(
                 file.size,
                 file.contentType
             )
-            return ResponseEntity.ok(
-                ApiResponse(
-                    fileData,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(fileData, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_UPDATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -388,25 +289,11 @@ class ParkingLotController(
                 throw Exception("You are not owner of this parking lot")
             }
             parkingLotImageService.deleteImage(imageId)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_UPDATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 }
