@@ -90,16 +90,16 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testFindAllByMember_ShouldReturnGreaterThan0() {
-        String memberUuid = "b0c50381-d0bd-455d-9e46-2b0bd599320b";
+    void testFindAllByUser_ShouldReturnGreaterThan0() {
+        String userUuid = "b0c50381-d0bd-455d-9e46-2b0bd599320b";
         PageRequest pageable = PageRequest.of(0, 10);
-        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isGreaterThan(0);
+        assertThat(vehicleRepository.findAllByUser(userUuid, pageable).getNumberOfElements()).isGreaterThan(0);
     }
 
     @Test
-    void testFindAllByMember_ShouldReturn0() {
-        String memberUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
+    void testFindAllByUser_ShouldReturn0() {
+        String userUuid = "ec4af6e9-ec57-434d-990d-ae83d9459a31";
         PageRequest pageable = PageRequest.of(0, 10);
-        assertThat(vehicleRepository.findAllByMember(memberUuid, pageable).getNumberOfElements()).isEqualTo(0);
+        assertThat(vehicleRepository.findAllByUser(userUuid, pageable).getNumberOfElements()).isEqualTo(0);
     }
 }
