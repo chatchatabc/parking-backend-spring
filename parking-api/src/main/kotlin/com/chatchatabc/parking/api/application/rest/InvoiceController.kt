@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
@@ -9,7 +10,6 @@ import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -31,18 +31,11 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(ApiResponse(invoice, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(invoice, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -56,25 +49,11 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            return ResponseEntity.ok(
-                ApiResponse(
-                    invoiceRepository.findAllByVehicle(vehicle.id, pageable),
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(invoiceRepository.findAllByVehicle(vehicle.id, pageable), null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -89,25 +68,11 @@ class InvoiceController(
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pageable)
-            return ResponseEntity.ok(
-                ApiResponse(
-                    invoices,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(invoices, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -121,25 +86,10 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.createInvoice(parkingLotId, vehicleUuid)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_CREATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR_CREATE.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
         }
     }
 
@@ -153,25 +103,11 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.INVOICE_END_SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -185,25 +121,11 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.INVOICE_PAY_SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
