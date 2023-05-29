@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS authorities
 create unique index idx_auth_username on authorities (username, authority);
 
 -- Function to automatically update user on authorities table
-CREATE OR REPLACE FUNCTION update_username_in_authorities() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION update_username_in_authorities() RETURNS TRIGGER AS
+$$
 BEGIN
     UPDATE authorities SET username = NEW.username WHERE username = OLD.username;
     RETURN NEW;
@@ -55,7 +56,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER update_authorities_username
-    AFTER UPDATE OF username ON users
+    AFTER UPDATE OF username
+    ON users
     FOR EACH ROW
 EXECUTE FUNCTION update_username_in_authorities();
 
@@ -63,7 +65,7 @@ EXECUTE FUNCTION update_username_in_authorities();
 CREATE TABLE IF NOT EXISTS user_login_log
 (
     id         SERIAL PRIMARY KEY,
-    user_id  BIGINT             NOT NULL,
+    user_id    BIGINT             NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
     ip_address VARCHAR(39)        NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
@@ -76,7 +78,7 @@ ALTER SEQUENCE user_login_log_id_seq RESTART WITH 1000;
 CREATE TABLE IF NOT EXISTS user_logout_log
 (
     id         SERIAL PRIMARY KEY,
-    user_id  INT           NOT NULL,
+    user_id    INT           NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
     ip_address VARCHAR(39)   NOT NULL,
     created_at TIMESTAMP     NOT NULL
@@ -104,7 +106,7 @@ ALTER SEQUENCE user_activity_log_id_seq RESTART WITH 1000;
 CREATE TABLE IF NOT EXISTS user_ban_history_log
 (
     id           SERIAL PRIMARY KEY,
-    user_id    BIGINT        NOT NULL,
+    user_id      BIGINT        NOT NULL,
     banned_by    BIGINT        NOT NULL,
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
@@ -139,7 +141,7 @@ create index idx_vehicle_on_owner_id on vehicle (owner_id);
 -- Create user_vehicle table
 CREATE TABLE IF NOT EXISTS user_vehicle
 (
-    user_id  INT NOT NULL,
+    user_id    INT NOT NULL,
     vehicle_id INT NOT NULL,
     PRIMARY KEY (user_id, vehicle_id)
 );
