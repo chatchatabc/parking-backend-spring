@@ -2,12 +2,12 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.DashboardStatistics
+import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -60,7 +60,7 @@ class DashboardController(
                         totalVerifiedParkingLots,
                         totalUnverifiedParkingLots,
                         totalActiveInvoices
-                    ), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    ), null
                 )
             )
         } catch (e: Exception) {
@@ -68,7 +68,7 @@ class DashboardController(
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(
-                        null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
+                        null, listOf(ErrorElement(ResponseNames.ERROR.name, null))
                     )
                 )
         }
