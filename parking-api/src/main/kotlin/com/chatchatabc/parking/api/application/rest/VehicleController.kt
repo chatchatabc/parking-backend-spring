@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.VehicleRegisterRequest
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
@@ -10,7 +11,6 @@ import com.chatchatabc.parking.domain.service.VehicleService
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -34,23 +34,9 @@ class VehicleController(
         return try {
             // Get user from security context
             val vehicles = vehicleRepository.findAllByUser(principal.name, pageable)
-            ResponseEntity.ok(
-                ApiResponse(
-                    vehicles,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(vehicles, null))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR.name,
-                    true
-                )
-            )
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -73,23 +59,9 @@ class VehicleController(
                 throw Exception("User does not have access to this vehicle")
             }
 
-            ResponseEntity.ok(
-                ApiResponse(
-                    vehicle.get(),
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(vehicle.get(), null))
         } catch (e: Exception) {
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.BAD_REQUEST.value(),
-                    ResponseNames.ERROR_NOT_FOUND.name,
-                    true
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
         }
     }
 
@@ -103,17 +75,9 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(
-                ApiResponse(
-                    vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_CREATE.name, false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(vehicle, null))
         } catch (e: Exception) {
-            ResponseEntity.ok(
-                ApiResponse(
-                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_CREATE.name, true
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
         }
     }
 
@@ -140,9 +104,9 @@ class VehicleController(
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
             vehicleService.updateVehicle(vehicle)
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
+            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -157,9 +121,9 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.addUserToVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
+            ResponseEntity.ok(ApiResponse(vehicle, null))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
+            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -175,16 +139,9 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(
-                ApiResponse(
-                    vehicle,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(vehicle, null))
         } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
+            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 }
