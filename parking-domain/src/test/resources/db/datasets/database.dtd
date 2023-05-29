@@ -1,21 +1,27 @@
 <!ELEMENT dataset (
+    authorities*,
     cloud_file*,
     flyway_schema_history*,
     invoice*,
-    member*,
-    member_activity_log*,
-    member_ban_history_log*,
-    member_login_log*,
-    member_logout_log*,
-    member_role*,
-    member_vehicle*,
     parking_lot*,
     parking_lot_image*,
     rate*,
     report*,
     report_status*,
     role*,
+    user_activity_log*,
+    user_ban_history_log*,
+    user_login_log*,
+    user_logout_log*,
+    user_vehicle*,
+    users*,
     vehicle*)>
+
+<!ELEMENT authorities EMPTY>
+<!ATTLIST authorities
+    username CDATA #REQUIRED
+    authority CDATA #REQUIRED
+>
 
 <!ELEMENT cloud_file EMPTY>
 <!ATTLIST cloud_file
@@ -58,83 +64,6 @@
     end_at CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
->
-
-<!ELEMENT member EMPTY>
-<!ATTLIST member
-    id CDATA #IMPLIED
-    member_uuid CDATA #REQUIRED
-    notification_uuid CDATA #REQUIRED
-    email CDATA #IMPLIED
-    username CDATA #IMPLIED
-    password CDATA #IMPLIED
-    phone CDATA #REQUIRED
-    first_name CDATA #IMPLIED
-    last_name CDATA #IMPLIED
-    avatar CDATA #IMPLIED
-    flag CDATA #IMPLIED
-    status CDATA #IMPLIED
-    email_verified_at CDATA #IMPLIED
-    phone_verified_at CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
-
-<!ELEMENT member_activity_log EMPTY>
-<!ATTLIST member_activity_log
-    id CDATA #IMPLIED
-    performed_by CDATA #REQUIRED
-    name CDATA #IMPLIED
-    target_id CDATA #IMPLIED
-    event_type CDATA #IMPLIED
-    column_name CDATA #IMPLIED
-    data_before CDATA #IMPLIED
-    data_after CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
-
-<!ELEMENT member_ban_history_log EMPTY>
-<!ATTLIST member_ban_history_log
-    id CDATA #IMPLIED
-    member_id CDATA #REQUIRED
-    banned_by CDATA #REQUIRED
-    until CDATA #REQUIRED
-    reason CDATA #IMPLIED
-    unban_reason CDATA #IMPLIED
-    unbanned_by CDATA #IMPLIED
-    status CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
-
-<!ELEMENT member_login_log EMPTY>
-<!ATTLIST member_login_log
-    id CDATA #IMPLIED
-    member_id CDATA #REQUIRED
-    type CDATA #IMPLIED
-    ip_address CDATA #REQUIRED
-    success CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
-
-<!ELEMENT member_logout_log EMPTY>
-<!ATTLIST member_logout_log
-    id CDATA #IMPLIED
-    member_id CDATA #REQUIRED
-    type CDATA #IMPLIED
-    ip_address CDATA #REQUIRED
-    created_at CDATA #REQUIRED
->
-
-<!ELEMENT member_role EMPTY>
-<!ATTLIST member_role
-    member_id CDATA #REQUIRED
-    role_id CDATA #REQUIRED
->
-
-<!ELEMENT member_vehicle EMPTY>
-<!ATTLIST member_vehicle
-    member_id CDATA #REQUIRED
-    vehicle_id CDATA #REQUIRED
 >
 
 <!ELEMENT parking_lot EMPTY>
@@ -211,6 +140,78 @@
 <!ATTLIST role
     id CDATA #IMPLIED
     name CDATA #REQUIRED
+>
+
+<!ELEMENT user_activity_log EMPTY>
+<!ATTLIST user_activity_log
+    id CDATA #IMPLIED
+    performed_by CDATA #REQUIRED
+    name CDATA #IMPLIED
+    target_id CDATA #IMPLIED
+    event_type CDATA #IMPLIED
+    column_name CDATA #IMPLIED
+    data_before CDATA #IMPLIED
+    data_after CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT user_ban_history_log EMPTY>
+<!ATTLIST user_ban_history_log
+    id CDATA #IMPLIED
+    user_id CDATA #REQUIRED
+    banned_by CDATA #REQUIRED
+    until CDATA #REQUIRED
+    reason CDATA #IMPLIED
+    unban_reason CDATA #IMPLIED
+    unbanned_by CDATA #IMPLIED
+    status CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT user_login_log EMPTY>
+<!ATTLIST user_login_log
+    id CDATA #IMPLIED
+    user_id CDATA #REQUIRED
+    type CDATA #IMPLIED
+    ip_address CDATA #REQUIRED
+    success CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT user_logout_log EMPTY>
+<!ATTLIST user_logout_log
+    id CDATA #IMPLIED
+    user_id CDATA #REQUIRED
+    type CDATA #IMPLIED
+    ip_address CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT user_vehicle EMPTY>
+<!ATTLIST user_vehicle
+    user_id CDATA #REQUIRED
+    vehicle_id CDATA #REQUIRED
+>
+
+<!ELEMENT users EMPTY>
+<!ATTLIST users
+    id CDATA #IMPLIED
+    user_uuid CDATA #REQUIRED
+    notification_uuid CDATA #REQUIRED
+    email CDATA #IMPLIED
+    username CDATA #IMPLIED
+    password CDATA #IMPLIED
+    phone CDATA #REQUIRED
+    first_name CDATA #IMPLIED
+    last_name CDATA #IMPLIED
+    avatar CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    status CDATA #IMPLIED
+    enabled CDATA #IMPLIED
+    email_verified_at CDATA #IMPLIED
+    phone_verified_at CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
 >
 
 <!ELEMENT vehicle EMPTY>
