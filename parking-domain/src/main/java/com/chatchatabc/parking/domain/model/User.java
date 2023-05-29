@@ -22,18 +22,18 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "member")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Member extends FlagEntity implements UserDetails {
+public class User extends FlagEntity implements UserDetails {
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String memberUuid = UUID.randomUUID().toString();
+    @Column(unique = true, name = "user_uuid")
+    private String userUuid = UUID.randomUUID().toString();
 
     @JsonIgnore
     @Column(unique = true)
@@ -68,6 +68,9 @@ public class Member extends FlagEntity implements UserDetails {
     private CloudFile avatar;
 
     @Column
+    private Boolean enabled = true;
+
+    @Column
     private Integer status = 0;
 
     @Column
@@ -85,17 +88,17 @@ public class Member extends FlagEntity implements UserDetails {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "member_role",
-            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+            name = "authorities",
+            joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"),
+            inverseJoinColumns = @JoinColumn(name = "authority", referencedColumnName = "name")
     )
     private Collection<Role> roles;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "member_vehicle",
-            joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"),
+            name = "user_vehicle",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     )
     private Collection<Vehicle> vehicles;
@@ -111,9 +114,9 @@ public class Member extends FlagEntity implements UserDetails {
     }
 
     /**
-     * Check if member is banned, use MemberBanHistoryLog
+     * Check if user is banned, use UserBanHistoryLog
      *
-     * @return true if member is not banned, false otherwise
+     * @return true if user is not banned, false otherwise
      */
     @Override
     // TODO: Implement feature
@@ -128,6 +131,6 @@ public class Member extends FlagEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.status > -1;
+        return this.enabled;
     }
 }
