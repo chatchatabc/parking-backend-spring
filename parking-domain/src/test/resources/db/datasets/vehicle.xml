@@ -2,21 +2,18 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-
     <vehicle id="1" type="0" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" name="Lightning McQueen"
              plate_number="ASD1234" owner_id="5" created_at="2023-05-02 16:14:47.307160"
              updated_at="2023-05-05 16:14:47.307160"/>
-    <member_vehicle member_id="5" vehicle_id="1"/>
+    <user_vehicle user_id="5" vehicle_id="1"/>
 
     <vehicle id="2" type="0" vehicle_uuid="ddd6ed87-3d29-4b87-890c-75a86f684278" name="Finn McMissile"
              plate_number="QWE1234" owner_id="5" created_at="2023-04-02 16:14:47.307160"
              updated_at="2023-04-05 16:14:47.307160"/>
-    <member_vehicle member_id="5" vehicle_id="2"/>
+    <user_vehicle user_id="5" vehicle_id="2"/>
 
     <vehicle id="3" type="1" vehicle_uuid="f8e5e1d2-4c3b-2a1f-0e9d-8c7b6a5f4e3d" name="Mator"
              plate_number="ABC5678" owner_id="5" created_at="2023-05-18 10:30:00.000000"
              updated_at="2023-05-18 10:30:00.000000"/>
-    <member_vehicle member_id="5" vehicle_id="3"/>
-
-
+    <user_vehicle user_id="5" vehicle_id="3"/>
 </dataset>
