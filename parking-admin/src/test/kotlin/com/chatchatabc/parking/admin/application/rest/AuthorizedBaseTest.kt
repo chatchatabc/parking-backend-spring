@@ -22,8 +22,18 @@ open class AuthorizedBaseTest {
         return MockMvcRequestBuilders.get(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
     }
 
+    // TODO: integrate as one with get()
+    fun getNoAuth(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
+        return MockMvcRequestBuilders.get(urlTemplate, *uriVariables)
+    }
+
     fun post(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
         return MockMvcRequestBuilders.post(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
+    }
+
+    // TODO: integrate as one with post()
+    fun postNoAuth(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
+        return MockMvcRequestBuilders.post(urlTemplate, *uriVariables)
     }
 
     // Based on JwtService generateToken
