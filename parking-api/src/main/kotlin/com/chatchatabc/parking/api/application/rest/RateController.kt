@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.RateMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Rate
@@ -31,7 +32,7 @@ class RateController(
     ): ResponseEntity<ApiResponse<Rate>> {
         return try {
             val rate = rateRepository.findById(rateId).get()
-            ResponseEntity.ok(ApiResponse(rate, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(rate, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().build()
         }
@@ -46,9 +47,9 @@ class RateController(
     ): ResponseEntity<ApiResponse<Rate>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            ResponseEntity.ok(ApiResponse(parkingLot.rate, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(parkingLot.rate, null))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().build()
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -88,13 +89,10 @@ class RateController(
                 rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)
                 rateService.saveRate(parkingLot.rate!!)
             }
-            ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
-            )
+            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
