@@ -1,13 +1,13 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.admin.application.mapper.RateMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Rate
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.service.RateService
 import org.mapstruct.factory.Mappers
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
@@ -56,11 +56,9 @@ class RateController(
                 rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)
                 rateService.saveRate(parkingLot.rate!!)
             }
-            ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
-            ResponseEntity.badRequest().build()
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
