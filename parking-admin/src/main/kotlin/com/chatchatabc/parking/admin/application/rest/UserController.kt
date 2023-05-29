@@ -10,7 +10,6 @@ import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
 import org.mapstruct.factory.Mappers
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
@@ -56,19 +55,11 @@ class UserController(
             }
             userMapper.createUserFromCreateRequest(req, user)
             userService.saveUser(user)
-            return ResponseEntity.ok(
-                ApiResponse(
-                    null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -94,17 +85,11 @@ class UserController(
             val user = userRepository.findByUserUuid(userUuid).get()
             userMapper.updateUserFromUpdateRequest(req, user)
             userService.saveUser(user)
-            return ResponseEntity.ok(
-                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
-            )
+            return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
-                .body(
-                    ApiResponse(
-                        null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -122,17 +107,11 @@ class UserController(
             val user = userRepository.findByUserUuid(userUuid).get().apply {
                 this.password = passwordEncoder.encode(req.newPassword)
             }
-            return ResponseEntity.ok(
-                ApiResponse(
-                    userRepository.save(user), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(userRepository.save(user), null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
-                )
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
@@ -156,18 +135,9 @@ class UserController(
                 this.until = req.until
                 this.status = 0
             }
-            ResponseEntity.ok().body(
-                ApiResponse(
-                    userBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
-            )
+            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
         } catch (e: Exception) {
-            e.printStackTrace()
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
-                )
-            )
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -189,18 +159,9 @@ class UserController(
                 this.unbanReason = req.unbanReason
                 this.status = -1
             }
-            ResponseEntity.ok().body(
-                ApiResponse(
-                    userBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
-            )
+            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
         } catch (e: Exception) {
-            e.printStackTrace()
-            ResponseEntity.badRequest().body(
-                ApiResponse(
-                    null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true
-                )
-            )
+            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
