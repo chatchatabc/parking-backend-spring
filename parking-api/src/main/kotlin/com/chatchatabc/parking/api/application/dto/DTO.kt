@@ -7,17 +7,17 @@ data class ApiResponse<T>(
     val error: Boolean = false
 )
 
-data class MemberPhoneLoginRequest(
+data class UserPhoneLoginRequest(
     val phone: String,
     val username: String?
 )
 
-data class MemberVerifyOTPRequest(
+data class UserVerifyOTPRequest(
     val phone: String,
     val otp: String
 )
 
-data class MemberNotificationResponse(
+data class UserNotificationResponse(
     val notificationId: String
 )
 
