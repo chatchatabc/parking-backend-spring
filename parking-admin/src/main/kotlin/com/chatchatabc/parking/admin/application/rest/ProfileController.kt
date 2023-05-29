@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
@@ -36,20 +37,11 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(
-                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
-            )
+            ResponseEntity.ok().body(ApiResponse(user, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.ERROR.name,
-                        true
-                    )
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -65,10 +57,10 @@ class ProfileController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             userLogoutLogService.createLog(user.id, 1, request.remoteAddr)
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
-                .body(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true))
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
