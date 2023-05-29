@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.UserVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
@@ -44,15 +45,11 @@ class AuthController(
             val otp = userService.generateOTPAndSaveToKV(req.phone, 900L)
             // Send OTP to SMS using events
             applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp))
-            ResponseEntity.ok().body(
-                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
-            )
+            ResponseEntity.ok().body(ApiResponse(null, null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -87,9 +84,7 @@ class AuthController(
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
-            ResponseEntity.ok().headers(headers).body(
-                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.USER_VERIFY_OTP_SUCCESS.name, false)
-            )
+            ResponseEntity.ok().headers(headers).body(ApiResponse(user, null))
         } catch (e: Exception) {
             e.printStackTrace()
             // Generate Failed Login Log
@@ -97,9 +92,7 @@ class AuthController(
                 userLoginLogService.createLog(user.id, request.remoteAddr, 0, false)
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 }
