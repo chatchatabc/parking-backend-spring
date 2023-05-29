@@ -1,10 +1,10 @@
 package com.chatchatabc.parking.domain.specification;
 
-import com.chatchatabc.parking.domain.model.Member;
+import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
-public class MemberSpecification {
-    public static Specification<Member> withKeyword(String keyword) {
+public class UserSpecification {
+    public static Specification<User> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
             return builder.or(
