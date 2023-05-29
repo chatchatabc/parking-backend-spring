@@ -2,8 +2,8 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
 import com.chatchatabc.parking.domain.enums.RoleNames;
-import com.chatchatabc.parking.domain.model.Member;
-import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.model.User;
+import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.infra.service.KVService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,46 +12,46 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MemberServiceImplTest extends TestContainersBaseTest {
+class UserServiceImplTest extends TestContainersBaseTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
     @Autowired
     private KVService kvService;
     @Autowired
-    private MemberServiceImpl memberService;
+    private UserServiceImpl userService;
 
     @Test
-    void testSoftRegisterMember_ShouldSuccessfullyRegister() throws Exception {
+    void testSoftRegisterUser_ShouldSuccessfullyRegister() throws Exception {
         String phone = "69420961111";
         String username = "soft_register";
 
-        assertThat(memberRepository.findByPhone(phone)).isEmpty();
+        assertThat(userRepository.findByPhone(phone)).isEmpty();
 
-        memberService.softRegisterMember(phone, username);
+        userService.softRegisterUser(phone, username);
 
-        assertThat(memberRepository.findByPhone(phone)).isPresent();
+        assertThat(userRepository.findByPhone(phone)).isPresent();
     }
 
     @Test
-    void testSoftRegisterMember_ExistingMemberWithCorrectUsername_ShouldSuccessfullyRegister() throws Exception {
+    void testSoftRegisterUser_ExistingUserWithCorrectUsername_ShouldSuccessfullyRegister() throws Exception {
         String phone = "1234567890";
         String username = "admin";
 
-        assertThat(memberRepository.findByPhone(phone)).isPresent();
+        assertThat(userRepository.findByPhone(phone)).isPresent();
 
-        memberService.softRegisterMember(phone, username);
+        userService.softRegisterUser(phone, username);
 
-        assertThat(memberRepository.findByPhone(phone)).isPresent();
+        assertThat(userRepository.findByPhone(phone)).isPresent();
     }
 
     @Test
-    void testSoftRegisterMember_ExistingMemberWithIncorrectUsername_ExceptionThrown() throws Exception {
+    void testSoftRegisterUser_ExistingUserWithIncorrectUsername_ExceptionThrown() throws Exception {
         String phone = "1234567890";
         String username = "adminWrong";
 
-        assertThat(memberRepository.findByPhone(phone)).isPresent();
+        assertThat(userRepository.findByPhone(phone)).isPresent();
 
-        assertThrows(Exception.class, () -> memberService.softRegisterMember(phone, username));
+        assertThrows(Exception.class, () -> userService.softRegisterUser(phone, username));
     }
 
     @Test
@@ -63,7 +63,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         // Set otp to KV Service
         kvService.set("otp_" + phone, otp, 900L);
 
-        assertThat(memberService.verifyOTPAndAddRole(phone, otp, roleName)).isNotNull();
+        assertThat(userService.verifyOTPAndAddRole(phone, otp, roleName)).isNotNull();
     }
 
     @Test
@@ -77,7 +77,7 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         // Set otp to KV Service
         kvService.set("otp_" + phone, otp, 900L);
 
-        assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, invalidOtp, roleName));
+        assertThrows(Exception.class, () -> userService.verifyOTPAndAddRole(phone, invalidOtp, roleName));
     }
 
     @Test
@@ -88,37 +88,37 @@ class MemberServiceImplTest extends TestContainersBaseTest {
         RoleNames roleName = RoleNames.ROLE_ADMIN;
 
         // OTP not saved to KV since expired OTPs are deleted
-        assertThrows(Exception.class, () -> memberService.verifyOTPAndAddRole(phone, otp, roleName));
+        assertThrows(Exception.class, () -> userService.verifyOTPAndAddRole(phone, otp, roleName));
     }
 
     @Test
-    void testUpdateMember_ShouldSuccessfullyUpdate() {
+    void testUpdateUser_ShouldSuccessfullyUpdate() {
         String username = "raph";
-        Member member = memberRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow();
 
         String newUsername = "raph2";
-        member.setUsername(newUsername);
+        user.setUsername(newUsername);
 
-        memberService.saveMember(member);
+        userService.saveUser(user);
 
-        assertThat(memberRepository.findByUsername(newUsername)).isPresent();
+        assertThat(userRepository.findByUsername(newUsername)).isPresent();
     }
 
     @Test
-    void testUpdateMember_WhenUsernameIsAlreadyUsed_ShouldFail() {
+    void testUpdateUser_WhenUsernameIsAlreadyUsed_ShouldFail() {
         String username = "raph";
-        Member member = memberRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow();
 
         String newUsername = "matt";
-        member.setUsername(newUsername);
+        user.setUsername(newUsername);
 
-        assertThrows(Exception.class, () -> memberService.saveMember(member));
+        assertThrows(Exception.class, () -> userService.saveUser(user));
     }
 
     @Test
     void testGenerateOTPAndSaveToKV_ShouldBeSuccessful() {
         String phone = "1266784472";
-        String otp = memberService.generateOTPAndSaveToKV(phone, 900L);
+        String otp = userService.generateOTPAndSaveToKV(phone, 900L);
         assertThat(otp).isNotNull();
         assertThat(kvService.get("otp_" + phone)).isEqualTo(otp);
     }
@@ -128,12 +128,12 @@ class MemberServiceImplTest extends TestContainersBaseTest {
     @Test
     void testLoadUserByUsername_ShouldReturnUserDetails() {
         String username = "admin";
-        assertThat(memberService.loadUserByUsername(username)).isNotNull();
+        assertThat(userService.loadUserByUsername(username)).isNotNull();
     }
 
     @Test
     void testLoadUserByUsername_WhenUsernameDoesNotExist_ShouldThrowUsernameNotFoundException() {
         String username = "adminWrong";
-        assertThrows(UsernameNotFoundException.class, () -> memberService.loadUserByUsername(username));
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(username));
     }
 }

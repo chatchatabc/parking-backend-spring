@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.enums.RoleNames;
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.Role;
-import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
-import com.chatchatabc.parking.domain.service.MemberService;
+import com.chatchatabc.parking.domain.repository.UserRepository;
+import com.chatchatabc.parking.domain.service.UserService;
 import com.chatchatabc.parking.infra.service.FileStorageService;
 import com.chatchatabc.parking.infra.service.KVService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,14 +20,14 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class MemberServiceImpl implements MemberService {
-    private final MemberRepository memberRepository;
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final KVService kvService;
     private final FileStorageService fileStorageService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, RoleRepository roleRepository, KVService kvService, FileStorageService fileStorageService) {
-        this.memberRepository = memberRepository;
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, KVService kvService, FileStorageService fileStorageService) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.kvService = kvService;
         this.fileStorageService = fileStorageService;
@@ -36,26 +36,26 @@ public class MemberServiceImpl implements MemberService {
     private final Random random = new Random();
 
     /**
-     * Soft register a new member if not exists
+     * Soft register a new user if not exists
      *
      * @param phone    the phone number
      * @param username the username
      */
     @Override
-    public void softRegisterMember(String phone, String username) throws Exception {
-        Optional<Member> queriedMember = memberRepository.findByPhone(phone);
-        if (queriedMember.isEmpty()) {
-            Member createdMember = new Member();
-            createdMember.setPhone(phone);
-            createdMember.setStatus(0);
+    public void softRegisterUser(String phone, String username) throws Exception {
+        Optional<User> queriedUser = userRepository.findByPhone(phone);
+        if (queriedUser.isEmpty()) {
+            User createdUser = new User();
+            createdUser.setPhone(phone);
+            createdUser.setStatus(0);
             if (username != null) {
-                createdMember.setUsername(username);
+                createdUser.setUsername(username);
             }
-            memberRepository.save(createdMember);
+            userRepository.save(createdUser);
         } else {
-            // Check if username is correct for existing member
+            // Check if username is correct for existing user
             if (username != null) {
-                if (!Objects.equals(queriedMember.get().getUsername(), username)) {
+                if (!Objects.equals(queriedUser.get().getUsername(), username)) {
                     throw new Exception("Username is incorrect");
                 }
             }
@@ -67,13 +67,13 @@ public class MemberServiceImpl implements MemberService {
      *
      * @param phone    the phone number
      * @param roleName the role name
-     * @return the member
+     * @return the user
      */
     @Override
-    public Member verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception {
-        Optional<Member> queriedMember = memberRepository.findByPhone(phone);
-        if (queriedMember.isEmpty()) {
-            throw new Exception("Member not found");
+    public User verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception {
+        Optional<User> queriedUser = userRepository.findByPhone(phone);
+        if (queriedUser.isEmpty()) {
+            throw new Exception("User not found");
         }
         Optional<Role> role = roleRepository.findByName(roleName.name());
         if (role.isEmpty()) {
@@ -94,25 +94,25 @@ public class MemberServiceImpl implements MemberService {
         kvService.delete("otp_" + phone);
 
         // Update phone verified date only if null, no need to reset again
-        if (queriedMember.get().getPhoneVerifiedAt() == null) {
+        if (queriedUser.get().getPhoneVerifiedAt() == null) {
             // Set Phone Verified At to current local date time
-            queriedMember.get().setPhoneVerifiedAt(LocalDateTime.now());
+            queriedUser.get().setPhoneVerifiedAt(LocalDateTime.now());
         }
-        // Add role to member if not exists
-        if (queriedMember.get().getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.get().getId()))) {
-            queriedMember.get().getRoles().add(role.get());
+        // Add role to user if not exists
+        if (queriedUser.get().getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.get().getId()))) {
+            queriedUser.get().getRoles().add(role.get());
         }
-        return memberRepository.save(queriedMember.get());
+        return userRepository.save(queriedUser.get());
     }
 
     /**
-     * Update member
+     * Update user
      *
-     * @param updatedMember the updated member
+     * @param updatedUser the updated user
      */
     @Override
-    public void saveMember(Member updatedMember) {
-        memberRepository.save(updatedMember);
+    public void saveUser(User updatedUser) {
+        userRepository.save(updatedUser);
     }
 
     /**
@@ -131,43 +131,43 @@ public class MemberServiceImpl implements MemberService {
     /**
      * Upload a file to the storage service.
      *
-     * @param uploadedBy  the member who uploaded the file
+     * @param uploadedBy  the user who uploaded the file
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
      * @param filename    the filename
      * @param filesize    the filesize
      * @param mimetype    the mimetype
-     * @return the updated member
+     * @return the updated user
      * @throws Exception if an error occurs
      */
     @Override
-    public Member uploadImage(Member uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
-        // Update member avatar field
+    public User uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
+        // Update user avatar field
         uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
-        return memberRepository.save(uploadedBy);
+        return userRepository.save(uploadedBy);
     }
 
     /**
      * Login for Security
      *
      * @param username the username
-     * @return the member details
-     * @throws UsernameNotFoundException if member not found
+     * @return the user details
+     * @throws UsernameNotFoundException if user not found
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> member = memberRepository.findByUsername(username);
-        if (member.isEmpty()) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
         return new org.springframework.security.core.userdetails.User(
-                member.get().getUsername(),
-                member.get().getPassword(),
-                member.get().isEnabled(),
-                member.get().isAccountNonExpired(),
-                member.get().isCredentialsNonExpired(),
-                member.get().isAccountNonLocked(),
-                member.get().getAuthorities()
+                user.get().getUsername(),
+                user.get().getPassword(),
+                user.get().isEnabled(),
+                user.get().isAccountNonExpired(),
+                user.get().isCredentialsNonExpired(),
+                user.get().isAccountNonLocked(),
+                user.get().getAuthorities()
         );
     }
 }
