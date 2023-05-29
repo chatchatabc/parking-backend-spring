@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "database.dtd">
+
+<dataset>
+    <!-- Admin -->
+    <users id="1" status="0" user_uuid="ec4af6e9-ec57-434d-990d-ae83d9459a31" enabled="true"
+           notification_uuid="bdc2ae2c-fabf-4889-8110-f0ec4d406ff2" email="admin@gmail.com" username="admin"
+           phone="1234567890" password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-11 16:14:47.307160"/>
+    <authorities username="admin" authority="ROLE_ADMIN"/>
+
+    <!-- Enforcer -->
+    <users id="3" status="0" user_uuid="448d6e75-00c2-4177-a29f-e78f9aabc2a9" enabled="true"
+           notification_uuid="afbdab42-8596-48d0-8aaa-7504a5a97882" email="enforcer@gmail.com" username="enforcer"
+           email_verified_at="2023-05-08 16:14:47.307160" phone="7688453415"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
+    <authorities username="enforcer" authority="ROLE_ENFORCER"/>
+
+    <!-- User -->
+    <users id="4" status="0" user_uuid="dfc3cd78-9c89-4da2-8749-253afed080af" enabled="true"
+           notification_uuid="ffa2b156-70d3-48a8-929e-63752beee96b" email="user@gmail.com" username="user"
+           phone="5512355678" phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
+    <authorities username="user" authority="ROLE_USER"/>
+
+    <!-- owner -->
+    <users id="2" status="0" user_uuid="b69bf0f3-3a3a-4079-94e6-776f747fd3de" enabled="true"
+           notification_uuid="c9e085dc-4dda-462b-8bab-a5dedd62f1a9" email="owner@gmail.com" username="owner"
+           email_verified_at="2023-05-09 16:14:47.307160" phone="9906345322"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="7" status="0" user_uuid="10f1ac81-4eff-4fa2-855e-84b03a348623" enabled="true"
+           notification_uuid="b38d544a-a447-40f5-9789-725541ecd090" email="owner_pl@gmail.com"
+           username="owner_pl" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345322"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="8" status="0" user_uuid="3e014d2f-0dc2-4ae9-989f-9016e8d48e32" enabled="true"
+           notification_uuid="ed8108d0-48c6-4e2e-8e37-a95d87607a94" email="owner_pl_2@gmail.com" username="owner_pl_2"
+           email_verified_at="2023-05-09 16:14:47.307160" phone="9906345323"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_2" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="9" status="0" user_uuid="0e583f1d-d6a9-4e92-ae4c-d7d1399a152b" enabled="true"
+           notification_uuid="140f2d39-c720-4129-9819-08291ac56c42" email="owner_pl_3@gmail.com" username="owner_pl_3"
+           email_verified_at="2023-05-09 16:14:47.307160" phone="9906345324"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_3" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="10" status="0" user_uuid="a00e9c9b-85a1-4ecb-a9dd-99fe92498b79" enabled="true"
+           notification_uuid="03abb703-b4e6-438b-8582-7a425ecf37bd" email="owner_pl_4@gmail.com" username="owner_pl_4"
+           email_verified_at="2023-05-09 16:14:47.307160" phone="9906345325"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_4" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="11" status="0" user_uuid="f2d166d4-2e44-4ab2-93f3-6b3eac9c1c5a" enabled="true"
+           notification_uuid="830cc238-32cd-452d-adab-04e8af43004a" email="owner_pl_5@gmail.com"
+           username="owner_pl_5" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345326"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_5" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="12" status="0" user_uuid="d04e9209-268f-46f3-8b10-83ad5a77ee3f" enabled="true"
+           notification_uuid="d2b6d797-332c-4891-8817-d890b91fac90" email="owner_pl_6@gmail.com"
+           username="owner_pl_6" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345327"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_6" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="13" status="0" user_uuid="4e17f7e0-1e5b-43f2-b707-5efbd8726c42" enabled="true"
+           notification_uuid="fa28d687-145e-4cce-9416-bee20e0da080" email="owner_pl_7@gmail.com"
+           username="owner_pl_7" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345328"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_7" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="14" status="0" user_uuid="d90a8c3e-670f-4c4a-8d60-1b50e2929e34" enabled="true"
+           notification_uuid="480bb8ba-5095-4a7d-94ba-ee623695e619" email="owner_pl_8@gmail.com"
+           username="owner_pl_8" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345329"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_8" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="15" status="0" user_uuid="ed72e00d-7d32-4a91-8e0a-3f3c8c0df0a7" enabled="true"
+           notification_uuid="0ceb7d6d-9096-4170-9ce2-11bcb04ee3e9" email="owner_pl_9@gmail.com"
+           username="owner_pl_9" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345330"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_9" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="16" status="0" user_uuid="6a6d5304-92e3-4e72-8b7d-8662322f3bca" enabled="true"
+           notification_uuid="d7907bb3-cbf4-4942-b6dc-4f6ff5d120d9" email="owner_pl_10@gmail.com"
+           username="owner_pl_10" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345331"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_10" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="17" status="0" user_uuid="f7289f27-9d6d-4a5e-942a-5b9e3f0d8d02" enabled="true"
+           notification_uuid="f2f28b86-28b5-4eb2-aed6-13b99448d3da" email="owner_pl_11@gmail.com"
+           username="owner_pl_11" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345332"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_11" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="18" status="0" user_uuid="4f7dc5ae-5123-40a2-b726-54c4ed0b727e" enabled="true"
+           notification_uuid="31c1998b-adb2-4e46-9a95-62c915dc29d7" email="owner_pl_12@gmail.com"
+           username="owner_pl_12" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345333"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_12" authority="ROLE_PARKING_OWNER"/>
+
+    <users id="19" status="0" user_uuid="6c3498b5-11a5-4ae3-babf-7c63832dfb80" enabled="true"
+           notification_uuid="642bfd96-b233-4577-a4f7-79cf864416a1" email="owner_pl_13@gmail.com"
+           username="owner_pl_13" email_verified_at="2023-05-09 16:14:47.307160" phone="9906345334"
+           phone_verified_at="2023-05-10 16:14:47.307160"
+           password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+    <authorities username="owner_pl_13" authority="ROLE_PARKING_OWNER"/>
+
+
+    <!-- without verification -->
+    <users id="5" status="0" user_uuid="b0c50381-d0bd-455d-9e46-2b0bd599320b" enabled="true"
+           notification_uuid="d387a2fd-d42a-4b9b-9c62-a9ace442cce4" email="raphael14@gmail.com" username="raph"
+           phone="9976744351" password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-08 16:14:47.307160" updated_at="2023-05-09 16:14:47.307160"/>
+    <authorities username="raph" authority="ROLE_USER"/>
+
+    <users id="6" status="0" user_uuid="7285d869-d9b5-40dc-a459-1d6a951505ac" enabled="true"
+           notification_uuid="ef33078d-1726-4897-be08-b3756ea65602" email="matthew@gmail.com" username="matt"
+           phone="1266784472" password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
+           created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
+    <authorities username="matt" authority="ROLE_USER"/>
+</dataset>
