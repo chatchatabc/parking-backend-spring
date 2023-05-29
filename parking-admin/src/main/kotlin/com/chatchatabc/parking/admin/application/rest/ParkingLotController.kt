@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -11,7 +12,6 @@ import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import org.mapstruct.factory.Mappers
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -57,10 +57,10 @@ class ParkingLotController(
             createdParkingLot.owner = owner.id
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
             parkingLotService.saveParkingLot(createdParkingLot)
-            ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
@@ -109,17 +109,10 @@ class ParkingLotController(
             // Save
             parkingLotService.saveParkingLot(updatedParkingLot)
 
-            return ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
@@ -134,10 +127,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotService.verifyParkingLot(principal.name, parkingLotId)
-            ResponseEntity.ok(ApiResponse(parkingLot, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
+            ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
@@ -151,17 +144,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             parkingLotImageService.deleteImage(imageId)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
@@ -175,17 +161,10 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             parkingLotImageService.restoreImage(imageId)
-            ResponseEntity.ok(
-                ApiResponse(
-                    null,
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS_UPDATE.name,
-                    false
-                )
-            )
+            ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
-                ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true)
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
         }
     }
