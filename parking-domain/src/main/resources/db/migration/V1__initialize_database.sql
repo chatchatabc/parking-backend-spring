@@ -2,74 +2,90 @@
 CREATE TABLE IF NOT EXISTS role
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
+    name VARCHAR(50) UNIQUE NOT NULL
 );
 
 ALTER SEQUENCE role_id_seq RESTART WITH 10;
 
--- Create Member Table
-CREATE TABLE IF NOT EXISTS member
+-- Create Users Table
+CREATE TABLE IF NOT EXISTS users
 (
     id                SERIAL PRIMARY KEY,
-    member_uuid       VARCHAR(36)   NOT NULL UNIQUE,
-    notification_uuid VARCHAR(36)   NOT NULL UNIQUE,
+    user_uuid         VARCHAR(36)       NOT NULL UNIQUE,
+    notification_uuid VARCHAR(36)       NOT NULL UNIQUE,
     email             VARCHAR(255) UNIQUE,
     username          VARCHAR(15) UNIQUE,
     password          VARCHAR(255),
-    phone             VARCHAR(15)   NOT NULL,
+    phone             VARCHAR(15)       NOT NULL,
     first_name        VARCHAR(255),
     last_name         VARCHAR(255),
     avatar            INT,
-    flag              INT DEFAULT 0 NOT NULL,
-    status            INT DEFAULT 0 NOT NULL,
+    flag              INT  DEFAULT 0    NOT NULL,
+    status            INT  DEFAULT 0    NOT NULL,
+    enabled           BOOL DEFAULT TRUE NOT NULL,
     email_verified_at TIMESTAMP,
     phone_verified_at TIMESTAMP,
-    created_at        TIMESTAMP     NOT NULL,
-    updated_at        TIMESTAMP     NOT NULL
+    created_at        TIMESTAMP         NOT NULL,
+    updated_at        TIMESTAMP         NOT NULL
 );
 
-create index idx_member_on_member_uuid on member (member_uuid);
-create index idx_member_on_email on member (email);
-create index idx_member_on_username on member (username);
-create index idx_member_on_phone on member (phone);
+create index idx_users_on_user_uuid on users (user_uuid);
+create index idx_users_on_email on users (email);
+create index idx_users_on_username on users (username);
+create index idx_users_on_phone on users (phone);
 
-ALTER SEQUENCE member_id_seq RESTART WITH 1000;
+ALTER SEQUENCE users_id_seq RESTART WITH 1000;
 
--- Create member_role table
-CREATE TABLE IF NOT EXISTS member_role
+-- Create Authorities table
+CREATE TABLE IF NOT EXISTS authorities
 (
-    member_id INT NOT NULL,
-    role_id   INT NOT NULL,
-    PRIMARY KEY (member_id, role_id)
+    username  VARCHAR(15) NOT NULL,
+    authority VARCHAR(50) NOT NULL,
+    constraint fk_authorities_users foreign key (username) references users (username) on update cascade
 );
 
--- Create member_login_log table
-CREATE TABLE IF NOT EXISTS member_login_log
+create unique index idx_auth_username on authorities (username, authority);
+
+-- Function to automatically update user on authorities table
+CREATE OR REPLACE FUNCTION update_username_in_authorities() RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE authorities SET username = NEW.username WHERE username = OLD.username;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_authorities_username
+    AFTER UPDATE OF username ON users
+    FOR EACH ROW
+EXECUTE FUNCTION update_username_in_authorities();
+
+-- Create user_login_log table
+CREATE TABLE IF NOT EXISTS user_login_log
 (
     id         SERIAL PRIMARY KEY,
-    member_id  BIGINT             NOT NULL,
+    user_id  BIGINT             NOT NULL,
     type       INT  DEFAULT 0     NOT NULL,
     ip_address VARCHAR(39)        NOT NULL,
     success    BOOL DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP          NOT NULL
 );
 
-ALTER SEQUENCE member_login_log_id_seq RESTART WITH 1000;
+ALTER SEQUENCE user_login_log_id_seq RESTART WITH 1000;
 
--- Create member_logout_log table
-CREATE TABLE IF NOT EXISTS member_logout_log
+-- Create user_logout_log table
+CREATE TABLE IF NOT EXISTS user_logout_log
 (
     id         SERIAL PRIMARY KEY,
-    member_id  INT           NOT NULL,
+    user_id  INT           NOT NULL,
     type       INT DEFAULT 0 NOT NULL,
     ip_address VARCHAR(39)   NOT NULL,
     created_at TIMESTAMP     NOT NULL
 );
 
-ALTER SEQUENCE member_logout_log_id_seq RESTART WITH 1000;
+ALTER SEQUENCE user_logout_log_id_seq RESTART WITH 1000;
 
--- Create member_activity_log table
-CREATE TABLE IF NOT EXISTS member_activity_log
+-- Create user_activity_log table
+CREATE TABLE IF NOT EXISTS user_activity_log
 (
     id           SERIAL PRIMARY KEY,
     performed_by BIGINT    NOT NULL,
@@ -82,13 +98,13 @@ CREATE TABLE IF NOT EXISTS member_activity_log
     created_at   TIMESTAMP NOT NULL
 );
 
-ALTER SEQUENCE member_activity_log_id_seq RESTART WITH 1000;
+ALTER SEQUENCE user_activity_log_id_seq RESTART WITH 1000;
 
--- Create member_ban_history_log table
-CREATE TABLE IF NOT EXISTS member_ban_history_log
+-- Create user_ban_history_log table
+CREATE TABLE IF NOT EXISTS user_ban_history_log
 (
     id           SERIAL PRIMARY KEY,
-    member_id    BIGINT        NOT NULL,
+    user_id    BIGINT        NOT NULL,
     banned_by    BIGINT        NOT NULL,
     until        TIMESTAMP     NOT NULL,
     reason       TEXT,
@@ -98,8 +114,8 @@ CREATE TABLE IF NOT EXISTS member_ban_history_log
     created_at   TIMESTAMP     NOT NULL
 );
 
-ALTER SEQUENCE member_ban_history_log_id_seq RESTART WITH 1000;
-create index idx_member_ban_history_log_on_banned_by on member_ban_history_log (banned_by);
+ALTER SEQUENCE user_ban_history_log_id_seq RESTART WITH 1000;
+create index idx_user_ban_history_log_on_banned_by on user_ban_history_log (banned_by);
 
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
@@ -120,12 +136,12 @@ create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
 
 
--- Create member_vehicle table
-CREATE TABLE IF NOT EXISTS member_vehicle
+-- Create user_vehicle table
+CREATE TABLE IF NOT EXISTS user_vehicle
 (
-    member_id  INT NOT NULL,
+    user_id  INT NOT NULL,
     vehicle_id INT NOT NULL,
-    PRIMARY KEY (member_id, vehicle_id)
+    PRIMARY KEY (user_id, vehicle_id)
 );
 
 -- Create rate table
