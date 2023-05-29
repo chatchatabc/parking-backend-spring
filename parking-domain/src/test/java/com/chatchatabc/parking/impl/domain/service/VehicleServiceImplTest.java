@@ -19,9 +19,9 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     @Test
     void testRegisterVehicle_WhenVehicleDoesNotExist_ShouldRegisterVehicle() throws Exception {
         PageRequest pr = PageRequest.of(0, 10);
-        Long currentCount = vehicleRepository.findAllByMember("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements();
+        Long currentCount = vehicleRepository.findAllByUser("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements();
         vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning DaQueen", "ASD12345", 0);
-        assertThat(vehicleRepository.findAllByMember("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements()).isGreaterThan(currentCount);
+        assertThat(vehicleRepository.findAllByUser("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements()).isGreaterThan(currentCount);
     }
 
     @Test
@@ -38,12 +38,12 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    // TODO:
-    void addMemberToVehicle() {
+        // TODO:
+    void addUserToVehicle() {
     }
 
     @Test
-    // TODO:
-    void removeMemberFromVehicle() {
+        // TODO:
+    void removeUserFromVehicle() {
     }
 }

@@ -6,13 +6,13 @@ public interface VehicleService {
     /**
      * Register vehicle
      *
-     * @param memberUuid  the member uuid
+     * @param userUuid    the user uuid
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
      * @param type        the type of the vehicle
      * @return the vehicle
      */
-    Vehicle registerVehicle(String memberUuid, String name, String plateNumber, int type) throws Exception;
+    Vehicle registerVehicle(String userUuid, String name, String plateNumber, int type) throws Exception;
 
     /**
      * Update vehicle
@@ -22,24 +22,24 @@ public interface VehicleService {
     void updateVehicle(Vehicle updatedVehicle) throws Exception;
 
     /**
-     * Add a member to a vehicle
+     * Add a user to a vehicle
      *
-     * @param memberUuid    the member uuid
-     * @param vehicleUuid   the vehicle uuid
-     * @param memberToAddId the member to add id
+     * @param userUuid    the user uuid
+     * @param vehicleUuid the vehicle uuid
+     * @param userToAddId the user to add id
      * @return the vehicle
      * @throws Exception the exception
      */
-    Vehicle addMemberToVehicle(String memberUuid, String vehicleUuid, String memberToAddId) throws Exception;
+    Vehicle addUserToVehicle(String userUuid, String vehicleUuid, String userToAddId) throws Exception;
 
     /**
-     * Remove a member from a vehicle
+     * Remove a user from a vehicle
      *
-     * @param memberUuid       the member uuid
-     * @param vehicleUuid      the vehicle uuid
-     * @param memberToRemoveId the member to remove id
+     * @param userUuid       the user uuid
+     * @param vehicleUuid    the vehicle uuid
+     * @param userToRemoveId the user to remove id
      * @return the vehicle
      * @throws Exception the exception
      */
-    Vehicle removeMemberFromVehicle(String memberUuid, String vehicleUuid, String memberToRemoveId) throws Exception;
+    Vehicle removeUserFromVehicle(String userUuid, String vehicleUuid, String userToRemoveId) throws Exception;
 }
