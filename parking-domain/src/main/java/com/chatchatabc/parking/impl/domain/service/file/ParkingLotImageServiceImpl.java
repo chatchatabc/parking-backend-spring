@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service.file;
 
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.ParkingLot;
+import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage;
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository;
@@ -46,7 +46,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     /**
      * Upload a file to the storage service.
      *
-     * @param uploadedBy  the member who uploaded the file
+     * @param uploadedBy  the user who uploaded the file
      * @param parkingLot  the parking lot to which the image belongs
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
@@ -57,7 +57,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
      * @throws Exception if an error occurs
      */
     @Override
-    public ParkingLotImage uploadImage(Member uploadedBy, ParkingLot parkingLot, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
+    public ParkingLotImage uploadImage(User uploadedBy, ParkingLot parkingLot, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Upload file to cloud storage
         CloudFile cloudFile = fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype);
 

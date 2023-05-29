@@ -1,9 +1,9 @@
-package com.chatchatabc.parking.api.application.event.member
+package com.chatchatabc.parking.api.application.event.user
 
 import org.springframework.context.ApplicationEvent
 
 
-class MemberLoginEvent(
+class UserLoginEvent(
     source: Any?,
     val phone: String,
     val otp: String
