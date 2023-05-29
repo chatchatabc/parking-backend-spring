@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
+import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
@@ -41,17 +42,10 @@ class UserController(
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(
-                ApiResponse(
-                    user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
-                )
-            )
+            ResponseEntity.ok().body(ApiResponse(user, null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -68,20 +62,10 @@ class UserController(
     ): ResponseEntity<ApiResponse<UserNotificationResponse>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(
-                ApiResponse(
-                    UserNotificationResponse(user.notificationUuid),
-                    HttpStatus.OK.value(),
-                    ResponseNames.SUCCESS.name,
-                    false
-                )
-            )
+            ResponseEntity.ok().body(ApiResponse(UserNotificationResponse(user.notificationUuid), null))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
 
@@ -109,14 +93,12 @@ class UserController(
             userMapper.updateUserFromUpdateProfileRequest(request, user)
             userService.saveUser(user)
             ResponseEntity.ok().body(
-                ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false)
+                ApiResponse(null, null)
             )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true)
-                )
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 
@@ -140,10 +122,9 @@ class UserController(
                 file.size,
                 file.contentType
             )
-            ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
+            ApiResponse(user, null)
         } catch (e: Exception) {
-            e.printStackTrace()
-            ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR.name, true)
+            ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
         }
     }
 
