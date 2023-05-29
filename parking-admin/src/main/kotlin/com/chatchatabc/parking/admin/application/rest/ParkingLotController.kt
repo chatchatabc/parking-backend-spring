@@ -6,8 +6,8 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import org.mapstruct.factory.Mappers
@@ -23,7 +23,7 @@ class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotRepository: ParkingLotRepository,
-    private val memberRepository: MemberRepository,
+    private val userRepository: UserRepository,
     private val invoiceRepository: InvoiceRepository
 ) {
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
@@ -46,13 +46,13 @@ class ParkingLotController(
     /**
      * Admin create Parking Lot
      */
-    @PostMapping("/create/{memberUuid}")
+    @PostMapping("/create/{userUuid}")
     fun createParkingLot(
-        @PathVariable memberUuid: String,
+        @PathVariable userUuid: String,
         @RequestBody req: ParkingLotCreateRequest
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val owner = memberRepository.findByMemberUuid(memberUuid).get()
+            val owner = userRepository.findByUserUuid(userUuid).get()
             val createdParkingLot = ParkingLot()
             createdParkingLot.owner = owner.id
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)

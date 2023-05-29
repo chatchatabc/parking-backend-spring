@@ -1,11 +1,11 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.MemberLoginRequest
+import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.Member
-import com.chatchatabc.parking.domain.repository.MemberRepository
-import com.chatchatabc.parking.domain.service.log.MemberLoginLogService
+import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.log.UserLoginLogService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpHeaders
@@ -19,21 +19,22 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class AuthController(
     private val authenticationManager: AuthenticationManager,
-    private val memberRepository: MemberRepository,
+    private val userRepository: UserRepository,
     private val jwtService: JwtService,
-    private val memberLoginLogService: MemberLoginLogService
+    private val userLoginLogService: UserLoginLogService
 ) {
     /**
-     * Login member and authenticate member
+     * Login user and authenticate user
      */
     @PostMapping("/login")
-    fun loginMember(
-        @RequestBody req: MemberLoginRequest,
+    fun loginUser(
+        @RequestBody req: UserLoginRequest,
         request: HttpServletRequest
-    ): ResponseEntity<ApiResponse<Member>> {
-        val member = memberRepository.findByUsername(req.username)
+    ): ResponseEntity<ApiResponse<User>> {
+        println("here")
+        val user = userRepository.findByUsername(req.username)
         return try {
-            // Authenticate member
+            // Authenticate user
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                     req.username,
@@ -43,27 +44,27 @@ class AuthController(
             // Generate JWT Token
             val headers = HttpHeaders()
             // Convert granted authority roles to list of string roles
-            val roleStrings: List<String> = member.get().roles.stream()
+            val roleStrings: List<String> = user.get().roles.stream()
                 .map { it.authority }
                 .toList()
 
-            val token: String = jwtService.generateToken(member.get().memberUuid, member.get().username, roleStrings)
+            val token: String = jwtService.generateToken(user.get().userUuid, user.get().username, roleStrings)
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
-            memberLoginLogService.createLog(member.get().id, request.remoteAddr, 1, true)
+            userLoginLogService.createLog(user.get().id, request.remoteAddr, 1, true)
             ResponseEntity.ok().headers(headers)
-                .body(ApiResponse(member.get(), HttpStatus.OK.value(), ResponseNames.MEMBER_LOGIN_SUCCESS.name, false))
+                .body(ApiResponse(user.get(), HttpStatus.OK.value(), ResponseNames.USER_LOGIN_SUCCESS.name, false))
         } catch (e: Exception) {
             // Generate Failed Login Log
-            if (member.isPresent) {
-                memberLoginLogService.createLog(member.get().id, request.remoteAddr, 1, false)
+            if (user.isPresent) {
+                userLoginLogService.createLog(user.get().id, request.remoteAddr, 1, false)
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                     ApiResponse(
                         null,
                         HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.MEMBER_BAD_CREDENTIALS.name,
+                        ResponseNames.USER_BAD_CREDENTIALS.name,
                         true
                     )
                 )

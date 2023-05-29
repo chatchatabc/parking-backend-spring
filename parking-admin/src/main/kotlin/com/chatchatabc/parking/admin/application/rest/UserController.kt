@@ -1,14 +1,14 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.*
-import com.chatchatabc.parking.admin.application.mapper.MemberMapper
+import com.chatchatabc.parking.admin.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.Member
-import com.chatchatabc.parking.domain.model.log.MemberBanHistoryLog
-import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
 import com.chatchatabc.parking.domain.repository.RoleRepository
-import com.chatchatabc.parking.domain.repository.log.MemberBanHistoryLogRepository
-import com.chatchatabc.parking.domain.service.MemberService
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
+import com.chatchatabc.parking.domain.service.UserService
 import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
-@RequestMapping("/api/member")
-class MemberController(
-    private val memberService: MemberService,
-    private val memberRepository: MemberRepository,
+@RequestMapping("/api/user")
+class UserController(
+    private val userService: UserService,
+    private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val memberBanHistoryLogRepository: MemberBanHistoryLogRepository
+    private val userBanHistoryLogRepository: UserBanHistoryLogRepository
 ) {
-    private val memberMapper = Mappers.getMapper(MemberMapper::class.java)
+    private val userMapper = Mappers.getMapper(UserMapper::class.java)
 
     /**
-     * Create Member Request
+     * Create User Request
      */
-    data class MemberCreateRequest(
+    data class UserCreateRequest(
         val email: String?,
         val phone: String,
         val username: String?,
@@ -39,14 +39,14 @@ class MemberController(
     )
 
     /**
-     * Create member
+     * Create user
      */
     @PostMapping("/create")
-    fun createMember(
-        @RequestBody req: MemberCreateRequest
+    fun createUser(
+        @RequestBody req: UserCreateRequest
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val member = Member().apply {
+            val user = User().apply {
                 this.roles = roleRepository.findRolesIn(req.roles)
                 if (req.enabled) {
                     this.status = 0
@@ -54,8 +54,8 @@ class MemberController(
                     this.status = -1
                 }
             }
-            memberMapper.createMemberFromCreateRequest(req, member)
-            memberService.saveMember(member)
+            userMapper.createUserFromCreateRequest(req, user)
+            userService.saveUser(user)
             return ResponseEntity.ok(
                 ApiResponse(
                     null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
@@ -73,9 +73,9 @@ class MemberController(
     }
 
     /**
-     * Update Member Request
+     * Update User Request
      */
-    data class MemberUpdateRequest(
+    data class UserUpdateRequest(
         val email: String?,
         val username: String?,
         val firstName: String?,
@@ -83,17 +83,17 @@ class MemberController(
     )
 
     /**
-     * Update member
+     * Update user
      */
-    @PutMapping("/update/{memberUuid}")
-    fun updateMember(
-        @RequestBody req: MemberUpdateRequest,
-        @PathVariable memberUuid: String
-    ): ResponseEntity<ApiResponse<Member>> {
+    @PutMapping("/update/{userUuid}")
+    fun updateUser(
+        @RequestBody req: UserUpdateRequest,
+        @PathVariable userUuid: String
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
-            val member = memberRepository.findByMemberUuid(memberUuid).get()
-            memberMapper.updateMemberFromUpdateRequest(req, member)
-            memberService.saveMember(member)
+            val user = userRepository.findByUserUuid(userUuid).get()
+            userMapper.updateUserFromUpdateRequest(req, user)
+            userService.saveUser(user)
             return ResponseEntity.ok(
                 ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
@@ -111,20 +111,20 @@ class MemberController(
     // TODO: Implement update phone number api
 
     /**
-     * Override member password
+     * Override user password
      */
-    @PutMapping("/override-password/{memberUuid}")
-    fun overrideMemberPassword(
-        @PathVariable memberUuid: String,
-        @RequestBody req: MemberOverridePasswordRequest
-    ): ResponseEntity<ApiResponse<Member>> {
+    @PutMapping("/override-password/{userUuid}")
+    fun overrideUserPassword(
+        @PathVariable userUuid: String,
+        @RequestBody req: UserOverridePasswordRequest
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
-            val member = memberRepository.findByMemberUuid(memberUuid).get().apply {
+            val user = userRepository.findByUserUuid(userUuid).get().apply {
                 this.password = passwordEncoder.encode(req.newPassword)
             }
             return ResponseEntity.ok(
                 ApiResponse(
-                    memberRepository.save(member), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    userRepository.save(user), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {
@@ -138,19 +138,19 @@ class MemberController(
     }
 
     /**
-     * Ban member
+     * Ban user
      */
-    @PostMapping("/ban/{memberUuid}")
-    fun banMember(
-        @PathVariable memberUuid: String,
-        @RequestBody req: MemberBanRequest,
+    @PostMapping("/ban/{userUuid}")
+    fun banUser(
+        @PathVariable userUuid: String,
+        @RequestBody req: UserBanRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
+    ): ResponseEntity<ApiResponse<UserBanHistoryLog>> {
         return try {
-            val bannedBy = memberRepository.findByMemberUuid(principal.name).get()
-            val member = memberRepository.findByMemberUuid(memberUuid).get()
-            val banLog = MemberBanHistoryLog().apply {
-                this.member = member.id
+            val bannedBy = userRepository.findByUserUuid(principal.name).get()
+            val user = userRepository.findByUserUuid(userUuid).get()
+            val banLog = UserBanHistoryLog().apply {
+                this.user = user.id
                 this.bannedBy = bannedBy.id
                 this.reason = req.reason
                 this.until = req.until
@@ -158,7 +158,7 @@ class MemberController(
             }
             ResponseEntity.ok().body(
                 ApiResponse(
-                    memberBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    userBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {
@@ -172,26 +172,26 @@ class MemberController(
     }
 
     /**
-     * Unban member
+     * Unban user
      */
-    @PostMapping("/unban/{memberUuid}")
-    fun unbanMember(
-        @PathVariable memberUuid: String,
-        @RequestBody req: MemberUnbanRequest,
+    @PostMapping("/unban/{userUuid}")
+    fun unbanUser(
+        @PathVariable userUuid: String,
+        @RequestBody req: UserUnbanRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<MemberBanHistoryLog>> {
+    ): ResponseEntity<ApiResponse<UserBanHistoryLog>> {
         return try {
-            val unbannedBy = memberRepository.findByMemberUuid(principal.name).get()
-            val member = memberRepository.findByMemberUuid(memberUuid).get()
+            val unbannedBy = userRepository.findByUserUuid(principal.name).get()
+            val user = userRepository.findByUserUuid(userUuid).get()
             // Get latest ban log
-            val banLog = memberBanHistoryLogRepository.findLatestBanLog(member.id).get().apply {
+            val banLog = userBanHistoryLogRepository.findLatestBanLog(user.id).get().apply {
                 this.unbannedBy = unbannedBy.id
                 this.unbanReason = req.unbanReason
                 this.status = -1
             }
             ResponseEntity.ok().body(
                 ApiResponse(
-                    memberBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
+                    userBanHistoryLogRepository.save(banLog), HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false
                 )
             )
         } catch (e: Exception) {

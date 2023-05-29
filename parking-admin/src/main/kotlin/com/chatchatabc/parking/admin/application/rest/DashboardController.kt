@@ -4,8 +4,8 @@ import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.admin.application.dto.DashboardStatistics
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/dashboard")
 class DashboardController(
-    private val memberRepository: MemberRepository,
+    private val userRepository: UserRepository,
     private val parkingLotRepository: ParkingLotRepository,
     private val vehicleRepository: VehicleRepository,
     private val invoiceRepository: InvoiceRepository
@@ -26,13 +26,13 @@ class DashboardController(
     @GetMapping("/get-numerical-statistics")
     fun getNumericalStatistics(): ResponseEntity<ApiResponse<DashboardStatistics>> {
         return try {
-            // Member data
-            val totalMembers = memberRepository.count()
-            val totalVerifiedMembers = memberRepository.countVerified()
-            val totalUnverifiedMembers = totalMembers - totalVerifiedMembers
-            // TODO: New Members Today
-            // TODO: Verified Members Today
-            // TODO: Total Banned Members
+            // User data
+            val totalUsers = userRepository.count()
+            val totalVerifiedUsers = userRepository.countVerified()
+            val totalUnverifiedUsers = totalUsers - totalVerifiedUsers
+            // TODO: New Users Today
+            // TODO: Verified Users Today
+            // TODO: Total Banned Users
 
             // Vehicle Data
             val totalVehicles = vehicleRepository.count()
@@ -52,9 +52,9 @@ class DashboardController(
             ResponseEntity.ok().body(
                 ApiResponse(
                     DashboardStatistics(
-                        totalMembers,
-                        totalVerifiedMembers,
-                        totalUnverifiedMembers,
+                        totalUsers,
+                        totalVerifiedUsers,
+                        totalUnverifiedUsers,
                         totalVehicles,
                         totalParkingLots,
                         totalVerifiedParkingLots,

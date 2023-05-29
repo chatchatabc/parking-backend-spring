@@ -2,9 +2,9 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.Member
-import com.chatchatabc.parking.domain.repository.MemberRepository
-import com.chatchatabc.parking.domain.service.log.MemberLogoutLogService
+import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,25 +19,25 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/profile")
 class ProfileController(
-    private val memberRepository: MemberRepository,
-    private val memberLogoutLogService: MemberLogoutLogService
+    private val userRepository: UserRepository,
+    private val userLogoutLogService: UserLogoutLogService
 ) {
     /**
-     * Get Member Profile
+     * Get User Profile
      */
     @Operation(
-        summary = "Get the profile of the logged in member",
-        description = "Member to get the profile of the logged in member."
+        summary = "Get the profile of the logged in user",
+        description = "User to get the profile of the logged in user."
     )
     @GetMapping("/me")
     fun getProfile(
         request: HttpServletRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Member>> {
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.name).get()
+            val user = userRepository.findByUserUuid(principal.name).get()
             ResponseEntity.ok().body(
-                ApiResponse(member, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
+                ApiResponse(user, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false)
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -54,17 +54,17 @@ class ProfileController(
     }
 
     /**
-     * Logout member
+     * Logout user
      */
     @PostMapping("/logout")
-    fun logoutMember(
+    fun logoutUser(
         request: HttpServletRequest,
         response: HttpServletResponse,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Member>> {
+    ): ResponseEntity<ApiResponse<User>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.name).get()
-            memberLogoutLogService.createLog(member.id, 1, request.remoteAddr)
+            val user = userRepository.findByUserUuid(principal.name).get()
+            userLogoutLogService.createLog(user.id, 1, request.remoteAddr)
             ResponseEntity.ok(ApiResponse(null, HttpStatus.OK.value(), ResponseNames.SUCCESS.name, false))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
