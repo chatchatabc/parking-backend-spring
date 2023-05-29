@@ -9,9 +9,9 @@ public class ParkingLotSpecification {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
 
-            // Find a way to join the owner member entity without entity mapping
-            // Join the owner member entity
-            // Join<ParkingLot, Member> owner = root.join("owner");
+            // Find a way to join the owner user entity without entity mapping
+            // Join the owner user entity
+            // Join<ParkingLot, User> owner = root.join("owner");
 
             return builder.or(
                     builder.like(builder.lower(root.get("name")), pattern),
@@ -23,10 +23,10 @@ public class ParkingLotSpecification {
 //                    builder.like(builder.lower(owner.get("phone")), pattern)
             );
 
-            // Subquery to join the owner member entity
-//            Subquery<Member> subquery = query.subquery(Member.class);
-//            Root<Member> subqueryRoot = subquery.from(Member.class);
-//            Join<Member, ParkingLot> subqueryJoin = subqueryRoot.join("parkingLots");
+            // Subquery to join the owner user entity
+//            Subquery<User> subquery = query.subquery(User.class);
+//            Root<User> subqueryRoot = subquery.from(User.class);
+//            Join<User, ParkingLot> subqueryJoin = subqueryRoot.join("parkingLots");
 //            subquery.select(subqueryJoin.getParent());
 //
 //            return builder.or(
