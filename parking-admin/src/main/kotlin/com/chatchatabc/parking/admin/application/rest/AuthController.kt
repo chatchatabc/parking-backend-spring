@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.ApiResponse
+import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
@@ -31,7 +32,6 @@ class AuthController(
         @RequestBody req: UserLoginRequest,
         request: HttpServletRequest
     ): ResponseEntity<ApiResponse<User>> {
-        println("here")
         val user = userRepository.findByUsername(req.username)
         return try {
             // Authenticate user
@@ -53,7 +53,7 @@ class AuthController(
             // Generate Successful Login Log
             userLoginLogService.createLog(user.get().id, request.remoteAddr, 1, true)
             ResponseEntity.ok().headers(headers)
-                .body(ApiResponse(user.get(), HttpStatus.OK.value(), ResponseNames.USER_LOGIN_SUCCESS.name, false))
+                .body(ApiResponse(user.get(), null))
         } catch (e: Exception) {
             // Generate Failed Login Log
             if (user.isPresent) {
@@ -61,12 +61,7 @@ class AuthController(
             }
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
-                    ApiResponse(
-                        null,
-                        HttpStatus.BAD_REQUEST.value(),
-                        ResponseNames.USER_BAD_CREDENTIALS.name,
-                        true
-                    )
+                    ApiResponse(null, listOf(ErrorElement(ResponseNames.USER_BAD_CREDENTIALS.name, null)))
                 )
         }
     }
