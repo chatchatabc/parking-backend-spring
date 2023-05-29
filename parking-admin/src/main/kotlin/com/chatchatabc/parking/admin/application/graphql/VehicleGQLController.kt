@@ -3,7 +3,7 @@ package com.chatchatabc.parking.admin.application.graphql
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.Vehicle
-import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -14,7 +14,7 @@ import java.util.*
 @Controller
 class VehicleGQLController(
     private val vehicleRepository: VehicleRepository,
-    private val memberRepository: MemberRepository
+    private val userRepository: UserRepository
 ) {
 
     /**
@@ -58,7 +58,7 @@ class VehicleGQLController(
         @Argument page: Int,
         @Argument size: Int
     ): PagedResponse<Vehicle> {
-        val user = memberRepository.findByMemberUuid(ownerId).get()
+        val user = userRepository.findByUserUuid(ownerId).get()
         val pr = PageRequest.of(page, size)
         val vehicles = vehicleRepository.findAllByOwner(user.id, pr)
         return PagedResponse(

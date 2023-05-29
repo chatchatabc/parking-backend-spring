@@ -2,29 +2,29 @@ package com.chatchatabc.parking.admin.application.graphql.log
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.log.MemberLogoutLog
-import com.chatchatabc.parking.domain.repository.MemberRepository
-import com.chatchatabc.parking.domain.repository.log.MemberLogoutLogRepository
+import com.chatchatabc.parking.domain.model.log.UserLoginLog
+import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 
 @Controller
-class MemberLogoutLogGQLController(
-    private val memberLogoutLogRepository: MemberLogoutLogRepository,
-    private val memberRepository: MemberRepository
+class UserLoginLogGQLController(
+    private val userLoginLogRepository: UserLoginLogRepository,
+    private val userRepository: UserRepository
 ) {
     /**
-     * Get user logout logs
+     * Get user login logs
      */
     @QueryMapping
-    fun getUserLogoutLogs(
+    fun getUserLoginLogs(
         @Argument page: Int,
         @Argument size: Int
-    ): PagedResponse<MemberLogoutLog> {
+    ): PagedResponse<UserLoginLog> {
         val pr = PageRequest.of(page, size)
-        val logs = memberLogoutLogRepository.findAll(pr)
+        val logs = userLoginLogRepository.findAll(pr)
         return PagedResponse(
             logs.content,
             PageInfo(
@@ -38,17 +38,17 @@ class MemberLogoutLogGQLController(
     }
 
     /**
-     * Get user logout logs per user
+     * Get user login logs per user
      */
     @QueryMapping
-    fun getUserLogoutLogsByUser(
+    fun getUserLoginLogsByUser(
         @Argument page: Int,
         @Argument size: Int,
         @Argument id: String
-    ): PagedResponse<MemberLogoutLog> {
+    ): PagedResponse<UserLoginLog> {
         val pr = PageRequest.of(page, size)
-        val user = memberRepository.findByMemberUuid(id).get()
-        val logs = memberLogoutLogRepository.findByMember(user.id, pr)
+        val user = userRepository.findByUserUuid(id).get()
+        val logs = userLoginLogRepository.findByUser(user.id, pr)
         return PagedResponse(
             logs.content,
             PageInfo(

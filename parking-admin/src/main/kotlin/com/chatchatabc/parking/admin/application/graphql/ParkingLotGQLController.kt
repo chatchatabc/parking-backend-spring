@@ -2,10 +2,10 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.Member
 import com.chatchatabc.parking.domain.model.ParkingLot
-import com.chatchatabc.parking.domain.repository.MemberRepository
+import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -16,7 +16,7 @@ import java.util.*
 @Controller
 class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val memberRepository: MemberRepository
+    private val userRepository: UserRepository
 ) {
 
     /**
@@ -54,13 +54,13 @@ class ParkingLotGQLController(
     }
 
     /**
-     * Get Member by Parking Lot UUID
+     * Get User by Parking Lot UUID
      */
     @QueryMapping
-    fun getMemberByParkingLotUuid(
+    fun getUserByParkingLotUuid(
         @Argument uuid: String
-    ): Optional<Member> {
-        val memberId = parkingLotRepository.findByParkingLotUuid(uuid).get().owner
-        return memberRepository.findById(memberId)
+    ): Optional<User> {
+        val userId = parkingLotRepository.findByParkingLotUuid(uuid).get().owner
+        return userRepository.findById(userId)
     }
 }
