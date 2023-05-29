@@ -25,7 +25,7 @@ public class Role implements GrantedAuthority {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private List<Member> members = List.of();
+    private List<User> users = List.of();
 
     @Override
     public String getAuthority() {
