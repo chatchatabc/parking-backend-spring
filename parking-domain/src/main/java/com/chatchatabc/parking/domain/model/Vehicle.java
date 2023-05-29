@@ -40,7 +40,7 @@ public class Vehicle {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "vehicles")
-    private Collection<Member> members;
+    private Collection<User> users;
 
     @JsonIgnore
     @Column(name = "owner_id")
