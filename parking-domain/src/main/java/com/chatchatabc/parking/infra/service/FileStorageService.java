@@ -10,7 +10,7 @@ public interface FileStorageService {
     /**
      * Upload file to cloud storage
      *
-     * @param uploadedById the member who uploaded the file
+     * @param uploadedById the user who uploaded the file
      * @param namespace    the namespace of the file
      * @param inputStream  inputStream to upload
      * @param filename     file name

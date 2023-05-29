@@ -29,7 +29,7 @@ public class FileStorageOSSImpl implements FileStorageService, HealthIndicator {
     /**
      * Upload file to cloud storage
      *
-     * @param uploadedById the member who uploaded the file
+     * @param uploadedById the user who uploaded the file
      * @param namespace    the file namespace
      * @param inputStream  inputStream to upload
      * @param filename     file name
