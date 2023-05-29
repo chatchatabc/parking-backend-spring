@@ -1,16 +1,16 @@
 type Query {
-    getMemberByUuid(uuid: String!): Member
-    getMemberByPhone(phone: String!): Member
-    getMemberByUsername(username: String!): Member
-    getMembers(page: Int size: Int, keyword: String): MemberList!
+    getUserByUuid(uuid: String!): User
+    getUserByPhone(phone: String!): User
+    getUserByUsername(username: String!): User
+    getUsers(page: Int size: Int, keyword: String): UserList!
 
     getRoles(page: Int size: Int): RoleList!
 
-    getMemberLoginLogs(page: Int size: Int): MemberLoginLogList!
-    getMemberLoginLogsByMember(page: Int size: Int, id: String!): MemberLoginLogList!
+    getUserLoginLogs(page: Int size: Int): UserLoginLogList!
+    getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
-    getMemberLogoutLogs(page: Int size: Int): MemberLogoutLogList!
-    getMemberLogoutLogsByMember(page: Int size: Int, id: String!): MemberLoginLogList!
+    getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
+    getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
     getVehicleByUuid(uuid: String!): Vehicle
@@ -18,7 +18,7 @@ type Query {
 
     getParkingLots(page: Int size: Int, keyword: String): ParkingLotList!
     getParkingLotByUuid(uuid: String!): ParkingLot
-    getMemberByParkingLotUuid(uuid: String!): Member
+    getUserByParkingLotUuid(uuid: String!): User
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceByUuid(uuid: String!): Invoice
@@ -28,14 +28,14 @@ type Query {
 }
 
 type Mutation {
-    updateMember(
+    updateUser(
         id: String!
         phone: String
         username: String
         firstName: String
         lastName: String
         email: String
-    ): Member
+    ): User
 }
 
 # Role Related
@@ -48,9 +48,9 @@ type RoleList {
     pageInfo: PageInfo!
 }
 
-# Member Related
-type Member {
-    memberUuid: String
+# User Related
+type User {
+    userUuid: String
     # Notification ID should be retrieved in a private manner
     # notificationId: String
     username: String
@@ -65,37 +65,37 @@ type Member {
     emailVerifiedAt: String
 }
 
-type MemberList {
-    content: [Member]!
+type UserList {
+    content: [User]!
     pageInfo: PageInfo!
 }
 
-# member Login Log Related
-type MemberLoginLog {
+# user Login Log Related
+type UserLoginLog {
     id: String
-    #    member: Member
+    #    user: User
     type: Int
     ipAddress: String
     success: Boolean
     createdAt: String
 }
 
-type MemberLoginLogList {
-    content: [MemberLoginLog]!
+type UserLoginLogList {
+    content: [UserLoginLog]!
     pageInfo: PageInfo!
 }
 
-# Member Logout Log Related
-type MemberLogoutLog {
+# User Logout Log Related
+type UserLogoutLog {
     id: String
-    #    member: Member
+    #    user: User
     type: Int
     ipAddress: String
     createdAt: String
 }
 
-type MemberLogoutLogList {
-    content: [MemberLogoutLog]!
+type UserLogoutLogList {
+    content: [UserLogoutLog]!
     pageInfo: PageInfo!
 }
 
@@ -107,7 +107,7 @@ type Authorities {
 # Vehicle
 type Vehicle {
     vehicleUuid: String!
-    owner: Member
+    owner: User
     name: String
     plateNumber: String
     type: Int
@@ -136,9 +136,9 @@ type ParkingLot {
     #    createdAt: String
     updatedAt: String
     verifiedAt: String
-    # owner: Member
+    # owner: User
     rate: Rate
-    # verifiedBy: Member
+    # verifiedBy: User
 }
 
 type ParkingLotList {
@@ -187,7 +187,7 @@ type Report {
     plateNumber: String
     latitude: Float
     longitude: Float
-    reportedBy: Member
+    reportedBy: User
     cancelledAt: String
     status: [ReportStatus]
     createdAt: String
@@ -201,7 +201,7 @@ type ReportList {
 
 type ReportStatus {
     id: String!
-    performedBy: Member
+    performedBy: User
     status: Int
     remarks: String
     createdAt: String
