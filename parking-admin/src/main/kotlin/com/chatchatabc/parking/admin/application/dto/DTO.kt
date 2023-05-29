@@ -22,28 +22,28 @@ data class PageInfo(
     val empty: Boolean
 )
 
-data class MemberLoginRequest(
+data class UserLoginRequest(
     val username: String,
     val password: String
 )
 
-data class MemberOverridePasswordRequest(
+data class UserOverridePasswordRequest(
     val newPassword: String,
 )
 
-data class MemberBanRequest(
+data class UserBanRequest(
     val until: LocalDateTime,
     val reason: String
 )
 
-data class MemberUnbanRequest(
+data class UserUnbanRequest(
     val unbanReason: String
 )
 
 data class DashboardStatistics(
-    val totalMembers: Long?,
-    val totalVerifiedMembers: Long?,
-    val totalUnverifiedMembers: Long?,
+    val totalUsers: Long?,
+    val totalVerifiedUsers: Long?,
+    val totalUnverifiedUsers: Long?,
     val totalVehicles: Long?,
     val totalParkingLots: Long?,
     val totalVerifiedParkingLots: Long?,
