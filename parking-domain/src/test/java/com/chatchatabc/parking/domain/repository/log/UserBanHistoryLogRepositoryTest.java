@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class MemberBanHistoryLogRepositoryTest extends TestContainersBaseTest {
+class UserBanHistoryLogRepositoryTest extends TestContainersBaseTest {
     @Autowired
-    private MemberBanHistoryLogRepository memberBanHistoryLogRepository;
+    private UserBanHistoryLogRepository userBanHistoryLogRepository;
 
     @Test
     void testFindLatestBanLog_ShouldReturnBanLog() {
-        Long memberId = 5L;
-        assertThat(memberBanHistoryLogRepository.findLatestBanLog(memberId)).isPresent();
+        Long userId = 5L;
+        assertThat(userBanHistoryLogRepository.findLatestBanLog(userId)).isPresent();
     }
 
     @Test
     void testFindLatestBanLog_ShouldReturnEmpty() {
-        Long memberId = 1L;
-        assertThat(memberBanHistoryLogRepository.findLatestBanLog(memberId)).isEmpty();
+        Long userId = 1L;
+        assertThat(userBanHistoryLogRepository.findLatestBanLog(userId)).isEmpty();
     }
 }
