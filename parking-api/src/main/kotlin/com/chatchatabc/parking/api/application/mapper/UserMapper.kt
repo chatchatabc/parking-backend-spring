@@ -1,17 +1,17 @@
 package com.chatchatabc.parking.api.application.mapper
 
-import com.chatchatabc.parking.api.application.rest.MemberController
-import com.chatchatabc.parking.domain.model.Member
+import com.chatchatabc.parking.api.application.rest.UserController
+import com.chatchatabc.parking.domain.model.User
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingTarget
 import org.mapstruct.Mappings
 
 @Mapper(componentModel = "spring")
-interface MemberMapper {
+interface UserMapper {
 
     /**
-     * Update member from request
+     * Update user from request
      */
     @Mappings(
         Mapping(target = "email", source = "request.email"),
@@ -19,8 +19,8 @@ interface MemberMapper {
         Mapping(target = "firstName", source = "request.firstName"),
         Mapping(target = "lastName", source = "request.lastName")
     )
-    fun updateMemberFromUpdateProfileRequest(
-        request: MemberController.MemberProfileUpdateRequest,
-        @MappingTarget member: Member
+    fun updateUserFromUpdateProfileRequest(
+        request: UserController.UserProfileUpdateRequest,
+        @MappingTarget user: User
     )
 }
