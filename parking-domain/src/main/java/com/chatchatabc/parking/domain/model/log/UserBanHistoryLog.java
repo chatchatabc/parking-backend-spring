@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "member_ban_history_log")
+@Table(name = "user_ban_history_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberBanHistoryLog {
+public class UserBanHistoryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @JsonIgnore
-    @Column(name = "member_id")
-    private Long member;
+    @Column(name = "user_id")
+    private Long user;
 
     @JsonIgnore
     @Column(name = "banned_by")

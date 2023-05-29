@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "member_activity_log")
+@Table(name = "user_activity_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberActivityLog {
+public class UserActivityLog {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

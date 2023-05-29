@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "member_logout_log")
+@Table(name = "user_login_log")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberLogoutLog {
+public class UserLoginLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
-    @Column(name = "member_id")
-    private Long member;
+    @Column(name = "user_id")
+    private Long user;
 
     /**
      * 0: KMM Mobile
@@ -32,6 +32,9 @@ public class MemberLogoutLog {
 
     @Column
     private String ipAddress;
+
+    @Column
+    private Boolean success = false;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
