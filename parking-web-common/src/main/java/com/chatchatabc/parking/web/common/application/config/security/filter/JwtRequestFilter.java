@@ -32,7 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Filter the request and add the member to the security context if the token is valid
+     * Filter the request and add the user to the security context if the token is valid
      *
      * @param request     the request
      * @param response    the response
@@ -59,24 +59,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             final Payload payload = jwtService.validateTokenAndGetPayload(token);
             if (payload != null) {
 
-                String memberUuid = payload.getSubject();
+                String userUuid = payload.getSubject();
                 String[] roles = payload.getClaim("role").asArray(String.class);
                 List<GrantedAuthority> authorities = Arrays.stream(roles)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        memberUuid,
+                        userUuid,
                         null,
                         authorities
                 );
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logRequest(request, response, memberUuid);
+                logRequest(request, response, userUuid);
             }
         }
-        // Continue flow with the member in the security context
+        // Continue flow with the user in the security context
         filterChain.doFilter(request, response);
     }
 
@@ -96,10 +96,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      *
      * @param request  the request
      * @param response the response
-     * @param memberId the member id
+     * @param userId   the user id
      */
-    private void logRequest(HttpServletRequest request, HttpServletResponse response, String memberId) {
-        log.info("Request path: {} {} Member ID {} from {} with code {}",
-                request.getMethod(), request.getRequestURL(), memberId, request.getRemoteAddr(), response.getStatus());
+    private void logRequest(HttpServletRequest request, HttpServletResponse response, String userId) {
+        log.info("Request path: {} {} User ID {} from {} with code {}",
+                request.getMethod(), request.getRequestURL(), userId, request.getRemoteAddr(), response.getStatus());
     }
 }

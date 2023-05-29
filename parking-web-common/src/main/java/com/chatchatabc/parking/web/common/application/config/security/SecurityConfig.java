@@ -13,12 +13,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +31,11 @@ import java.util.Map;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
+    private final DataSource dataSource;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, DataSource dataSource) {
         this.jwtRequestFilter = jwtRequestFilter;
+        this.dataSource = dataSource;
     }
 
     @Bean
@@ -47,10 +52,10 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/swagger-ui/**").permitAll();
                     auth.requestMatchers("/api/v3/api-docs/**").permitAll();
 
-                    // Allow public access to member avatar url
-                    auth.requestMatchers("/api/member/avatar/**").permitAll();
-                    // Member routes must be authenticated
-                    auth.requestMatchers("/api/member/**").authenticated();
+                    // Allow public access to user avatar url
+                    auth.requestMatchers("/api/user/avatar/**").permitAll();
+                    // User routes must be authenticated
+                    auth.requestMatchers("/api/user/**").authenticated();
 
                     // TODO: Add routes for other controllers
 
@@ -99,6 +104,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public UserDetailsManager users(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     /**

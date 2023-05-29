@@ -1,228 +1,228 @@
 <!ELEMENT dataset (
-    authorities*,
-    cloud_file*,
-    flyway_schema_history*,
-    invoice*,
-    parking_lot*,
-    parking_lot_image*,
-    rate*,
-    report*,
-    report_status*,
-    role*,
-    user_activity_log*,
-    user_ban_history_log*,
-    user_login_log*,
-    user_logout_log*,
-    user_vehicle*,
-    users*,
-    vehicle*)>
+        authorities*,
+        cloud_file*,
+        flyway_schema_history*,
+        invoice*,
+        parking_lot*,
+        parking_lot_image*,
+        rate*,
+        report*,
+        report_status*,
+        role*,
+        user_activity_log*,
+        user_ban_history_log*,
+        user_login_log*,
+        user_logout_log*,
+        user_vehicle*,
+        users*,
+        vehicle*)>
 
-<!ELEMENT authorities EMPTY>
-<!ATTLIST authorities
-    username CDATA #REQUIRED
-    authority CDATA #REQUIRED
->
+        <!ELEMENT authorities EMPTY>
+        <!ATTLIST authorities
+                username CDATA #REQUIRED
+                authority CDATA #REQUIRED
+                >
 
-<!ELEMENT cloud_file EMPTY>
-<!ATTLIST cloud_file
-    id CDATA #IMPLIED
-    bucket CDATA #IMPLIED
-    key CDATA #REQUIRED
-    name CDATA #REQUIRED
-    size CDATA #REQUIRED
-    mime_type CDATA #REQUIRED
-    tags CDATA #IMPLIED
-    status CDATA #IMPLIED
-    uploaded_by CDATA #REQUIRED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #IMPLIED
->
+        <!ELEMENT cloud_file EMPTY>
+        <!ATTLIST cloud_file
+                id CDATA #IMPLIED
+                bucket CDATA #IMPLIED
+                key CDATA #REQUIRED
+                name CDATA #REQUIRED
+                size CDATA #REQUIRED
+                mime_type CDATA #REQUIRED
+                tags CDATA #IMPLIED
+                status CDATA #IMPLIED
+                uploaded_by CDATA #REQUIRED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #IMPLIED
+                >
 
-<!ELEMENT flyway_schema_history EMPTY>
-<!ATTLIST flyway_schema_history
-    installed_rank CDATA #REQUIRED
-    version CDATA #IMPLIED
-    description CDATA #REQUIRED
-    type CDATA #REQUIRED
-    script CDATA #REQUIRED
-    checksum CDATA #IMPLIED
-    installed_by CDATA #REQUIRED
-    installed_on CDATA #IMPLIED
-    execution_time CDATA #REQUIRED
-    success CDATA #REQUIRED
->
+        <!ELEMENT flyway_schema_history EMPTY>
+        <!ATTLIST flyway_schema_history
+                installed_rank CDATA #REQUIRED
+                version CDATA #IMPLIED
+                description CDATA #REQUIRED
+                type CDATA #REQUIRED
+                script CDATA #REQUIRED
+                checksum CDATA #IMPLIED
+                installed_by CDATA #REQUIRED
+                installed_on CDATA #IMPLIED
+                execution_time CDATA #REQUIRED
+                success CDATA #REQUIRED
+                >
 
-<!ELEMENT invoice EMPTY>
-<!ATTLIST invoice
-    id CDATA #REQUIRED
-    parking_lot_id CDATA #REQUIRED
-    vehicle_id CDATA #REQUIRED
-    estimated_parking_duration_in_hours CDATA #IMPLIED
-    total CDATA #IMPLIED
-    paid_at CDATA #IMPLIED
-    start_at CDATA #REQUIRED
-    end_at CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT invoice EMPTY>
+        <!ATTLIST invoice
+                id CDATA #REQUIRED
+                parking_lot_id CDATA #REQUIRED
+                vehicle_id CDATA #REQUIRED
+                estimated_parking_duration_in_hours CDATA #IMPLIED
+                total CDATA #IMPLIED
+                paid_at CDATA #IMPLIED
+                start_at CDATA #REQUIRED
+                end_at CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
-<!ELEMENT parking_lot EMPTY>
-<!ATTLIST parking_lot
-    id CDATA #IMPLIED
-    parking_lot_uuid CDATA #REQUIRED
-    owner_id CDATA #REQUIRED
-    rate_id CDATA #IMPLIED
-    name CDATA #REQUIRED
-    address CDATA #REQUIRED
-    latitude CDATA #REQUIRED
-    longitude CDATA #REQUIRED
-    description CDATA #IMPLIED
-    capacity CDATA #IMPLIED
-    available_slots CDATA #IMPLIED
-    business_hours_start CDATA #REQUIRED
-    business_hours_end CDATA #REQUIRED
-    open_days_flag CDATA #IMPLIED
-    flag CDATA #IMPLIED
-    verified_at CDATA #IMPLIED
-    verified_by CDATA #IMPLIED
-    rejection_reason CDATA #IMPLIED
-    status CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT parking_lot EMPTY>
+        <!ATTLIST parking_lot
+                id CDATA #IMPLIED
+                parking_lot_uuid CDATA #REQUIRED
+                owner_id CDATA #REQUIRED
+                rate_id CDATA #IMPLIED
+                name CDATA #REQUIRED
+                address CDATA #REQUIRED
+                latitude CDATA #REQUIRED
+                longitude CDATA #REQUIRED
+                description CDATA #IMPLIED
+                capacity CDATA #IMPLIED
+                available_slots CDATA #IMPLIED
+                business_hours_start CDATA #REQUIRED
+                business_hours_end CDATA #REQUIRED
+                open_days_flag CDATA #IMPLIED
+                flag CDATA #IMPLIED
+                verified_at CDATA #IMPLIED
+                verified_by CDATA #IMPLIED
+                rejection_reason CDATA #IMPLIED
+                status CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
-<!ELEMENT parking_lot_image EMPTY>
-<!ATTLIST parking_lot_image
-    id CDATA #REQUIRED
-    cloud_file_id CDATA #REQUIRED
-    parking_lot_id CDATA #REQUIRED
-    file_order CDATA #IMPLIED
->
+        <!ELEMENT parking_lot_image EMPTY>
+        <!ATTLIST parking_lot_image
+                id CDATA #REQUIRED
+                cloud_file_id CDATA #REQUIRED
+                parking_lot_id CDATA #REQUIRED
+                file_order CDATA #IMPLIED
+                >
 
-<!ELEMENT rate EMPTY>
-<!ATTLIST rate
-    id CDATA #REQUIRED
-    type CDATA #IMPLIED
-    interval CDATA #IMPLIED
-    free_hours CDATA #IMPLIED
-    pay_for_free_hours_when_exceeding CDATA #IMPLIED
-    starting_rate CDATA #IMPLIED
-    rate CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT rate EMPTY>
+        <!ATTLIST rate
+                id CDATA #REQUIRED
+                type CDATA #IMPLIED
+                interval CDATA #IMPLIED
+                free_hours CDATA #IMPLIED
+                pay_for_free_hours_when_exceeding CDATA #IMPLIED
+                starting_rate CDATA #IMPLIED
+                rate CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
-<!ELEMENT report EMPTY>
-<!ATTLIST report
-    id CDATA #IMPLIED
-    name CDATA #REQUIRED
-    description CDATA #REQUIRED
-    plate_number CDATA #REQUIRED
-    latitude CDATA #REQUIRED
-    longitude CDATA #REQUIRED
-    reported_by CDATA #REQUIRED
-    cancelled_at CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT report EMPTY>
+        <!ATTLIST report
+                id CDATA #IMPLIED
+                name CDATA #REQUIRED
+                description CDATA #REQUIRED
+                plate_number CDATA #REQUIRED
+                latitude CDATA #REQUIRED
+                longitude CDATA #REQUIRED
+                reported_by CDATA #REQUIRED
+                cancelled_at CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
-<!ELEMENT report_status EMPTY>
-<!ATTLIST report_status
-    id CDATA #IMPLIED
-    report_id CDATA #REQUIRED
-    performed_by CDATA #REQUIRED
-    status CDATA #IMPLIED
-    remarks CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
+        <!ELEMENT report_status EMPTY>
+        <!ATTLIST report_status
+                id CDATA #IMPLIED
+                report_id CDATA #REQUIRED
+                performed_by CDATA #REQUIRED
+                status CDATA #IMPLIED
+                remarks CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                >
 
-<!ELEMENT role EMPTY>
-<!ATTLIST role
-    id CDATA #IMPLIED
-    name CDATA #REQUIRED
->
+        <!ELEMENT role EMPTY>
+        <!ATTLIST role
+                id CDATA #IMPLIED
+                name CDATA #REQUIRED
+                >
 
-<!ELEMENT user_activity_log EMPTY>
-<!ATTLIST user_activity_log
-    id CDATA #IMPLIED
-    performed_by CDATA #REQUIRED
-    name CDATA #IMPLIED
-    target_id CDATA #IMPLIED
-    event_type CDATA #IMPLIED
-    column_name CDATA #IMPLIED
-    data_before CDATA #IMPLIED
-    data_after CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
+        <!ELEMENT user_activity_log EMPTY>
+        <!ATTLIST user_activity_log
+                id CDATA #IMPLIED
+                performed_by CDATA #REQUIRED
+                name CDATA #IMPLIED
+                target_id CDATA #IMPLIED
+                event_type CDATA #IMPLIED
+                column_name CDATA #IMPLIED
+                data_before CDATA #IMPLIED
+                data_after CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                >
 
-<!ELEMENT user_ban_history_log EMPTY>
-<!ATTLIST user_ban_history_log
-    id CDATA #IMPLIED
-    user_id CDATA #REQUIRED
-    banned_by CDATA #REQUIRED
-    until CDATA #REQUIRED
-    reason CDATA #IMPLIED
-    unban_reason CDATA #IMPLIED
-    unbanned_by CDATA #IMPLIED
-    status CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
+        <!ELEMENT user_ban_history_log EMPTY>
+        <!ATTLIST user_ban_history_log
+                id CDATA #IMPLIED
+                user_id CDATA #REQUIRED
+                banned_by CDATA #REQUIRED
+                until CDATA #REQUIRED
+                reason CDATA #IMPLIED
+                unban_reason CDATA #IMPLIED
+                unbanned_by CDATA #IMPLIED
+                status CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                >
 
-<!ELEMENT user_login_log EMPTY>
-<!ATTLIST user_login_log
-    id CDATA #IMPLIED
-    user_id CDATA #REQUIRED
-    type CDATA #IMPLIED
-    ip_address CDATA #REQUIRED
-    success CDATA #IMPLIED
-    created_at CDATA #REQUIRED
->
+        <!ELEMENT user_login_log EMPTY>
+        <!ATTLIST user_login_log
+                id CDATA #IMPLIED
+                user_id CDATA #REQUIRED
+                type CDATA #IMPLIED
+                ip_address CDATA #REQUIRED
+                success CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                >
 
-<!ELEMENT user_logout_log EMPTY>
-<!ATTLIST user_logout_log
-    id CDATA #IMPLIED
-    user_id CDATA #REQUIRED
-    type CDATA #IMPLIED
-    ip_address CDATA #REQUIRED
-    created_at CDATA #REQUIRED
->
+        <!ELEMENT user_logout_log EMPTY>
+        <!ATTLIST user_logout_log
+                id CDATA #IMPLIED
+                user_id CDATA #REQUIRED
+                type CDATA #IMPLIED
+                ip_address CDATA #REQUIRED
+                created_at CDATA #REQUIRED
+                >
 
-<!ELEMENT user_vehicle EMPTY>
-<!ATTLIST user_vehicle
-    user_id CDATA #REQUIRED
-    vehicle_id CDATA #REQUIRED
->
+        <!ELEMENT user_vehicle EMPTY>
+        <!ATTLIST user_vehicle
+                user_id CDATA #REQUIRED
+                vehicle_id CDATA #REQUIRED
+                >
 
-<!ELEMENT users EMPTY>
-<!ATTLIST users
-    id CDATA #IMPLIED
-    user_uuid CDATA #REQUIRED
-    notification_uuid CDATA #REQUIRED
-    email CDATA #IMPLIED
-    username CDATA #IMPLIED
-    password CDATA #IMPLIED
-    phone CDATA #REQUIRED
-    first_name CDATA #IMPLIED
-    last_name CDATA #IMPLIED
-    avatar CDATA #IMPLIED
-    flag CDATA #IMPLIED
-    status CDATA #IMPLIED
-    enabled CDATA #IMPLIED
-    email_verified_at CDATA #IMPLIED
-    phone_verified_at CDATA #IMPLIED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT users EMPTY>
+        <!ATTLIST users
+                id CDATA #IMPLIED
+                user_uuid CDATA #REQUIRED
+                notification_uuid CDATA #REQUIRED
+                email CDATA #IMPLIED
+                username CDATA #IMPLIED
+                password CDATA #IMPLIED
+                phone CDATA #REQUIRED
+                first_name CDATA #IMPLIED
+                last_name CDATA #IMPLIED
+                avatar CDATA #IMPLIED
+                flag CDATA #IMPLIED
+                status CDATA #IMPLIED
+                enabled CDATA #IMPLIED
+                email_verified_at CDATA #IMPLIED
+                phone_verified_at CDATA #IMPLIED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
-<!ELEMENT vehicle EMPTY>
-<!ATTLIST vehicle
-    id CDATA #IMPLIED
-    vehicle_uuid CDATA #REQUIRED
-    name CDATA #REQUIRED
-    plate_number CDATA #REQUIRED
-    type CDATA #IMPLIED
-    owner_id CDATA #REQUIRED
-    created_at CDATA #REQUIRED
-    updated_at CDATA #REQUIRED
->
+        <!ELEMENT vehicle EMPTY>
+        <!ATTLIST vehicle
+                id CDATA #IMPLIED
+                vehicle_uuid CDATA #REQUIRED
+                name CDATA #REQUIRED
+                plate_number CDATA #REQUIRED
+                type CDATA #IMPLIED
+                owner_id CDATA #REQUIRED
+                created_at CDATA #REQUIRED
+                updated_at CDATA #REQUIRED
+                >
 
