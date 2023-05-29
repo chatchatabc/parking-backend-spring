@@ -24,7 +24,7 @@ class VehicleController(
     private val vehicleMapper = Mappers.getMapper(VehicleMapper::class.java)
 
     /**
-     * Get all vehicles by member
+     * Get all vehicles by user
      */
     @GetMapping("/get-my-vehicles")
     fun getMyVehicles(
@@ -32,8 +32,8 @@ class VehicleController(
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
         return try {
-            // Get member from security context
-            val vehicles = vehicleRepository.findAllByMember(principal.name, pageable)
+            // Get user from security context
+            val vehicles = vehicleRepository.findAllByUser(principal.name, pageable)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicles,
@@ -63,14 +63,14 @@ class VehicleController(
         principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            // Get member from security context
+            // Get user from security context
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid)
             if (vehicle.isEmpty) {
                 throw Exception("Vehicle not found")
             }
-            // Member should have access to this vehicle. If member is not inside vehicle members array
-            if (vehicle.get().members.find { it.memberUuid == principal.name } == null) {
-                throw Exception("Member does not have access to this vehicle")
+            // User should have access to this vehicle. If user is not inside vehicle users array
+            if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
+                throw Exception("User does not have access to this vehicle")
             }
 
             ResponseEntity.ok(
@@ -136,7 +136,7 @@ class VehicleController(
         principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            // TODO: check if member has access to vehicle or maybe make it so that the only is the only one that can update vehicle
+            // TODO: check if user has access to vehicle or maybe make it so that the only is the only one that can update vehicle
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
             vehicleService.updateVehicle(vehicle)
@@ -147,16 +147,16 @@ class VehicleController(
     }
 
     /**
-     * Add a member to a vehicle
+     * Add a user to a vehicle
      */
-    @PutMapping("/add-member/{vehicleUuid}/{memberUuid}")
-    fun addMemberToVehicle(
+    @PutMapping("/add-user/{vehicleUuid}/{userUuid}")
+    fun addUserToVehicle(
         @PathVariable vehicleUuid: String,
-        @PathVariable memberUuid: String,
+        @PathVariable userUuid: String,
         principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.addMemberToVehicle(principal.name, vehicleUuid, memberUuid)
+            val vehicle = vehicleService.addUserToVehicle(principal.name, vehicleUuid, userUuid)
             ResponseEntity.ok(ApiResponse(vehicle, HttpStatus.OK.value(), ResponseNames.SUCCESS_UPDATE.name, false))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, HttpStatus.BAD_REQUEST.value(), ResponseNames.ERROR_UPDATE.name, true))
@@ -165,16 +165,16 @@ class VehicleController(
 
 
     /**
-     * Remove a member from a vehicle
+     * Remove a user from a vehicle
      */
-    @PutMapping("/remove-member/{vehicleUuid}/{memberUuid}")
-    fun removeMemberFromVehicle(
+    @PutMapping("/remove-user/{vehicleUuid}/{userUuid}")
+    fun removeUserFromVehicle(
         @PathVariable vehicleUuid: String,
-        @PathVariable memberUuid: String,
+        @PathVariable userUuid: String,
         principal: Principal
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
-            val vehicle = vehicleService.removeMemberFromVehicle(principal.name, vehicleUuid, memberUuid)
+            val vehicle = vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid)
             ResponseEntity.ok(
                 ApiResponse(
                     vehicle,

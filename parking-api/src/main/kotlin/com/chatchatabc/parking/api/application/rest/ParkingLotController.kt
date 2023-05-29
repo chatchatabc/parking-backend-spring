@@ -6,8 +6,8 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.MemberRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
@@ -31,7 +31,7 @@ import kotlin.jvm.optionals.getOrNull
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
-    private val memberRepository: MemberRepository,
+    private val userRepository: UserRepository,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
     private val fileStorageService: FileStorageService,
@@ -181,7 +181,7 @@ class ParkingLotController(
         principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            val owner = memberRepository.findByMemberUuid(principal.name).get()
+            val owner = userRepository.findByUserUuid(principal.name).get()
             val createdParkingLot = ParkingLot()
             createdParkingLot.owner = owner.id
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
@@ -281,8 +281,8 @@ class ParkingLotController(
         principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.name).get()
-            val parkingLot = parkingLotRepository.findByOwner(member.id).get()
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             parkingLot.status = 1
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(
@@ -338,10 +338,10 @@ class ParkingLotController(
         principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
-            val member = memberRepository.findByMemberUuid(principal.name).get()
-            val parkingLot = parkingLotRepository.findByOwner(member.id).get()
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             val fileData = parkingLotImageService.uploadImage(
-                member,
+                user,
                 parkingLot,
                 fileNamespace,
                 file.inputStream,
@@ -382,9 +382,9 @@ class ParkingLotController(
         return try {
             // Only owner can delete image
             val image = parkingLotImageRepository.findById(imageId).get()
-            val currentMember = memberRepository.findByMemberUuid(principal.name).get()
+            val currentUser = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findById(image.parkingLot).get()
-            if (parkingLot.owner != currentMember.id) {
+            if (parkingLot.owner != currentUser.id) {
                 throw Exception("You are not owner of this parking lot")
             }
             parkingLotImageService.deleteImage(imageId)
