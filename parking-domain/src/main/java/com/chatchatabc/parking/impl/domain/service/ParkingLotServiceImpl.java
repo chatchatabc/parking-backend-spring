@@ -1,9 +1,9 @@
 package com.chatchatabc.parking.impl.domain.service;
 
-import com.chatchatabc.parking.domain.model.Member;
 import com.chatchatabc.parking.domain.model.ParkingLot;
-import com.chatchatabc.parking.domain.repository.MemberRepository;
+import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
+import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Service
 public class ParkingLotServiceImpl implements ParkingLotService {
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final ParkingLotRepository parkingLotRepository;
 
-    public ParkingLotServiceImpl(MemberRepository memberRepository, ParkingLotRepository parkingLotRepository) {
-        this.memberRepository = memberRepository;
+    public ParkingLotServiceImpl(UserRepository userRepository, ParkingLotRepository parkingLotRepository) {
+        this.userRepository = userRepository;
         this.parkingLotRepository = parkingLotRepository;
     }
 
@@ -34,15 +34,15 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param memberUuid     the member id
+     * @param userUuid       the user id
      * @param parkingLotUuid the parking lot uuid
      * @return the parking lot
      */
     @Override
-    public ParkingLot verifyParkingLot(String memberUuid, String parkingLotUuid) throws Exception {
-        Optional<Member> member = memberRepository.findByMemberUuid(memberUuid);
-        if (member.isEmpty()) {
-            throw new Exception("Member not found");
+    public ParkingLot verifyParkingLot(String userUuid, String parkingLotUuid) throws Exception {
+        Optional<User> user = userRepository.findByUserUuid(userUuid);
+        if (user.isEmpty()) {
+            throw new Exception("User not found");
         }
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {

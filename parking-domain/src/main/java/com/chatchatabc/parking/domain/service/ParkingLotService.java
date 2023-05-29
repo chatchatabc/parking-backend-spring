@@ -14,12 +14,12 @@ public interface ParkingLotService {
     /**
      * Verify parking lot
      *
-     * @param memberId       the member id
+     * @param userId         the user id
      * @param parkingLotUuid the parking lot uuid
      * @return the parking lot
      */
     ParkingLot verifyParkingLot(
-            String memberId,
+            String userId,
             String parkingLotUuid
     ) throws Exception;
 }
