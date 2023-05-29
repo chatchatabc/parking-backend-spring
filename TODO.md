@@ -5,7 +5,7 @@
 - Develop Parking Owner Mobile Application
     - Android Version
     - iOS Version
-- Develop Member Mobile Application
+- Develop User Mobile Application
     - Android Version
     - iOS Version
 - Develop Admin Dashboard React Website
@@ -43,7 +43,7 @@
 
 - NATS use same JWT as API and Admin
 - JWT Auth on GraphQL
-- Members with NATS should only be "listen" only
+- Users with NATS should only be "listen" only
 
 ## SMS Sending
 
