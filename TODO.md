@@ -59,7 +59,3 @@
 ## Repository and Entity Models
 
 - Refactor some fields to use @NaturalId
-
-## REST
-
-- Refactor ApiResponse to be unified with GraphQL (https://graphql.org/learn/serving-over-http/)
