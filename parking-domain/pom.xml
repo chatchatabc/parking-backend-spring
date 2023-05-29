@@ -126,7 +126,7 @@
                     <format>flat</format>
                     <sources>
                         <src>src/test/resources/db/datasets/role.xml</src>
-                        <src>src/test/resources/db/datasets/member.xml</src>
+                        <src>src/test/resources/db/datasets/user.xml</src>
                     </sources>
                 </configuration>
             </plugin>
