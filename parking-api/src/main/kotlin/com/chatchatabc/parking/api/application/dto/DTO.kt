@@ -2,9 +2,12 @@ package com.chatchatabc.parking.api.application.dto
 
 data class ApiResponse<T>(
     val data: T? = null,
-    val code: Int = 0,
-    val message: String?,
-    val error: Boolean = false
+    val errors: List<ErrorElement>? = null
+)
+
+data class ErrorElement(
+    val title: String?,
+    val message: String?
 )
 
 data class UserPhoneLoginRequest(
