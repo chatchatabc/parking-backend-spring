@@ -17,13 +17,14 @@ public class DataBaseTest extends TestContainersBaseTest {
 
     @Test
     @DataSet({"db/datasets/role.xml",
-            "db/datasets/member.xml",
+            "db/datasets/user.xml",
             "db/datasets/vehicle.xml",
             "db/datasets/parking_lot.xml",
             "db/datasets/invoice.xml",
-            "db/datasets/log/member_login_log.xml",
+            "db/datasets/log/user_login_log.xml",
+            "db/datasets/log/user_logout_log.xml",
             "db/datasets/file/parking_lot_image.xml",
-            "db/datasets/log/member_ban_history_log.xml",
+            "db/datasets/log/user_ban_history_log.xml",
     })
     public void testLoadDataset() {
         Assertions.assertTrue(true);
