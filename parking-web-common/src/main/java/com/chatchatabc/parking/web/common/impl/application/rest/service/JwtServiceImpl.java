@@ -31,17 +31,17 @@ public class JwtServiceImpl implements JwtService {
     }
 
     /**
-     * Generate a JWT token for the given member id
+     * Generate a JWT token for the given user id
      *
-     * @param memberId the member id
+     * @param userId   the user id
      * @param username the username
      * @param roles    the roles
      * @return the JWT token
      */
     @Override
-    public String generateToken(String memberId, String username, List<String> roles) {
+    public String generateToken(String userId, String username, List<String> roles) {
         return JWT.create()
-                .withSubject(memberId)
+                .withSubject(userId)
                 .withIssuer("DavaoParking")
                 .withClaim("username", username)
                 .withClaim("role", roles)

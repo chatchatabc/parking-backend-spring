@@ -21,25 +21,25 @@ class JwtServiceImplTest {
 
     @Test
     public void testGenerateJwtToken() {
-        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "member", List.of("ROLE_USER"));
+        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "user", List.of("ROLE_USER"));
         System.out.println(token);
         jwtService.validateTokenAndGetPayload(token);
     }
 
     @Test
     void testGenerateToken_shouldReturnValidTokenWithCorrectPayload() {
-        String memberId = "1";
+        String userId = "1";
         String username = "testuser";
         String role1 = "ROLE_ADMIN";
         String role2 = "ROLE_USER";
-        String expectedToken = jwtService.generateToken(memberId, username, Arrays.asList(role1, role2));
+        String expectedToken = jwtService.generateToken(userId, username, Arrays.asList(role1, role2));
 
         assertNotNull(expectedToken);
 
         Payload payload = jwtService.validateTokenAndGetPayload(expectedToken);
         assertNotNull(payload);
 
-        assertEquals(memberId, payload.getSubject(), "Token subject should match memberId");
+        assertEquals(userId, payload.getSubject(), "Token subject should match userId");
         assertEquals("DavaoParking", payload.getIssuer(), "Token issuer should match 'DavaoParking'");
         assertEquals(username, payload.getClaim("username").asString(), "Token username claim should match");
         assertEquals(Arrays.asList(role1, role2), payload.getClaim("role").asList(String.class), "Token role claim should match");

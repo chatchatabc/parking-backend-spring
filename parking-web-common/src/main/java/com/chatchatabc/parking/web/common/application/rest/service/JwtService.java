@@ -7,14 +7,14 @@ import java.util.List;
 public interface JwtService {
 
     /**
-     * Generate a JWT token for the given member id
+     * Generate a JWT token for the given user id
      *
-     * @param memberId the member id
+     * @param userId   the user id
      * @param username the username
      * @param roles    the roles
      * @return the JWT token
      */
-    String generateToken(String memberId, String username, List<String> roles);
+    String generateToken(String userId, String username, List<String> roles);
 
     /**
      * Validate the given token and return the jwt payload
