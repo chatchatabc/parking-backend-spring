@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.repository.log;
 
-import com.chatchatabc.parking.domain.model.log.MemberLoginLog;
+import com.chatchatabc.parking.domain.model.log.UserLoginLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,15 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberLoginLogRepository extends JpaRepository<MemberLoginLog, String> {
+public interface UserLoginLogRepository extends JpaRepository<UserLoginLog, String> {
 
     /**
-     * Find all member login logs by member
+     * Find all user login logs by user
      *
-     * @param memberId the member id
+     * @param userId   the user id
      * @param pageable the pageable
      * @return the Page<UserLoginLog>
      */
-    @Query("SELECT l FROM MemberLoginLog l WHERE l.member = ?1")
-    Page<MemberLoginLog> findByMember(Long memberId, Pageable pageable);
+    @Query("SELECT l FROM UserLoginLog l WHERE l.user = ?1")
+    Page<UserLoginLog> findByUser(Long userId, Pageable pageable);
 }
