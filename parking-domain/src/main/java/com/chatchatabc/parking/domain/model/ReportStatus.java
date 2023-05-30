@@ -27,6 +27,12 @@ public class ReportStatus {
     @Column(name = "performed_by")
     private Long performedBy;
 
+    /**
+     * -1 - Cancelled
+     * 0 - Pending
+     * 1 - Ongoing
+     * 2 - Resolved
+     */
     @Column
     private int status;
 
