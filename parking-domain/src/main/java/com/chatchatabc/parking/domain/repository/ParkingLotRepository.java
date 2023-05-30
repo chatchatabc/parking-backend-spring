@@ -28,7 +28,7 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
      * @param pageable the pageable
      * @return the parking lots
      */
-    Page<ParkingLot> findByStatusGreaterThanEqual(ParkingLot.Status status, Pageable pageable);
+    Page<ParkingLot> findByStatusGreaterThanEqual(Integer status, Pageable pageable);
 
     /**
      * Find parking lot by owner
