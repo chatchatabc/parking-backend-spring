@@ -15,6 +15,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportStatus {
+    public enum Status {
+        CANCELLED(-1),
+        PENDING(0),
+        ONGOING(1),
+        RESOLVED(2);
+
+        private final int value;
+
+        Status(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
@@ -27,14 +44,9 @@ public class ReportStatus {
     @Column(name = "performed_by")
     private Long performedBy;
 
-    /**
-     * -1 - Cancelled
-     * 0 - Pending
-     * 1 - Ongoing
-     * 2 - Resolved
-     */
     @Column
-    private int status;
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
 
     @Column
     private String remarks;
