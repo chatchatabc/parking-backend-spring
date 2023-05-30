@@ -133,7 +133,7 @@ class UserController(
                 this.bannedBy = bannedBy.id
                 this.reason = req.reason
                 this.until = req.until
-                this.status = UserBanHistoryLog.Status.BANNED
+                this.status = UserBanHistoryLog.BANNED
             }
             ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
         } catch (e: Exception) {
@@ -157,7 +157,7 @@ class UserController(
             val banLog = userBanHistoryLogRepository.findLatestBanLog(user.id).get().apply {
                 this.unbannedBy = unbannedBy.id
                 this.unbanReason = req.unbanReason
-                this.status = UserBanHistoryLog.Status.UNBANNED
+                this.status = UserBanHistoryLog.UNBANNED
             }
             ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
         } catch (e: Exception) {

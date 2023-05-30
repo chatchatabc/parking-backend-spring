@@ -49,7 +49,7 @@ class ParkingLotController(
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
         return try {
-            val parkingLots = parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.Status.DRAFT, pageable)
+            val parkingLots = parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pageable)
             ResponseEntity.ok(ApiResponse(parkingLots, null))
         } catch (e: Exception) {
             ResponseEntity.ok(
@@ -230,7 +230,7 @@ class ParkingLotController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            parkingLot.status = ParkingLot.Status.PENDING
+            parkingLot.status = ParkingLot.PENDING
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {

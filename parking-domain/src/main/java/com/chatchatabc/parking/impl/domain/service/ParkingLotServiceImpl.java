@@ -53,7 +53,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
             throw new Exception("Parking lot is already verified");
         }
         parkingLot.get().setVerifiedAt(LocalDateTime.now());
-        parkingLot.get().setStatus(ParkingLot.Status.VERIFIED);
+        parkingLot.get().setStatus(ParkingLot.VERIFIED);
         return parkingLotRepository.save(parkingLot.get());
     }
 }

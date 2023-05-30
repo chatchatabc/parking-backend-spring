@@ -75,12 +75,12 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     @Test
     void testFindByStatusGreaterThanEqual_ShouldReturnGreaterThan0() {
         PageRequest pr = PageRequest.of(0, 10);
-        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.Status.DRAFT, pr).getTotalElements()).isGreaterThan(0L);
+        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pr).getTotalElements()).isGreaterThan(0L);
     }
 
     @Test
     void testFindByStatusGreaterThanEqual_ShouldReturn0() {
         PageRequest pr = PageRequest.of(0, 10);
-        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.Status.VERIFIED, pr).getTotalElements()).isEqualTo(0L);
+        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(5, pr).getTotalElements()).isEqualTo(0L);
     }
 }
