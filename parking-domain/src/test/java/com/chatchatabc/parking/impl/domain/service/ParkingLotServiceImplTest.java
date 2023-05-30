@@ -33,7 +33,7 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
         parkingLot.setDescription("Test Description");
         parkingLot.setCapacity(100);
         parkingLot.setAvailableSlots(100);
-        parkingLot.setStatus(0);
+        parkingLot.setStatus(ParkingLot.Status.DRAFT);
         parkingLot.setBusinessHoursStart(LocalDateTime.now());
         parkingLot.setBusinessHoursEnd(LocalDateTime.now());
 
@@ -57,7 +57,7 @@ class ParkingLotServiceImplTest extends TestContainersBaseTest {
         parkingLot.setDescription("Test Description");
         parkingLot.setCapacity(100);
         parkingLot.setAvailableSlots(100);
-        parkingLot.setStatus(0);
+        parkingLot.setStatus(ParkingLot.Status.DRAFT);
         parkingLot.setBusinessHoursStart(LocalDateTime.now());
         parkingLot.setBusinessHoursEnd(LocalDateTime.now());
 

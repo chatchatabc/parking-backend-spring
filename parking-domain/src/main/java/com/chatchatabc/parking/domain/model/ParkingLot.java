@@ -98,7 +98,8 @@ public class ParkingLot extends FlagEntity {
      * 3: Verified
      */
     @Column
-    private Integer status = 0;
+    @Enumerated(EnumType.ORDINAL)
+    private Status status = Status.DRAFT;
 
     @Column
     private LocalDateTime verifiedAt;
