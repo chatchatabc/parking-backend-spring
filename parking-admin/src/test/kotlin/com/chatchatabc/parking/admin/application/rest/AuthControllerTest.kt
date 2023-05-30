@@ -1,13 +1,24 @@
 package com.chatchatabc.parking.admin.application.rest
 
+import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
+import com.chatchatabc.parking.domain.model.Role
+import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.`when`
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.test.context.support.WithAnonymousUser
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.*
 
 
 @WebMvcTest(controllers = [AuthController::class])
@@ -24,7 +35,6 @@ class AuthControllerTest : AuthorizedBaseTest() {
     private val objectMapper = ObjectMapper()
 
 //    @Test
-//    // Ignore @WithMockUser of AuthorizedBaseTest
 //    @WithAnonymousUser
 //    fun testLoginUser_WithValidCredentials_ShouldLoginSuccessfully() {
 //        val username = "admin"
@@ -45,11 +55,17 @@ class AuthControllerTest : AuthorizedBaseTest() {
 //            this.roles = roles
 //        }
 //
+//        // Convert granted authority roles to list of string roles
+//        val roleStrings: List<String> = mockUser.roles.stream()
+//            .map { it.authority }
+//            .toList()
+//
 //        val usernamePasswordAuthToken =
 //            UsernamePasswordAuthenticationToken(userLoginRequest.username, userLoginRequest.password)
 //
 //        given(userRepository.findByUsername(username)).willReturn(Optional.of(mockUser))
 //        given(authenticationManager.authenticate(usernamePasswordAuthToken)).willReturn(usernamePasswordAuthToken)
+//        `when`(jwtService.generateToken(userUuid, username, roleStrings)).thenReturn("testToken")
 ////        given(userLoginLogService.createLog(1L, "127.0.0.1", 0, true))
 //
 //        val json = objectMapper.writeValueAsString(userLoginRequest)
