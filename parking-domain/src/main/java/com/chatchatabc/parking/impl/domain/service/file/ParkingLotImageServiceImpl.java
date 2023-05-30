@@ -78,7 +78,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     @Override
     public void deleteImage(String id) {
         ParkingLotImage parkingLotImage = parkingLotImageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Parking lot image not found"));
-        parkingLotImage.getCloudFile().setStatus(-1);
+        parkingLotImage.getCloudFile().setStatus(CloudFile.Status.DELETED);
         parkingLotImageRepository.save(parkingLotImage);
     }
 
@@ -90,7 +90,7 @@ public class ParkingLotImageServiceImpl implements ParkingLotImageService {
     @Override
     public void restoreImage(String id) {
         ParkingLotImage parkingLotImage = parkingLotImageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Parking lot image not found"));
-        parkingLotImage.getCloudFile().setStatus(0);
+        parkingLotImage.getCloudFile().setStatus(CloudFile.Status.ACTIVE);
         parkingLotImageRepository.save(parkingLotImage);
     }
 }
