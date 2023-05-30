@@ -106,10 +106,10 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public UserDetailsManager users(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
-    }
+//    @Bean
+//    public UserDetailsManager users(DataSource dataSource) {
+//        return new JdbcUserDetailsManager(dataSource);
+//    }
 
     /**
      * Configure the password encoder
