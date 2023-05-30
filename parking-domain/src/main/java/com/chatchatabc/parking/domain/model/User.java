@@ -71,6 +71,7 @@ public class User extends FlagEntity implements UserDetails {
     private Boolean enabled = true;
 
     @Column
+    // TODO: No usage yet
     private Integer status = 0;
 
     @Column

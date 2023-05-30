@@ -19,6 +19,31 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
+    /**
+     * -1: Deleted
+     * 0: Draft
+     * 1: Pending
+     * 2: Rejected
+     * 3: Verified
+     */
+    public enum Status {
+        DELETED(-1),
+        DRAFT(0),
+        PENDING(1),
+        REJECTED(2),
+        VERIFIED(3);
+
+        private final int value;
+
+        Status(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
