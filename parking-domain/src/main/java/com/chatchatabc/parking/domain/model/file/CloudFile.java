@@ -16,20 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CloudFile {
-    public enum Status {
-        DELETED(-1),
-        ACTIVE(0);
-
-        private final int value;
-
-        Status(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
+    public static final int DELETED = -1;
+    public static final int ACTIVE = 0;
 
     @JsonIgnore
     @Id
@@ -59,8 +47,7 @@ public class CloudFile {
     private String tags;
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.ACTIVE;
+    private Integer status = ACTIVE;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
