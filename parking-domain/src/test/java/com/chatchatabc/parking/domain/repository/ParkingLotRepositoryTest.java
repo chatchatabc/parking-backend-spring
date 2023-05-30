@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.repository;
 import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,5 +69,17 @@ class ParkingLotRepositoryTest extends TestContainersBaseTest {
     @Test
     void testCountVerified() {
         assertThat(parkingLotRepository.countVerified()).isGreaterThan(0L);
+    }
+
+    @Test
+    void testFindByStatusGreaterThanEqual_ShouldReturnGreaterThan0() {
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(0, pr).getTotalElements()).isGreaterThan(0L);
+    }
+
+    @Test
+    void testFindByStatusGreaterThanEqual_ShouldReturn0() {
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(parkingLotRepository.findByStatusGreaterThanEqual(5, pr).getTotalElements()).isEqualTo(0L);
     }
 }
