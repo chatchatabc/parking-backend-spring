@@ -26,23 +26,11 @@ public class ParkingLot extends FlagEntity {
      * 2: Rejected
      * 3: Verified
      */
-    public enum Status {
-        DELETED(-1),
-        DRAFT(0),
-        PENDING(1),
-        REJECTED(2),
-        VERIFIED(3);
-
-        private final int value;
-
-        Status(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
+    public static final int DELETED = -1;
+    public static final int DRAFT = 0;
+    public static final int PENDING = 1;
+    public static final int REJECTED = 2;
+    public static final int VERIFIED = 3;
 
     @JsonIgnore
     @Id
@@ -98,8 +86,7 @@ public class ParkingLot extends FlagEntity {
      * 3: Verified
      */
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.DRAFT;
+    private Integer status = DRAFT;
 
     @Column
     private LocalDateTime verifiedAt;
