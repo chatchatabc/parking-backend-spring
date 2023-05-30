@@ -41,7 +41,7 @@ class ReportGQLController(
      */
     @QueryMapping
     fun getReportById(
-        @Argument id: String
+        @Argument id: Long
     ): Optional<Report> {
         return reportRepository.findById(id)
     }

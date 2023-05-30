@@ -24,7 +24,7 @@ type Query {
     getInvoiceByUuid(uuid: String!): Invoice
 
     getReports(page: Int size: Int): ReportList!
-    getReportById(id: String!): Report
+    getReportById(id: Int!): Report
 }
 
 type Mutation {
