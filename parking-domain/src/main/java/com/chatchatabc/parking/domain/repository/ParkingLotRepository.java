@@ -1,6 +1,8 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.domain.model.ParkingLot;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +20,15 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long>, J
      * @return the parking lot
      */
     Optional<ParkingLot> findByParkingLotUuid(String parkingLotUuid);
+
+    /**
+     * Find parking lots by status
+     *
+     * @param status   the status
+     * @param pageable the pageable
+     * @return the parking lots
+     */
+    Page<ParkingLot> findByStatusGreaterThanEqual(int status, Pageable pageable);
 
     /**
      * Find parking lot by owner
