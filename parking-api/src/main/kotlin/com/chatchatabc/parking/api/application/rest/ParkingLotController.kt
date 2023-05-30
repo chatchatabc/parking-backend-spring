@@ -42,6 +42,23 @@ class ParkingLotController(
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
 
     /**
+     * Get all parking lots
+     */
+    @GetMapping("/get-all")
+    fun getAll(
+        pageable: Pageable
+    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
+        return try {
+            val parkingLots = parkingLotRepository.findByStatusGreaterThanEqual(0, pageable)
+            ResponseEntity.ok(ApiResponse(parkingLots, null))
+        } catch (e: Exception) {
+            ResponseEntity.ok(
+                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
+            )
+        }
+    }
+
+    /**
      * Get parking lots by uuid
      */
     @GetMapping("/get/{parkingLotUuid}")
