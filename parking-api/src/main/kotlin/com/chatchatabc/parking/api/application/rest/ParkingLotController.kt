@@ -230,7 +230,7 @@ class ParkingLotController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            parkingLot.status = 1
+            parkingLot.status = ParkingLot.Status.PENDING.value
             parkingLotRepository.save(parkingLot)
             ResponseEntity.ok(ApiResponse(parkingLot, null))
         } catch (e: Exception) {
