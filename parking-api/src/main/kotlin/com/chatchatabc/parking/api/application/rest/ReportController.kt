@@ -37,6 +37,9 @@ class ReportController(
         }
     }
 
+    /**
+     * Create Report Data Class
+     */
     data class ReportCreateRequest(
         val name: String,
         val description: String,
@@ -59,6 +62,36 @@ class ReportController(
             ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+        }
+    }
+
+    /**
+     * Update Report Data Class
+     */
+    data class ReportUpdateRequest(
+        val name: String?,
+        val description: String?,
+        val plateNumber: String?,
+        val latitude: Double?,
+        val longitude: Double?
+    )
+
+    /**
+     * Update Report
+     */
+    @PutMapping("/update-report/{reportId}")
+    fun updateReport(
+        @PathVariable reportId: Long,
+        @RequestBody req: ReportUpdateRequest
+    ): ResponseEntity<ApiResponse<Nothing>> {
+        return try {
+            val report = reportRepository.findById(reportId).orElseThrow()
+            reportMapper.updateReportFromRequest(req, report)
+            reportRepository.save(report)
+            ResponseEntity.ok(ApiResponse(null, null))
+        } catch (e: Exception) {
+            ResponseEntity.badRequest()
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
     }
 }
