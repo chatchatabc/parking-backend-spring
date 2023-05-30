@@ -15,20 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserBanHistoryLog {
-    public enum Status {
-        UNBANNED(-1),
-        BANNED(0);
-
-        private final int value;
-
-        Status(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
+    public static final int UNBANNED = -1;
+    public static final int BANNED = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -58,8 +46,7 @@ public class UserBanHistoryLog {
     private Long unbannedBy;
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.BANNED;
+    private Integer status = BANNED;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
