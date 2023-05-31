@@ -254,6 +254,7 @@ CREATE TABLE IF NOT EXISTS report
     updated_at   TIMESTAMP    NOT NULL
 );
 
+ALTER SEQUENCE report_id_seq RESTART WITH 1000;
 create index idx_report_on_reported_by on report (reported_by);
 
 -- Create report_status table
@@ -267,5 +268,6 @@ CREATE TABLE IF NOT EXISTS report_status
     created_at   TIMESTAMP NOT NULL
 );
 
+ALTER SEQUENCE report_status_id_seq RESTART WITH 1000;
 create index idx_report_status_on_report_id on report_status (report_id);
 create index idx_report_status_on_performed_by on report_status (performed_by);
