@@ -22,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
                 "db/datasets/log/user_logout_log.xml",
                 "db/datasets/file/parking_lot_image.xml",
                 "db/datasets/log/user_ban_history_log.xml",
+                "db/datasets/report.xml",
         })
 public abstract class TestContainersBaseTest extends SpringBootBaseTest {
 }
