@@ -17,4 +17,11 @@ class ReportRepositoryTest extends TestContainersBaseTest {
         PageRequest pr = PageRequest.of(0, 10);
         assertThat(reportRepository.findAllByReportedBy(userId, pr).getTotalElements()).isGreaterThan(0L);
     }
+
+    @Test
+    void testFindAllByReportedBy_ShouldReturn0() {
+        Long userId = 100L;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(reportRepository.findAllByReportedBy(userId, pr).getTotalElements()).isEqualTo(0L);
+    }
 }
