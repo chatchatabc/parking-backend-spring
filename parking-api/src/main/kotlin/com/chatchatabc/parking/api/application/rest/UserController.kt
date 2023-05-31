@@ -70,7 +70,6 @@ class UserController(
     }
 
     data class UserProfileUpdateRequest(
-        val username: String?,
         val email: String?,
         val firstName: String?,
         val lastName: String?,
