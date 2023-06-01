@@ -72,6 +72,7 @@ class UserController(
         val firstName: String?,
         val lastName: String?,
         val phone: String?,
+        val roles: List<String>?
     )
 
     /**
@@ -80,12 +81,17 @@ class UserController(
     @PutMapping("/update/{userUuid}")
     fun updateUser(
         @RequestBody req: UserUpdateRequest,
-        @PathVariable userUuid: String
+        @PathVariable userUuid: String,
+        principal: Principal
     ): ResponseEntity<ApiResponse<User>> {
         return try {
-            // TODO: Add logic for update roles
             val user = userRepository.findByUserUuid(userUuid).get()
             userMapper.updateUserFromUpdateRequest(req, user)
+            // If user is not self, update role as wel
+            if (principal.name != userUuid && req.roles.isNullOrEmpty().not()) {
+                val roleRecords = roleRepository.findRolesIn(req.roles)
+                user.roles = roleRecords
+            }
             userService.saveUser(user)
             return ResponseEntity.ok(ApiResponse(null, null))
         } catch (e: Exception) {
