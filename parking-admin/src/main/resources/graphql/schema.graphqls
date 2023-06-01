@@ -122,7 +122,7 @@ type VehicleList {
 
 # Parking Lot
 type ParkingLot {
-    id: String!
+    parkingLotUuid: String!
     address: String
     availableSlots: Int
     businessHoursEnd: String
