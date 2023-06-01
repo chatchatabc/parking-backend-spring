@@ -95,9 +95,7 @@ class UserController(
             val user = userRepository.findByUserUuid(principal.name).get()
             userMapper.updateUserFromUpdateProfileRequest(request, user)
             userService.saveUser(user)
-            ResponseEntity.ok().body(
-                ApiResponse(null, null)
-            )
+            ResponseEntity.ok().body(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -125,7 +123,7 @@ class UserController(
                 file.size,
                 file.contentType
             )
-            ApiResponse(user, null)
+            ApiResponse(user, listOf())
         } catch (e: Exception) {
             ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
         }

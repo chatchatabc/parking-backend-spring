@@ -84,7 +84,7 @@ class AuthController(
             headers.set("X-Access-Token", token)
             // Generate Successful Login Log
             userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
-            ResponseEntity.ok().headers(headers).body(ApiResponse(user, null))
+            ResponseEntity.ok().headers(headers).body(ApiResponse(user, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             // Generate Failed Login Log
