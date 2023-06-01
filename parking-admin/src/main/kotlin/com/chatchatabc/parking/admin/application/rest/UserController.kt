@@ -71,6 +71,7 @@ class UserController(
         val username: String?,
         val firstName: String?,
         val lastName: String?,
+        val phone: String?,
     )
 
     /**
@@ -82,6 +83,7 @@ class UserController(
         @PathVariable userUuid: String
     ): ResponseEntity<ApiResponse<User>> {
         return try {
+            // TODO: Add logic for update roles
             val user = userRepository.findByUserUuid(userUuid).get()
             userMapper.updateUserFromUpdateRequest(req, user)
             userService.saveUser(user)

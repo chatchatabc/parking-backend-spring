@@ -69,6 +69,10 @@ class UserController(
         }
     }
 
+    // TODO: Create API for change username
+
+    // TODO: Create API for change phone number
+
     data class UserProfileUpdateRequest(
         val email: String?,
         val firstName: String?,

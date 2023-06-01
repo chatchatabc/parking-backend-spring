@@ -29,6 +29,7 @@ interface UserMapper {
      */
     @Mappings(
         Mapping(target = "email", source = "request.email"),
+        Mapping(target = "phone", source = "request.phone"),
         Mapping(target = "username", source = "request.username"),
         Mapping(target = "firstName", source = "request.firstName"),
         Mapping(target = "lastName", source = "request.lastName")
