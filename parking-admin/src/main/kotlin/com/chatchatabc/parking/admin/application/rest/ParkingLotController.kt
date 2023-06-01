@@ -55,6 +55,7 @@ class ParkingLotController(
             val owner = userRepository.findByUserUuid(userUuid).get()
             val createdParkingLot = ParkingLot()
             createdParkingLot.owner = owner.id
+            createdParkingLot.availableSlots = req.capacity
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
             parkingLotService.saveParkingLot(createdParkingLot)
             ResponseEntity.ok(ApiResponse(null, null))
