@@ -33,7 +33,7 @@ class ReportController(
         return try {
             // Get user from security context
             val reports = reportRepository.findAll(pageable)
-            ResponseEntity.ok(ApiResponse(reports, null))
+            ResponseEntity.ok(ApiResponse(reports, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -50,7 +50,7 @@ class ReportController(
         return try {
             val user = userRepository.findByUserUuid(userUuid).orElseThrow()
             val reports = reportRepository.findAllByReportedBy(user.id, pageable)
-            ResponseEntity.ok(ApiResponse(reports, null))
+            ResponseEntity.ok(ApiResponse(reports, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -78,7 +78,7 @@ class ReportController(
             val report = Report()
             reportMapper.createReportFromRequest(req, report)
             reportService.saveReport(report)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -107,7 +107,7 @@ class ReportController(
             val report = reportRepository.findById(reportId).orElseThrow()
             reportMapper.updateReportFromRequest(req, report)
             reportRepository.save(report)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))

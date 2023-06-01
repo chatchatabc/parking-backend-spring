@@ -55,7 +55,7 @@ class UserController(
             }
             userMapper.createUserFromCreateRequest(req, user)
             userService.saveUser(user)
-            return ResponseEntity.ok(ApiResponse(null, null))
+            return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -93,7 +93,7 @@ class UserController(
                 user.roles = roleRecords
             }
             userService.saveUser(user)
-            return ResponseEntity.ok(ApiResponse(null, null))
+            return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -115,7 +115,7 @@ class UserController(
             val user = userRepository.findByUserUuid(userUuid).get().apply {
                 this.password = passwordEncoder.encode(req.newPassword)
             }
-            return ResponseEntity.ok(ApiResponse(userRepository.save(user), null))
+            return ResponseEntity.ok(ApiResponse(userRepository.save(user), listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest().body(
@@ -143,7 +143,7 @@ class UserController(
                 this.until = req.until
                 this.status = UserBanHistoryLog.BANNED
             }
-            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
+            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -167,7 +167,7 @@ class UserController(
                 this.unbanReason = req.unbanReason
                 this.status = UserBanHistoryLog.UNBANNED
             }
-            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), null))
+            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }

@@ -56,7 +56,7 @@ class RateController(
                 rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)
                 rateService.saveRate(parkingLot.rate!!)
             }
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }

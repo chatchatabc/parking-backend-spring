@@ -34,7 +34,7 @@ class VehicleController(
         return try {
             // Get user from security context
             val vehicles = vehicleRepository.findAllByUser(principal.name, pageable)
-            ResponseEntity.ok(ApiResponse(vehicles, null))
+            ResponseEntity.ok(ApiResponse(vehicles, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -59,7 +59,7 @@ class VehicleController(
                 throw Exception("User does not have access to this vehicle")
             }
 
-            ResponseEntity.ok(ApiResponse(vehicle.get(), null))
+            ResponseEntity.ok(ApiResponse(vehicle.get(), listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
         }
@@ -75,7 +75,7 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, null))
+            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
         }
@@ -104,7 +104,7 @@ class VehicleController(
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
             vehicleService.updateVehicle(vehicle)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
@@ -121,7 +121,7 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.addUserToVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(ApiResponse(vehicle, null))
+            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
@@ -139,7 +139,7 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             val vehicle = vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(ApiResponse(vehicle, null))
+            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }

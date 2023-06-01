@@ -37,7 +37,7 @@ class ProfileController(
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(user, null))
+            ResponseEntity.ok().body(ApiResponse(user, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -57,7 +57,7 @@ class ProfileController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             userLogoutLogService.createLog(user.id, 1, request.remoteAddr)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))

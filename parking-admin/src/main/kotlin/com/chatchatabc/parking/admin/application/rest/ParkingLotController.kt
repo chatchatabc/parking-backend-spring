@@ -58,7 +58,7 @@ class ParkingLotController(
             createdParkingLot.availableSlots = req.capacity
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
             parkingLotService.saveParkingLot(createdParkingLot)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
@@ -110,7 +110,7 @@ class ParkingLotController(
             // Save
             parkingLotService.saveParkingLot(updatedParkingLot)
 
-            return ResponseEntity.ok(ApiResponse(null, null))
+            return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
@@ -128,7 +128,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotService.verifyParkingLot(principal.name, parkingLotId)
-            ResponseEntity.ok(ApiResponse(parkingLot, null))
+            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
@@ -145,7 +145,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             parkingLotImageService.deleteImage(imageId)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
@@ -162,7 +162,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             parkingLotImageService.restoreImage(imageId)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))

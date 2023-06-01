@@ -31,7 +31,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
             val invoice = invoiceRepository.findById(invoiceId).get()
-            ResponseEntity.ok(ApiResponse(invoice, null))
+            ResponseEntity.ok(ApiResponse(invoice, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -68,7 +68,7 @@ class InvoiceController(
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
             val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pageable)
-            return ResponseEntity.ok(ApiResponse(invoices, null))
+            return ResponseEntity.ok(ApiResponse(invoices, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -86,7 +86,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.createInvoice(parkingLotId, vehicleUuid)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
@@ -103,7 +103,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.endInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -121,7 +121,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             invoiceService.payInvoice(parkingLotId, invoiceId)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()

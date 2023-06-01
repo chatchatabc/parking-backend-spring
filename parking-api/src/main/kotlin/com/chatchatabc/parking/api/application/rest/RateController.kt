@@ -32,7 +32,7 @@ class RateController(
     ): ResponseEntity<ApiResponse<Rate>> {
         return try {
             val rate = rateRepository.findById(rateId).get()
-            ResponseEntity.ok(ApiResponse(rate, null))
+            ResponseEntity.ok(ApiResponse(rate, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().build()
         }
@@ -47,7 +47,7 @@ class RateController(
     ): ResponseEntity<ApiResponse<Rate>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            ResponseEntity.ok(ApiResponse(parkingLot.rate, null))
+            ResponseEntity.ok(ApiResponse(parkingLot.rate, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -89,7 +89,7 @@ class RateController(
                 rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)
                 rateService.saveRate(parkingLot.rate!!)
             }
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))

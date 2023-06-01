@@ -42,7 +42,7 @@ class UserController(
     ): ResponseEntity<ApiResponse<User>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(user, null))
+            ResponseEntity.ok().body(ApiResponse(user, listOf()))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
@@ -62,7 +62,7 @@ class UserController(
     ): ResponseEntity<ApiResponse<UserNotificationResponse>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(UserNotificationResponse(user.notificationUuid), null))
+            ResponseEntity.ok().body(ApiResponse(UserNotificationResponse(user.notificationUuid), listOf()))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))

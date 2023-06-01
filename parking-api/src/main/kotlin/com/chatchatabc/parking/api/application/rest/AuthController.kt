@@ -45,7 +45,7 @@ class AuthController(
             val otp = userService.generateOTPAndSaveToKV(req.phone, 900L)
             // Send OTP to SMS using events
             applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp))
-            ResponseEntity.ok().body(ApiResponse(null, null))
+            ResponseEntity.ok().body(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)

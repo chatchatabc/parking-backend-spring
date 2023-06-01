@@ -50,7 +50,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
         return try {
             val parkingLots = parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pageable)
-            ResponseEntity.ok(ApiResponse(parkingLots, null))
+            ResponseEntity.ok(ApiResponse(parkingLots, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
@@ -67,7 +67,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            ResponseEntity.ok(ApiResponse(parkingLot, null))
+            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
@@ -84,7 +84,7 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).getOrNull()
-            ResponseEntity.ok(ApiResponse(parkingLot, null))
+            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
@@ -107,7 +107,7 @@ class ParkingLotController(
                 inputDistance = 0.1
             }
             val parkingLots = parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
-            return ResponseEntity.ok(ApiResponse(parkingLots, null))
+            return ResponseEntity.ok(ApiResponse(parkingLots, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -128,7 +128,7 @@ class ParkingLotController(
                 0,
                 pageable
             )
-            ResponseEntity.ok(ApiResponse(images, null))
+            ResponseEntity.ok(ApiResponse(images, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -164,7 +164,7 @@ class ParkingLotController(
             createdParkingLot.availableSlots = req.capacity
             parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
             parkingLotService.saveParkingLot(createdParkingLot)
-            return ResponseEntity.ok(ApiResponse(null, null))
+            return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
@@ -214,7 +214,7 @@ class ParkingLotController(
             // Save
             parkingLotService.saveParkingLot(updatedParkingLot)
 
-            return ResponseEntity.ok(ApiResponse(null, null))
+            return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
@@ -233,7 +233,7 @@ class ParkingLotController(
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             parkingLot.status = ParkingLot.PENDING
             parkingLotRepository.save(parkingLot)
-            ResponseEntity.ok(ApiResponse(parkingLot, null))
+            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
@@ -282,7 +282,7 @@ class ParkingLotController(
                 file.size,
                 file.contentType
             )
-            return ResponseEntity.ok(ApiResponse(fileData, null))
+            return ResponseEntity.ok(ApiResponse(fileData, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -307,7 +307,7 @@ class ParkingLotController(
                 throw Exception("You are not owner of this parking lot")
             }
             parkingLotImageService.deleteImage(imageId)
-            ResponseEntity.ok(ApiResponse(null, null))
+            ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
