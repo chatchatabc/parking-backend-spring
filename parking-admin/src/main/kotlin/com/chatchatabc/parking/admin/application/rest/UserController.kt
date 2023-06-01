@@ -87,7 +87,7 @@ class UserController(
         return try {
             val user = userRepository.findByUserUuid(userUuid).get()
             userMapper.updateUserFromUpdateRequest(req, user)
-            // If user is not self, update role as wel
+            // If user is not self, update role as well
             if (principal.name != userUuid && req.roles.isNullOrEmpty().not()) {
                 val roleRecords = roleRepository.findRolesIn(req.roles)
                 user.roles = roleRecords
