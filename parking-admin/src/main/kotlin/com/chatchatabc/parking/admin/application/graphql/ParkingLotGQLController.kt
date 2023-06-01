@@ -63,4 +63,26 @@ class ParkingLotGQLController(
         val userId = parkingLotRepository.findByParkingLotUuid(uuid).get().owner
         return userRepository.findById(userId)
     }
+
+    /**
+     * Get Parking Lot By User Username
+     */
+    @QueryMapping
+    fun getParkingLotByUsername(
+        @Argument username: String
+    ): Optional<ParkingLot> {
+        val user = userRepository.findByUsername(username).get()
+        return parkingLotRepository.findByOwner(user.id)
+    }
+
+    /**
+     * Get Parking Lot By User Phone
+     */
+    @QueryMapping
+    fun getParkingLotByPhone(
+        @Argument phone: String
+    ): Optional<ParkingLot> {
+        val user = userRepository.findByPhone(phone).get()
+        return parkingLotRepository.findByOwner(user.id)
+    }
 }

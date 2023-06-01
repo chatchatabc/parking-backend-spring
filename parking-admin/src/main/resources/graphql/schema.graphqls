@@ -18,6 +18,8 @@ type Query {
 
     getParkingLots(page: Int size: Int, keyword: String): ParkingLotList!
     getParkingLotByUuid(uuid: String!): ParkingLot
+    getParkingLotByUsername(username: String!): ParkingLot
+    getParkingLotByPhone(phone: String!): ParkingLot
     getUserByParkingLotUuid(uuid: String!): User
 
     getInvoices(page: Int size: Int): InvoiceList!
