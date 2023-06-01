@@ -32,7 +32,8 @@ interface UserMapper {
         Mapping(target = "phone", source = "request.phone"),
         Mapping(target = "username", source = "request.username"),
         Mapping(target = "firstName", source = "request.firstName"),
-        Mapping(target = "lastName", source = "request.lastName")
+        Mapping(target = "lastName", source = "request.lastName"),
+        Mapping(target = "roles", ignore = true)
     )
     fun updateUserFromUpdateRequest(
         request: UserController.UserUpdateRequest,
