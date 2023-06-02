@@ -105,7 +105,9 @@ class ParkingLotController(
             }
 
             // Update images
-            parkingLotImageService.updateOrderOfImages(req.images)
+            if (req.images.isNullOrEmpty().not()) {
+                parkingLotImageService.updateOrderOfImages(req.images)
+            }
 
             // Save
             parkingLotService.saveParkingLot(updatedParkingLot)
