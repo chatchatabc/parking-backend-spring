@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/invoice")
@@ -50,6 +51,26 @@ class InvoiceController(
         return try {
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             return ResponseEntity.ok(ApiResponse(invoiceRepository.findAllByVehicle(vehicle.id, pageable), null))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+        }
+    }
+
+    /**
+     * Get latest active invoice by parking lot uuid and vehicle uuid
+     */
+    @GetMapping("/get/active/{parkingLotUuid}/{vehicleUuid}")
+    fun getActiveInvoice(
+        @PathVariable parkingLotUuid: String,
+        @PathVariable vehicleUuid: String
+    ): ResponseEntity<ApiResponse<Invoice>> {
+        return try {
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
+            val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.id, vehicle.id)
+            return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
