@@ -28,11 +28,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     /**
      * Create invoice for vehicle
      *
-     * @param parkingLotUuid the parking lot uuid
-     * @param vehicleUuid    the vehicle uuid
+     * @param parkingLotUuid                  the parking lot uuid
+     * @param vehicleUuid                     the vehicle uuid
+     * @param estimatedParkingDurationInHours the estimated parking duration in hours
      */
     @Override
-    public void createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception {
+    public void createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
@@ -51,6 +52,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setParkingLot(parkingLot.get().getId());
         invoice.setVehicle(vehicle.get().getId());
         invoice.setStartAt(LocalDateTime.now());
+        invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
         parkingLot.get().setCapacity(parkingLot.get().getCapacity() - 1);

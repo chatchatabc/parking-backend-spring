@@ -5,10 +5,11 @@ public interface InvoiceService {
     /**
      * Create invoice for vehicle
      *
-     * @param parkingLotUuid the parking lot uuid
-     * @param vehicleUuid    the vehicle uuid
+     * @param parkingLotUuid                  the parking lot uuid
+     * @param vehicleUuid                     the vehicle uuid
+     * @param estimatedParkingDurationInHours the estimated parking duration in hours
      */
-    void createInvoice(String parkingLotUuid, String vehicleUuid) throws Exception;
+    void createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception;
 
     /**
      * End invoice

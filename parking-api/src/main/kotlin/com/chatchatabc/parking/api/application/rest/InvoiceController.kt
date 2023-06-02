@@ -102,17 +102,25 @@ class InvoiceController(
     }
 
     /**
+     * Create Invoice data class
+     */
+    data class InvoiceCreateRequest(
+        val estimatedParkingDurationInHours: Int,
+    )
+
+    /**
      * Create an invoice
      */
     @PostMapping("/create/{vehicleUuid}")
     fun createInvoice(
         @PathVariable vehicleUuid: String,
-        principal: Principal
+        principal: Principal,
+        @RequestBody req: InvoiceCreateRequest
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            invoiceService.createInvoice(parkingLot.parkingLotUuid, vehicleUuid)
+            invoiceService.createInvoice(parkingLot.parkingLotUuid, vehicleUuid, req.estimatedParkingDurationInHours)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
