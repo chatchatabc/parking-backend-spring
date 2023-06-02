@@ -132,6 +132,7 @@ type ParkingLot {
     capacity: Int
     createdAt: String
     description: String
+    openDaysFlag: Int
     latitude: Float
     longitude: Float
     name: String
