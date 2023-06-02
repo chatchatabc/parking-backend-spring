@@ -74,7 +74,7 @@ class InvoiceController(
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.id, vehicle.id)
-            return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), null))
+            return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
