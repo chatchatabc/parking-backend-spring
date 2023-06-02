@@ -50,16 +50,13 @@ class VehicleController(
     ): ResponseEntity<ApiResponse<Vehicle>> {
         return try {
             // Get user from security context
-            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid)
-            if (vehicle.isEmpty) {
-                throw Exception("Vehicle not found")
-            }
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             // User should have access to this vehicle. If user is not inside vehicle users array
-            if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
-                throw Exception("User does not have access to this vehicle")
-            }
+            // if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
+            //     throw Exception("User does not have access to this vehicle")
+            // }
 
-            ResponseEntity.ok(ApiResponse(vehicle.get(), listOf()))
+            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
         }
