@@ -6,12 +6,14 @@ import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import kotlin.jvm.optionals.getOrNull
 
 @RestController
@@ -20,7 +22,8 @@ class InvoiceController(
     private val invoiceRepository: InvoiceRepository,
     private val vehicleRepository: VehicleRepository,
     private val parkingLotRepository: ParkingLotRepository,
-    private val invoiceService: InvoiceService
+    private val invoiceService: InvoiceService,
+    private val userRepository: UserRepository
 ) {
 
     /**
@@ -59,15 +62,16 @@ class InvoiceController(
     }
 
     /**
-     * Get latest active invoice by parking lot uuid and vehicle uuid
+     * Get latest active invoices by parking lot vehicle uuid
      */
-    @GetMapping("/get/active/{parkingLotUuid}/{vehicleUuid}")
+    @GetMapping("/get/active/{vehicleUuid}")
     fun getActiveInvoice(
-        @PathVariable parkingLotUuid: String,
-        @PathVariable vehicleUuid: String
+        @PathVariable vehicleUuid: String,
+        principal: Principal
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
             val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.id, vehicle.id)
             return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), null))
@@ -100,13 +104,15 @@ class InvoiceController(
     /**
      * Create an invoice
      */
-    @PostMapping("/create/{parkingLotId}/{vehicleUuid}")
+    @PostMapping("/create/{vehicleUuid}")
     fun createInvoice(
-        @PathVariable parkingLotId: String,
-        @PathVariable vehicleUuid: String
+        @PathVariable vehicleUuid: String,
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            invoiceService.createInvoice(parkingLotId, vehicleUuid)
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+            invoiceService.createInvoice(parkingLot.parkingLotUuid, vehicleUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
@@ -117,13 +123,15 @@ class InvoiceController(
     /**
      * End an invoice
      */
-    @PostMapping("/end/{parkingLotId}/{invoiceId}")
+    @PostMapping("/end/{invoiceId}")
     fun endInvoice(
         @PathVariable invoiceId: String,
-        @PathVariable parkingLotId: String
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            invoiceService.endInvoice(parkingLotId, invoiceId)
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+            invoiceService.endInvoice(parkingLot.parkingLotUuid, invoiceId)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -135,13 +143,15 @@ class InvoiceController(
     /**
      * Pay an invoice
      */
-    @PostMapping("/pay/{parkingLotId}/{invoiceId}")
+    @PostMapping("/pay/{invoiceId}")
     fun payInvoice(
         @PathVariable invoiceId: String,
-        @PathVariable parkingLotId: String
+        principal: Principal
     ): ResponseEntity<ApiResponse<Nothing>> {
         return try {
-            invoiceService.payInvoice(parkingLotId, invoiceId)
+            val user = userRepository.findByUserUuid(principal.name).get()
+            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+            invoiceService.payInvoice(parkingLot.parkingLotUuid, invoiceId)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
