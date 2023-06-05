@@ -40,9 +40,10 @@ public class FileStorageOSSImpl implements FileStorageService, HealthIndicator {
     @Override
     public CloudFile uploadFile(Long uploadedById, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) {
         // Generate UUID name to be used also as key for cloud storage and append the file extension
-        String key = Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(filename);
+        String key = namespace + "/" + Generators.timeBasedEpochGenerator().generate() + "." + getFileExtension(filename);
         // Create cloud file
         CloudFile cloudFile = new CloudFile();
+        cloudFile.setBucket(bucketName);
         cloudFile.setKey(key);
         cloudFile.setName(filename);
         cloudFile.setSize(filesize);

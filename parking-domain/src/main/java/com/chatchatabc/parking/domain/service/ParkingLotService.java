@@ -9,7 +9,7 @@ public interface ParkingLotService {
      *
      * @param parkingLot the parking lot
      */
-    void saveParkingLot(ParkingLot parkingLot);
+    ParkingLot saveParkingLot(ParkingLot parkingLot);
 
     /**
      * Verify parking lot

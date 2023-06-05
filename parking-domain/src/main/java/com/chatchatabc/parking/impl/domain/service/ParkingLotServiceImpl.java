@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.service.ParkingLotService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -25,10 +26,11 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      *
      * @param parkingLot the parking lot
      */
+    @Transactional
     @Override
-    public void saveParkingLot(ParkingLot parkingLot) {
+    public ParkingLot saveParkingLot(ParkingLot parkingLot) {
         // TODO: NATS publish parking lot update
-        parkingLotRepository.save(parkingLot);
+        return parkingLotRepository.save(parkingLot);
     }
 
     /**
