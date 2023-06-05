@@ -1,5 +1,7 @@
 package com.chatchatabc.parking.domain.service;
 
+import com.chatchatabc.parking.domain.model.Invoice;
+
 public interface InvoiceService {
 
     /**
@@ -9,7 +11,7 @@ public interface InvoiceService {
      * @param vehicleUuid                     the vehicle uuid
      * @param estimatedParkingDurationInHours the estimated parking duration in hours
      */
-    void createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception;
+    Invoice createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception;
 
     /**
      * End invoice
