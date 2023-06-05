@@ -123,13 +123,13 @@ class ParkingLotController(
     /**
      * Verify Parking Lot
      */
-    @PutMapping("/verify/{parkingLotId}")
+    @PutMapping("/verify/{parkingLotUuid}")
     fun verifyParkingLot(
-        @PathVariable parkingLotId: String,
+        @PathVariable parkingLotUuid: String,
         principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
-            val parkingLot = parkingLotService.verifyParkingLot(principal.name, parkingLotId)
+            val parkingLot = parkingLotService.verifyParkingLot(principal.name, parkingLotUuid)
             ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest().body(
