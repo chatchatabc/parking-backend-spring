@@ -1,5 +1,7 @@
 package com.chatchatabc.parking.api.application.dto
 
+import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
+
 data class ApiResponse<T>(
     val data: T? = null,
     val errors: List<ErrorElement>? = null
@@ -8,6 +10,11 @@ data class ApiResponse<T>(
 data class ErrorElement(
     val title: String?,
     val message: String?
+)
+
+data class NatsMessage<T>(
+    val type: NatsPayloadTypes,
+    val payload: T?
 )
 
 data class UserPhoneLoginRequest(
