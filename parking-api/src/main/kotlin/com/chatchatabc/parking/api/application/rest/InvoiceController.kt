@@ -139,7 +139,7 @@ class InvoiceController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            invoiceService.endInvoice(parkingLot.parkingLotUuid, invoiceId)
+            invoiceService.endInvoice(invoiceId, parkingLot.parkingLotUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
