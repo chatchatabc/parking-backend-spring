@@ -99,7 +99,7 @@ Content-Type: application/json
 }
 
 ### Update Parking Lot
-PUT {{userBaseUrl}}/api/parking-lot/update/2935523d-e3df-45f0-a211-c10f3ca5ff77
+PUT {{userBaseUrl}}/api/parking-lot/update
 Authorization: Bearer {{userToken}}
 Content-Type: application/json
 
@@ -109,7 +109,8 @@ Content-Type: application/json
   "longitude": 125.633836,
   "address": "Address 2",
   "description": "Description 2",
-  "capacity": 25
+  "capacity": 25,
+  "openDaysFlag": 100
 }
 
 ### Upload Image to Parking Lot

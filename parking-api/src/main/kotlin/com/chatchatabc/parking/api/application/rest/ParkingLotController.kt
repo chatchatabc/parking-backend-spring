@@ -198,22 +198,23 @@ class ParkingLotController(
     ): ResponseEntity<ApiResponse<ParkingLot>> {
         return try {
             // Map request to parking lot
-            val parkingLotUuid = parkingLotRepository.findByOwnerUuid(principal.name).get().parkingLotUuid
-            val updatedParkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            parkingLotMapper.updateParkingLotFromUpdateRequest(req, updatedParkingLot)
+            val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).get()
+            parkingLotMapper.updateParkingLotFromUpdateRequest(req, parkingLot)
+            parkingLot.openDaysFlag = req.openDaysFlag ?: 0
 
             // Update available slots if there are active invoices and if capacity is updated
             if (req.capacity != null) {
-                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(updatedParkingLot.id)
-                updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
+                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLot.id)
+                parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
             }
 
-            // Update images
-            parkingLotImageService.updateOrderOfImages(req.images)
+            if (req.images != null) {
+                // Update images
+                parkingLotImageService.updateOrderOfImages(req.images)
+            }
 
             // Save
-            val savedParkingLot = parkingLotService.saveParkingLot(updatedParkingLot)
-
+            val savedParkingLot = parkingLotService.saveParkingLot(parkingLot)
             return ResponseEntity.ok(ApiResponse(savedParkingLot, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
