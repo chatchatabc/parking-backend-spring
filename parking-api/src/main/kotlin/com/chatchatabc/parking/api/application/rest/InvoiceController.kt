@@ -2,6 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.ErrorElement
+import com.chatchatabc.parking.api.application.dto.NatsMessage
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
@@ -9,6 +10,10 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
+import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
+import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.nats.client.Connection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -23,8 +28,10 @@ class InvoiceController(
     private val vehicleRepository: VehicleRepository,
     private val parkingLotRepository: ParkingLotRepository,
     private val invoiceService: InvoiceService,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val natsConnection: Connection
 ) {
+    private val objectMapper = ObjectMapper()
 
     /**
      * Get Invoice by ID
@@ -120,7 +127,29 @@ class InvoiceController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            invoiceService.createInvoice(parkingLot.parkingLotUuid, vehicleUuid, req.estimatedParkingDurationInHours)
+            val invoice = invoiceService.createInvoice(
+                parkingLot.parkingLotUuid,
+                vehicleUuid,
+                req.estimatedParkingDurationInHours
+            )
+            // NATS publish to owner and client
+            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
+            val client = userRepository.findById(vehicle.owner).get()
+            // Message structure
+            val natsMessage = objectMapper.writeValueAsString(
+                NatsMessage(
+                    NatsPayloadTypes.INVOICE_CREATED,
+                    InvoicePayload(
+                        parkingLot.parkingLotUuid,
+                        vehicle.vehicleUuid,
+                        invoice.id
+                    )
+                )
+            ).toByteArray()
+            // Publish to Client
+            natsConnection.publish(client.notificationUuid, natsMessage)
+            // Publish to owner
+            natsConnection.publish(user.notificationUuid, natsMessage)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
