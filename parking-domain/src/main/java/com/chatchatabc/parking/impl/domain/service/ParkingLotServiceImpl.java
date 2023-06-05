@@ -26,9 +26,9 @@ public class ParkingLotServiceImpl implements ParkingLotService {
      * @param parkingLot the parking lot
      */
     @Override
-    public void saveParkingLot(ParkingLot parkingLot) {
+    public ParkingLot saveParkingLot(ParkingLot parkingLot) {
         // TODO: NATS publish parking lot update
-        parkingLotRepository.save(parkingLot);
+        return parkingLotRepository.save(parkingLot);
     }
 
     /**
