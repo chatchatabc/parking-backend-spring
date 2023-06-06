@@ -36,12 +36,12 @@ class InvoiceController(
     /**
      * Get Invoice by ID
      */
-    @GetMapping("/get/{invoiceId}")
+    @GetMapping("/get/{invoiceUuid}")
     fun getInvoice(
-        @PathVariable invoiceId: String
+        @PathVariable invoiceUuid: String
     ): ResponseEntity<ApiResponse<Invoice>> {
         return try {
-            val invoice = invoiceRepository.findById(invoiceId).get()
+            val invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).get()
             ResponseEntity.ok(ApiResponse(invoice, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -142,7 +142,7 @@ class InvoiceController(
                     InvoicePayload(
                         parkingLot.parkingLotUuid,
                         vehicle.vehicleUuid,
-                        invoice.id
+                        invoice.invoiceUuid
                     )
                 )
             ).toByteArray()

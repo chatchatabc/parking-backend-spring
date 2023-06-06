@@ -43,6 +43,6 @@ class InvoiceGQLController(
     fun getInvoiceByUuid(
         @Argument uuid: String
     ): Optional<Invoice> {
-        return invoiceRepository.findById(uuid)
+        return invoiceRepository.findByInvoiceUuid(uuid)
     }
 }
