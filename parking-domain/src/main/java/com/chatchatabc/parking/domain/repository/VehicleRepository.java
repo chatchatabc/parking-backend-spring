@@ -40,4 +40,12 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      */
     @Query("SELECT v FROM Vehicle v JOIN v.users u WHERE u.userUuid = :userUuid")
     Page<Vehicle> findAllByUser(String userUuid, Pageable pageable);
+
+    /**
+     * Find a vehicle by its plate number
+     *
+     * @param plateNumber the plate number
+     * @return the vehicle
+     */
+    Optional<Vehicle> findByPlateNumber(String plateNumber);
 }
