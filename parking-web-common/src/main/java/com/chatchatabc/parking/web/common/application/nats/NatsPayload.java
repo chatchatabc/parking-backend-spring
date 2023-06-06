@@ -4,7 +4,7 @@ public class NatsPayload {
     public record InvoicePayload(
             String parkingLotUuid,
             String vehicleUuid,
-            String invoiceId
+            String invoiceUuid
     ) {
 
     }
