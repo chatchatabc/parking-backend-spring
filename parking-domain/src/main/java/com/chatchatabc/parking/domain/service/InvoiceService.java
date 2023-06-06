@@ -16,16 +16,16 @@ public interface InvoiceService {
     /**
      * End invoice
      *
-     * @param invoiceId      the invoice id
+     * @param invoiceUuid    the invoice uuid
      * @param parkingLotUuid the parking lot uuid
      */
-    void endInvoice(String invoiceId, String parkingLotUuid) throws Exception;
+    void endInvoice(String invoiceUuid, String parkingLotUuid) throws Exception;
 
     /**
      * Pay invoice
      *
-     * @param invoiceId      the invoice id
+     * @param invoiceUuid    the invoice uuid
      * @param parkingLotUuid the parking lot uuid
      */
-    void payInvoice(String invoiceId, String parkingLotUuid) throws Exception;
+    void payInvoice(String invoiceUuid, String parkingLotUuid) throws Exception;
 }

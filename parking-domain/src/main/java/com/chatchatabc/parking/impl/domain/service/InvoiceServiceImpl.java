@@ -64,16 +64,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     /**
      * End invoice
      *
-     * @param invoiceId      the invoice id
+     * @param invoiceUuid    the invoice uuid
      * @param parkingLotUuid the parking lot uuid
      */
     @Override
-    public void endInvoice(String invoiceId, String parkingLotUuid) throws Exception {
+    public void endInvoice(String invoiceUuid, String parkingLotUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
-        Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
+        Optional<Invoice> invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid);
         if (invoice.isEmpty()) {
             throw new Exception("Invoice not found");
         }
@@ -96,16 +96,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     /**
      * Pay invoice
      *
-     * @param invoiceId      the invoice id
+     * @param invoiceUuid    the invoice uuid
      * @param parkingLotUuid the parking lot uuid
      */
     @Override
-    public void payInvoice(String invoiceId, String parkingLotUuid) throws Exception {
+    public void payInvoice(String invoiceUuid, String parkingLotUuid) throws Exception {
         Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
         if (parkingLot.isEmpty()) {
             throw new Exception("Parking lot not found");
         }
-        Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
+        Optional<Invoice> invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid);
         if (invoice.isEmpty()) {
             throw new Exception("Invoice not found");
         }
