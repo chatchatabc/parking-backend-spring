@@ -27,6 +27,9 @@ type Query {
 
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
+
+    getBanHistoryLogsByUser(page: Int size: Int, uuid: String!): BanHistoryLogList!
+    getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
 }
 
 type Mutation {
@@ -207,6 +210,21 @@ type ReportStatus {
     status: Int
     remarks: String
     createdAt: String
+}
+
+# Ban History Log Related
+type BanHistoryLog {
+    id: String!
+    until: String
+    reason: String
+    unbanReason: String
+    status: Int
+    createdAt: String
+}
+
+type BanHistoryLogList {
+    content: [BanHistoryLog]!
+    pageInfo: PageInfo!
 }
 
 # Misc
