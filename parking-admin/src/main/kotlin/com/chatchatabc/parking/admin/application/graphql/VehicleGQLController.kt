@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
+import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
@@ -71,5 +72,16 @@ class VehicleGQLController(
                 vehicles.isEmpty
             )
         )
+    }
+
+    /**
+     * Get owner by vehicle uuid
+     */
+    @QueryMapping
+    fun getOwnerByVehicleUuid(
+        @Argument uuid: String
+    ): Optional<User> {
+        val vehicle = vehicleRepository.findByVehicleUuid(uuid).get()
+        return userRepository.findById(vehicle.owner)
     }
 }
