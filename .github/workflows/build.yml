@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.SCP_USERNAME }}
           port: ${{ secrets.SCP_PORT }}
           key: ${{ secrets.SCP_KEY }}
-          source: parking-admin/target/parking-admin-0.0.1-SNAPSHOT.jar
+          source: "parking-admin/target/parking-admin-0.0.1-SNAPSHOT.jar"
           target: /var/www/parking/admin/parking-admin-0.0.1-SNAPSHOT.jar
           overwrite: true
 
@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.SCP_USERNAME }}
           port: ${{ secrets.SCP_PORT }}
           key: ${{ secrets.SCP_KEY }}
-          source: parking-api/target/parking-api-0.0.1-SNAPSHOT.jar
+          source: "parking-api/target/parking-api-0.0.1-SNAPSHOT.jar"
           target: /var/www/parking/api/parking-api-0.0.1-SNAPSHOT.jar
           overwrite: true
 
