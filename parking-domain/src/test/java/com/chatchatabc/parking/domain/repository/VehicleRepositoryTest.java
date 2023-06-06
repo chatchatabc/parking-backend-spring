@@ -102,4 +102,16 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         PageRequest pageable = PageRequest.of(0, 10);
         assertThat(vehicleRepository.findAllByUser(userUuid, pageable).getNumberOfElements()).isEqualTo(0);
     }
+
+    @Test
+    void testFindByPlateNumber_ShouldReturnVehicle() {
+        String plateNumber = "ASD1234";
+        assertThat(vehicleRepository.findByPlateNumber(plateNumber).orElseThrow().getPlateNumber()).isEqualTo(plateNumber);
+    }
+
+    @Test
+    void testFindByPlateNumber_ShouldReturnEmptyOptional() {
+        String plateNumber = "non-existent-plate-number";
+        assertThat(vehicleRepository.findByPlateNumber(plateNumber).isEmpty()).isTrue();
+    }
 }
