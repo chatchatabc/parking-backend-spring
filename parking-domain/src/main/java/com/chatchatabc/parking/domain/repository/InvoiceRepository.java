@@ -10,7 +10,15 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface InvoiceRepository extends JpaRepository<Invoice, String> {
+public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+
+    /**
+     * Find invoice by uuid
+     *
+     * @param invoiceUuid the invoice uuid
+     * @return the invoice
+     */
+    Optional<Invoice> findByInvoiceUuid(String invoiceUuid);
 
     /**
      * Find invoice by vehicle
