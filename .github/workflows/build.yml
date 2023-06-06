@@ -62,7 +62,7 @@ jobs:
           port: ${{ secrets.SCP_PORT }}
           key: ${{ secrets.SCP_KEY }}
           source: src/config
-          target: /var/www/parking/config
+          target: /var/www
 
 #      - name: Serve API Artifact File
 #        uses: actions/upload-artifact@v2
