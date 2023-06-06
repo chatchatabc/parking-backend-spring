@@ -83,4 +83,16 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
         Long vehicleId = 3L;
         assertThat(invoiceRepository.findLatestActiveInvoice(parkingLotId, vehicleId)).isNotPresent();
     }
+
+    @Test
+    void testFindByInvoiceUuid_ShouldFindInvoice() {
+        String invoiceUuid = "d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f";
+        assertThat(invoiceRepository.findByInvoiceUuid(invoiceUuid)).isPresent();
+    }
+
+    @Test
+    void testFindByInvoiceUuid_ShouldNotFindInvoice() {
+        String invoiceUuid = "non-existent-uuid";
+        assertThat(invoiceRepository.findByInvoiceUuid(invoiceUuid)).isNotPresent();
+    }
 }
