@@ -16,6 +16,7 @@ type Query {
     getVehicleByUuid(uuid: String!): Vehicle
     getVehiclesByOwner(page: Int size: Int, ownerId: String!): VehicleList!
     getOwnerByVehicleUuid(uuid: String!): User
+    getVehicleByPlateNumber(plateNumber: String!): Vehicle
 
     getParkingLots(page: Int size: Int, keyword: String): ParkingLotList!
     getParkingLotByUuid(uuid: String!): ParkingLot

@@ -84,4 +84,14 @@ class VehicleGQLController(
         val vehicle = vehicleRepository.findByVehicleUuid(uuid).get()
         return userRepository.findById(vehicle.owner)
     }
+
+    /**
+     * Get Vehicle by plate number
+     */
+    @QueryMapping
+    fun getVehicleByPlateNumber(
+        @Argument plateNumber: String
+    ): Optional<Vehicle> {
+        return vehicleRepository.findByPlateNumber(plateNumber)
+    }
 }
