@@ -109,7 +109,6 @@ type Authorities {
 # Vehicle
 type Vehicle {
     vehicleUuid: String!
-    owner: User
     name: String
     plateNumber: String
     type: Int
