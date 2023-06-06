@@ -21,4 +21,16 @@ class UserBanHistoryLogRepositoryTest extends TestContainersBaseTest {
         Long userId = 1L;
         assertThat(userBanHistoryLogRepository.findLatestBanLog(userId)).isEmpty();
     }
+
+    @Test
+    void testFindAllByUser_ShouldReturnGreaterThan0() {
+        Long userId = 5L;
+        assertThat(userBanHistoryLogRepository.findAllByUser(userId, null).getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindAllByUser_ShouldReturn0() {
+        Long userId = 1L;
+        assertThat(userBanHistoryLogRepository.findAllByUser(userId, null).getTotalElements()).isEqualTo(0);
+    }
 }
