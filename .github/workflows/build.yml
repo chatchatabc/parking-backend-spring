@@ -52,6 +52,16 @@ jobs:
           source: parking-api/target/parking-api-0.0.1-SNAPSHOT.jar
           target: /var/www/parking/api/parking-api-0.0.1-SNAPSHOT.jar
 
+      - name: Upload Configuration Files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SCP_HOST }}
+          username: ${{ secrets.SCP_USERNAME }}
+          port: ${{ secrets.SCP_PORT }}
+          key: ${{ secrets.SCP_KEY }}
+          source: src/config
+          target: /var/www/parking/config
+
     ## Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
     #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
