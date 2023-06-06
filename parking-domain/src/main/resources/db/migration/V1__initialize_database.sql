@@ -224,18 +224,20 @@ create index idx_parking_lot_image_on_parking_lot_id on parking_lot_image (parki
 -- Create invoice table
 CREATE TABLE IF NOT EXISTS invoice
 (
-    id                                  VARCHAR(36) PRIMARY KEY,
-    parking_lot_id                      BIGINT    NOT NULL,
-    vehicle_id                          BIGINT    NOT NULL,
+    id                                  SERIAL PRIMARY KEY,
+    invoice_uuid                        VARCHAR(36) NOT NULL UNIQUE,
+    parking_lot_id                      BIGINT      NOT NULL,
+    vehicle_id                          BIGINT      NOT NULL,
     estimated_parking_duration_in_hours INT DEFAULT 0,
     total                               DECIMAL(10, 2),
     paid_at                             TIMESTAMP,
-    start_at                            TIMESTAMP NOT NULL,
+    start_at                            TIMESTAMP   NOT NULL,
     end_at                              TIMESTAMP,
-    created_at                          TIMESTAMP NOT NULL,
-    updated_at                          TIMESTAMP NOT NULL
+    created_at                          TIMESTAMP   NOT NULL,
+    updated_at                          TIMESTAMP   NOT NULL
 );
 
+ALTER SEQUENCE invoice_id_seq RESTART WITH 1000;
 create index idx_invoice_on_parking_lot_id on invoice (parking_lot_id);
 create index idx_invoice_on_vehicle_id on invoice (vehicle_id);
 
