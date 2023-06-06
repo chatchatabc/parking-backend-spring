@@ -37,7 +37,7 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
         String invoiceUuid = "9e8f7c6b-5a4d-3e2f-1a0b-cd9e8f7a6b5c";
         String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
         invoiceService.endInvoice(invoiceUuid, parkingLotUuid);
-        assertThat(invoiceRepository.findById(invoiceUuid).orElseThrow().getEndAt()).isNotNull();
+        assertThat(invoiceRepository.findByInvoiceUuid(invoiceUuid).orElseThrow().getEndAt()).isNotNull();
     }
 
     @Test
@@ -59,7 +59,7 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
         String invoiceUuid = "8d2e1f3a-4b5c-6a7b-9c8d-e0f1a2d3b4c5";
         String parkingLotUuid = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
         invoiceService.payInvoice(invoiceUuid, parkingLotUuid);
-        assertThat(invoiceRepository.findById(invoiceUuid).orElseThrow().getPaidAt()).isNotNull();
+        assertThat(invoiceRepository.findByInvoiceUuid(invoiceUuid).orElseThrow().getPaidAt()).isNotNull();
     }
 
     @Test
