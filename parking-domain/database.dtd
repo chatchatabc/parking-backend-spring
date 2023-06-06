@@ -54,7 +54,8 @@
 
 <!ELEMENT invoice EMPTY>
 <!ATTLIST invoice
-    id CDATA #REQUIRED
+    id CDATA #IMPLIED
+    invoice_uuid CDATA #REQUIRED
     parking_lot_id CDATA #REQUIRED
     vehicle_id CDATA #REQUIRED
     estimated_parking_duration_in_hours CDATA #IMPLIED
