@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -18,8 +19,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String invoiceUuid = UUID.randomUUID().toString();
 
     @JsonIgnore
     @Column(name = "parking_lot_id")
