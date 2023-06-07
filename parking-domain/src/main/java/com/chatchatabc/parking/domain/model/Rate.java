@@ -17,6 +17,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Rate {
+    public static class RateType {
+        public static final int FIXED = 0;
+        public static final int FLEXIBLE = 1;
+    }
+
+    public static class RateInterval {
+        public static final int HOURLY = 0;
+        public static final int DAILY = 1;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -25,19 +35,17 @@ public class Rate {
     @OneToOne(mappedBy = "rate", fetch = FetchType.LAZY)
     private ParkingLot parkingLot;
 
-    // TODO: add javadoc
     @Column
-    private int type;
-
-    // TODO: Add javadoc
-    @Column
-    private int interval;
+    private int type = RateType.FIXED;
 
     @Column
-    private int freeHours;
+    private int interval = RateInterval.HOURLY;
 
     @Column
-    private boolean payForFreeHoursWhenExceeding;
+    private int freeHours = 0;
+
+    @Column
+    private boolean payForFreeHoursWhenExceeding = false;
 
     @Column(columnDefinition = "DECIMAL(10,2)")
     private BigDecimal startingRate;
