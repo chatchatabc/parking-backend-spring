@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
@@ -70,7 +71,8 @@ class UserBanHistoryLogGQLController(
         @Argument size: Int,
         @Argument username: String
     ): PagedResponse<UserBanHistoryLog> {
-        val pr = PageRequest.of(page, size)
+        val sort = Sort.by(Sort.Direction.DESC, "createdAt")
+        val pr = PageRequest.of(page, size, sort)
         val user = userRepository.findByUsername(username).get()
         val logs = userBanHistoryLogRepository.findAllByUser(user.id, pr)
         return PagedResponse(
