@@ -15,6 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role implements GrantedAuthority {
+    public enum RoleNames {
+        ROLE_ADMIN,
+        ROLE_PARKING_OWNER,
+        ROLE_ENFORCER,
+        ROLE_USER
+    }
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
