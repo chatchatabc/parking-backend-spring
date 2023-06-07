@@ -129,6 +129,7 @@
                         <src>src/test/resources/db/datasets/user.xml</src>
                         <src>src/test/resources/db/datasets/vehicle.xml</src>
                         <src>src/test/resources/db/datasets/parking_lot.xml</src>
+                        <src>src/test/resources/db/datasets/rate.xml</src>
                         <src>src/test/resources/db/datasets/invoice.xml</src>
                         <src>src/test/resources/db/datasets/log/user_login_log.xml</src>
                         <src>src/test/resources/db/datasets/log/user_logout_log.xml</src>
