@@ -60,4 +60,28 @@ class UserLogoutLogGQLController(
             )
         )
     }
+
+    /**
+     * Get user logout logs per username
+     */
+    @QueryMapping
+    fun getUserLogoutLogsByUsername(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument username: String
+    ): PagedResponse<UserLogoutLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByUsername(username).get()
+        val logs = userLogoutLogRepository.findByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
 }
