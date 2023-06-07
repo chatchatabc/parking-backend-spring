@@ -56,8 +56,8 @@
 <!ATTLIST invoice
     id CDATA #IMPLIED
     invoice_uuid CDATA #REQUIRED
-    parking_lot_id CDATA #REQUIRED
-    vehicle_id CDATA #REQUIRED
+    parking_lot_uuid CDATA #REQUIRED
+    vehicle_uuid CDATA #REQUIRED
     estimated_parking_duration_in_hours CDATA #IMPLIED
     total CDATA #IMPLIED
     paid_at CDATA #IMPLIED
@@ -165,6 +165,7 @@
     reason CDATA #IMPLIED
     unban_reason CDATA #IMPLIED
     unbanned_by CDATA #IMPLIED
+    unbanned_at CDATA #IMPLIED
     status CDATA #IMPLIED
     created_at CDATA #REQUIRED
 >
