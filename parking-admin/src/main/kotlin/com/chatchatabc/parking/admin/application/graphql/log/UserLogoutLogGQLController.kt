@@ -84,4 +84,28 @@ class UserLogoutLogGQLController(
             )
         )
     }
+
+    /**
+     * Get user logout logs per phone
+     */
+    @QueryMapping
+    fun getUserLogoutLogsByPhone(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument phone: String
+    ): PagedResponse<UserLogoutLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByPhone(phone).get()
+        val logs = userLogoutLogRepository.findByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
 }

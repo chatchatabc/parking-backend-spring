@@ -14,6 +14,7 @@ type Query {
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
     getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
     getUserLogoutLogsByUsername(page: Int size: Int, username: String!): UserLoginLogList!
+    getUserLogoutLogsByPhone(page: Int size: Int, phone: String!): UserLoginLogList!
 
     getVehicles(page: Int size: Int): VehicleList!
     getVehicleByUuid(uuid: String!): Vehicle
