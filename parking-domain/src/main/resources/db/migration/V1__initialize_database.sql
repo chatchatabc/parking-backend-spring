@@ -208,6 +208,7 @@ CREATE TABLE IF NOT EXISTS cloud_file
     updated_at  TIMESTAMP
 );
 
+ALTER SEQUENCE cloud_file_id_seq RESTART WITH 1000;
 create index idx_cloud_file_on_uploaded_by on cloud_file (uploaded_by);
 create index idx_cloud_file_on_key on cloud_file (key);
 
@@ -227,8 +228,8 @@ CREATE TABLE IF NOT EXISTS invoice
 (
     id                                  SERIAL PRIMARY KEY,
     invoice_uuid                        VARCHAR(36) NOT NULL UNIQUE,
-    parking_lot_id                      BIGINT      NOT NULL,
-    vehicle_id                          BIGINT      NOT NULL,
+    parking_lot_uuid                    VARCHAR(36) NOT NULL,
+    vehicle_uuid                        VARCHAR(36) NOT NULL,
     estimated_parking_duration_in_hours INT DEFAULT 0,
     total                               DECIMAL(10, 2),
     paid_at                             TIMESTAMP,
@@ -239,8 +240,8 @@ CREATE TABLE IF NOT EXISTS invoice
 );
 
 ALTER SEQUENCE invoice_id_seq RESTART WITH 1000;
-create index idx_invoice_on_parking_lot_id on invoice (parking_lot_id);
-create index idx_invoice_on_vehicle_id on invoice (vehicle_id);
+create index idx_invoice_on_parking_lot_uuid on invoice (parking_lot_uuid);
+create index idx_invoice_on_vehicle_uuid on invoice (vehicle_uuid);
 
 -- Create report table
 CREATE TABLE IF NOT EXISTS report
