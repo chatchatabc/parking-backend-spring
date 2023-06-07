@@ -7,7 +7,7 @@ type Query {
     getRoles(page: Int size: Int): RoleList!
 
     getUserLoginLogs(page: Int size: Int): UserLoginLogList!
-    getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
+    getUserLoginLogsByUser(page: Int size: Int, uuid: String!): UserLoginLogList!
 
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
     getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!

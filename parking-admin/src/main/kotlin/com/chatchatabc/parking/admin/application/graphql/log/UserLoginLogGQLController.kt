@@ -44,10 +44,10 @@ class UserLoginLogGQLController(
     fun getUserLoginLogsByUser(
         @Argument page: Int,
         @Argument size: Int,
-        @Argument id: String
+        @Argument uuid: String
     ): PagedResponse<UserLoginLog> {
         val pr = PageRequest.of(page, size)
-        val user = userRepository.findByUserUuid(id).get()
+        val user = userRepository.findByUserUuid(uuid).get()
         val logs = userLoginLogRepository.findByUser(user.id, pr)
         return PagedResponse(
             logs.content,
