@@ -60,7 +60,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            return ResponseEntity.ok(ApiResponse(invoiceRepository.findAllByVehicle(vehicle.id, pageable), null))
+            return ResponseEntity.ok(ApiResponse(invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pageable), null))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -80,7 +80,7 @@ class InvoiceController(
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.id, vehicle.id)
+            val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid)
             return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -99,7 +99,7 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pageable)
+            val invoices = invoiceRepository.findAllByParkingLot(parkingLot.parkingLotUuid, pageable)
             return ResponseEntity.ok(ApiResponse(invoices, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()

@@ -200,8 +200,8 @@ type Invoice {
     startAt: String
     total: Float
     updatedAt: String
-    #    parkingLot: ParkingLot
-    #    vehicle: Vehicle
+    parkingLotUuid: String
+    vehicleUuid: String
 }
 
 type InvoiceList {

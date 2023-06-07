@@ -65,7 +65,7 @@ class InvoiceGQLController(
         val sort = Sort.by(Sort.Direction.DESC, "createdAt")
         val pr = PageRequest.of(page, size, sort)
         val vehicle = vehicleRepository.findByVehicleUuid(uuid).get()
-        val invoices = invoiceRepository.findAllByVehicle(vehicle.id, pr)
+        val invoices = invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pr)
         return PagedResponse(
             invoices.content,
             PageInfo(
@@ -90,7 +90,7 @@ class InvoiceGQLController(
         val sort = Sort.by(Sort.Direction.DESC, "createdAt")
         val pr = PageRequest.of(page, size, sort)
         val parkingLot = parkingLotRepository.findByParkingLotUuid(uuid).get()
-        val invoices = invoiceRepository.findAllByParkingLot(parkingLot.id, pr)
+        val invoices = invoiceRepository.findAllByParkingLot(parkingLot.parkingLotUuid, pr)
         return PagedResponse(
             invoices.content,
             PageInfo(

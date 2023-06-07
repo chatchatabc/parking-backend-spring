@@ -204,7 +204,7 @@ class ParkingLotController(
 
             // Update available slots if there are active invoices and if capacity is updated
             if (req.capacity != null) {
-                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotId(parkingLot.id)
+                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
                 parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
             }
 
