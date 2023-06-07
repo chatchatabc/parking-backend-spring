@@ -5,6 +5,14 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ParkingLotSpecification {
 
+    public static Specification<ParkingLot> notVerified() {
+        return (root, query, builder) -> builder.isNull(root.get("verifiedAt"));
+    }
+
+    public static Specification<ParkingLot> verified() {
+        return (root, query, builder) -> builder.isNotNull(root.get("verifiedAt"));
+    }
+
     public static Specification<ParkingLot> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
