@@ -19,8 +19,8 @@ public class UserBanHistoryLog {
     public static final int BANNED = 0;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @JsonIgnore
     @Column(name = "user_id")
