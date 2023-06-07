@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,13 +24,11 @@ public class Invoice {
     @Column(unique = true)
     private String invoiceUuid = UUID.randomUUID().toString();
 
-    @JsonIgnore
-    @Column(name = "parking_lot_id")
-    private Long parkingLot;
+    @Column(name = "parking_lot_uuid")
+    private String parkingLotUuid;
 
-    @JsonIgnore
-    @Column(name = "vehicle_id")
-    private Long vehicle;
+    @Column(name = "vehicle_uuid")
+    private String vehicleUuid;
 
     @Column
     private int estimatedParkingDurationInHours;
