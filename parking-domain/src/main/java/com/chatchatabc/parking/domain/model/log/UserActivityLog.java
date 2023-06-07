@@ -35,11 +35,9 @@ public class UserActivityLog {
     @Column
     private String columnName;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String dataBefore;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String dataAfter;
 

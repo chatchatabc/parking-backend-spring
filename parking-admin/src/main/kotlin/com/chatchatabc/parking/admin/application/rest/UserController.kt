@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/user")
@@ -145,6 +146,7 @@ class UserController(
             }
             ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
         } catch (e: Exception) {
+            e.printStackTrace()
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
@@ -165,6 +167,7 @@ class UserController(
             val banLog = userBanHistoryLogRepository.findLatestBanLog(user.id).get().apply {
                 this.unbannedBy = unbannedBy.id
                 this.unbanReason = req.unbanReason
+                this.unbannedAt = LocalDateTime.now()
                 this.status = UserBanHistoryLog.UNBANNED
             }
             ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))

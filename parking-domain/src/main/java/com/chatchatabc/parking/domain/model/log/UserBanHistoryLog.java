@@ -33,17 +33,18 @@ public class UserBanHistoryLog {
     @Column
     private LocalDateTime until;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String reason;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String unbanReason;
 
     @JsonIgnore
     @Column(name = "unbanned_by")
     private Long unbannedBy;
+
+    @Column
+    private LocalDateTime unbannedAt;
 
     @Column
     private Integer status = BANNED;

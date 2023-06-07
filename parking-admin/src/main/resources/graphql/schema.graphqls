@@ -226,6 +226,7 @@ type BanHistoryLog {
     until: String
     reason: String
     unbanReason: String
+    unbannedAt: String
     status: Int
     createdAt: String
 }
