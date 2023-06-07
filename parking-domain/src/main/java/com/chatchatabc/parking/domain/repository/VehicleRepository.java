@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,7 +27,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     Optional<Vehicle> findByVehicleUuid(String vehicleUuid);
 
     /**
-     * Find all vehicles of a owner
+     * Find all vehicles of an owner
      */
     @Query("SELECT v FROM Vehicle v WHERE v.owner = ?1")
     Page<Vehicle> findAllByOwner(Long owner, Pageable pageable);
@@ -48,4 +49,13 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * @return the vehicle
      */
     Optional<Vehicle> findByPlateNumber(String plateNumber);
+
+    /**
+     * Find all vehicles ids by parking lot
+     *
+     * @param owner the owner
+     * @return the list of vehicle ids
+     */
+    @Query("SELECT v.id FROM Vehicle v WHERE v.owner = ?1")
+    List<Integer> findVehicleIdsByOwner(Long owner);
 }
