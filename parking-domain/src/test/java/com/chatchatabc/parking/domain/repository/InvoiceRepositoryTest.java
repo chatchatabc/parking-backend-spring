@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class InvoiceRepositoryTest extends TestContainersBaseTest {
@@ -94,5 +96,19 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     void testFindByInvoiceUuid_ShouldNotFindInvoice() {
         String invoiceUuid = "non-existent-uuid";
         assertThat(invoiceRepository.findByInvoiceUuid(invoiceUuid)).isNotPresent();
+    }
+
+    @Test
+    void testFindAllByVehicles_ShouldReturnGreaterThan0() {
+        List<Long> vehicleIds = List.of(1L);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        assertThat(invoiceRepository.findAllByVehicles(vehicleIds, pageRequest).getNumberOfElements()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindAllByVehicles_ShouldReturn0() {
+        List<Long> vehicleIds = List.of(5L);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        assertThat(invoiceRepository.findAllByVehicles(vehicleIds, pageRequest).getNumberOfElements()).isEqualTo(0);
     }
 }
