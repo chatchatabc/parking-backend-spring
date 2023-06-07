@@ -60,4 +60,52 @@ class UserBanHistoryLogGQLController(
             )
         )
     }
+
+    /**
+     * Get Ban History Logs by Username
+     */
+    @QueryMapping
+    fun getBanHistoryLogsByUsername(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument username: String
+    ): PagedResponse<UserBanHistoryLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByUsername(username).get()
+        val logs = userBanHistoryLogRepository.findAllByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
+
+    /**
+     * Get Ban History Logs by Phone
+     */
+    @QueryMapping
+    fun getBanHistoryLogsByPhone(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument phone: String
+    ): PagedResponse<UserBanHistoryLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByPhone(phone).get()
+        val logs = userBanHistoryLogRepository.findAllByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
 }
