@@ -84,4 +84,28 @@ class UserLoginLogGQLController(
             )
         )
     }
+
+    /**
+     * Get user login logs per phone
+     */
+    @QueryMapping
+    fun getUserLoginLogsByPhone(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument phone: String
+    ): PagedResponse<UserLoginLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByPhone(phone).get()
+        val logs = userLoginLogRepository.findByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
 }
