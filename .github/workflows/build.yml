@@ -64,6 +64,16 @@ jobs:
           source: src/config
           target: /var/www
 
+#      - name: Restart Java Services
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SCP_HOST }}
+#          username: ${{ secrets.SCP_USERNAME }}
+#          key: ${{ secrets.SCP_KEY }}
+#          script: |
+#            sudo systemctl restart parking-admin.service
+#            sudo systemctl restart parking-api.service
+
 #      - name: Serve API Artifact File
 #        uses: actions/upload-artifact@v2
 #        with:
