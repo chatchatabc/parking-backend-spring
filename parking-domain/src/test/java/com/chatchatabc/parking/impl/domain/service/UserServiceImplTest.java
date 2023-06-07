@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
-import com.chatchatabc.parking.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.infra.service.KVService;
@@ -45,7 +45,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testSoftRegisterUser_ExistingUserWithIncorrectUsername_ExceptionThrown() throws Exception {
+    void testSoftRegisterUser_ExistingUserWithIncorrectUsername_ExceptionThrown() {
         String phone = "1234567890";
         String username = "adminWrong";
 
@@ -58,7 +58,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
     void testVerifyOTPAndAddRole_WithValidOTP_ShouldSuccessfullyVerify() throws Exception {
         String phone = "1234567890";
         String otp = "123456";
-        RoleNames roleName = RoleNames.ROLE_ADMIN;
+        Role.RoleNames roleName = Role.RoleNames.ROLE_ADMIN;
 
         // Set otp to KV Service
         kvService.set("otp_" + phone, otp, 900L);
@@ -67,12 +67,12 @@ class UserServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testVerifyOTPAndAddRole_WithInvalidOTP_ShouldThrowException() throws Exception {
+    void testVerifyOTPAndAddRole_WithInvalidOTP_ShouldThrowException() {
         String phone = "9906345322";
         String otp = "123456";
         String invalidOtp = "654321";
 
-        RoleNames roleName = RoleNames.ROLE_ADMIN;
+        Role.RoleNames roleName = Role.RoleNames.ROLE_ADMIN;
 
         // Set otp to KV Service
         kvService.set("otp_" + phone, otp, 900L);
@@ -85,7 +85,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
         String phone = "7688453415";
         String otp = "123456";
 
-        RoleNames roleName = RoleNames.ROLE_ADMIN;
+        Role.RoleNames roleName = Role.RoleNames.ROLE_ADMIN;
 
         // OTP not saved to KV since expired OTPs are deleted
         assertThrows(Exception.class, () -> userService.verifyOTPAndAddRole(phone, otp, roleName));

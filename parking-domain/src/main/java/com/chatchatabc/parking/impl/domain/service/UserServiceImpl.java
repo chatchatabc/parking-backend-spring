@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.impl.domain.service;
 
-import com.chatchatabc.parking.domain.enums.RoleNames;
 import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.repository.RoleRepository;
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService {
      * @return the user
      */
     @Override
-    public User verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception {
+    public User verifyOTPAndAddRole(String phone, String otp, Role.RoleNames roleName) throws Exception {
         Optional<User> queriedUser = userRepository.findByPhone(phone);
         if (queriedUser.isEmpty()) {
             throw new Exception("User not found");

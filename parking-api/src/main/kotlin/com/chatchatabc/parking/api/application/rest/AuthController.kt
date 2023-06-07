@@ -6,7 +6,7 @@ import com.chatchatabc.parking.api.application.dto.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.UserVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
 import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.enums.RoleNames
+import com.chatchatabc.parking.domain.model.Role
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
@@ -70,9 +70,9 @@ class AuthController(
         var user: User? = null
         return try {
             val headers = HttpHeaders()
-            var roleName: RoleNames = RoleNames.ROLE_USER
+            var roleName: Role.RoleNames = Role.RoleNames.ROLE_USER
             if (type == "owner") {
-                roleName = RoleNames.ROLE_PARKING_OWNER
+                roleName = Role.RoleNames.ROLE_PARKING_OWNER
             }
             user = userService.verifyOTPAndAddRole(req.phone, req.otp, roleName)
             // Convert granted authority roles to list of string roles

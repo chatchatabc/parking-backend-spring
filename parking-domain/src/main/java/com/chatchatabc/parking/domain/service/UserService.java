@@ -1,6 +1,6 @@
 package com.chatchatabc.parking.domain.service;
 
-import com.chatchatabc.parking.domain.enums.RoleNames;
+import com.chatchatabc.parking.domain.model.Role;
 import com.chatchatabc.parking.domain.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -22,7 +22,7 @@ public interface UserService extends UserDetailsService {
      * @param roleName the role name
      * @return the user
      */
-    User verifyOTPAndAddRole(String phone, String otp, RoleNames roleName) throws Exception;
+    User verifyOTPAndAddRole(String phone, String otp, Role.RoleNames roleName) throws Exception;
 
     /**
      * Update user
