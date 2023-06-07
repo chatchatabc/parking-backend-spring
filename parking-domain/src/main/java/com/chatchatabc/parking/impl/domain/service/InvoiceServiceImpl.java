@@ -2,6 +2,7 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.model.Invoice;
 import com.chatchatabc.parking.domain.model.ParkingLot;
+import com.chatchatabc.parking.domain.model.Rate;
 import com.chatchatabc.parking.domain.model.Vehicle;
 import com.chatchatabc.parking.domain.repository.InvoiceRepository;
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
@@ -9,6 +10,7 @@ import com.chatchatabc.parking.domain.repository.VehicleRepository;
 import com.chatchatabc.parking.domain.service.InvoiceService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -43,14 +45,18 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new Exception("Vehicle not found");
         }
 
+        if (parkingLot.get().getRate() == null) {
+            throw new Exception("Parking lot rate not found");
+        }
+
         // Check if vehicle has active invoice on this parking lot and return an error
-        Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.get().getId(), vehicle.get().getId());
+        Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.get().getParkingLotUuid(), vehicle.get().getVehicleUuid());
         if (activeInvoices > 0) {
             throw new Exception("Vehicle has active invoice on this parking lot");
         }
         Invoice invoice = new Invoice();
-        invoice.setParkingLot(parkingLot.get().getId());
-        invoice.setVehicle(vehicle.get().getId());
+        invoice.setParkingLotUuid(parkingLot.get().getParkingLotUuid());
+        invoice.setVehicleUuid(vehicle.get().getVehicleUuid());
         invoice.setStartAt(LocalDateTime.now());
         invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
 
@@ -69,27 +75,25 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public void endInvoice(String invoiceUuid, String parkingLotUuid) throws Exception {
-        Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
-        if (parkingLot.isEmpty()) {
-            throw new Exception("Parking lot not found");
-        }
-        Optional<Invoice> invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid);
-        if (invoice.isEmpty()) {
-            throw new Exception("Invoice not found");
-        }
-        if (invoice.get().getEndAt() != null) {
+        ParkingLot parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow();
+        Invoice invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).orElseThrow();
+        if (invoice.getEndAt() != null) {
             throw new Exception("Invoice has already ended");
         }
-        invoice.get().setEndAt(LocalDateTime.now());
+        invoice.setEndAt(LocalDateTime.now());
+
+        Rate rate = parkingLot.getRate();
+        BigDecimal totalCost = BigDecimal.valueOf(0);
+
         // Calculate total cost based on rate and start/end time
-        // TODO: Use formula from rate to calculate total cost
-        Duration duration = Duration.between(invoice.get().getStartAt(), invoice.get().getEndAt());
+        // TODO: Use formula from rate to calculate total cost, round end at to nearest hour
+        Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
         Long hours = duration.toHours();
         // TODO: Calculate rate based on rate formula
-        invoiceRepository.save(invoice.get());
+        invoiceRepository.save(invoice);
         // Update parking lot capacity
-        parkingLot.get().setCapacity(parkingLot.get().getCapacity() + 1);
-        parkingLotRepository.save(parkingLot.get());
+        parkingLot.setCapacity(parkingLot.getCapacity() + 1);
+        parkingLotRepository.save(parkingLot);
         // TODO: Nats notification to update capacity of parking lot
     }
 

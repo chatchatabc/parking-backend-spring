@@ -16,13 +16,13 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testCreateInvoice_WhenVehicleHasNoActiveInvoiceToParkingLot_ShouldCreateInvoice() throws Exception {
+        // Parking Lot 1
         String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
-        Long parkingLotId = 1L;
+        // Vehicle 3
         String vehicleUuid = "f8e5e1d2-4c3b-2a1f-0e9d-8c7b6a5f4e3d";
-        Long vehicleId = 3L;
-        Long currentCount = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId);
+        Long currentCount = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotUuid, vehicleUuid);
         invoiceService.createInvoice(parkingLotUuid, vehicleUuid, 0);
-        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId)).isGreaterThan(currentCount);
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotUuid, vehicleUuid)).isGreaterThan(currentCount);
     }
 
     @Test
