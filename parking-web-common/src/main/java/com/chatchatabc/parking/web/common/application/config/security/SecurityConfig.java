@@ -71,6 +71,9 @@ public class SecurityConfig {
                     // TODO: Add auth in the future
                     auth.requestMatchers("/actuator/**").permitAll();
 
+                    // TODO: Temporarily allow request to images
+                    auth.requestMatchers("/api/parking-lot/get-image/**").permitAll();
+
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
