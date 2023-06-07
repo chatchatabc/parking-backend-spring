@@ -24,12 +24,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     /**
      * Find invoice by vehicle
      *
-     * @param vehicleId the vehicle id
-     * @param pageable  the pageable
+     * @param vehicleUuid the vehicle uuid
+     * @param pageable    the pageable
      * @return pages of invoice
      */
-    @Query("SELECT i FROM Invoice i WHERE i.vehicle = ?1")
-    Page<Invoice> findAllByVehicle(Long vehicleId, Pageable pageable);
+    @Query("SELECT i FROM Invoice i WHERE i.vehicleUuid = ?1")
+    Page<Invoice> findAllByVehicle(String vehicleUuid, Pageable pageable);
 
     /**
      * Count active invoices
@@ -40,43 +40,43 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     Long countActiveInvoices();
 
     /**
-     * Count active invoices by parking lot id
+     * Count active invoices by parking lot uuid
      *
-     * @param parkingLotId the parking lot id
+     * @param parkingLotUuid the parking lot uuid
      * @return the number of active invoices
      */
-    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot = ?1 AND i.endAt IS NULL")
-    Long countActiveInvoicesByParkingLotId(Long parkingLotId);
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.endAt IS NULL")
+    Long countActiveInvoicesByParkingLotUuid(String parkingLotUuid);
 
     /**
      * Find all invoices by parking lot
      */
-    @Query("SELECT i FROM Invoice i WHERE i.parkingLot = ?1")
-    Page<Invoice> findAllByParkingLot(Long parkingLot, Pageable pageable);
+    @Query("SELECT i FROM Invoice i WHERE i.parkingLotUuid = ?1")
+    Page<Invoice> findAllByParkingLot(String parkingLotUuid, Pageable pageable);
 
     /**
      * Find all active invoices by parking lot and by vehicle
      */
-    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLot = ?1 AND i.vehicle = ?2 AND i.endAt IS NULL")
-    Long countActiveInvoicesByParkingLotAndVehicle(Long parkingLot, Long vehicle);
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.vehicleUuid = ?2 AND i.endAt IS NULL")
+    Long countActiveInvoicesByParkingLotAndVehicle(String parkingLotUuid, String vehicle);
 
     /**
      * Find latest active invoice
      *
-     * @param parkingLotId the parking lot id
-     * @param vehicleId    the vehicle id
+     * @param parkingLotUuid the parking lot uuid
+     * @param vehicleUuid    the vehicle uuid
      * @return the latest active invoice
      */
-    @Query("SELECT i FROM Invoice i WHERE i.parkingLot = ?1 AND i.vehicle = ?2 AND i.endAt IS NULL ORDER BY i.createdAt DESC LIMIT 1")
-    Optional<Invoice> findLatestActiveInvoice(Long parkingLotId, Long vehicleId);
+    @Query("SELECT i FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.vehicleUuid = ?2 AND i.endAt IS NULL ORDER BY i.createdAt DESC LIMIT 1")
+    Optional<Invoice> findLatestActiveInvoice(String parkingLotUuid, String vehicleUuid);
 
     /**
      * Find all invoices by parking lot and by vehicle
      *
-     * @param vehicleIds the vehicle ids
-     * @param pageable   the pageable
+     * @param vehicleUuids the vehicle uuids
+     * @param pageable     the pageable
      * @return pages of invoice
      */
-    @Query("SELECT i FROM Invoice i WHERE i.vehicle IN ?1")
-    Page<Invoice> findAllByVehicles(List<Long> vehicleIds, Pageable pageable);
+    @Query("SELECT i FROM Invoice i WHERE i.vehicleUuid IN ?1")
+    Page<Invoice> findAllByVehicles(List<String> vehicleUuids, Pageable pageable);
 }
