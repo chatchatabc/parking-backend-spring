@@ -30,6 +30,9 @@ type Query {
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceByUuid(uuid: String!): Invoice
+    getInvoicesByVehicleUuid(page: Int size: Int, uuid: String!): InvoiceList!
+    getInvoicesByParkingLotUuid(page: Int size: Int, uuid: String!): InvoiceList!
+    getInvoicesByUserUuid(page: Int size: Int, uuid: String!): InvoiceList!
 
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
