@@ -57,5 +57,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * @return the list of vehicle ids
      */
     @Query("SELECT v.id FROM Vehicle v WHERE v.owner = ?1")
-    List<Integer> findVehicleIdsByOwner(Long owner);
+    List<Long> findVehicleIdsByOwner(Long owner);
 }
