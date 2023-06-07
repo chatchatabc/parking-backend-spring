@@ -60,4 +60,28 @@ class UserLoginLogGQLController(
             )
         )
     }
+
+    /**
+     * Get user login logs per username
+     */
+    @QueryMapping
+    fun getUserLoginLogsByUsername(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument username: String
+    ): PagedResponse<UserLoginLog> {
+        val pr = PageRequest.of(page, size)
+        val user = userRepository.findByUsername(username).get()
+        val logs = userLoginLogRepository.findByUser(user.id, pr)
+        return PagedResponse(
+            logs.content,
+            PageInfo(
+                logs.size,
+                logs.totalElements,
+                logs.isFirst,
+                logs.isLast,
+                logs.isEmpty
+            )
+        )
+    }
 }
