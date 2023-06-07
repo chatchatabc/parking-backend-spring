@@ -30,16 +30,16 @@ class ParkingLotGQLController(
         @Argument keyword: String?
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
-        val spec = ParkingLotSpecification.withKeyword(keyword ?: "")
+        var spec = ParkingLotSpecification.withKeyword(keyword ?: "")
 
         // Filter by verified
         // 0: not verified
         if (verified == 0) {
-            spec.and(ParkingLotSpecification.notVerified())
+            spec = spec.and(ParkingLotSpecification.notVerified())
         }
         // 1: verified
         else if (verified == 1) {
-            spec.and(ParkingLotSpecification.verified())
+            spec = spec.and(ParkingLotSpecification.verified())
         }
 
         val parkingLots = parkingLotRepository.findAll(spec, pr)
