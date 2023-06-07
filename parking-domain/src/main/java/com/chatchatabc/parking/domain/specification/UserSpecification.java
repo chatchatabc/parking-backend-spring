@@ -4,6 +4,15 @@ import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {
+
+    public static Specification<User> notVerified() {
+        return (root, query, builder) -> builder.isNull(root.get("verifiedAt"));
+    }
+
+    public static Specification<User> verified() {
+        return (root, query, builder) -> builder.isNotNull(root.get("verifiedAt"));
+    }
+
     public static Specification<User> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
