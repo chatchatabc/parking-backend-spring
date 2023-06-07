@@ -41,5 +41,7 @@ public class DataBaseTest extends TestContainersBaseTest {
         final IDataSet dataSet = databaseConnection.createDataSet();
         FlatDtdDataSet.write(dataSet, new FileOutputStream("database.dtd"));
         FlatDtdDataSet.write(dataSet, new FileOutputStream("src/test/resources/db/datasets/database.dtd"));
+        FlatDtdDataSet.write(dataSet, new FileOutputStream("src/test/resources/db/datasets/log/database.dtd"));
+        FlatDtdDataSet.write(dataSet, new FileOutputStream("src/test/resources/db/datasets/file/database.dtd"));
     }
 }
