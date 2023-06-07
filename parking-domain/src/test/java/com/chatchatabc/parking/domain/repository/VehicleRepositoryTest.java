@@ -114,4 +114,16 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         String plateNumber = "non-existent-plate-number";
         assertThat(vehicleRepository.findByPlateNumber(plateNumber).isEmpty()).isTrue();
     }
+
+    @Test
+    void testFindVehicleIdsByOwner_ShouldReturnGreaterThan0() {
+        Long ownerId = 5L;
+        assertThat(vehicleRepository.findVehicleIdsByOwner(ownerId).size()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindVehicleIdsByOwner_ShouldReturn0() {
+        Long ownerId = 10L;
+        assertThat(vehicleRepository.findVehicleIdsByOwner(ownerId).size()).isEqualTo(0);
+    }
 }
