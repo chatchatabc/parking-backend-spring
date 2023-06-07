@@ -53,10 +53,22 @@ class UserGQLController(
     fun getUsers(
         @Argument page: Int,
         @Argument size: Int,
+        @Argument verified: Int? = null,
         @Argument keyword: String?
     ): PagedResponse<User> {
         val pr = PageRequest.of(page, size)
         val spec = UserSpecification.withKeyword(keyword ?: "")
+
+        // Filter by verified
+        // 0: not verified
+        if (verified == 0) {
+            spec.and(UserSpecification.notVerified())
+        }
+        // 1: verified
+        else if (verified == 1) {
+            spec.and(UserSpecification.verified())
+        }
+
         val users = userRepository.findAll(spec, pr)
         return PagedResponse(
             users.content,
