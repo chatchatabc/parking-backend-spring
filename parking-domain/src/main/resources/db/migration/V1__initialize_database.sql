@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS user_ban_history_log
     reason       TEXT,
     unban_reason TEXT,
     unbanned_by  BIGINT,
+    unbanned_at  TIMESTAMP,
     status       INT DEFAULT 0 NOT NULL,
     created_at   TIMESTAMP     NOT NULL
 );
