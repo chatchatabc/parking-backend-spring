@@ -45,9 +45,9 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new Exception("Vehicle not found");
         }
 
-        if (parkingLot.get().getRate() == null) {
-            throw new Exception("Parking lot rate not found");
-        }
+//        if (parkingLot.get().getRate() == null) {
+//            throw new Exception("Parking lot rate not found");
+//        }
 
         // Check if vehicle has active invoice on this parking lot and return an error
         Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.get().getParkingLotUuid(), vehicle.get().getVehicleUuid());
