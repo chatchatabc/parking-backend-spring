@@ -17,6 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
                 "db/datasets/user.xml",
                 "db/datasets/vehicle.xml",
                 "db/datasets/parking_lot.xml",
+                "db/datasets/rate.xml",
                 "db/datasets/invoice.xml",
                 "db/datasets/log/user_login_log.xml",
                 "db/datasets/log/user_logout_log.xml",
