@@ -38,6 +38,8 @@ type Query {
     getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
     getBanHistoryLogsByUsername(page: Int size: Int, username: String!): BanHistoryLogList!
     getBanHistoryLogsByPhone(page: Int size: Int, phone: String!): BanHistoryLogList!
+
+    getDashboardPieGraph: DashboardPieGraph
 }
 
 type Mutation {
@@ -49,6 +51,18 @@ type Mutation {
         lastName: String
         email: String
     ): User
+}
+
+# Dashboard Related
+type DashboardPieGraph {
+    parkingLotVerifiedCount: Int
+    parkingLotUnverifiedCount: Int
+
+    userVerifiedCount: Int
+    userUnverifiedCount: Int
+
+    vehicleVerifiedCount: Int
+    vehicleUnverifiedCount: Int
 }
 
 # Role Related
@@ -183,8 +197,8 @@ type Invoice {
     startAt: String
     total: Float
     updatedAt: String
-#    parkingLot: ParkingLot
-#    vehicle: Vehicle
+    #    parkingLot: ParkingLot
+    #    vehicle: Vehicle
 }
 
 type InvoiceList {
