@@ -15,16 +15,18 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindAllByVehicle_InvoicesAreFound() {
-        Long vehicleId = 1L;
+        // Vehicle 1
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
         PageRequest pageRequest = PageRequest.of(0, 10);
-        assertThat(invoiceRepository.findAllByVehicle(vehicleId, pageRequest).getNumberOfElements()).isGreaterThan(0);
+        assertThat(invoiceRepository.findAllByVehicle(vehicleUuid, pageRequest).getNumberOfElements()).isGreaterThan(0);
     }
 
     @Test
     void testFindAllByVehicle_InvoicesAreNotFound() {
-        Long vehicleId = 3L;
+        // Vehicle 3
+        String vehicleUuid = "f8e5e1d2-4c3b-2a1f-0e9d-8c7b6a5f4e3d";
         PageRequest pageRequest = PageRequest.of(0, 10);
-        assertThat(invoiceRepository.findAllByVehicle(vehicleId, pageRequest).getNumberOfElements()).isEqualTo(0);
+        assertThat(invoiceRepository.findAllByVehicle(vehicleUuid, pageRequest).getNumberOfElements()).isEqualTo(0);
     }
 
     @Test
@@ -33,57 +35,69 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
-    void testCountActiveInvoicesByParkingLotId_ShouldReturnGreaterThan0() {
-        Long parkingLotId = 1L;
-        assertThat(invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId)).isGreaterThan(0L);
+    void testCountActiveInvoicesByParkingLotUuid_ShouldReturnGreaterThan0() {
+        // Parking Lot 1
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLotUuid)).isGreaterThan(0L);
     }
 
     @Test
-    void testCountActiveInvoicesByParkingLotId_ShouldReturn0() {
-        Long parkingLotId = 4L;
-        assertThat(invoiceRepository.countActiveInvoicesByParkingLotId(parkingLotId)).isEqualTo(0L);
+    void testCountActiveInvoicesByParkingLotUuid_ShouldReturn0() {
+        // Parking Lot 4
+        String parkingLotUuid = "b3c4d5e6-f7g8-h9i0-j1k2-l3m4n5o6p7q";
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLotUuid)).isEqualTo(0L);
     }
 
     @Test
     void testFindAllByParkingLot_ShouldContainInvoices() {
-        Long parkingLotId = 1L;
+        // Parking Lot 1
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
         PageRequest pageRequest = PageRequest.of(0, 10);
-        assertThat(invoiceRepository.findAllByParkingLot(parkingLotId, pageRequest).getNumberOfElements()).isGreaterThan(0);
+        assertThat(invoiceRepository.findAllByParkingLot(parkingLotUuid, pageRequest).getNumberOfElements()).isGreaterThan(0);
     }
 
     @Test
     void testFindAllByParkingLot_ShouldNotContainInvoices() {
-        Long parkingLotId = 4L;
+        // Parking Lot 4
+        String parkingLotUuid = "b3c4d5e6-f7g8-h9i0-j1k2-l3m4n5o6p7q";
         PageRequest pageRequest = PageRequest.of(0, 10);
-        assertThat(invoiceRepository.findAllByParkingLot(parkingLotId, pageRequest).getNumberOfElements()).isEqualTo(0);
+        assertThat(invoiceRepository.findAllByParkingLot(parkingLotUuid, pageRequest).getNumberOfElements()).isEqualTo(0);
     }
 
     @Test
     void testCountActiveInvoicesByParkingLotAndVehicle_ShouldContainInvoices() {
-        Long parkingLotId = 3L;
-        Long vehicleId = 2L;
-        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId)).isGreaterThan(0L);
+        // Parking Lot 3
+        String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
+        // Vehicle 2
+        String vehicleUuid = "ddd6ed87-3d29-4b87-890c-75a86f684278";
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotUuid, vehicleUuid)).isGreaterThan(0L);
     }
 
     @Test
     void testCountActiveInvoicesByParkingLotAndVehicle_ShouldNotContainInvoices() {
-        Long parkingLotId = 1L;
-        Long vehicleId = 1L;
-        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotId, vehicleId)).isGreaterThan(0L);
+        // Parking Lot 1
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        // Vehicle 1
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
+        assertThat(invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLotUuid, vehicleUuid)).isGreaterThan(0L);
     }
 
     @Test
     void testFindLatestActiveInvoice_ShouldContainInvoice() {
-        Long parkingLotId = 1L;
-        Long vehicleId = 1L;
-        assertThat(invoiceRepository.findLatestActiveInvoice(parkingLotId, vehicleId)).isPresent();
+        // Parking Lot 1
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        // Vehicle 1
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
+        assertThat(invoiceRepository.findLatestActiveInvoice(parkingLotUuid, vehicleUuid)).isPresent();
     }
 
     @Test
     void testFindLatestActiveInvoice_ShouldNotContainInvoice() {
-        Long parkingLotId = 1L;
-        Long vehicleId = 3L;
-        assertThat(invoiceRepository.findLatestActiveInvoice(parkingLotId, vehicleId)).isNotPresent();
+        // Parking Lot 1
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        // Vehicle 3
+        String vehicleUuid = "f8e5e1d2-4c3b-2a1f-0e9d-8c7b6a5f4e3d";
+        assertThat(invoiceRepository.findLatestActiveInvoice(parkingLotUuid, vehicleUuid)).isNotPresent();
     }
 
     @Test
@@ -100,14 +114,15 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindAllByVehicles_ShouldReturnGreaterThan0() {
-        List<Long> vehicleIds = List.of(1L);
+        // Vehicle 1
+        List<String> vehicleIds = List.of("2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9");
         PageRequest pageRequest = PageRequest.of(0, 10);
         assertThat(invoiceRepository.findAllByVehicles(vehicleIds, pageRequest).getNumberOfElements()).isGreaterThan(0);
     }
 
     @Test
     void testFindAllByVehicles_ShouldReturn0() {
-        List<Long> vehicleIds = List.of(5L);
+        List<String> vehicleIds = List.of("non-existent-uuid");
         PageRequest pageRequest = PageRequest.of(0, 10);
         assertThat(invoiceRepository.findAllByVehicles(vehicleIds, pageRequest).getNumberOfElements()).isEqualTo(0);
     }
