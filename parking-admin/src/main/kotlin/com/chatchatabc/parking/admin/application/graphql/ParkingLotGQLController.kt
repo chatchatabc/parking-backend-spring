@@ -109,10 +109,10 @@ class ParkingLotGQLController(
         @Argument page: Int,
         @Argument size: Int,
         @Argument uuid: String
-    ): MutableList<ParkingLotImage> {
+    ): MutableList<String> {
         val pr = PageRequest.of(page, size)
         val parkingLot = parkingLotRepository.findByParkingLotUuid(uuid).get()
-        val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
+        val images = parkingLotImageRepository.findAllParkingLotKeysByParkingLotAndStatus(
             parkingLot.id,
             0,
             pr
