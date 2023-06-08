@@ -8,6 +8,8 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
@@ -32,6 +34,14 @@ class VehicleControllerTest : AuthorizedBaseTest() {
         }
         given(vehicleRepository.findByVehicleUuid("1")).willReturn(Optional.of(vehicle))
         val result = this.mvc.perform(get("/api/vehicle/get/1"))
+            .andExpect(status().isOk()).andReturn()
+    }
+
+    @Test
+    fun testGetMyVehicles() {
+        val pr = PageRequest.of(0, 10)
+        given(vehicleRepository.findAllByUser("1", pr)).willReturn(Page.empty())
+        val result = this.mvc.perform(get("/api/vehicle/get-my-vehicles"))
             .andExpect(status().isOk()).andReturn()
     }
 }
