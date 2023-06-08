@@ -254,13 +254,11 @@ class ParkingLotController(
             if (image.cloudFile == null) {
                 throw Exception("Image not found")
             }
-            // Blob content type
             response.contentType = image.cloudFile.mimeType
             val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
         } catch (e: Exception) {
-            e.printStackTrace()
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }
@@ -292,7 +290,6 @@ class ParkingLotController(
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
         } catch (e: Exception) {
-            e.printStackTrace()
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }
@@ -323,7 +320,6 @@ class ParkingLotController(
             )
             return ResponseEntity.ok(ApiResponse(fileData, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }
@@ -348,7 +344,6 @@ class ParkingLotController(
             parkingLotImageService.deleteImage(imageUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }

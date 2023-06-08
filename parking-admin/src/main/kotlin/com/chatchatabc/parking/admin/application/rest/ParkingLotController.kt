@@ -225,13 +225,11 @@ class ParkingLotController(
                 throw Exception("Image not found")
             }
 
-            // Blob content type
             response.contentType = image.cloudFile.mimeType
             val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
         } catch (e: Exception) {
-            e.printStackTrace()
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }
