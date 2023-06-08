@@ -34,9 +34,25 @@ public class Vehicle {
     /**
      * 0 - motorcycle
      * 1 - car
+     * todo: add more types like sedan, suv, etc.
      */
     @Column
     private int type;
+
+//    @Column
+//    private int make;
+//
+//    @Column
+//    private int model;
+//
+//    @Column
+//    private int year;
+//
+//    @Column
+//    private int color;
+
+    // TODO: Verified at
+    // TODO: Verified by
 
     @JsonIgnore
     @ManyToMany(mappedBy = "vehicles")
