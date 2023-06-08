@@ -18,15 +18,12 @@
 ## Parking Lot App
 
 - Vehicle check-in and check-out with Parking fee
-- QR Code Scanning
 
 ## User App
 
-- Registration
 - Sync all parking lots to local
 - Display on Map and click to display detail
 - Navigation to target parking lot
-- QR Code display to be scanned by owner
 
 # Technical TODOs:
 
@@ -50,7 +47,7 @@
 - OTP For Logins
 - Forgot Password
 
-## Unit Testing
+## Unit Testing (Ongoing Work as Features as Implemented)
 
 - Finish Repository Unit Tests
 - Finish Service Unit Tests
