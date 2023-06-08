@@ -2,7 +2,6 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.ErrorElement
-import com.chatchatabc.parking.api.application.dto.VehicleRegisterRequest
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Vehicle
@@ -61,6 +60,15 @@ class VehicleController(
             ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
         }
     }
+
+    /**
+     * Request to register a vehicle data class
+     */
+    data class VehicleRegisterRequest(
+        val name: String,
+        val plateNumber: String,
+        val type: Int,
+    )
 
     /**
      * Register a vehicle

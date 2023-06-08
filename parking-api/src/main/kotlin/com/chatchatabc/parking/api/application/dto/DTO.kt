@@ -31,12 +31,6 @@ data class UserNotificationResponse(
     val notificationId: String
 )
 
-data class VehicleRegisterRequest(
-    val name: String,
-    val plateNumber: String,
-    val type: Int,
-)
-
 data class ReportCreateRequest(
     val name: String,
     val description: String,
