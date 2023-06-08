@@ -27,6 +27,8 @@ public class Rate {
         public static final int DAILY = 1;
     }
 
+    // TODO: Add currency field
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
