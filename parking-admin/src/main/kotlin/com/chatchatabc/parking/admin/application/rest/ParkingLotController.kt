@@ -16,6 +16,7 @@ import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -106,7 +107,8 @@ class ParkingLotController(
 
             // Update available slots if there are active invoices and if capacity is updated
             if (req.capacity != null) {
-                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(updatedParkingLot.parkingLotUuid)
+                val activeInvoices =
+                    invoiceRepository.countActiveInvoicesByParkingLotUuid(updatedParkingLot.parkingLotUuid)
                 updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
             }
 
@@ -191,6 +193,38 @@ class ParkingLotController(
             if (image.cloudFile == null) {
                 throw Exception("Image not found")
             }
+            // Blob content type
+            response.contentType = image.cloudFile.mimeType
+            val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
+            inputStream.copyTo(response.outputStream)
+            response.flushBuffer()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+        }
+    }
+
+    /**
+     * Get featured parking lot image if exists
+     */
+    @GetMapping("/get-featured-image/{parkingLotUuid}")
+    fun getFeaturedParkingLotImage(
+        @PathVariable parkingLotUuid: String,
+        response: HttpServletResponse
+    ) {
+        try {
+            val pr = PageRequest.of(0, 1)
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
+            val image = parkingLotImageRepository.findAllByParkingLotAndStatus(
+                parkingLot.id,
+                CloudFile.ACTIVE,
+                pr
+            ).content.firstOrNull() ?: throw Exception("Image not found")
+
+            if (image.cloudFile == null) {
+                throw Exception("Image not found")
+            }
+
             // Blob content type
             response.contentType = image.cloudFile.mimeType
             val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
