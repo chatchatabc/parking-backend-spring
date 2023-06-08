@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 import java.security.Principal
 import kotlin.jvm.optionals.getOrNull
 
@@ -60,7 +61,12 @@ class InvoiceController(
     ): ResponseEntity<ApiResponse<Page<Invoice>>> {
         return try {
             val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            return ResponseEntity.ok(ApiResponse(invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pageable), null))
+            return ResponseEntity.ok(
+                ApiResponse(
+                    invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pageable),
+                    null
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
@@ -190,6 +196,25 @@ class InvoiceController(
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             invoiceService.payInvoice(invoiceId, parkingLot.parkingLotUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+        }
+    }
+
+    /**
+     * Estimate Invoice
+     */
+    @GetMapping("/estimate/{invoiceUuid}")
+    fun estimateInvoice(
+        @PathVariable invoiceUuid: String
+    ): ResponseEntity<ApiResponse<BigDecimal>> {
+        return try {
+            val invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).get()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(invoice.parkingLotUuid).get()
+            val estimatedInvoice = invoiceService.calculateInvoice(invoice, parkingLot.rate)
+            ResponseEntity.ok(ApiResponse(estimatedInvoice, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.badRequest()
