@@ -193,8 +193,9 @@ class ParkingLotController(
             if (image.cloudFile == null) {
                 throw Exception("Image not found")
             }
-            // Blob content type
             response.contentType = image.cloudFile.mimeType
+            // Add 1 day cache
+            response.setHeader("Cache-Control", "max-age=86400")
             val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
@@ -226,6 +227,8 @@ class ParkingLotController(
             }
 
             response.contentType = image.cloudFile.mimeType
+            // Add 1 day cache
+            response.setHeader("Cache-Control", "max-age=86400")
             val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
