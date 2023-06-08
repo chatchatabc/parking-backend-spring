@@ -1,6 +1,9 @@
 package com.chatchatabc.parking.domain.service;
 
 import com.chatchatabc.parking.domain.model.Invoice;
+import com.chatchatabc.parking.domain.model.Rate;
+
+import java.math.BigDecimal;
 
 public interface InvoiceService {
 
@@ -28,4 +31,14 @@ public interface InvoiceService {
      * @param parkingLotUuid the parking lot uuid
      */
     void payInvoice(String invoiceUuid, String parkingLotUuid) throws Exception;
+
+    /**
+     * Calculate invoice
+     *
+     * @param invoice the invoice
+     * @param rate    the rate
+     * @return the big decimal
+     * @throws Exception the exception
+     */
+    BigDecimal calculateInvoice(Invoice invoice, Rate rate) throws Exception;
 }

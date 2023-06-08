@@ -77,56 +77,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         invoice.setEndAt(LocalDateTime.now());
 
-        // Calculate total cost based on rate and start/end time
         Rate rate = parkingLot.getRate();
-        BigDecimal totalCost = BigDecimal.valueOf(0);
-
-        if (rate != null) {
-            // TODO: Calculate rate based on rate formula
-            Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
-            long hours = duration.toHours();
-
-            // Add Starting Rate
-            totalCost = totalCost.add(rate.getStartingRate());
-
-            // Rate Type is Fixed
-            if (rate.getType() == Rate.RateType.FIXED) {
-                // Rate Interval is Hourly
-                if (rate.getInterval() == Rate.RateInterval.HOURLY) {
-                    // Add Free Hours to Cost if isPayForFreeHoursWhenExceeding is true
-                    if (rate.isPayForFreeHoursWhenExceeding()) {
-                        // If hours did not exceed free hours, set hours to 0
-                        if (hours <= rate.getFreeHours()) {
-                            hours = 0L;
-                        }
-                        // else, hours is counted on calculation of fee
-                    }
-                    // Deduct Free Hours if isPayForFreeHoursWhenExceeding is false
-                    else {
-                        hours -= rate.getFreeHours();
-                        // Clamp to 0 hours if less than 0
-                        if (hours < 0) {
-                            hours = 0L;
-                        }
-                    }
-                    totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(hours)));
-                }
-                // Rate Interval is Daily
-                else if (rate.getInterval() == Rate.RateInterval.DAILY) {
-                    // Calculate number of days
-                    long days = hours / 24;
-                    // Add 1 day if hours is not divisible by 24
-                    if (hours % 24 != 0) {
-                        days += 1;
-                    }
-                    totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(days)));
-                }
-            }
-            // Rate Type is Flexible
-            else if (rate.getType() == Rate.RateType.FLEXIBLE) {
-                // TODO: Implement Feature
-            }
+        if (rate == null) {
+            throw new Exception("Parking lot rate not found");
         }
+
+        // Calculate total cost based on rate and start/end time
+        BigDecimal totalCost = this.calculateInvoice(invoice, parkingLot.getRate());
 
         invoice.setTotal(totalCost);
         invoiceRepository.save(invoice);
@@ -161,5 +118,67 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.get().setPaidAt(LocalDateTime.now());
         // TODO: Send NATS notification to update invoice status
         invoiceRepository.save(invoice.get());
+    }
+
+    /**
+     * Calculate invoice
+     *
+     * @param invoice the invoice
+     * @param rate    the rate
+     * @return the big decimal
+     * @throws Exception the exception
+     */
+    // TODO: Unit test
+    @Override
+    public BigDecimal calculateInvoice(Invoice invoice, Rate rate) throws Exception {
+        // Initial values
+        BigDecimal totalCost = BigDecimal.valueOf(0);
+
+        // Calculate rate based on rate formula
+        Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
+        long hours = duration.toHours();
+
+        // Add Starting Rate
+        totalCost = totalCost.add(rate.getStartingRate());
+
+        // Rate Type is Fixed
+        if (rate.getType() == Rate.RateType.FIXED) {
+            // Rate Interval is Hourly
+            if (rate.getInterval() == Rate.RateInterval.HOURLY) {
+                // Add Free Hours to Cost if isPayForFreeHoursWhenExceeding is true
+                if (rate.isPayForFreeHoursWhenExceeding()) {
+                    // If hours did not exceed free hours, set hours to 0
+                    if (hours <= rate.getFreeHours()) {
+                        hours = 0L;
+                    }
+                    // else, hours is counted on calculation of fee
+                }
+                // Deduct Free Hours if isPayForFreeHoursWhenExceeding is false
+                else {
+                    hours -= rate.getFreeHours();
+                    // Clamp to 0 hours if less than 0
+                    if (hours < 0) {
+                        hours = 0L;
+                    }
+                }
+                totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(hours)));
+            }
+            // Rate Interval is Daily
+            else if (rate.getInterval() == Rate.RateInterval.DAILY) {
+                // Calculate number of days
+                long days = hours / 24;
+                // Add 1 day if hours is not divisible by 24
+                if (hours % 24 != 0) {
+                    days += 1;
+                }
+                totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(days)));
+            }
+        }
+        // Rate Type is Flexible
+        else if (rate.getType() == Rate.RateType.FLEXIBLE) {
+            // TODO: Implement Feature
+        }
+
+        return totalCost;
     }
 }
