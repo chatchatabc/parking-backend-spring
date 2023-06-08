@@ -36,33 +36,28 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public Invoice createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception {
-        Optional<ParkingLot> parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid);
-        if (parkingLot.isEmpty()) {
-            throw new Exception("Parking lot not found");
-        }
-        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid);
-        if (vehicle.isEmpty()) {
-            throw new Exception("Vehicle not found");
-        }
+        ParkingLot parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow();
+        Vehicle vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).orElseThrow();
 
-//        if (parkingLot.get().getRate() == null) {
-//            throw new Exception("Parking lot rate not found");
-//        }
+        if (parkingLot.getRate() == null) {
+            throw new Exception("Parking lot rate not found");
+        }
 
         // Check if vehicle has active invoice on this parking lot and return an error
-        Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.get().getParkingLotUuid(), vehicle.get().getVehicleUuid());
+        Long activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotAndVehicle(parkingLot.getParkingLotUuid(), vehicle.getVehicleUuid());
         if (activeInvoices > 0) {
             throw new Exception("Vehicle has active invoice on this parking lot");
         }
+
         Invoice invoice = new Invoice();
-        invoice.setParkingLotUuid(parkingLot.get().getParkingLotUuid());
-        invoice.setVehicleUuid(vehicle.get().getVehicleUuid());
+        invoice.setParkingLotUuid(parkingLot.getParkingLotUuid());
+        invoice.setVehicleUuid(vehicle.getVehicleUuid());
         invoice.setStartAt(LocalDateTime.now());
         invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
-        parkingLot.get().setCapacity(parkingLot.get().getCapacity() - 1);
-        parkingLotRepository.save(parkingLot.get());
+        parkingLot.setCapacity(parkingLot.getCapacity() - 1);
+        parkingLotRepository.save(parkingLot);
         // TODO: Sent NATS notification to update capacity of parking lot
         return savedInvoice;
     }
@@ -82,14 +77,58 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         invoice.setEndAt(LocalDateTime.now());
 
+        // Calculate total cost based on rate and start/end time
         Rate rate = parkingLot.getRate();
         BigDecimal totalCost = BigDecimal.valueOf(0);
 
-        // Calculate total cost based on rate and start/end time
-        // TODO: Use formula from rate to calculate total cost, round end at to nearest hour
-        Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
-        Long hours = duration.toHours();
-        // TODO: Calculate rate based on rate formula
+        if (rate != null) {
+            // TODO: Calculate rate based on rate formula
+            Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
+            long hours = duration.toHours();
+
+            // Add Starting Rate
+            totalCost = totalCost.add(rate.getStartingRate());
+
+            // Rate Type is Fixed
+            if (rate.getType() == Rate.RateType.FIXED) {
+                // Rate Interval is Hourly
+                if (rate.getInterval() == Rate.RateInterval.HOURLY) {
+                    // Add Free Hours to Cost if isPayForFreeHoursWhenExceeding is true
+                    if (rate.isPayForFreeHoursWhenExceeding()) {
+                        // If hours did not exceed free hours, set hours to 0
+                        if (hours <= rate.getFreeHours()) {
+                            hours = 0L;
+                        }
+                        // else hours is counted on calculation of fee
+                    }
+                    // Deduct Free Hours if isPayForFreeHoursWhenExceeding is false
+                    else {
+                        hours -= rate.getFreeHours();
+                        // Clamp to 0 hours if less than 0
+                        if (hours < 0) {
+                            hours = 0L;
+                        }
+                    }
+                    totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(hours)));
+                }
+                // Rate Interval is Daily
+                else if (rate.getInterval() == Rate.RateInterval.DAILY) {
+                    // Calculate number of days
+                    long days = hours / 24;
+                    // Add 1 day if hours is not divisible by 24
+                    if (hours % 24 != 0) {
+                        days += 1;
+                    }
+                    totalCost = totalCost.add(rate.getRate().multiply(BigDecimal.valueOf(days)));
+                }
+            }
+            // Rate Type is Flexible
+            else if (rate.getType() == Rate.RateType.FLEXIBLE) {
+                // TODO: Implement Feature
+            }
+        }
+
+        invoice.setTotal(totalCost);
         invoiceRepository.save(invoice);
         // Update parking lot capacity
         parkingLot.setCapacity(parkingLot.getCapacity() + 1);
