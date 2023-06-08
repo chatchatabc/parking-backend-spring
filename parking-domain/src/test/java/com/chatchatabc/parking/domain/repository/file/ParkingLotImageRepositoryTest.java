@@ -39,4 +39,18 @@ class ParkingLotImageRepositoryTest extends TestContainersBaseTest {
         int status = CloudFile.ACTIVE;
         assertThat(parkingLotImageRepository.findByIdAndStatus(imageId, status)).isEmpty();
     }
+
+    @Test
+    void testFindAllParkingLotKeysByParkingLotAndStatus_ShouldReturnGreaterThan0() {
+        Long parkingLotId = 2L;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(parkingLotImageRepository.findAllParkingLotKeysByParkingLotAndStatus(parkingLotId, CloudFile.ACTIVE, pr).getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindAllParkingLotKeysByParkingLotAndStatus_ShouldReturn0() {
+        Long parkingLotId = 100L;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(parkingLotImageRepository.findAllParkingLotKeysByParkingLotAndStatus(parkingLotId, CloudFile.ACTIVE, pr).getTotalElements()).isEqualTo(0);
+    }
 }
