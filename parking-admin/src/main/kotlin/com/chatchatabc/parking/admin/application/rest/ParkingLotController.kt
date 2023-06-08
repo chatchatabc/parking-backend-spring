@@ -5,12 +5,16 @@ import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
+import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
+import com.chatchatabc.parking.infra.service.FileStorageService
+import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,6 +26,8 @@ import java.time.LocalDateTime
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotImageService: ParkingLotImageService,
+    private val parkingLotImageRepository: ParkingLotImageRepository,
+    private val fileStorageService: FileStorageService,
     private val parkingLotRepository: ParkingLotRepository,
     private val userRepository: UserRepository,
     private val invoiceRepository: InvoiceRepository
@@ -169,6 +175,30 @@ class ParkingLotController(
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
+        }
+    }
+
+    /**
+     * Get parking lot avatar by image uuid
+     */
+    @GetMapping("/get-image/{imageUuid}")
+    fun getParkingLotImage(
+        @PathVariable imageUuid: String,
+        response: HttpServletResponse
+    ) {
+        try {
+            val image = parkingLotImageRepository.findByIdAndStatus(imageUuid, CloudFile.ACTIVE).get()
+            if (image.cloudFile == null) {
+                throw Exception("Image not found")
+            }
+            // Blob content type
+            response.contentType = image.cloudFile.mimeType
+            val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
+            inputStream.copyTo(response.outputStream)
+            response.flushBuffer()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }
 }
