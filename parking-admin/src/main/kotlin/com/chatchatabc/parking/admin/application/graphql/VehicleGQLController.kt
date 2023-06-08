@@ -55,11 +55,11 @@ class VehicleGQLController(
      */
     @QueryMapping
     fun getVehiclesByOwner(
-        @Argument ownerId: String,
+        @Argument ownerUuid: String,
         @Argument page: Int,
         @Argument size: Int
     ): PagedResponse<Vehicle> {
-        val user = userRepository.findByUserUuid(ownerId).get()
+        val user = userRepository.findByUserUuid(ownerUuid).get()
         val pr = PageRequest.of(page, size)
         val vehicles = vehicleRepository.findAllByOwner(user.id, pr)
         return PagedResponse(
