@@ -58,7 +58,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice savedInvoice = invoiceRepository.save(invoice);
         parkingLot.setCapacity(parkingLot.getCapacity() - 1);
         parkingLotRepository.save(parkingLot);
-        // TODO: Sent NATS notification to update capacity of parking lot
         return savedInvoice;
     }
 
@@ -90,7 +89,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         // Update parking lot capacity
         parkingLot.setCapacity(parkingLot.getCapacity() + 1);
         parkingLotRepository.save(parkingLot);
-        // TODO: Nats notification to update capacity of parking lot
     }
 
     /**
