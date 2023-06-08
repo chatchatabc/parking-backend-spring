@@ -18,7 +18,7 @@
 
     <parking_lot id="3" parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p" owner_id="8" name="SM City Davao"
                  address="Ecoland Subdivision Basketball Court, Quimpo Blvd cor. Tulip and Ecoland Drive, Matina Pangi Road, Davao City, 8000 Davao del Sur"
-                 status="0" flag="0"
+                 status="0" flag="0" rate_id="c1b7db58-a2b8-40dc-919f-60c0f238fa21"
                  latitude="7.074942" longitude="125.565025" capacity="200" available_slots="200" open_days_flag="31"
                  business_hours_start="2023-05-18 08:00:00.000000" business_hours_end="2023-05-18 22:00:00.000000"
                  created_at="2023-05-18 14:30:00.000000" updated_at="2023-05-18 14:30:00.000000"/>

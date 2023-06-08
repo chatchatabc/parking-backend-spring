@@ -5,7 +5,7 @@
     <invoice id="1" invoice_uuid="d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f"
              parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57"
              vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="100"
-             start_at="2023-05-05 16:14:47.307160" end_at="2023-05-06 16:14:47.307160"
+             start_at="2023-05-05 16:14:47.307160" end_at="2023-05-07 16:14:47.307160"
              estimated_parking_duration_in_hours="24" paid_at="2023-05-06 16:14:47.307160"
              created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-06 16:14:47.307160"/>
 
