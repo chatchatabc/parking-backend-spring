@@ -128,7 +128,6 @@ public class InvoiceServiceImpl implements InvoiceService {
      * @return the big decimal
      * @throws Exception the exception
      */
-    // TODO: Unit test
     @Override
     public BigDecimal calculateInvoice(Invoice invoice, Rate rate) throws Exception {
         // Initial values

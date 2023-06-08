@@ -1,9 +1,15 @@
 package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
+import com.chatchatabc.parking.domain.model.Invoice;
+import com.chatchatabc.parking.domain.model.ParkingLot;
+import com.chatchatabc.parking.domain.model.Rate;
 import com.chatchatabc.parking.domain.repository.InvoiceRepository;
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,6 +19,8 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
     private InvoiceServiceImpl invoiceService;
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private ParkingLotRepository parkingLotRepository;
 
     @Test
     void testCreateInvoice_WhenVehicleHasNoActiveInvoiceToParkingLot_ShouldCreateInvoice() throws Exception {
@@ -74,5 +82,18 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
         String invoiceUuid = "d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f";
         String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
         assertThrows(Exception.class, () -> invoiceService.payInvoice(invoiceUuid, parkingLotUuid));
+    }
+
+    @Test
+    void testCalculateInvoice_ShouldCalculateInvoice() throws Exception {
+        String invoiceUuid = "d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f";
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        BigDecimal expected = new BigDecimal("148.00");
+
+        ParkingLot parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow();
+        Invoice invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).orElseThrow();
+        Rate rate = parkingLot.getRate();
+
+        assertThat(invoiceService.calculateInvoice(invoice, rate)).isNotNull().isEqualTo(expected);
     }
 }
