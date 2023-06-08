@@ -133,8 +133,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         // Initial values
         BigDecimal totalCost = BigDecimal.valueOf(0);
 
+        LocalDateTime endAt = invoice.getEndAt();
+
+        if (endAt == null) {
+            endAt = LocalDateTime.now();
+        }
+
         // Calculate rate based on rate formula
-        Duration duration = Duration.between(invoice.getStartAt(), invoice.getEndAt());
+        Duration duration = Duration.between(invoice.getStartAt(), endAt);
         long hours = duration.toHours();
 
         // Add Starting Rate
