@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
+import com.chatchatabc.parking.domain.specification.VehicleSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -24,10 +25,20 @@ class VehicleGQLController(
     @QueryMapping
     fun getVehicles(
         @Argument page: Int,
-        @Argument size: Int
+        @Argument size: Int,
+        @Argument keyword: String?,
+        @Argument sortField: String? = null,
+        @Argument sortBy: Int? = null,
     ): PagedResponse<Vehicle> {
         val pr = PageRequest.of(page, size)
-        val vehicles = vehicleRepository.findAll(pr)
+        var spec = VehicleSpecification.withKeyword(keyword ?: "")
+
+        // Sort
+        if (sortField != null && sortBy != null) {
+            spec = VehicleSpecification.sortBy(sortField, sortBy)
+        }
+
+        val vehicles = vehicleRepository.findAll(spec, pr)
         return PagedResponse(
             vehicles.content,
             PageInfo(

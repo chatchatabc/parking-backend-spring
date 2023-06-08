@@ -16,7 +16,7 @@ type Query {
     getUserLogoutLogsByUsername(page: Int size: Int, username: String!): UserLoginLogList!
     getUserLogoutLogsByPhone(page: Int size: Int, phone: String!): UserLoginLogList!
 
-    getVehicles(page: Int size: Int): VehicleList!
+    getVehicles(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleList!
     getVehicleByUuid(uuid: String!): Vehicle
     getVehiclesByOwner(page: Int size: Int, ownerUuid: String!): VehicleList!
     getOwnerByVehicleUuid(uuid: String!): User
