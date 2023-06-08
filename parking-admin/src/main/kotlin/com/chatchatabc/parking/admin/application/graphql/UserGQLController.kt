@@ -54,7 +54,9 @@ class UserGQLController(
         @Argument page: Int,
         @Argument size: Int,
         @Argument verified: Int? = null,
-        @Argument keyword: String?
+        @Argument keyword: String?,
+        @Argument sortField: String? = null,
+        @Argument sortBy: Int? = null,
     ): PagedResponse<User> {
         val pr = PageRequest.of(page, size)
         var spec = UserSpecification.withKeyword(keyword ?: "")
@@ -67,6 +69,11 @@ class UserGQLController(
         // 1: verified
         else if (verified == 1) {
             spec = spec.and(UserSpecification.verified())
+        }
+
+        // Sort
+        if (sortField != null && sortBy != null) {
+            spec = spec.and(UserSpecification.sortBy(sortField, sortBy))
         }
 
         val users = userRepository.findAll(spec, pr)

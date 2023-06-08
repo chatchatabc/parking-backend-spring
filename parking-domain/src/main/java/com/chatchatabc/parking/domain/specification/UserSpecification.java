@@ -13,6 +13,17 @@ public class UserSpecification {
         return (root, query, builder) -> builder.isNotNull(root.get("verifiedAt"));
     }
 
+    public static Specification<User> sortBy(String field, Integer sortBy) {
+        return (root, query, builder) -> {
+            if (sortBy == 1) {
+                query.orderBy(builder.asc(root.get(field)));
+            } else {
+                query.orderBy(builder.desc(root.get(field)));
+            }
+            return query.getRestriction();
+        };
+    }
+
     public static Specification<User> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";

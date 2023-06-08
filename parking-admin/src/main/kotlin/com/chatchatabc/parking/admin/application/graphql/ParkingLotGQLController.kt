@@ -4,7 +4,6 @@ import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
