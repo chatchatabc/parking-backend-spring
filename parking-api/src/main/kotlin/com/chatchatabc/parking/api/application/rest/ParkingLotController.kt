@@ -5,6 +5,7 @@ import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
+import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
@@ -15,10 +16,8 @@ import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.core.io.InputStreamResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -242,26 +241,29 @@ class ParkingLotController(
     }
 
     /**
-     * Get parking lot avatar by image id
+     * Get parking lot avatar by image uuid
      */
-    @GetMapping("/get-image/{imageId}")
+    @GetMapping("/get-image/{imageUuid}")
     fun getParkingLotImage(
-        @PathVariable imageId: String,
+        @PathVariable imageUuid: String,
         response: HttpServletResponse
-    ): ResponseEntity<InputStreamResource> {
-        return try {
-            val image = parkingLotImageRepository.findByIdAndStatus(imageId, 1).get()
+    ) {
+        try {
+            val image = parkingLotImageRepository.findByIdAndStatus(imageUuid, CloudFile.ACTIVE).get()
             if (image.cloudFile == null) {
                 throw Exception("Image not found")
             }
-            val headers = HttpHeaders()
-            val resource = InputStreamResource(fileStorageService.downloadFile(image.cloudFile.key))
-            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
+            // Blob content type
+            response.contentType = image.cloudFile.mimeType
+            val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
+            inputStream.copyTo(response.outputStream)
+            response.flushBuffer()
         } catch (e: Exception) {
+            e.printStackTrace()
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
         }
     }
+
 
     /**
      * Upload image
@@ -274,6 +276,10 @@ class ParkingLotController(
         return try {
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+            var contentType = file.contentType
+            if (contentType == "image/jpg") {
+                contentType = "image/jpeg"
+            }
             val fileData = parkingLotImageService.uploadImage(
                 user,
                 parkingLot,
@@ -281,7 +287,7 @@ class ParkingLotController(
                 file.inputStream,
                 file.originalFilename,
                 file.size,
-                file.contentType
+                contentType
             )
             return ResponseEntity.ok(ApiResponse(fileData, listOf()))
         } catch (e: Exception) {
@@ -294,20 +300,20 @@ class ParkingLotController(
     /**
      * Delete image
      */
-    @PostMapping("/delete-image/{imageId}")
+    @PostMapping("/delete-image/{imageUuid}")
     fun deleteImage(
-        @PathVariable imageId: String,
+        @PathVariable imageUuid: String,
         principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLotImage>> {
         return try {
             // Only owner can delete image
-            val image = parkingLotImageRepository.findById(imageId).get()
+            val image = parkingLotImageRepository.findById(imageUuid).get()
             val currentUser = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findById(image.parkingLot).get()
             if (parkingLot.owner != currentUser.id) {
                 throw Exception("You are not owner of this parking lot")
             }
-            parkingLotImageService.deleteImage(imageId)
+            parkingLotImageService.deleteImage(imageUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
