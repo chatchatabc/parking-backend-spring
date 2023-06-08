@@ -175,6 +175,27 @@ class InvoiceController(
             val user = userRepository.findByUserUuid(principal.name).get()
             val parkingLot = parkingLotRepository.findByOwner(user.id).get()
             invoiceService.endInvoice(invoiceId, parkingLot.parkingLotUuid)
+
+            // NATS publish to owner and client
+            val invoice = invoiceRepository.findByInvoiceUuid(invoiceId).get()
+            val vehicle = vehicleRepository.findByVehicleUuid(invoice.vehicleUuid).get()
+            val client = userRepository.findById(vehicle.owner).get()
+
+            // Message structure
+            val natsMessage = objectMapper.writeValueAsString(
+                NatsMessage(
+                    NatsPayloadTypes.INVOICE_ENDED,
+                    InvoicePayload(
+                        parkingLot.parkingLotUuid,
+                        vehicle.vehicleUuid,
+                        invoice.invoiceUuid
+                    )
+                )
+            ).toByteArray()
+            // Publish to Client
+            natsConnection.publish(client.notificationUuid, natsMessage)
+            // Publish to owner
+            natsConnection.publish(user.notificationUuid, natsMessage)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
             e.printStackTrace()
