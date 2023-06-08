@@ -35,7 +35,7 @@ class VehicleGQLController(
 
         // Sort
         if (sortField != null && sortBy != null) {
-            spec = VehicleSpecification.sortBy(sortField, sortBy)
+            spec = spec.and(VehicleSpecification.sortBy(sortField, sortBy))
         }
 
         val vehicles = vehicleRepository.findAll(spec, pr)
