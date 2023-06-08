@@ -27,6 +27,7 @@ type Query {
     getParkingLotByUsername(username: String!): ParkingLot
     getParkingLotByPhone(phone: String!): ParkingLot
     getUserByParkingLotUuid(uuid: String!): User
+    getParkingLotImageKeysByParkingLotUuid(page: Int size: Int uuid: String!): [String]
 
     getInvoices(page: Int size: Int): InvoiceList!
     getInvoiceByUuid(uuid: String!): Invoice

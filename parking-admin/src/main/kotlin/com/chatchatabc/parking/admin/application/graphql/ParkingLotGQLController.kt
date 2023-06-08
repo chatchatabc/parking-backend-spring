@@ -4,8 +4,10 @@ import com.chatchatabc.parking.admin.application.dto.PageInfo
 import com.chatchatabc.parking.admin.application.dto.PagedResponse
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -16,7 +18,8 @@ import java.util.*
 @Controller
 class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val parkingLotImageRepository: ParkingLotImageRepository
 ) {
 
     /**
@@ -96,5 +99,24 @@ class ParkingLotGQLController(
     ): Optional<ParkingLot> {
         val user = userRepository.findByPhone(phone).get()
         return parkingLotRepository.findByOwner(user.id)
+    }
+
+    /**
+     * Get Parking Lot Image Keys
+     */
+    @QueryMapping
+    fun getParkingLotImageKeysByParkingLotUuid(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument uuid: String
+    ): MutableList<ParkingLotImage> {
+        val pr = PageRequest.of(page, size)
+        val parkingLot = parkingLotRepository.findByParkingLotUuid(uuid).get()
+        val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
+            parkingLot.id,
+            0,
+            pr
+        )
+        return images.content
     }
 }
