@@ -7,6 +7,7 @@ import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
+import com.chatchatabc.parking.domain.specification.InvoiceSpecification
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.graphql.data.method.annotation.Argument
@@ -27,10 +28,20 @@ class InvoiceGQLController(
     @QueryMapping
     fun getInvoices(
         @Argument page: Int,
-        @Argument size: Int
+        @Argument size: Int,
+        @Argument keyword: String?,
+        @Argument sortField: String? = null,
+        @Argument sortBy: Int? = null,
     ): PagedResponse<Invoice> {
         val pr = PageRequest.of(page, size)
-        val invoices = invoiceRepository.findAll(pr)
+        var spec = InvoiceSpecification.withKeyword(keyword ?: "")
+
+        // Sort
+        if (sortField != null && sortBy != null) {
+            spec = spec.and(InvoiceSpecification.sortBy(sortField, sortBy))
+        }
+
+        val invoices = invoiceRepository.findAll(spec, pr)
         return PagedResponse(
             invoices.content,
             PageInfo(
