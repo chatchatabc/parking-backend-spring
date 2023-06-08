@@ -29,7 +29,9 @@ class ParkingLotGQLController(
         @Argument page: Int,
         @Argument size: Int,
         @Argument verified: Int? = null,
-        @Argument keyword: String?
+        @Argument keyword: String?,
+        @Argument sortField: String? = null,
+        @Argument sortBy: Int? = null,
     ): PagedResponse<ParkingLot> {
         val pr = PageRequest.of(page, size)
         var spec = ParkingLotSpecification.withKeyword(keyword ?: "")
@@ -42,6 +44,11 @@ class ParkingLotGQLController(
         // 1: verified
         else if (verified == 1) {
             spec = spec.and(ParkingLotSpecification.verified())
+        }
+
+        // Sort
+        if (sortField != null && sortBy != null) {
+            spec = spec.and(ParkingLotSpecification.sortBy(sortField, sortBy))
         }
 
         val parkingLots = parkingLotRepository.findAll(spec, pr)

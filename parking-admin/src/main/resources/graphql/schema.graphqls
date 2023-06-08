@@ -22,7 +22,7 @@ type Query {
     getOwnerByVehicleUuid(uuid: String!): User
     getVehicleByPlateNumber(plateNumber: String!): Vehicle
 
-    getParkingLots(page: Int size: Int verified: Int keyword: String): ParkingLotList!
+    getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLotByUuid(uuid: String!): ParkingLot
     getParkingLotByUsername(username: String!): ParkingLot
     getParkingLotByPhone(phone: String!): ParkingLot
