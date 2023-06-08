@@ -44,7 +44,7 @@ public class User extends FlagEntity implements UserDetails {
     private String email;
 
     @Column(unique = true)
-    @Pattern(regexp = "^[a-zA-Z0-9_]{3,15}$", message = "Invalid username format.")
+    @Pattern(regexp = "^[a-zA-Z0-9_]{3,20}$", message = "Invalid username format.")
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

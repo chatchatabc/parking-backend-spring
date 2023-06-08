@@ -99,7 +99,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                         if (hours <= rate.getFreeHours()) {
                             hours = 0L;
                         }
-                        // else hours is counted on calculation of fee
+                        // else, hours is counted on calculation of fee
                     }
                     // Deduct Free Hours if isPayForFreeHoursWhenExceeding is false
                     else {
