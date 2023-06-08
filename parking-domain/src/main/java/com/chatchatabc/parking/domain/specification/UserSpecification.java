@@ -3,27 +3,7 @@ package com.chatchatabc.parking.domain.specification;
 import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
-public class UserSpecification {
-
-    public static Specification<User> notVerified() {
-        return (root, query, builder) -> builder.isNull(root.get("verifiedAt"));
-    }
-
-    public static Specification<User> verified() {
-        return (root, query, builder) -> builder.isNotNull(root.get("verifiedAt"));
-    }
-
-    public static Specification<User> sortBy(String field, Integer sortBy) {
-        return (root, query, builder) -> {
-            if (sortBy == 1) {
-                query.orderBy(builder.asc(root.get(field)));
-            } else {
-                query.orderBy(builder.desc(root.get(field)));
-            }
-            return query.getRestriction();
-        };
-    }
-
+public class UserSpecification extends GenericSpecification<User> {
     public static Specification<User> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";

@@ -3,15 +3,7 @@ package com.chatchatabc.parking.domain.specification;
 import com.chatchatabc.parking.domain.model.ParkingLot;
 import org.springframework.data.jpa.domain.Specification;
 
-public class ParkingLotSpecification {
-
-    public static Specification<ParkingLot> notVerified() {
-        return (root, query, builder) -> builder.isNull(root.get("verifiedAt"));
-    }
-
-    public static Specification<ParkingLot> verified() {
-        return (root, query, builder) -> builder.isNotNull(root.get("verifiedAt"));
-    }
+public class ParkingLotSpecification extends GenericSpecification<ParkingLot> {
 
     public static Specification<ParkingLot> withKeyword(String keyword) {
         return (root, query, builder) -> {
