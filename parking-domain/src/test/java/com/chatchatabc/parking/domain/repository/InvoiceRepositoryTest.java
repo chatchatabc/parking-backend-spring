@@ -182,4 +182,24 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
 
         assertThat(invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(parkingLotUuid, start, end)).isNull();
     }
+
+    @Test
+    void testCountVehicleInvoiceInstancesByParkingLotUuidAndDateRange_ShouldReturnGreaterThan0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 7, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        String vehicleUuid = "2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9";
+
+        assertThat(invoiceRepository.countVehicleInvoiceInstancesByParkingLotUuidAndDateRange(parkingLotUuid, vehicleUuid, start, end)).isGreaterThan(0L);
+    }
+
+    @Test
+    void testCountVehicleInvoiceInstancesByParkingLotUuidAndDateRange_ShouldReturn0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 7, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        String vehicleUuid = "non-existent-uuid";
+
+        assertThat(invoiceRepository.countVehicleInvoiceInstancesByParkingLotUuidAndDateRange(parkingLotUuid, vehicleUuid, start, end)).isEqualTo(0L);
+    }
 }
