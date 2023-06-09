@@ -47,7 +47,6 @@ class AuthController(
             applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp))
             ResponseEntity.ok().body(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -86,7 +85,6 @@ class AuthController(
             userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
             ResponseEntity.ok().headers(headers).body(ApiResponse(user, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             // Generate Failed Login Log
             if (user != null) {
                 userLoginLogService.createLog(user.id, request.remoteAddr, 0, false)

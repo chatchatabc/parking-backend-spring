@@ -200,7 +200,6 @@ class ParkingLotController(
             inputStream.copyTo(response.outputStream)
             response.flushBuffer()
         } catch (e: Exception) {
-            e.printStackTrace()
             response.sendError(HttpServletResponse.SC_NOT_FOUND)
         }
     }

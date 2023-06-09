@@ -64,7 +64,6 @@ class DashboardController(
                 )
             )
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(

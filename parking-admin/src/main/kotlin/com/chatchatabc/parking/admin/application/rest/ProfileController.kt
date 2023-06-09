@@ -39,7 +39,6 @@ class ProfileController(
             val user = userRepository.findByUserUuid(principal.name).get()
             ResponseEntity.ok().body(ApiResponse(user, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }

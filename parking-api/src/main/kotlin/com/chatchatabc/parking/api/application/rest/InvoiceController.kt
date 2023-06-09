@@ -45,7 +45,6 @@ class InvoiceController(
             val invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).get()
             ResponseEntity.ok(ApiResponse(invoice, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -68,7 +67,6 @@ class InvoiceController(
                 )
             )
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -89,7 +87,6 @@ class InvoiceController(
             val invoice = invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid)
             return ResponseEntity.ok(ApiResponse(invoice.getOrNull(), listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -108,7 +105,6 @@ class InvoiceController(
             val invoices = invoiceRepository.findAllByParkingLot(parkingLot.parkingLotUuid, pageable)
             return ResponseEntity.ok(ApiResponse(invoices, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -198,7 +194,6 @@ class InvoiceController(
             natsConnection.publish(user.notificationUuid, natsMessage)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -218,7 +213,6 @@ class InvoiceController(
             invoiceService.payInvoice(invoiceId, parkingLot.parkingLotUuid)
             ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -237,7 +231,6 @@ class InvoiceController(
             val estimatedInvoice = invoiceService.calculateInvoice(invoice, parkingLot.rate)
             ResponseEntity.ok(ApiResponse(estimatedInvoice, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }

@@ -106,7 +106,6 @@ class DashboardController(
             )
             ResponseEntity.ok(ApiResponse(dashboardStatistics, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -138,7 +137,6 @@ class DashboardController(
             parkingLotService.saveParkingLot(parkingLot)
             ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -167,7 +165,6 @@ class DashboardController(
             }
             ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(
                     ApiResponse(

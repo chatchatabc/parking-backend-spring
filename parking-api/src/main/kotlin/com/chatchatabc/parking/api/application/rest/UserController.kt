@@ -97,7 +97,6 @@ class UserController(
             userService.saveUser(user)
             ResponseEntity.ok().body(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
         }

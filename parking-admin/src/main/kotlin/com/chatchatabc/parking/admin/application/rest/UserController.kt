@@ -58,7 +58,6 @@ class UserController(
             userService.saveUser(user)
             return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -96,7 +95,6 @@ class UserController(
             userService.saveUser(user)
             return ResponseEntity.ok(ApiResponse(null, listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest()
                 .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
@@ -118,7 +116,6 @@ class UserController(
             }
             return ResponseEntity.ok(ApiResponse(userRepository.save(user), listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest().body(
                 ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
             )
@@ -146,7 +143,6 @@ class UserController(
             }
             ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
         } catch (e: Exception) {
-            e.printStackTrace()
             ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
     }
