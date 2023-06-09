@@ -17,16 +17,13 @@ import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 import java.time.LocalDateTime
-import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -46,18 +43,8 @@ class ParkingLotController(
      * Get all parking lots
      */
     @GetMapping("/")
-    fun getAll(
-        pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
-        return try {
-            val parkingLots = parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pageable)
-            ResponseEntity.ok(ApiResponse(parkingLots, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(
-                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
-            )
-        }
-    }
+    fun getAll(pageable: Pageable) =
+        parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pageable).toResponse()
 
     /**
      * Get parking lots by uuid
@@ -70,17 +57,7 @@ class ParkingLotController(
      * Get Parking Lot by Owner
      */
     @GetMapping("/")
-    fun getByManaging(
-        principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
-        return try {
-            val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).getOrNull()
-            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    fun getByManaging(principal: Principal) = parkingLotRepository.findByOwnerUuid(principal.name).toResponse()
 
     /**
      * Get parking lots by distance
@@ -90,18 +67,9 @@ class ParkingLotController(
         @RequestParam("longitude") longitude: Double,
         @RequestParam("latitude") latitude: Double,
         @RequestParam("distance") distance: Double,
-    ): ResponseEntity<ApiResponse<List<ParkingLot>>> {
-        return try {
-            var inputDistance = distance
-            // Place a cap on the range, distance should not exceed 0.1km
-            if (distance >= 0.1) {
-                inputDistance = 0.1
-            }
-            val parkingLots = parkingLotRepository.findByDistance(longitude, latitude, inputDistance)
-            return ResponseEntity.ok(ApiResponse(parkingLots, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
+    ) = run {
+        val cappedDistance = if (distance >= 0.1) 0.1 else distance
+        parkingLotRepository.findByDistance(longitude, latitude, cappedDistance).toResponse()
     }
 
     /**
@@ -111,19 +79,9 @@ class ParkingLotController(
     fun getImages(
         @PathVariable parkingLotUuid: String,
         pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<ParkingLotImage>>> {
-        return try {
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            val images = parkingLotImageRepository.findAllByParkingLotAndStatus(
-                parkingLot.id,
-                0,
-                pageable
-            )
-            ResponseEntity.ok(ApiResponse(images, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    ) = parkingLotImageRepository.findAllByParkingLotAndStatus(
+        parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get().id, 0, pageable
+    ).toResponse()
 
     /**
      * Create parking lot data class
@@ -147,19 +105,14 @@ class ParkingLotController(
     fun register(
         @RequestBody req: ParkingLotCreateRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
-        return try {
-            val owner = userRepository.findByUserUuid(principal.name).get()
-            val createdParkingLot = ParkingLot()
-            createdParkingLot.owner = owner.id
-            createdParkingLot.availableSlots = req.capacity
-            parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
-            val savedParkingLot = parkingLotService.saveParkingLot(createdParkingLot)
-            return ResponseEntity.ok(ApiResponse(savedParkingLot, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
+    ) = run {
+        val owner = userRepository.findByUserUuid(principal.name).get()
+        val createdParkingLot = ParkingLot().apply {
+            this.owner = owner.id
+            this.availableSlots = req.capacity
         }
+        parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
+        parkingLotService.saveParkingLot(createdParkingLot).toResponse()
     }
 
     /**
@@ -186,31 +139,23 @@ class ParkingLotController(
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
-        return try {
-            // Map request to parking lot
-            val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).get()
-            parkingLotMapper.updateParkingLotFromUpdateRequest(req, parkingLot)
-            parkingLot.openDaysFlag = req.openDaysFlag ?: 0
+    ) = run {
+        // Map request to parking lot
+        val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).get()
+        parkingLotMapper.updateParkingLotFromUpdateRequest(req, parkingLot)
+        parkingLot.openDaysFlag = req.openDaysFlag ?: 0
 
-            // Update available slots if there are active invoices and if capacity is updated
-            if (req.capacity != null) {
-                val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
-                parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
-            }
-
-            if (req.images != null) {
-                // Update images
-                parkingLotImageService.updateOrderOfImages(req.images)
-            }
-
-            // Save
-            val savedParkingLot = parkingLotService.saveParkingLot(parkingLot)
-            return ResponseEntity.ok(ApiResponse(savedParkingLot, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
+        // Update available slots if there are active invoices and if capacity is updated
+        if (req.capacity != null) {
+            val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
+            parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
         }
+        if (req.images != null) {
+            // Update images
+            parkingLotImageService.updateOrderOfImages(req.images)
+        }
+        // Save
+        parkingLotService.saveParkingLot(parkingLot).toResponse()
     }
 
     /**
@@ -219,17 +164,11 @@ class ParkingLotController(
     @PutMapping("/set-pending")
     fun setPending(
         principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            parkingLot.status = ParkingLot.PENDING
-            parkingLotRepository.save(parkingLot)
-            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
+    ) = run {
+        val user = userRepository.findByUserUuid(principal.name).get()
+        val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+        parkingLot.status = ParkingLot.PENDING
+        parkingLotRepository.save(parkingLot).toResponse()
     }
 
     /**
