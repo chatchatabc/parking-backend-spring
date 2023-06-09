@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,4 +81,15 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
      */
     @Query("SELECT i FROM Invoice i WHERE i.vehicleUuid IN ?1")
     Page<Invoice> findAllByVehicles(List<String> vehicleUuids, Pageable pageable);
+
+    /**
+     * Count traffic by date range
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param startDate      the start date
+     * @param endDate        the end date
+     * @return the number of traffic
+     */
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.createdAt BETWEEN ?2 AND ?3")
+    Long countTrafficByDateRange(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
 }
