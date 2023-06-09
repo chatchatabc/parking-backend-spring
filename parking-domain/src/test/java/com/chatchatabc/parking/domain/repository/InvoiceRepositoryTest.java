@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -162,5 +163,23 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
         String parkingLotUuid = "non-existent-uuid";
 
         assertThat(invoiceRepository.countLeavingVehicles(parkingLotUuid, start, end)).isEqualTo(0L);
+    }
+
+    @Test
+    void testSumTotalByParkingLotUuidAndEndAtDateRange_ShouldReturnGreaterThan0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 7, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+
+        assertThat(invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(parkingLotUuid, start, end)).isGreaterThan(BigDecimal.ZERO);
+    }
+
+    @Test
+    void testSumTotalByParkingLotUuidAndEndAtDateRange_ShouldReturnNull() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 2, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+
+        assertThat(invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(parkingLotUuid, start, end)).isNull();
     }
 }
