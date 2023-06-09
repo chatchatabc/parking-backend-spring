@@ -6,15 +6,16 @@
              parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57"
              vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="100"
              start_at="2023-05-05 16:14:47.307160" end_at="2023-05-07 16:14:47.307160"
-             estimated_parking_duration_in_hours="24" paid_at="2023-05-06 16:14:47.307160"
-             created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-06 16:14:47.307160"/>
+             estimated_end_at="2023-05-06 16:14:47.307160" estimated_parking_duration_in_hours="24"
+             paid_at="2023-05-06 16:14:47.307160" created_at="2023-05-05 16:14:47.307160"
+             updated_at="2023-05-06 16:14:47.307160"/>
 
     <invoice id="2" invoice_uuid="a27b2f39-3d98-4e4a-9ae8-6c15f6b7cde2"
              parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1" vehicle_uuid="ddd6ed87-3d29-4b87-890c-75a86f684278"
-             total="75"
-             start_at="2023-05-07 09:30:15.512345" end_at="2023-05-07 17:45:22.123456"
-             estimated_parking_duration_in_hours="8" paid_at="2023-05-07 17:45:22.123456"
-             created_at="2023-05-07 09:30:15.512345" updated_at="2023-05-07 17:45:22.123456"/>
+             total="75" start_at="2023-05-07 09:30:15.512345" end_at="2023-05-07 17:45:22.123456"
+             estimated_end_at="2023-05-06 16:14:47.307160" estimated_parking_duration_in_hours="8"
+             paid_at="2023-05-07 17:45:22.123456" created_at="2023-05-07 09:30:15.512345"
+             updated_at="2023-05-07 17:45:22.123456"/>
 
     <invoice id="3" invoice_uuid="f1a5d4ef-6b9c-4f8a-8e79-2d3d4a1b9f92"
              parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p"
