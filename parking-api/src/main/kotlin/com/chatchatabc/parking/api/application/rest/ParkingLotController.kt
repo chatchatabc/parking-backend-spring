@@ -14,6 +14,7 @@ import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Page
@@ -62,18 +63,8 @@ class ParkingLotController(
      * Get parking lots by uuid
      */
     @GetMapping("/{parkingLotUuid}")
-    fun get(
-        @PathVariable parkingLotUuid: String
-    ): ResponseEntity<ApiResponse<ParkingLot>> {
-        return try {
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(
-                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
-            )
-        }
-    }
+    fun get(@PathVariable parkingLotUuid: String) =
+        parkingLotRepository.findByParkingLotUuid(parkingLotUuid).toResponse()
 
     /**
      * Get Parking Lot by Owner
