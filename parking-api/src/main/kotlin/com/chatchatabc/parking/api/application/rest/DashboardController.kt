@@ -32,13 +32,18 @@ class DashboardController(
         val profit: BigDecimal
     )
 
-    // TODO: Implement get request
-    // TODO: Get profit
+    /**
+     * Get Dashboard Statistics
+     */
     @GetMapping("/get")
     fun getDashboardStatistics(
         principal: Principal
     ): ResponseEntity<ApiResponse<DashboardStatistics>> {
         return try {
+            // Query required data for calculation
+            val owner = userRepository.findByUserUuid(principal.name).orElseThrow()
+            val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
+
             // Get Start of Day
             val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
             // Get End of Day
@@ -47,9 +52,6 @@ class DashboardController(
             // Leaving Soon Threshold
             val timeNow = LocalDateTime.now()
             val leavingSoonThreshold = LocalDateTime.now().plusHours(1)
-
-            val owner = userRepository.findByUserUuid(principal.name).orElseThrow()
-            val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
 
             // Values
             val totalOccupancy = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
@@ -64,11 +66,14 @@ class DashboardController(
                 // Occupied parking capacity
                 totalOccupancy - leavingSoon,
 
-                // Traffic
+                // Traffic Calculation
                 invoiceRepository.countTrafficByDateRange(parkingLot.parkingLotUuid, startOfDay, endOfDay),
-                // Profit
-                // TODO: Implement service for this or use query
-                BigDecimal.valueOf(0)
+                // Profit Calculation
+                invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(
+                    parkingLot.parkingLotUuid,
+                    startOfDay,
+                    endOfDay
+                ) ?: BigDecimal.ZERO
             )
             ResponseEntity.ok(ApiResponse(dashboardStatistics, listOf()))
         } catch (e: Exception) {
