@@ -59,6 +59,7 @@
     parking_lot_uuid CDATA #REQUIRED
     vehicle_uuid CDATA #REQUIRED
     estimated_parking_duration_in_hours CDATA #IMPLIED
+    estimated_end_at CDATA #IMPLIED
     total CDATA #IMPLIED
     paid_at CDATA #IMPLIED
     start_at CDATA #REQUIRED
