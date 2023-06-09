@@ -1,8 +1,6 @@
 package com.chatchatabc.parking.domain;
 
-import com.chatchatabc.parking.domain.repository.InvoiceRepository;
-import com.chatchatabc.parking.domain.repository.UserRepository;
-import com.chatchatabc.parking.domain.repository.VehicleRepository;
+import com.chatchatabc.parking.domain.repository.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -13,9 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
     private static BeanFactory beanFactory;
-    private static VehicleRepository vehicleRepository;
-    private static UserRepository userRepository;
     private static InvoiceRepository invoiceRepository;
+    private static ParkingLotRepository parkingLotRepository;
+    private static RateRepository rateRepository;
+    private static ReportRepository reportRepository;
+    private static ReportStatusRepository reportStatusRepository;
+    private static RoleRepository roleRepository;
+    private static UserRepository userRepository;
+    private static VehicleRepository vehicleRepository;
 
     @Override
     public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
@@ -24,20 +27,45 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        vehicleRepository = beanFactory.getBean(VehicleRepository.class);
-        userRepository = beanFactory.getBean(UserRepository.class);
         invoiceRepository = beanFactory.getBean(InvoiceRepository.class);
+        parkingLotRepository = beanFactory.getBean(ParkingLotRepository.class);
+        rateRepository = beanFactory.getBean(RateRepository.class);
+        reportRepository = beanFactory.getBean(ReportRepository.class);
+        reportStatusRepository = beanFactory.getBean(ReportStatusRepository.class);
+        roleRepository = beanFactory.getBean(RoleRepository.class);
+        userRepository = beanFactory.getBean(UserRepository.class);
+        vehicleRepository = beanFactory.getBean(VehicleRepository.class);
     }
 
-    public static VehicleRepository getVehicleRepository() {
-        return vehicleRepository;
+    public static InvoiceRepository getInvoiceRepository() {
+        return invoiceRepository;
+    }
+
+    public static ParkingLotRepository getParkingLotRepository() {
+        return parkingLotRepository;
+    }
+
+    public static RateRepository getRateRepository() {
+        return rateRepository;
+    }
+
+    public static ReportRepository getReportRepository() {
+        return reportRepository;
+    }
+
+    public static ReportStatusRepository getReportStatusRepository() {
+        return reportStatusRepository;
+    }
+
+    public static RoleRepository getRoleRepository() {
+        return roleRepository;
     }
 
     public static UserRepository getUserRepository() {
         return userRepository;
     }
 
-    public static InvoiceRepository getInvoiceRepository() {
-        return invoiceRepository;
+    public static VehicleRepository getVehicleRepository() {
+        return vehicleRepository;
     }
 }
