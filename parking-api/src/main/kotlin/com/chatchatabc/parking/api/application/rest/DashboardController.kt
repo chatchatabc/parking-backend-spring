@@ -11,6 +11,8 @@ import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import io.swagger.v3.oas.annotations.Operation
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
@@ -148,21 +150,22 @@ class DashboardController(
     @GetMapping("/search/{parkingLotUuid}/{plateNumber}")
     fun searchVehicle(
         @PathVariable plateNumber: String,
-        @PathVariable parkingLotUuid: String
-    ): ResponseEntity<ApiResponse<Vehicle>> {
+        @PathVariable parkingLotUuid: String,
+        pageable: Pageable
+    ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
         return try {
-            val vehicle = vehicleRepository.findByPlateNumber(plateNumber).orElseThrow()
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
-
-            val count = invoiceRepository.countVehicleInvoiceInstancesByParkingLotUuidAndDateRange(
-                parkingLot.parkingLotUuid,
-                vehicle.vehicleUuid,
-                LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0),
-                LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
+            // Get Start of Day
+            val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+            // Get End of Day
+            val endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
+            val vehicle = vehicleRepository.findAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices(
+                parkingLotUuid,
+                plateNumber,
+                startOfDay,
+                endOfDay,
+                pageable
             )
-            if (count == 0L || count == null) {
-                throw Exception("Vehicle not parked today")
-            }
+
             ResponseEntity.ok(ApiResponse(vehicle, listOf()))
         } catch (e: Exception) {
             ResponseEntity.badRequest()
