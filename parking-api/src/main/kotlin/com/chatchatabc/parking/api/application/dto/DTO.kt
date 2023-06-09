@@ -28,7 +28,7 @@ data class UserVerifyOTPRequest(
 )
 
 data class UserNotificationResponse(
-    val notificationId: String
+    val notificationId: String?
 )
 
 data class ReportCreateRequest(
