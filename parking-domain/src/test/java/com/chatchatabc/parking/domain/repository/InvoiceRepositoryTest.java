@@ -145,4 +145,22 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
 
         assertThat(invoiceRepository.countTrafficByDateRange(parkingLotUuid, start, end)).isEqualTo(0L);
     }
+
+    @Test
+    void testCountLeavingVehicles_ShouldReturnGreaterThan0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 7, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+
+        assertThat(invoiceRepository.countLeavingVehicles(parkingLotUuid, start, end)).isGreaterThan(0L);
+    }
+
+    @Test
+    void testCountLeavingVehicles_ShouldReturn0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 7, 23, 59);
+        String parkingLotUuid = "non-existent-uuid";
+
+        assertThat(invoiceRepository.countLeavingVehicles(parkingLotUuid, start, end)).isEqualTo(0L);
+    }
 }
