@@ -3,13 +3,14 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.domain.enums.ResponseNames
+import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.service.ParkingLotService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 import java.security.Principal
 import java.time.LocalDateTime
@@ -19,7 +20,8 @@ import java.time.LocalDateTime
 class DashboardController(
     private val parkingLotRepository: ParkingLotRepository,
     private val invoiceRepository: InvoiceRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val parkingLotService: ParkingLotService
 ) {
     /**
      * Dashboard Statistics data class
@@ -83,7 +85,37 @@ class DashboardController(
         }
     }
 
-    // TODO: Implement capacity increment or decrement manual
+    /**
+     * Capacity Increment Override
+     */
+    @Operation(
+        summary = "Increment or Decrement Parking Lot Capacity Override",
+        description = "type = increment or decrement. increment is default"
+    )
+    @PostMapping("/capacity/{type}/{parkingLotUuid}")
+    fun capacityIncrement(
+        @PathVariable parkingLotUuid: String,
+        @PathVariable type: String
+    ): ResponseEntity<ApiResponse<ParkingLot>> {
+        return try {
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
+            if (type == "decrement") {
+                if (parkingLot.availableSlots > 0) {
+                    parkingLot.availableSlots -= 1
+                }
+            } else {
+                if (parkingLot.availableSlots < parkingLot.capacity) {
+                    parkingLot.availableSlots += 1
+                }
+            }
+            parkingLotService.saveParkingLot(parkingLot)
+            ResponseEntity.ok(ApiResponse(parkingLot, listOf()))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+        }
+    }
 
     // TODO: Implement vehicle parked search by license plate for only parked for the day (within timeframe)
 }
