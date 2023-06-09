@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS invoice
     parking_lot_uuid                    VARCHAR(36) NOT NULL,
     vehicle_uuid                        VARCHAR(36) NOT NULL,
     estimated_parking_duration_in_hours INT DEFAULT 0,
+    estimated_end_at                    TIMESTAMP,
     total                               DECIMAL(10, 2),
     paid_at                             TIMESTAMP,
     start_at                            TIMESTAMP   NOT NULL,
