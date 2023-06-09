@@ -4,9 +4,11 @@ import com.chatchatabc.parking.api.application.dto.ApiResponse
 import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
+import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
+import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
@@ -21,7 +23,8 @@ class DashboardController(
     private val parkingLotRepository: ParkingLotRepository,
     private val invoiceRepository: InvoiceRepository,
     private val userRepository: UserRepository,
-    private val parkingLotService: ParkingLotService
+    private val parkingLotService: ParkingLotService,
+    private val vehicleRepository: VehicleRepository
 ) {
     /**
      * Dashboard Statistics data class
@@ -47,7 +50,7 @@ class DashboardController(
             val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
 
             // Get Start of Day
-            val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+            val startOfDay = LocalDateTime.now()
             // Get End of Day
             val endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
 
@@ -117,5 +120,37 @@ class DashboardController(
         }
     }
 
-    // TODO: Implement vehicle parked search by license plate for only parked for the day (within timeframe)
+    /**
+     * Search Vehicle if parked today
+     */
+    @GetMapping("/search/{parkingLotUuid}/{plateNumber}")
+    fun searchVehicle(
+        @PathVariable plateNumber: String,
+        @PathVariable parkingLotUuid: String
+    ): ResponseEntity<ApiResponse<Vehicle>> {
+        return try {
+            val vehicle = vehicleRepository.findByPlateNumber(plateNumber).orElseThrow()
+            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
+
+            val count = invoiceRepository.countVehicleInvoiceInstancesByParkingLotUuidAndDateRange(
+                parkingLot.parkingLotUuid,
+                vehicle.vehicleUuid,
+                LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0),
+                LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
+            )
+            if (count == 0L || count == null) {
+                throw Exception("Vehicle not parked today")
+            }
+            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.badRequest()
+                .body(
+                    ApiResponse(
+                        null,
+                        listOf(ErrorElement(ResponseNames.INVOICE_VEHICLE_NOT_PARKED_TODAY.name, null))
+                    )
+                )
+        }
+    }
 }
