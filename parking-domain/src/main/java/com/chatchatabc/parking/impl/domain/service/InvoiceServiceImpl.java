@@ -54,6 +54,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setVehicleUuid(vehicle.getVehicleUuid());
         invoice.setStartAt(LocalDateTime.now());
         invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
+        invoice.setEstimatedEndAt(LocalDateTime.now().plusHours(estimatedParkingDurationInHours));
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
         parkingLot.setCapacity(parkingLot.getCapacity() - 1);
