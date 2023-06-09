@@ -78,4 +78,18 @@ class UserRepositoryTest extends TestContainersBaseTest {
         Long verifiedUsersCount = userRepository.countVerified();
         assertThat(verifiedUsersCount).isGreaterThan(0);
     }
+
+    @Test
+    void testFindByEmail_ShouldReturnUser() {
+        String email = "admin@gmail.com";
+
+        assertThat(userRepository.findByEmail(email)).isPresent();
+    }
+
+    @Test
+    void testFindByEmail_ShouldReturnEmpty() {
+        String email = "non-exitin@gmail.com";
+
+        assertThat(userRepository.findByEmail(email)).isNotPresent();
+    }
 }
