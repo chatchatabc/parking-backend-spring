@@ -69,19 +69,19 @@ GET {{userBaseUrl}}/api/parking-lot/get/9eac93b7-0b7e-4eb0-86d6-9c002fb4c8c1
 Authorization: Bearer {{userToken}}
 
 ### Get Parking Lots By Range
-GET {{userBaseUrl}}/api/parking-lot/get-by-location?latitude=7.110451&longitude=125.633836&distance=0.1
+GET {{userBaseUrl}}/api/parking-lot/by-location?latitude=7.110451&longitude=125.633836&distance=0.1
 Authorization: Bearer {{userToken}}
 
 ### Get parking lots I manage
-GET {{userBaseUrl}}/api/parking-lot/get-managing
+GET {{userBaseUrl}}/api/parking-lot/managing
 Authorization: Bearer {{userToken}}
 
 ### Get parking lots I manage that are drafts
-GET {{userBaseUrl}}/api/parking-lot/get-managing/draft
+GET {{userBaseUrl}}/api/parking-lot/managing/draft
 Authorization: Bearer {{userToken}}
 
 ### Get parking lots I manage that are pending
-GET {{userBaseUrl}}/api/parking-lot/get-managing/pending
+GET {{userBaseUrl}}/api/parking-lot/managing/pending
 Authorization: Bearer {{userToken}}
 
 ### Create Parking Lot
@@ -126,7 +126,7 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### Get Active Parking Lot Images
-GET {{userBaseUrl}}/api/parking-lot/get-images/5729d247-c7bf-4234-9f2a-059560e90b98
+GET {{userBaseUrl}}/api/parking-lot/images/5729d247-c7bf-4234-9f2a-059560e90b98
 Authorization: Bearer {{userToken}}
 
 ### Delete a parking lot image
@@ -138,7 +138,7 @@ POST {{userBaseUrl}}/api/parking-lot/restore-image/0187e602-023f-7e40-8547-9e390
 Authorization: Bearer {{userToken}}
 
 ### Get My Vehicles
-GET {{userBaseUrl}}/api/vehicle/get-my-vehicles
+GET {{userBaseUrl}}/api/vehicle/my-vehicles
 Authorization: Bearer {{userToken}}
 
 ### Get Vehicle by ID
