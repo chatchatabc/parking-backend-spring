@@ -92,4 +92,15 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
      */
     @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.createdAt BETWEEN ?2 AND ?3")
     Long countTrafficByDateRange(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
+
+    /**
+     * Count leaving vehicles by date range
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param startDate      the start date
+     * @param endDate        the end date
+     * @return the number of leaving vehicles
+     */
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.estimatedEndAt BETWEEN ?2 AND ?3")
+    Long countLeavingVehicles(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
 }
