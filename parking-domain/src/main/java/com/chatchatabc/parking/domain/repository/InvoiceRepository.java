@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -103,4 +104,15 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
      */
     @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.estimatedEndAt BETWEEN ?2 AND ?3")
     Long countLeavingVehicles(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
+
+    /**
+     * Sum total by parking lot uuid and end at date range
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param startDate      the start date
+     * @param endDate        the end date
+     * @return the sum of total
+     */
+    @Query("SELECT SUM(i.total) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.endAt BETWEEN ?2 AND ?3")
+    BigDecimal sumTotalByParkingLotUuidAndEndAtDateRange(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
 }
