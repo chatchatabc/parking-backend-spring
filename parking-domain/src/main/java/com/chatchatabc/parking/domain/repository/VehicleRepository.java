@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,4 +60,14 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
      */
     @Query("SELECT v.vehicleUuid FROM Vehicle v WHERE v.owner = ?1")
     List<String> findVehicleIdsByOwner(Long owner);
+
+    /**
+     * Find all vehicles by parking lot uuid and keyword and date range through invoices
+     *
+     * @param keyword  the keyword
+     * @param pageable the pageable
+     * @return the page
+     */
+    @Query("SELECT DISTINCT v FROM Vehicle v INNER JOIN Invoice i ON v.vehicleUuid = i.vehicleUuid INNER JOIN ParkingLot pl ON i.parkingLotUuid = pl.parkingLotUuid WHERE pl.parkingLotUuid = ?1 AND LOWER(v.plateNumber) LIKE %?2% AND i.createdAt BETWEEN ?3 AND ?4")
+    Page<Vehicle> findAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices(String parkingLotUuid, String keyword, LocalDateTime start, LocalDateTime end, Pageable pageable);
 }
