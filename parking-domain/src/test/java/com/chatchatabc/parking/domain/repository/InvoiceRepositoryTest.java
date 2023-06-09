@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,5 +126,23 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
         List<String> vehicleIds = List.of("non-existent-uuid");
         PageRequest pageRequest = PageRequest.of(0, 10);
         assertThat(invoiceRepository.findAllByVehicles(vehicleIds, pageRequest).getNumberOfElements()).isEqualTo(0);
+    }
+
+    @Test
+    void testCountTrafficByDateRange_ShouldReturnGreaterThan0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 5, 23, 59);
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+
+        assertThat(invoiceRepository.countTrafficByDateRange(parkingLotUuid, start, end)).isGreaterThan(0L);
+    }
+
+    @Test
+    void testCountTrafficByDateRange_ShouldReturn0() {
+        LocalDateTime start = LocalDateTime.of(2023, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 5, 5, 23, 59);
+        String parkingLotUuid = "non-existent-uuid";
+
+        assertThat(invoiceRepository.countTrafficByDateRange(parkingLotUuid, start, end)).isEqualTo(0L);
     }
 }
