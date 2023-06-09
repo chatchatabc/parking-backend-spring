@@ -20,6 +20,7 @@ public enum ResponseNames {
      */
     INVOICE_END_SUCCESS,
     INVOICE_PAY_SUCCESS,
+    INVOICE_VEHICLE_NOT_PARKED_TODAY,
 
     /**
      * Misc Negative
