@@ -33,7 +33,7 @@ class VehicleControllerTest : AuthorizedBaseTest() {
             plateNumber = "1111"
         }
         given(vehicleRepository.findByVehicleUuid("1")).willReturn(Optional.of(vehicle))
-        val result = this.mvc.perform(get("/api/vehicle/get/1"))
+        val result = this.mvc.perform(get("/api/vehicle/1"))
             .andExpect(status().isOk()).andReturn()
     }
 
@@ -41,7 +41,7 @@ class VehicleControllerTest : AuthorizedBaseTest() {
     fun testGetMyVehicles() {
         val pr = PageRequest.of(0, 10)
         given(vehicleRepository.findAllByUser("1", pr)).willReturn(Page.empty())
-        val result = this.mvc.perform(get("/api/vehicle/get-my-vehicles"))
+        val result = this.mvc.perform(get("/api/vehicle/my-vehicles"))
             .andExpect(status().isOk()).andReturn()
     }
 }
