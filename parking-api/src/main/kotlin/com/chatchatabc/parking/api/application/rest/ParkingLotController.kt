@@ -44,7 +44,7 @@ class ParkingLotController(
     /**
      * Get all parking lots
      */
-    @GetMapping("/get-all")
+    @GetMapping("/")
     fun getAll(
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<ParkingLot>>> {
@@ -61,7 +61,7 @@ class ParkingLotController(
     /**
      * Get parking lots by uuid
      */
-    @GetMapping("/get/{parkingLotUuid}")
+    @GetMapping("/{parkingLotUuid}")
     fun get(
         @PathVariable parkingLotUuid: String
     ): ResponseEntity<ApiResponse<ParkingLot>> {
@@ -78,7 +78,7 @@ class ParkingLotController(
     /**
      * Get Parking Lot by Owner
      */
-    @GetMapping("/get")
+    @GetMapping("/")
     fun getByManaging(
         principal: Principal
     ): ResponseEntity<ApiResponse<ParkingLot>> {
@@ -94,7 +94,7 @@ class ParkingLotController(
     /**
      * Get parking lots by distance
      */
-    @GetMapping("/get-by-location")
+    @GetMapping("/by-location")
     fun getByLocation(
         @RequestParam("longitude") longitude: Double,
         @RequestParam("latitude") latitude: Double,
@@ -116,7 +116,7 @@ class ParkingLotController(
     /**
      * Get Images of a Parking Lot By Uuid and active status
      */
-    @GetMapping("/get-images/{parkingLotUuid}")
+    @GetMapping("/images/{parkingLotUuid}")
     fun getImages(
         @PathVariable parkingLotUuid: String,
         pageable: Pageable
@@ -244,7 +244,7 @@ class ParkingLotController(
     /**
      * Get parking lot avatar by image uuid
      */
-    @GetMapping("/get-image/{imageUuid}")
+    @GetMapping("/image/{imageUuid}")
     fun getParkingLotImage(
         @PathVariable imageUuid: String,
         response: HttpServletResponse
@@ -268,7 +268,7 @@ class ParkingLotController(
     /**
      * Get featured parking lot image if exists
      */
-    @GetMapping("/get-featured-image/{parkingLotUuid}")
+    @GetMapping("/featured-image/{parkingLotUuid}")
     fun getFeaturedParkingLotImage(
         @PathVariable parkingLotUuid: String,
         response: HttpServletResponse

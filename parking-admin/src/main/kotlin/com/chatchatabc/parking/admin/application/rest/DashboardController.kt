@@ -23,7 +23,7 @@ class DashboardController(
     /**
      * Get statistics of parking system
      */
-    @GetMapping("/get-numerical-statistics")
+    @GetMapping("/stats")
     fun getNumericalStatistics(): ResponseEntity<ApiResponse<DashboardStatistics>> {
         return try {
             // User data

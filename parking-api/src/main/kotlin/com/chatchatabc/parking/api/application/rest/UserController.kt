@@ -56,7 +56,7 @@ class UserController(
         summary = "Get the notification id of the logged in user",
         description = "Get notification id of the logged in user. This is used for push notifications and should not be available to other users."
     )
-    @GetMapping("/get-notification-id")
+    @GetMapping("/notification-id")
     fun getNotificationId(
         principal: Principal
     ): ResponseEntity<ApiResponse<UserNotificationResponse>> {

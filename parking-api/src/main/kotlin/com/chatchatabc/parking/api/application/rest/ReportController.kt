@@ -26,7 +26,7 @@ class ReportController(
     /**
      * Get Reports
      */
-    @GetMapping("/get-reports")
+    @GetMapping("/reports")
     fun getReports(
         pageable: Pageable
     ): ResponseEntity<ApiResponse<Page<Report>>> {
@@ -42,7 +42,7 @@ class ReportController(
     /**
      * Get reports by Reported By
      */
-    @GetMapping("/get-reported-by/{userUuid}")
+    @GetMapping("/reported-by/{userUuid}")
     fun getReportsBy(
         @PathVariable userUuid: String,
         pageable: Pageable

@@ -183,7 +183,7 @@ class ParkingLotController(
     /**
      * Get parking lot avatar by image uuid
      */
-    @GetMapping("/get-image/{imageUuid}")
+    @GetMapping("/image/{imageUuid}")
     fun getParkingLotImage(
         @PathVariable imageUuid: String,
         response: HttpServletResponse
@@ -207,7 +207,7 @@ class ParkingLotController(
     /**
      * Get featured parking lot image if exists
      */
-    @GetMapping("/get-featured-image/{parkingLotUuid}")
+    @GetMapping("/featured-image/{parkingLotUuid}")
     fun getFeaturedParkingLotImage(
         @PathVariable parkingLotUuid: String,
         response: HttpServletResponse

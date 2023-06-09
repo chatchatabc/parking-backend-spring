@@ -37,7 +37,7 @@ class InvoiceController(
     /**
      * Get Invoice by ID
      */
-    @GetMapping("/get/{invoiceUuid}")
+    @GetMapping("/{invoiceUuid}")
     fun getInvoice(
         @PathVariable invoiceUuid: String
     ): ResponseEntity<ApiResponse<Invoice>> {
@@ -53,7 +53,7 @@ class InvoiceController(
     /**
      * Get invoices by vehicle uuid
      */
-    @GetMapping("/get/vehicle/{vehicleUuid}")
+    @GetMapping("/vehicle/{vehicleUuid}")
     fun getInvoicesByVehicle(
         @PathVariable vehicleUuid: String,
         pageable: Pageable
@@ -75,7 +75,7 @@ class InvoiceController(
     /**
      * Get latest active invoices by parking lot vehicle uuid
      */
-    @GetMapping("/get/active/{vehicleUuid}")
+    @GetMapping("/active/{vehicleUuid}")
     fun getActiveInvoice(
         @PathVariable vehicleUuid: String,
         principal: Principal
@@ -95,7 +95,7 @@ class InvoiceController(
     /**
      * Get invoices by parking lot uuid
      */
-    @GetMapping("/get/parking-lot/{parkingLotUuid}")
+    @GetMapping("/parking-lot/{parkingLotUuid}")
     fun getInvoicesByParkingLot(
         @PathVariable parkingLotUuid: String,
         pageable: Pageable

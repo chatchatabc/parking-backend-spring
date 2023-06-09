@@ -25,7 +25,7 @@ class VehicleController(
     /**
      * Get all vehicles by user
      */
-    @GetMapping("/get-my-vehicles")
+    @GetMapping("/my-vehicles")
     fun getMyVehicles(
         principal: Principal,
         pageable: Pageable
@@ -42,7 +42,7 @@ class VehicleController(
     /**
      * Get a vehicle by id
      */
-    @GetMapping("/get/{vehicleUuid}")
+    @GetMapping("/{vehicleUuid}")
     fun getVehicleById(
         @PathVariable vehicleUuid: String,
         principal: Principal
