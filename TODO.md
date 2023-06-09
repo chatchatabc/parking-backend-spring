@@ -27,6 +27,15 @@
 
 # Technical TODOs:
 
+## Refactors (Modify Entire Codebase)
+
+- Unit Method Extensions (learn and apply)
+- Remove "/gets"
+- Implement Repository Hooks (@Component)
+- Learn Manifold (https://github.com/manifold-systems/manifold)
+- Add Kotlin Support to Domain
+- Add Kotlin DSL to Entities Model as "DomainDSL or ParkingDomainDSL"
+
 ## Deployments
 
 - Implement automated deployments using GitHub actions and ECS
