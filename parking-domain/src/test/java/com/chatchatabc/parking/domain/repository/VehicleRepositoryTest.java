@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,5 +126,27 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
     void testFindVehicleIdsByOwner_ShouldReturn0() {
         Long ownerId = 10L;
         assertThat(vehicleRepository.findVehicleIdsByOwner(ownerId).size()).isEqualTo(0);
+    }
+
+    @Test
+    void testFindAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices_ShouldReturnGreaterThan0() {
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        String keyword = "ASD";
+        PageRequest pageable = PageRequest.of(0, 10);
+        LocalDateTime start = LocalDateTime.of(2022, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2024, 5, 7, 23, 59);
+
+        assertThat(vehicleRepository.findAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices(parkingLotUuid, keyword.toLowerCase(), start, end, pageable).getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices_ShouldReturn0() {
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        String keyword = "non-existent-keyword";
+        PageRequest pageable = PageRequest.of(0, 10);
+        LocalDateTime start = LocalDateTime.of(2022, 5, 5, 0, 0);
+        LocalDateTime end = LocalDateTime.of(2024, 5, 7, 23, 59);
+
+        assertThat(vehicleRepository.findAllVehiclesByParkingLotUuidAndKeywordAndDateRangeThroughInvoices(parkingLotUuid, keyword.toLowerCase(), start, end, pageable).getTotalElements()).isEqualTo(0);
     }
 }
