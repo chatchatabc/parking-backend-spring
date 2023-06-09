@@ -35,6 +35,9 @@ public class Invoice {
     @Column
     private int estimatedParkingDurationInHours;
 
+    @Column
+    private LocalDateTime estimatedEndAt;
+
     @Column(columnDefinition = "DECIMAL(10,2)")
     private BigDecimal total;
 
