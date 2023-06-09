@@ -115,4 +115,16 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
      */
     @Query("SELECT SUM(i.total) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.endAt BETWEEN ?2 AND ?3")
     BigDecimal sumTotalByParkingLotUuidAndEndAtDateRange(String parkingLotUuid, LocalDateTime startDate, LocalDateTime endDate);
+
+    /**
+     * Count vehicle invoice instances by parking lot uuid and date range
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param vehicleUuid    the vehicle uuid
+     * @param startDate      the start date
+     * @param endDate        the end date
+     * @return the number of vehicle invoice instances
+     */
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.parkingLotUuid = ?1 AND i.vehicleUuid = ?2 AND i.createdAt BETWEEN ?3 AND ?4")
+    Long countVehicleInvoiceInstancesByParkingLotUuidAndDateRange(String parkingLotUuid, String vehicleUuid, LocalDateTime startDate, LocalDateTime endDate);
 }
