@@ -34,7 +34,9 @@ class DashboardController(
         val leavingSoon: Long,
         val occupiedParkingCapacity: Long,
         val traffic: Long,
-        val profit: BigDecimal
+        val trafficPercentage: Double,
+        val profit: BigDecimal,
+        val profitPercentage: Double
     )
 
     /**
@@ -50,7 +52,9 @@ class DashboardController(
             val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
 
             // Get Start of Day
-            val startOfDay = LocalDateTime.now()
+            val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+            // Get Yesterday
+            val yesterday = LocalDateTime.now().minusDays(1)
             // Get End of Day
             val endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
 
@@ -63,6 +67,28 @@ class DashboardController(
             val leavingSoon =
                 invoiceRepository.countLeavingVehicles(parkingLot.parkingLotUuid, timeNow, leavingSoonThreshold)
 
+            // Calculate Traffic related data
+            val traffic = invoiceRepository.countTrafficByDateRange(parkingLot.parkingLotUuid, startOfDay, endOfDay)
+            val trafficYesterday =
+                invoiceRepository.countTrafficByDateRange(parkingLot.parkingLotUuid, yesterday, startOfDay)
+            val trafficPercentage =
+                (traffic.toDouble() - trafficYesterday.toDouble()) / trafficYesterday.toDouble() * 100
+
+            // Calculate Profit related data
+            val profit = invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(
+                parkingLot.parkingLotUuid,
+                startOfDay,
+                endOfDay
+            ) ?: BigDecimal.ZERO
+            val profitYesterday = invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(
+                parkingLot.parkingLotUuid,
+                yesterday,
+                startOfDay
+            ) ?: BigDecimal.ZERO
+            val profitPercentage =
+                (profit.toDouble() - profitYesterday.toDouble()) / profitYesterday.toDouble() * 100
+
+
             val dashboardStatistics = DashboardStatistics(
                 // Capacity
                 parkingLot.capacity,
@@ -72,13 +98,11 @@ class DashboardController(
                 totalOccupancy - leavingSoon,
 
                 // Traffic Calculation
-                invoiceRepository.countTrafficByDateRange(parkingLot.parkingLotUuid, startOfDay, endOfDay),
+                traffic,
+                trafficPercentage,
                 // Profit Calculation
-                invoiceRepository.sumTotalByParkingLotUuidAndEndAtDateRange(
-                    parkingLot.parkingLotUuid,
-                    startOfDay,
-                    endOfDay
-                ) ?: BigDecimal.ZERO
+                profit,
+                profitPercentage
             )
             ResponseEntity.ok(ApiResponse(dashboardStatistics, listOf()))
         } catch (e: Exception) {
