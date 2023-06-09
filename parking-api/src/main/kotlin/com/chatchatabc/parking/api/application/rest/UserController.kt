@@ -9,6 +9,8 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
+import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/user")
@@ -39,35 +42,19 @@ class UserController(
     @GetMapping("/me")
     fun getProfile(
         principal: Principal
-    ): ResponseEntity<ApiResponse<User>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(user, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    ) = principal.name.user.toResponse()
 
     /**
      * Get user notification id
      */
     @Operation(
-        summary = "Get the notification id of the logged in user",
+        summary = "Get the notification id of tFhe logged in user",
         description = "Get notification id of the logged in user. This is used for push notifications and should not be available to other users."
     )
     @GetMapping("/notification-id")
     fun getNotificationId(
         principal: Principal
-    ): ResponseEntity<ApiResponse<UserNotificationResponse>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(UserNotificationResponse(user.notificationUuid), listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    ) = UserNotificationResponse(principal.name.user.getOrNull()?.notificationUuid).toResponse()
 
     // TODO: Create API for change username
 
