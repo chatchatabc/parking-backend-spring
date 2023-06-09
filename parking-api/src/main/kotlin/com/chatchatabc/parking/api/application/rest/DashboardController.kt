@@ -33,7 +33,6 @@ class DashboardController(
     )
 
     // TODO: Implement get request
-    // TODO: Get leaving soon
     // TODO: Get profit
     @GetMapping("/get")
     fun getDashboardStatistics(
@@ -46,23 +45,29 @@ class DashboardController(
             val endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
 
             // Leaving Soon Threshold
-            val leavingSoonThreshold = LocalDateTime.now().plusHours(1)
             val timeNow = LocalDateTime.now()
+            val leavingSoonThreshold = LocalDateTime.now().plusHours(1)
 
             val owner = userRepository.findByUserUuid(principal.name).orElseThrow()
             val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
+
+            // Values
+            val totalOccupancy = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
+            val leavingSoon =
+                invoiceRepository.countLeavingVehicles(parkingLot.parkingLotUuid, timeNow, leavingSoonThreshold)
 
             val dashboardStatistics = DashboardStatistics(
                 // Capacity
                 parkingLot.capacity,
                 // Leaving soon
-                0,
+                leavingSoon,
                 // Occupied parking capacity
-                invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid),
+                totalOccupancy - leavingSoon,
 
                 // Traffic
                 invoiceRepository.countTrafficByDateRange(parkingLot.parkingLotUuid, startOfDay, endOfDay),
                 // Profit
+                // TODO: Implement service for this or use query
                 BigDecimal.valueOf(0)
             )
             ResponseEntity.ok(ApiResponse(dashboardStatistics, listOf()))
