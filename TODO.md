@@ -25,7 +25,6 @@
 ## Refactors (Modify Entire Codebase)
 
 - Learn Manifold (https://github.com/manifold-systems/manifold)
-- Add Kotlin DSL to Entities Model as "DomainDSL or ParkingDomainDSL"
 
 ## Deployments
 
@@ -47,7 +46,7 @@
 - OTP For Logins
 - Forgot Password
 
-## Unit Testing (Ongoing Work as Features as Implemented)
+## Unit Testing (Ongoing Work as Features are Implemented)
 
 - Finish Repository Unit Tests
 - Finish Service Unit Tests
