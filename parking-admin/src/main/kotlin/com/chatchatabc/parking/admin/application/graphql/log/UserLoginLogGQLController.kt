@@ -28,7 +28,7 @@ class UserLoginLogGQLController(
      * Get user login logs by identifier
      */
     @QueryMapping
-    fun getUserLoginLogs(
+    fun getUserLoginLogsByUser(
         @Argument page: Int,
         @Argument size: Int,
         @Argument id: String
