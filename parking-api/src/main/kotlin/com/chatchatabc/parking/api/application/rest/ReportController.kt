@@ -5,12 +5,10 @@ import com.chatchatabc.parking.domain.model.Report
 import com.chatchatabc.parking.domain.repository.ReportRepository
 import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.user
-import com.chatchatabc.parking.web.common.ApiResponse
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -40,8 +38,7 @@ class ReportController(
         @PathVariable userUuid: String,
         pageable: Pageable
     ) = runCatching {
-        val reports = reportRepository.findAllByReportedBy(userUuid.user.id, pageable)
-        ResponseEntity.ok(ApiResponse(reports, listOf()))
+        reportRepository.findAllByReportedBy(userUuid.user.id, pageable).toResponse()
     }.getOrElse {
         it.toErrorResponse()
     }

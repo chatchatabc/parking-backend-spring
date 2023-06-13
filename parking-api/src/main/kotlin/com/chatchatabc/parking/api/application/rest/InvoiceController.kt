@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.NatsMessage
-import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
@@ -9,8 +8,6 @@ import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import com.chatchatabc.parking.parkingLotByOwner
 import com.chatchatabc.parking.user
-import com.chatchatabc.parking.web.common.ApiResponse
-import com.chatchatabc.parking.web.common.ErrorElement
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
 import com.chatchatabc.parking.web.common.toErrorResponse
@@ -18,7 +15,6 @@ import com.chatchatabc.parking.web.common.toResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.nats.client.Connection
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -43,8 +39,7 @@ class InvoiceController(
     ) = runCatching {
         invoiceRepository.findByInvoiceUuid(invoiceUuid).get().toResponse()
     }.getOrElse {
-        ResponseEntity.badRequest()
-            .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+        it.toErrorResponse()
     }
 
 
