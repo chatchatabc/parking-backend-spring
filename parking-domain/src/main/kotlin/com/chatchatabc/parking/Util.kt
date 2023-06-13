@@ -58,5 +58,5 @@ val String.rate: Rate
 val String.rateByParkingLot: Rate
     get() {
         // TODO: Add custom errors
-        return SpringContextUtils.getParkingLotRepository().findByParkingLotUuid(this).orElseThrow().rate
+        return SpringContextUtils.getParkingLotRepository().findByParkingLotUuid(this).orElseThrow().getRate()
     }
