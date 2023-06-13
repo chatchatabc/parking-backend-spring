@@ -38,7 +38,7 @@ class DashboardController(
     /**
      * Get Dashboard Statistics
      */
-    @GetMapping("/get")
+    @GetMapping("/")
     fun getDashboardStatistics(
         principal: Principal
     ) = runCatching {
