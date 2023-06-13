@@ -1,6 +1,8 @@
 package com.chatchatabc.parking.web.common
 
+import com.chatchatabc.parking.domain.SpringContextUtils
 import com.chatchatabc.parking.domain.enums.ResponseNames
+import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import org.springframework.data.domain.Page
 import java.util.*
 
@@ -49,4 +51,13 @@ fun <T : Throwable> T.toErrorResponse(): ApiResponse<Nothing> {
     val errorList = mutableListOf<ErrorElement>()
     errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
     return ApiResponse(null, errorList)
+}
+
+data class NatsMessage<T>(
+    val type: NatsPayloadTypes,
+    val payload: T?
+)
+
+fun <T> NatsMessage<T>.toJson(): String {
+    return SpringContextUtils.getObjectMapper().writeValueAsString(this)
 }
