@@ -30,10 +30,6 @@ public class Role implements GrantedAuthority {
     @Column(unique = true)
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users = List.of();
-
     @Override
     public String getAuthority() {
         return this.name;
