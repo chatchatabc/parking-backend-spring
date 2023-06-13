@@ -2,7 +2,6 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.user
@@ -24,7 +23,6 @@ import kotlin.jvm.optionals.getOrNull
 @RequestMapping("/api/user")
 class UserController(
     private val userService: UserService,
-    private val userRepository: UserRepository,
     private val fileStorageService: FileStorageService,
 ) {
     private val userMapper = Mappers.getMapper(UserMapper::class.java)
@@ -74,16 +72,12 @@ class UserController(
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Nothing>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            userMapper.updateUserFromUpdateProfileRequest(request, user)
-            userService.saveUser(user)
-            ResponseEntity.ok().body(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
+    ) = runCatching {
+        val user = principal.name.user.orElseThrow()
+        userMapper.updateUserFromUpdateProfileRequest(request, user)
+        userService.saveUser(user).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
     }
 
     // TODO: Implement update phone number api
@@ -95,68 +89,36 @@ class UserController(
     fun uploadAvatar(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
-    ): ApiResponse<User> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            userService.uploadImage(
-                user,
-                "avatar",
-                file.inputStream,
-                file.originalFilename,
-                file.size,
-                file.contentType
-            )
-            ApiResponse(user, listOf())
-        } catch (e: Exception) {
-            ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
-        }
+    ) = runCatching {
+        val user = principal.name.user.orElseThrow()
+        userService.uploadImage(
+            user,
+            "avatar",
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            file.contentType
+        ).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
     }
 
     /**
-     * Get user avatar by username
+     * Get user avatar by any identification (id, username, email, phone)
      */
-    @GetMapping("/avatar/{username}")
+    @GetMapping("/avatar/{id}")
     fun getUserAvatar(
-        @PathVariable username: String,
+        @PathVariable id: String,
         response: HttpServletResponse
-    ): ResponseEntity<InputStreamResource> {
-        return try {
-            val user = userRepository.findByUsername(username).get()
-            if (user.avatar == null) {
-                throw Exception("Avatar not found")
-            }
-            val headers = HttpHeaders()
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
-            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
-        }
-    }
-
-    /**
-     * Get user avatar by userId
-     */
-    @GetMapping("/avatar/id/{userUuid}")
-    fun getUserAvatarById(
-        @PathVariable userUuid: String,
-        response: HttpServletResponse
-    ): ResponseEntity<InputStreamResource> {
-        return try {
-            val user = userRepository.findByUserUuid(userUuid).get()
-            if (user.avatar == null) {
-                throw Exception("Avatar not found")
-            }
-            val headers = HttpHeaders()
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
-            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
-        }
+    ) = runCatching {
+        val user = id.user.orElseThrow()
+        val headers = HttpHeaders()
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
+        ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
+    }.getOrElse {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND)
+        ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
     }
 }
