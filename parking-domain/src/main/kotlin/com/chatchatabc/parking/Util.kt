@@ -3,7 +3,6 @@ package com.chatchatabc.parking
 import com.chatchatabc.parking.domain.SpringContextUtils
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.User
-import java.util.*
 
 val String.user: User
     get() {
