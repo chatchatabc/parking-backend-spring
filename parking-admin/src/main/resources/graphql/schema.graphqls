@@ -1,7 +1,5 @@
 type Query {
-    getUserByUuid(uuid: String!): User
-    getUserByPhone(phone: String!): User
-    getUserByUsername(username: String!): User
+    getUser(id: String!): User
     getUsers(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): UserList!
 
     getRoles(page: Int size: Int): RoleList!
