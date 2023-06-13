@@ -136,14 +136,13 @@ public class UserServiceImpl implements UserService {
      * @param filename    the filename
      * @param filesize    the filesize
      * @param mimetype    the mimetype
-     * @return the updated user
      * @throws Exception if an error occurs
      */
     @Override
-    public User uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
+    public void uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Update user avatar field
         uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
-        return userRepository.save(uploadedBy);
+        userRepository.save(uploadedBy);
     }
 
     /**

@@ -47,8 +47,7 @@ public interface UserService extends UserDetailsService {
      * @param filename    the filename
      * @param filesize    the filesize
      * @param mimetype    the mimetype
-     * @return the updated user
      * @throws Exception if an error occurs
      */
-    User uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception;
+    void uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception;
 }
