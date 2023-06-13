@@ -48,13 +48,15 @@ class ParkingLotController(
      * Get parking lots by uuid
      */
     @GetMapping("/{parkingLotUuid}")
-    fun get(@PathVariable parkingLotUuid: String) = parkingLotUuid.parkingLot.toResponse()
+    fun get(@PathVariable parkingLotUuid: String) = runCatching { parkingLotUuid.parkingLot.toResponse() }
+        .getOrElse { it.toErrorResponse() }
 
     /**
      * Get Parking Lot by Owner
      */
     @GetMapping("/me")
-    fun getByManaging(principal: Principal) = principal.name.parkingLotByOwner.toResponse()
+    fun getByManaging(principal: Principal) = runCatching { principal.name.parkingLotByOwner.toResponse() }
+        .getOrElse { it.toErrorResponse() }
 
     /**
      * Get parking lots by distance

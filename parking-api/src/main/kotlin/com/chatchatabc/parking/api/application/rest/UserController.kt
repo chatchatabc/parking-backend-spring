@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
-import kotlin.jvm.optionals.getOrNull
 
 @RestController
 @RequestMapping("/api/user")
@@ -37,7 +36,7 @@ class UserController(
     @GetMapping("/me")
     fun getProfile(
         principal: Principal
-    ) = principal.name.user.toResponse()
+    ) = runCatching { principal.name.user.toResponse() }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get user notification id
@@ -49,7 +48,9 @@ class UserController(
     @GetMapping("/notification-id")
     fun getNotificationId(
         principal: Principal
-    ) = UserNotificationResponse(principal.name.user.getOrNull()?.notificationUuid).toResponse()
+    ) = runCatching {
+        UserNotificationResponse(principal.name.user.notificationUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     // TODO: Create API for change username
 
@@ -73,7 +74,7 @@ class UserController(
         @RequestBody request: UserProfileUpdateRequest,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user.orElseThrow()
+        val user = principal.name.user
         userMapper.updateUserFromUpdateProfileRequest(request, user)
         userService.saveUser(user).toResponse()
     }.getOrElse {
@@ -90,7 +91,7 @@ class UserController(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user.orElseThrow()
+        val user = principal.name.user
         userService.uploadImage(
             user,
             "avatar",
@@ -111,7 +112,7 @@ class UserController(
         @PathVariable id: String,
         response: HttpServletResponse
     ) = runCatching {
-        val user = id.user.orElseThrow()
+        val user = id.user
         val headers = HttpHeaders()
         // Add 1 day cache
         response.setHeader("Cache-Control", "max-age=86400")
