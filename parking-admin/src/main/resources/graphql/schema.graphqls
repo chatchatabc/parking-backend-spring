@@ -20,11 +20,10 @@ type Query {
     getOwnerByVehicleUuid(id: String!): User
 
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
-    getParkingLotByUuid(uuid: String!): ParkingLot
-    getParkingLotByUsername(username: String!): ParkingLot
-    getParkingLotByPhone(phone: String!): ParkingLot
-    getUserByParkingLotUuid(uuid: String!): User
-    getParkingLotImageKeysByParkingLotUuid(page: Int size: Int uuid: String!): [String]
+    getParkingLot(id: String!): ParkingLot
+    getParkingLotByUser(id: String!): ParkingLot
+    getUserByParkingLot(id: String!): User
+    getParkingLotImageKeysByParkingLot(page: Int size: Int id: String!): [String]
 
     getInvoices(page: Int size: Int keyword: String sortField: String sortBy: Int): InvoiceList!
     getInvoice(id: String!): Invoice
