@@ -1,18 +1,15 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.NatsMessage
+import com.chatchatabc.parking.*
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
-import com.chatchatabc.parking.parkingLotByOwner
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.NatsMessage
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
 import com.chatchatabc.parking.web.common.toErrorResponse
+import com.chatchatabc.parking.web.common.toJson
 import com.chatchatabc.parking.web.common.toResponse
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.nats.client.Connection
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
@@ -23,24 +20,16 @@ import java.security.Principal
 class InvoiceController(
     private val invoiceRepository: InvoiceRepository,
     private val vehicleRepository: VehicleRepository,
-    private val parkingLotRepository: ParkingLotRepository,
     private val invoiceService: InvoiceService,
-    private val userRepository: UserRepository,
     private val natsConnection: Connection
 ) {
-    private val objectMapper = ObjectMapper()
-
     /**
      * Get Invoice by ID
      */
     @GetMapping("/{invoiceUuid}")
     fun getInvoice(
         @PathVariable invoiceUuid: String
-    ) = runCatching {
-        invoiceRepository.findByInvoiceUuid(invoiceUuid).get().toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    ) = runCatching { invoiceUuid.invoice.toResponse() }.getOrElse { it.toErrorResponse() }
 
 
     /**
@@ -51,11 +40,8 @@ class InvoiceController(
         @PathVariable vehicleUuid: String,
         pageable: Pageable
     ) = runCatching {
-        val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-        invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pageable).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+        invoiceRepository.findAllByVehicle(vehicleUuid.vehicle.vehicleUuid, pageable).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get latest active invoices by parking lot vehicle uuid
@@ -70,9 +56,7 @@ class InvoiceController(
         val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).orElseThrow()
         invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid)
             .toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get invoices by parking lot uuid
@@ -82,11 +66,8 @@ class InvoiceController(
         @PathVariable parkingLotUuid: String,
         pageable: Pageable
     ) = runCatching {
-        val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get()
-        invoiceRepository.findAllByParkingLot(parkingLot.parkingLotUuid, pageable).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+        invoiceRepository.findAllByParkingLot(parkingLotUuid.parkingLot.parkingLotUuid, pageable).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Create Invoice data class
@@ -104,18 +85,20 @@ class InvoiceController(
         principal: Principal,
         @RequestBody req: InvoiceCreateRequest
     ) = runCatching {
-        val user = userRepository.findByUserUuid(principal.name).get()
-        val parkingLot = parkingLotRepository.findByOwner(user.id).get()
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
         val invoice = invoiceService.createInvoice(
             parkingLot.parkingLotUuid,
             vehicleUuid,
             req.estimatedParkingDurationInHours
         )
+
         // NATS publish to owner and client
-        val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-        val client = userRepository.findById(vehicle.owner).get()
+        val vehicle = vehicleUuid.vehicle
+        val client = vehicle.owner.user
+
         // Message structure
-        val natsMessage = objectMapper.writeValueAsString(
+        val natsMessage =
             NatsMessage(
                 NatsPayloadTypes.INVOICE_CREATED,
                 InvoicePayload(
@@ -123,36 +106,33 @@ class InvoiceController(
                     vehicle.vehicleUuid,
                     invoice.invoiceUuid
                 )
-            )
-        ).toByteArray()
+            ).toJson().toByteArray()
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * End an invoice
      */
-    @PostMapping("/end/{invoiceId}")
+    @PostMapping("/end/{invoiceUuid}")
     fun endInvoice(
-        @PathVariable invoiceId: String,
+        @PathVariable invoiceUuid: String,
         principal: Principal
     ) = runCatching {
-        val user = userRepository.findByUserUuid(principal.name).get()
-        val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-        invoiceService.endInvoice(invoiceId, parkingLot.parkingLotUuid)
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        invoiceService.endInvoice(invoiceUuid, parkingLot.parkingLotUuid)
 
         // NATS publish to owner and client
-        val invoice = invoiceRepository.findByInvoiceUuid(invoiceId).get()
-        val vehicle = vehicleRepository.findByVehicleUuid(invoice.vehicleUuid).get()
-        val client = userRepository.findById(vehicle.owner).get()
+        val invoice = invoiceUuid.invoice
+        val vehicle = invoice.vehicleUuid.vehicle
+        val client = vehicle.owner.user
 
         // Message structure
-        val natsMessage = objectMapper.writeValueAsString(
+        val natsMessage =
             NatsMessage(
                 NatsPayloadTypes.INVOICE_ENDED,
                 InvoicePayload(
@@ -160,16 +140,14 @@ class InvoiceController(
                     vehicle.vehicleUuid,
                     invoice.invoiceUuid
                 )
-            )
-        ).toByteArray()
+            ).toJson().toByteArray()
+
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Pay an invoice
@@ -182,9 +160,7 @@ class InvoiceController(
         val user = principal.name.user
         val parkingLot = user.id.parkingLotByOwner
         invoiceService.payInvoice(invoiceId, parkingLot.parkingLotUuid).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Estimate Invoice
@@ -193,10 +169,8 @@ class InvoiceController(
     fun estimateInvoice(
         @PathVariable invoiceUuid: String
     ) = runCatching {
-        val invoice = invoiceRepository.findByInvoiceUuid(invoiceUuid).get()
-        val parkingLot = parkingLotRepository.findByParkingLotUuid(invoice.parkingLotUuid).get()
+        val invoice = invoiceUuid.invoice
+        val parkingLot = invoice.parkingLotUuid.parkingLot
         invoiceService.calculateInvoice(invoice, parkingLot.rate).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 }
