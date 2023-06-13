@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
 import com.chatchatabc.parking.user
 import com.chatchatabc.parking.web.common.toErrorResponse
@@ -17,7 +16,6 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/profile")
 class ProfileController(
-    private val userRepository: UserRepository,
     private val userLogoutLogService: UserLogoutLogService
 ) {
     /**
