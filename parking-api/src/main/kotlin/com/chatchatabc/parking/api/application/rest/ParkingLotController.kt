@@ -1,7 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
@@ -14,6 +12,8 @@ import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.web.common.ApiResponse
+import com.chatchatabc.parking.web.common.ErrorElement
 import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
@@ -56,7 +56,7 @@ class ParkingLotController(
     /**
      * Get Parking Lot by Owner
      */
-    @GetMapping("/")
+    @GetMapping("/me")
     fun getByManaging(principal: Principal) = parkingLotRepository.findByOwnerUuid(principal.name).toResponse()
 
     /**

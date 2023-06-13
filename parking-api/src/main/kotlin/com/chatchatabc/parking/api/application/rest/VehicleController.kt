@@ -1,12 +1,12 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
+import com.chatchatabc.parking.web.common.ApiResponse
+import com.chatchatabc.parking.web.common.ErrorElement
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

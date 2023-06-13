@@ -1,7 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.UserPhoneLoginRequest
 import com.chatchatabc.parking.api.application.dto.UserVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
@@ -10,6 +8,8 @@ import com.chatchatabc.parking.domain.model.Role
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
+import com.chatchatabc.parking.web.common.ApiResponse
+import com.chatchatabc.parking.web.common.ErrorElement
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest

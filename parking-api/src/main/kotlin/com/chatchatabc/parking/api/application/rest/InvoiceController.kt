@@ -1,7 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.NatsMessage
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.Invoice
@@ -10,6 +8,8 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
+import com.chatchatabc.parking.web.common.ApiResponse
+import com.chatchatabc.parking.web.common.ErrorElement
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
 import com.fasterxml.jackson.databind.ObjectMapper
