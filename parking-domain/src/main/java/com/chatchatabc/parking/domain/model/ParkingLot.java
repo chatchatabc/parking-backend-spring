@@ -48,6 +48,11 @@ public class ParkingLot extends FlagEntity {
     @JoinColumn(name = "rate_id")
     private Rate rate;
 
+    @JsonIgnore
+    public Rate getRate() {
+        return this.rate;
+    }
+
     @Column
     private String name;
 

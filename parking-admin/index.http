@@ -20,9 +20,9 @@ POST {{adminBaseUrl}}/api/profile/logout
 Authorization: Bearer {{adminToken}}
 
 ### Get User Login Logs
-GET {{adminBaseUrl}}/api/user/get-login-logs
+GET {{adminBaseUrl}}/api/user/login-logs
 Authorization: Bearer {{adminToken}}
 
 ### Get User Logout Logs
-GET {{adminBaseUrl}}/api/user/get-logout-logs
+GET {{adminBaseUrl}}/api/user/logout-logs
 Authorization: Bearer {{adminToken}}

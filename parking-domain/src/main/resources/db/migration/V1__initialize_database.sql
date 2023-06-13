@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users
     user_uuid         VARCHAR(36)       NOT NULL UNIQUE,
     notification_uuid VARCHAR(36)       NOT NULL UNIQUE,
     email             VARCHAR(255) UNIQUE,
-    username          VARCHAR(15) UNIQUE,
+    username          VARCHAR(20) UNIQUE,
     password          VARCHAR(255),
     phone             VARCHAR(15)       NOT NULL,
     first_name        VARCHAR(255),

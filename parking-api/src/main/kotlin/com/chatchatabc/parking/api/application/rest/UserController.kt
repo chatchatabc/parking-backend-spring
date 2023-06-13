@@ -1,14 +1,12 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
-import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.toErrorResponse
+import com.chatchatabc.parking.web.common.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
@@ -24,7 +22,6 @@ import java.security.Principal
 @RequestMapping("/api/user")
 class UserController(
     private val userService: UserService,
-    private val userRepository: UserRepository,
     private val fileStorageService: FileStorageService,
 ) {
     private val userMapper = Mappers.getMapper(UserMapper::class.java)
@@ -39,35 +36,21 @@ class UserController(
     @GetMapping("/me")
     fun getProfile(
         principal: Principal
-    ): ResponseEntity<ApiResponse<User>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(user, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    ) = runCatching { principal.name.user.toResponse() }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get user notification id
      */
     @Operation(
-        summary = "Get the notification id of the logged in user",
+        summary = "Get the notification id of tFhe logged in user",
         description = "Get notification id of the logged in user. This is used for push notifications and should not be available to other users."
     )
-    @GetMapping("/get-notification-id")
+    @GetMapping("/notification-id")
     fun getNotificationId(
         principal: Principal
-    ): ResponseEntity<ApiResponse<UserNotificationResponse>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            ResponseEntity.ok().body(ApiResponse(UserNotificationResponse(user.notificationUuid), listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
-    }
+    ) = runCatching {
+        UserNotificationResponse(principal.name.user.notificationUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     // TODO: Create API for change username
 
@@ -90,16 +73,12 @@ class UserController(
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Nothing>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            userMapper.updateUserFromUpdateProfileRequest(request, user)
-            userService.saveUser(user)
-            ResponseEntity.ok().body(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
+    ) = runCatching {
+        val user = principal.name.user
+        userMapper.updateUserFromUpdateProfileRequest(request, user)
+        userService.saveUser(user).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
     }
 
     // TODO: Implement update phone number api
@@ -111,68 +90,36 @@ class UserController(
     fun uploadAvatar(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
-    ): ApiResponse<User> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            userService.uploadImage(
-                user,
-                "avatar",
-                file.inputStream,
-                file.originalFilename,
-                file.size,
-                file.contentType
-            )
-            ApiResponse(user, listOf())
-        } catch (e: Exception) {
-            ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
-        }
+    ) = runCatching {
+        val user = principal.name.user
+        userService.uploadImage(
+            user,
+            "avatar",
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            file.contentType
+        ).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
     }
 
     /**
-     * Get user avatar by username
+     * Get user avatar by any identification (id, username, email, phone)
      */
-    @GetMapping("/avatar/{username}")
+    @GetMapping("/avatar/{id}")
     fun getUserAvatar(
-        @PathVariable username: String,
+        @PathVariable id: String,
         response: HttpServletResponse
-    ): ResponseEntity<InputStreamResource> {
-        return try {
-            val user = userRepository.findByUsername(username).get()
-            if (user.avatar == null) {
-                throw Exception("Avatar not found")
-            }
-            val headers = HttpHeaders()
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
-            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
-        }
-    }
-
-    /**
-     * Get user avatar by userId
-     */
-    @GetMapping("/avatar/id/{userUuid}")
-    fun getUserAvatarById(
-        @PathVariable userUuid: String,
-        response: HttpServletResponse
-    ): ResponseEntity<InputStreamResource> {
-        return try {
-            val user = userRepository.findByUserUuid(userUuid).get()
-            if (user.avatar == null) {
-                throw Exception("Avatar not found")
-            }
-            val headers = HttpHeaders()
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
-            ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
-            ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
-        }
+    ) = runCatching {
+        val user = id.user
+        val headers = HttpHeaders()
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
+        ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
+    }.getOrElse {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND)
+        ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
     }
 }

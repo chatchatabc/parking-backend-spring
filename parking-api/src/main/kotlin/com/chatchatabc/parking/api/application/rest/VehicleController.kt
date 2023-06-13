@@ -1,16 +1,13 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.ApiResponse
-import com.chatchatabc.parking.api.application.dto.ErrorElement
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
-import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
+import com.chatchatabc.parking.vehicle
+import com.chatchatabc.parking.web.common.toErrorResponse
+import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -25,41 +22,32 @@ class VehicleController(
     /**
      * Get all vehicles by user
      */
-    @GetMapping("/get-my-vehicles")
+    @GetMapping("/my-vehicles")
     fun getMyVehicles(
         principal: Principal,
         pageable: Pageable
-    ): ResponseEntity<ApiResponse<Page<Vehicle>>> {
-        return try {
-            // Get user from security context
-            val vehicles = vehicleRepository.findAllByUser(principal.name, pageable)
-            ResponseEntity.ok(ApiResponse(vehicles, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
-        }
+    ) = runCatching {
+        // TODO: Get user from security context
+        vehicleRepository.findAllByUser(principal.name, pageable).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
     }
 
     /**
      * Get a vehicle by id
      */
-    @GetMapping("/get/{vehicleUuid}")
+    @GetMapping("/{vehicleUuid}")
     fun getVehicleById(
         @PathVariable vehicleUuid: String,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Vehicle>> {
-        return try {
-            // Get user from security context
-            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            // User should have access to this vehicle. If user is not inside vehicle users array
-            // if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
-            //     throw Exception("User does not have access to this vehicle")
-            // }
-
-            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
-        }
-    }
+    ) = runCatching {
+        // Get user from security context
+        vehicleUuid.vehicle.toResponse()
+        // TODO: User should have access to this vehicle. If user is not inside vehicle users array
+        // if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
+        //     throw Exception("User does not have access to this vehicle")
+        // }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Request to register a vehicle data class
@@ -77,14 +65,9 @@ class VehicleController(
     fun registerVehicle(
         @RequestBody req: VehicleRegisterRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Vehicle>> {
-        return try {
-            val vehicle = vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type)
-            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_CREATE.name, null))))
-        }
-    }
+    ) = runCatching {
+        vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Update vehicle request
@@ -103,17 +86,12 @@ class VehicleController(
         @PathVariable vehicleUuid: String,
         @RequestBody req: VehicleUpdateRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Nothing>> {
-        return try {
-            // TODO: check if user has access to vehicle or maybe make it so that the only is the only one that can update vehicle
-            val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).get()
-            vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
-            vehicleService.updateVehicle(vehicle)
-            ResponseEntity.ok(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
-    }
+    ) = runCatching {
+        // TODO: check if user has access to vehicle or maybe make it so that the only is the only one that can update vehicle
+        val vehicle = vehicleUuid.vehicle
+        vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
+        vehicleService.updateVehicle(vehicle).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Add a user to a vehicle
@@ -123,14 +101,9 @@ class VehicleController(
         @PathVariable vehicleUuid: String,
         @PathVariable userUuid: String,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Vehicle>> {
-        return try {
-            val vehicle = vehicleService.addUserToVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
-    }
+    ) = runCatching {
+        vehicleService.addUserToVehicle(principal.name, vehicleUuid, userUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
 
     /**
@@ -141,12 +114,7 @@ class VehicleController(
         @PathVariable vehicleUuid: String,
         @PathVariable userUuid: String,
         principal: Principal
-    ): ResponseEntity<ApiResponse<Vehicle>> {
-        return try {
-            val vehicle = vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid)
-            ResponseEntity.ok(ApiResponse(vehicle, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.ok(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
-        }
-    }
+    ) = runCatching {
+        vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }

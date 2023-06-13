@@ -1,15 +1,11 @@
 type Query {
-    getUserByUuid(uuid: String!): User
-    getUserByPhone(phone: String!): User
-    getUserByUsername(username: String!): User
+    getUser(id: String!): User
     getUsers(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): UserList!
 
     getRoles(page: Int size: Int): RoleList!
 
     getUserLoginLogs(page: Int size: Int): UserLoginLogList!
-    getUserLoginLogsByUser(page: Int size: Int, uuid: String!): UserLoginLogList!
-    getUserLoginLogsByUsername(page: Int size: Int, username: String!): UserLoginLogList!
-    getUserLoginLogsByPhone(page: Int size: Int, phone: String!): UserLoginLogList!
+    getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
     getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
@@ -17,31 +13,27 @@ type Query {
     getUserLogoutLogsByPhone(page: Int size: Int, phone: String!): UserLoginLogList!
 
     getVehicles(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleList!
-    getVehicleByUuid(uuid: String!): Vehicle
+    getVehicle(id: String): Vehicle
     getVehiclesByOwner(page: Int size: Int, ownerUuid: String!): VehicleList!
-    getOwnerByVehicleUuid(uuid: String!): User
-    getVehicleByPlateNumber(plateNumber: String!): Vehicle
+    getOwnerByVehicleUuid(id: String!): User
 
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
-    getParkingLotByUuid(uuid: String!): ParkingLot
-    getParkingLotByUsername(username: String!): ParkingLot
-    getParkingLotByPhone(phone: String!): ParkingLot
-    getUserByParkingLotUuid(uuid: String!): User
-    getParkingLotImageKeysByParkingLotUuid(page: Int size: Int uuid: String!): [String]
+    getParkingLot(id: String!): ParkingLot
+    getParkingLotByUser(id: String!): ParkingLot
+    getUserByParkingLot(id: String!): User
+    getParkingLotImageKeysByParkingLot(page: Int size: Int id: String!): [String]
 
     getInvoices(page: Int size: Int keyword: String sortField: String sortBy: Int): InvoiceList!
-    getInvoiceByUuid(uuid: String!): Invoice
-    getInvoicesByVehicleUuid(page: Int size: Int, uuid: String!): InvoiceList!
-    getInvoicesByParkingLotUuid(page: Int size: Int, uuid: String!): InvoiceList!
-    getInvoicesByUserUuid(page: Int size: Int, uuid: String!): InvoiceList!
+    getInvoice(id: String!): Invoice
+    getInvoicesByVehicle(page: Int size: Int, id: String!): InvoiceList!
+    getInvoicesByParkingLot(page: Int size: Int, id: String!): InvoiceList!
+    getInvoicesByUser(page: Int size: Int, id: String!): InvoiceList!
 
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
 
-    getBanHistoryLogsByUser(page: Int size: Int, uuid: String!): BanHistoryLogList!
+    getBanHistoryLogsByUser(page: Int size: Int, id: String!): BanHistoryLogList!
     getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
-    getBanHistoryLogsByUsername(page: Int size: Int, username: String!): BanHistoryLogList!
-    getBanHistoryLogsByPhone(page: Int size: Int, phone: String!): BanHistoryLogList!
 
     getDashboardPieGraph: DashboardPieGraph
 }

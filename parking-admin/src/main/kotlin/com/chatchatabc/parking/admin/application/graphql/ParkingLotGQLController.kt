@@ -1,23 +1,20 @@
 package com.chatchatabc.parking.admin.application.graphql
 
-import com.chatchatabc.parking.admin.application.dto.PageInfo
-import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.ParkingLot
-import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
+import com.chatchatabc.parking.parkingLot
+import com.chatchatabc.parking.parkingLotByOwner
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
-import java.util.*
 
 @Controller
 class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository,
     private val parkingLotImageRepository: ParkingLotImageRepository
 ) {
 
@@ -32,7 +29,7 @@ class ParkingLotGQLController(
         @Argument keyword: String?,
         @Argument sortField: String? = null,
         @Argument sortBy: Int? = null,
-    ): PagedResponse<ParkingLot> {
+    ) = run {
         val pr = PageRequest.of(page, size)
         var spec = ParkingLotSpecification.withKeyword(keyword ?: "")
 
@@ -51,78 +48,42 @@ class ParkingLotGQLController(
             spec = spec.and(ParkingLotSpecification.sortBy(sortField, sortBy))
         }
 
-        val parkingLots = parkingLotRepository.findAll(spec, pr)
-        return PagedResponse(
-            parkingLots.content,
-            PageInfo(
-                parkingLots.size,
-                parkingLots.totalElements,
-                parkingLots.isFirst,
-                parkingLots.isLast,
-                parkingLots.isEmpty
-            )
-        )
+        parkingLotRepository.findAll(spec, pr).toPagedResponse()
     }
 
     /**
-     * Get parking lot by UUID
+     * Get parking lot by identifier
      */
     @QueryMapping
-    fun getParkingLotByUuid(
-        @Argument uuid: String
-    ): Optional<ParkingLot> {
-        return parkingLotRepository.findByParkingLotUuid(uuid)
-    }
+    fun getParkingLot(@Argument id: String) = run { id.parkingLot }
 
     /**
-     * Get User by Parking Lot UUID
+     * Get User by Parking Lot Identifier
      */
     @QueryMapping
-    fun getUserByParkingLotUuid(
-        @Argument uuid: String
-    ): Optional<User> {
-        val userId = parkingLotRepository.findByParkingLotUuid(uuid).get().owner
-        return userRepository.findById(userId)
-    }
+    fun getUserByParkingLot(@Argument id: String) = run { id.parkingLot.owner.user }
 
     /**
-     * Get Parking Lot By User Username
+     * Get Parking Lot By User Identifier
      */
     @QueryMapping
-    fun getParkingLotByUsername(
-        @Argument username: String
-    ): Optional<ParkingLot> {
-        val user = userRepository.findByUsername(username).get()
-        return parkingLotRepository.findByOwner(user.id)
-    }
-
-    /**
-     * Get Parking Lot By User Phone
-     */
-    @QueryMapping
-    fun getParkingLotByPhone(
-        @Argument phone: String
-    ): Optional<ParkingLot> {
-        val user = userRepository.findByPhone(phone).get()
-        return parkingLotRepository.findByOwner(user.id)
-    }
+    fun getParkingLotByUser(@Argument id: String) = run { id.user.userUuid.parkingLotByOwner }
 
     /**
      * Get Parking Lot Image Keys
      */
     @QueryMapping
-    fun getParkingLotImageKeysByParkingLotUuid(
+    fun getParkingLotImageKeysByParkingLot(
         @Argument page: Int,
         @Argument size: Int,
-        @Argument uuid: String
-    ): MutableList<String> {
+        @Argument id: String
+    ): MutableList<String> = run {
         val pr = PageRequest.of(page, size)
-        val parkingLot = parkingLotRepository.findByParkingLotUuid(uuid).get()
         val images = parkingLotImageRepository.findAllParkingLotKeysByParkingLotAndStatus(
-            parkingLot.id,
+            id.parkingLot.id,
             0,
             pr
         )
-        return images.content
+        images.content
     }
 }

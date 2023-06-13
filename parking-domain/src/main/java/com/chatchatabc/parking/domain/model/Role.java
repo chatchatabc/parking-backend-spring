@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "role")
@@ -29,10 +27,6 @@ public class Role implements GrantedAuthority {
 
     @Column(unique = true)
     private String name;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users = List.of();
 
     @Override
     public String getAuthority() {

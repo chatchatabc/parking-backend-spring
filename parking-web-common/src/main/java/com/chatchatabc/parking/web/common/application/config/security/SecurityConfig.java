@@ -72,8 +72,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/actuator/**").permitAll();
 
                     // TODO: Temporarily allow request to images
-                    auth.requestMatchers("/api/parking-lot/get-image/**").permitAll();
-                    auth.requestMatchers("/api/parking-lot/get-featured-image/**").permitAll();
+                    auth.requestMatchers("/api/parking-lot/image/**").permitAll();
+                    auth.requestMatchers("/api/parking-lot/featured-image/**").permitAll();
 
                     auth.anyRequest().authenticated();
                 })

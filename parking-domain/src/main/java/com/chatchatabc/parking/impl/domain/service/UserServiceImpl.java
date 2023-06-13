@@ -70,14 +70,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User verifyOTPAndAddRole(String phone, String otp, Role.RoleNames roleName) throws Exception {
-        Optional<User> queriedUser = userRepository.findByPhone(phone);
-        if (queriedUser.isEmpty()) {
-            throw new Exception("User not found");
-        }
-        Optional<Role> role = roleRepository.findByName(roleName.name());
-        if (role.isEmpty()) {
-            throw new Exception("Role not found");
-        }
+        User queriedUser = userRepository.findByPhone(phone).orElseThrow();
+        Role role = roleRepository.findByName(roleName.name()).orElseThrow();
 
         // Check if OTP is valid
         String savedOTP = kvService.get("otp_" + phone);
@@ -93,15 +87,15 @@ public class UserServiceImpl implements UserService {
         kvService.delete("otp_" + phone);
 
         // Update phone verified date only if null, no need to reset again
-        if (queriedUser.get().getPhoneVerifiedAt() == null) {
+        if (queriedUser.getPhoneVerifiedAt() == null) {
             // Set Phone Verified At to current local date time
-            queriedUser.get().setPhoneVerifiedAt(LocalDateTime.now());
+            queriedUser.setPhoneVerifiedAt(LocalDateTime.now());
         }
         // Add role to user if not exists
-        if (queriedUser.get().getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.get().getId()))) {
-            queriedUser.get().getRoles().add(role.get());
+        if (queriedUser.getRoles().stream().noneMatch(r -> Objects.equals(r.getId(), role.getId()))) {
+            queriedUser.getRoles().add(role);
         }
-        return userRepository.save(queriedUser.get());
+        return userRepository.save(queriedUser);
     }
 
     /**
@@ -136,14 +130,13 @@ public class UserServiceImpl implements UserService {
      * @param filename    the filename
      * @param filesize    the filesize
      * @param mimetype    the mimetype
-     * @return the updated user
      * @throws Exception if an error occurs
      */
     @Override
-    public User uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
+    public void uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Update user avatar field
         uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
-        return userRepository.save(uploadedBy);
+        userRepository.save(uploadedBy);
     }
 
     /**

@@ -2,15 +2,15 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.*
 import com.chatchatabc.parking.admin.application.mapper.UserMapper
-import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
 import com.chatchatabc.parking.domain.repository.RoleRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.toErrorResponse
+import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -20,7 +20,6 @@ import java.time.LocalDateTime
 @RequestMapping("/api/user")
 class UserController(
     private val userService: UserService,
-    private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
     private val userBanHistoryLogRepository: UserBanHistoryLogRepository
@@ -44,24 +43,18 @@ class UserController(
     @PostMapping("/create")
     fun createUser(
         @RequestBody req: UserCreateRequest
-    ): ResponseEntity<ApiResponse<Nothing>> {
-        return try {
-            val user = User().apply {
-                this.roles = roleRepository.findRolesIn(req.roles)
-                if (req.enabled) {
-                    this.status = 0
-                } else {
-                    this.status = -1
-                }
+    ) = runCatching {
+        val user = User().apply {
+            this.roles = roleRepository.findRolesIn(req.roles)
+            if (req.enabled) {
+                this.status = 0
+            } else {
+                this.status = -1
             }
-            userMapper.createUserFromCreateRequest(req, user)
-            userService.saveUser(user)
-            return ResponseEntity.ok(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
         }
-    }
+        userMapper.createUserFromCreateRequest(req, user)
+        userService.saveUser(user).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Update User Request
@@ -83,22 +76,16 @@ class UserController(
         @RequestBody req: UserUpdateRequest,
         @PathVariable userUuid: String,
         principal: Principal
-    ): ResponseEntity<ApiResponse<User>> {
-        return try {
-            val user = userRepository.findByUserUuid(userUuid).get()
-            userMapper.updateUserFromUpdateRequest(req, user)
-            // If user is not self, update role as well
-            if (principal.name != userUuid && req.roles.isNullOrEmpty().not()) {
-                val roleRecords = roleRepository.findRolesIn(req.roles)
-                user.roles = roleRecords
-            }
-            userService.saveUser(user)
-            return ResponseEntity.ok(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+    ) = runCatching {
+        val user = userUuid.user
+        userMapper.updateUserFromUpdateRequest(req, user)
+        // If user is not self, update role as well
+        if (principal.name != userUuid && req.roles.isNullOrEmpty().not()) {
+            val roleRecords = roleRepository.findRolesIn(req.roles)
+            user.roles = roleRecords
         }
-    }
+        userService.saveUser(user).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     // TODO: Implement update phone number api
 
@@ -109,18 +96,12 @@ class UserController(
     fun overrideUserPassword(
         @PathVariable userUuid: String,
         @RequestBody req: UserOverridePasswordRequest
-    ): ResponseEntity<ApiResponse<User>> {
-        return try {
-            val user = userRepository.findByUserUuid(userUuid).get().apply {
-                this.password = passwordEncoder.encode(req.newPassword)
-            }
-            return ResponseEntity.ok(ApiResponse(userRepository.save(user), listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(
-                ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null)))
-            )
+    ) = runCatching {
+        val user = userUuid.user.apply {
+            this.password = passwordEncoder.encode(req.newPassword)
         }
-    }
+        userService.saveUser(user).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Ban user
@@ -130,22 +111,17 @@ class UserController(
         @PathVariable userUuid: String,
         @RequestBody req: UserBanRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<UserBanHistoryLog>> {
-        return try {
-            val bannedBy = userRepository.findByUserUuid(principal.name).get()
-            val user = userRepository.findByUserUuid(userUuid).get()
-            val banLog = UserBanHistoryLog().apply {
-                this.user = user.id
-                this.bannedBy = bannedBy.id
-                this.reason = req.reason
-                this.until = req.until
-                this.status = UserBanHistoryLog.BANNED
-            }
-            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+    ) = runCatching {
+        val banLog = UserBanHistoryLog().apply {
+            this.user = userUuid.user.id
+            this.bannedBy = principal.name.user.id
+            this.reason = req.reason
+            this.until = req.until
+            this.status = UserBanHistoryLog.BANNED
         }
-    }
+        // TODO: Convert to service
+        userBanHistoryLogRepository.save(banLog).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Unban user
@@ -155,20 +131,15 @@ class UserController(
         @PathVariable userUuid: String,
         @RequestBody req: UserUnbanRequest,
         principal: Principal
-    ): ResponseEntity<ApiResponse<UserBanHistoryLog>> {
-        return try {
-            val unbannedBy = userRepository.findByUserUuid(principal.name).get()
-            val user = userRepository.findByUserUuid(userUuid).get()
-            // Get latest ban log
-            val banLog = userBanHistoryLogRepository.findLatestBanLog(user.id).get().apply {
-                this.unbannedBy = unbannedBy.id
-                this.unbanReason = req.unbanReason
-                this.unbannedAt = LocalDateTime.now()
-                this.status = UserBanHistoryLog.UNBANNED
-            }
-            ResponseEntity.ok().body(ApiResponse(userBanHistoryLogRepository.save(banLog), listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest().body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR.name, null))))
+    ) = runCatching {
+        // Get latest ban log
+        val banLog = userBanHistoryLogRepository.findLatestBanLog(userUuid.user.id).orElseThrow().apply {
+            this.unbannedBy = principal.name.user.id
+            this.unbanReason = req.unbanReason
+            this.unbannedAt = LocalDateTime.now()
+            this.status = UserBanHistoryLog.UNBANNED
         }
-    }
+        // TODO: Convert to service
+        userBanHistoryLogRepository.save(banLog).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }

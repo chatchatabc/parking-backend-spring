@@ -1,26 +1,23 @@
 package com.chatchatabc.parking.admin.application.graphql
 
-import com.chatchatabc.parking.admin.application.dto.PageInfo
-import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.Invoice
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.specification.InvoiceSpecification
+import com.chatchatabc.parking.invoice
+import com.chatchatabc.parking.parkingLot
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.vehicle
+import com.chatchatabc.parking.web.common.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
-import java.util.*
 
 @Controller
 class InvoiceGQLController(
     private val invoiceRepository: InvoiceRepository,
     private val vehicleRepository: VehicleRepository,
-    private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository
 ) {
     /**
      * Get invoices
@@ -32,7 +29,7 @@ class InvoiceGQLController(
         @Argument keyword: String?,
         @Argument sortField: String? = null,
         @Argument sortBy: Int? = null,
-    ): PagedResponse<Invoice> {
+    ) = run {
         val pr = PageRequest.of(page, size)
         var spec = InvoiceSpecification.withKeyword(keyword ?: "")
 
@@ -40,103 +37,55 @@ class InvoiceGQLController(
         if (sortField != null && sortBy != null) {
             spec = spec.and(InvoiceSpecification.sortBy(sortField, sortBy))
         }
-
-        val invoices = invoiceRepository.findAll(spec, pr)
-        return PagedResponse(
-            invoices.content,
-            PageInfo(
-                invoices.size,
-                invoices.totalElements,
-                invoices.isFirst,
-                invoices.isLast,
-                invoices.isEmpty
-            )
-        )
+        invoiceRepository.findAll(spec, pr).toPagedResponse()
     }
 
     /**
-     * Get invoice by uuid
+     * Get invoice by identifier
      */
     @QueryMapping
-    fun getInvoiceByUuid(
-        @Argument uuid: String
-    ): Optional<Invoice> {
-        return invoiceRepository.findByInvoiceUuid(uuid)
-    }
+    fun getInvoice(@Argument id: String) = run { id.invoice }
 
     /**
      * Get invoices by vehicle uuid
      */
     @QueryMapping
-    fun getInvoicesByVehicleUuid(
+    fun getInvoicesByVehicle(
         @Argument page: Int,
         @Argument size: Int,
-        @Argument uuid: String
-    ): PagedResponse<Invoice> {
+        @Argument id: String
+    ) = run {
         val sort = Sort.by(Sort.Direction.DESC, "createdAt")
         val pr = PageRequest.of(page, size, sort)
-        val vehicle = vehicleRepository.findByVehicleUuid(uuid).get()
-        val invoices = invoiceRepository.findAllByVehicle(vehicle.vehicleUuid, pr)
-        return PagedResponse(
-            invoices.content,
-            PageInfo(
-                invoices.size,
-                invoices.totalElements,
-                invoices.isFirst,
-                invoices.isLast,
-                invoices.isEmpty
-            )
-        )
+        invoiceRepository.findAllByVehicle(id.vehicle.vehicleUuid, pr).toPagedResponse()
     }
 
     /**
      * Get invoices by parking lot uuid
      */
     @QueryMapping
-    fun getInvoicesByParkingLotUuid(
+    fun getInvoicesByParkingLot(
         @Argument page: Int,
         @Argument size: Int,
-        @Argument uuid: String
-    ): PagedResponse<Invoice> {
+        @Argument id: String
+    ) = run {
         val sort = Sort.by(Sort.Direction.DESC, "createdAt")
         val pr = PageRequest.of(page, size, sort)
-        val parkingLot = parkingLotRepository.findByParkingLotUuid(uuid).get()
-        val invoices = invoiceRepository.findAllByParkingLot(parkingLot.parkingLotUuid, pr)
-        return PagedResponse(
-            invoices.content,
-            PageInfo(
-                invoices.size,
-                invoices.totalElements,
-                invoices.isFirst,
-                invoices.isLast,
-                invoices.isEmpty
-            )
-        )
+        invoiceRepository.findAllByParkingLot(id.parkingLot.parkingLotUuid, pr).toPagedResponse()
     }
 
     /**
      * Get invoices by user uuid
      */
     @QueryMapping
-    fun getInvoicesByUserUuid(
+    fun getInvoicesByUser(
         @Argument page: Int,
         @Argument size: Int,
-        @Argument uuid: String
-    ): PagedResponse<Invoice> {
+        @Argument id: String
+    ) = run {
         val sort = Sort.by(Sort.Direction.DESC, "createdAt")
         val pr = PageRequest.of(page, size, sort)
-        val user = userRepository.findByUserUuid(uuid).get()
-        val vehicles = vehicleRepository.findVehicleIdsByOwner(user.id)
-        val invoices = invoiceRepository.findAllByVehicles(vehicles, pr)
-        return PagedResponse(
-            invoices.content,
-            PageInfo(
-                invoices.size,
-                invoices.totalElements,
-                invoices.isFirst,
-                invoices.isLast,
-                invoices.isEmpty
-            )
-        )
+        val vehicles = vehicleRepository.findVehicleIdsByOwner(id.user.id)
+        invoiceRepository.findAllByVehicles(vehicles, pr).toPagedResponse()
     }
 }

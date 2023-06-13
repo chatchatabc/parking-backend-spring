@@ -1,17 +1,13 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.ApiResponse
-import com.chatchatabc.parking.admin.application.dto.ErrorElement
 import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
-import com.chatchatabc.parking.domain.enums.ResponseNames
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
+import com.chatchatabc.parking.user
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
+import com.chatchatabc.parking.web.common.toErrorResponse
+import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.*
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class AuthController(
     private val authenticationManager: AuthenticationManager,
-    private val userRepository: UserRepository,
     private val jwtService: JwtService,
     private val userLoginLogService: UserLoginLogService
 ) {
@@ -30,39 +25,35 @@ class AuthController(
     @PostMapping("/login")
     fun loginUser(
         @RequestBody req: UserLoginRequest,
-        request: HttpServletRequest
-    ): ResponseEntity<ApiResponse<User>> {
-        val user = userRepository.findByUsername(req.username)
-        return try {
-            // Authenticate user
-            authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    req.username,
-                    req.password
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ) =
+        runCatching {
+            val user = req.username.user
+            try {
+                // Authenticate user
+                authenticationManager.authenticate(
+                    UsernamePasswordAuthenticationToken(
+                        req.username,
+                        req.password
+                    )
                 )
-            )
-            // Generate JWT Token
-            val headers = HttpHeaders()
-            // Convert granted authority roles to list of string roles
-            val roleStrings: List<String> = user.get().roles.stream()
-                .map { it.authority }
-                .toList()
+                // Convert granted authority roles to list of string roles
+                val roleStrings: List<String> = user.roles.stream()
+                    .map { it.authority }
+                    .toList()
 
-            val token: String = jwtService.generateToken(user.get().userUuid, user.get().username, roleStrings)
-            headers.set("X-Access-Token", token)
-            // Generate Successful Login Log
-            userLoginLogService.createLog(user.get().id, request.remoteAddr, 1, true)
-            ResponseEntity.ok().headers(headers)
-                .body(ApiResponse(user.get(), null))
-        } catch (e: Exception) {
-            // Generate Failed Login Log
-            if (user.isPresent) {
-                userLoginLogService.createLog(user.get().id, request.remoteAddr, 1, false)
+                // Generate JWT Token
+                val token: String = jwtService.generateToken(user.userUuid, user.username, roleStrings)
+                response.setHeader("X-Access-Token", token)
+
+                // Generate Successful Login Log
+                userLoginLogService.createLog(user.id, request.remoteAddr, 1, true)
+                user.toResponse()
+            } catch (e: Exception) {
+                // Generate Failed Login Log
+                userLoginLogService.createLog(user.id, request.remoteAddr, 1, false)
+                throw Exception("Invalid username/password supplied")
             }
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                    ApiResponse(null, listOf(ErrorElement(ResponseNames.USER_BAD_CREDENTIALS.name, null)))
-                )
-        }
-    }
+        }.getOrElse { it.toErrorResponse() }
 }
