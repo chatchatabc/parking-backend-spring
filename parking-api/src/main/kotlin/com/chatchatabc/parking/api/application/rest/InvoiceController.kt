@@ -7,6 +7,7 @@ import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
+import com.chatchatabc.parking.parkingLotByOwner
 import com.chatchatabc.parking.user
 import com.chatchatabc.parking.web.common.ApiResponse
 import com.chatchatabc.parking.web.common.ErrorElement
@@ -69,10 +70,10 @@ class InvoiceController(
         @PathVariable vehicleUuid: String,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user.orElseThrow()
-        val parkingLot = parkingLotRepository.findByOwner(user.id).orElseThrow()
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
         val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).orElseThrow()
-        invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid).orElseThrow()
+        invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid)
             .toResponse()
     }.getOrElse {
         it.toErrorResponse()
@@ -183,8 +184,8 @@ class InvoiceController(
         @PathVariable invoiceId: String,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user.orElseThrow()
-        val parkingLot = parkingLotRepository.findByOwner(user.id).orElseThrow()
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
         invoiceService.payInvoice(invoiceId, parkingLot.parkingLotUuid).toResponse()
     }.getOrElse {
         it.toErrorResponse()

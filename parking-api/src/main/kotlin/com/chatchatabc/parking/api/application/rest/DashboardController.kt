@@ -43,7 +43,7 @@ class DashboardController(
         principal: Principal
     ) = runCatching {
         // Query required data for calculation
-        val owner = principal.name.user.orElseThrow()
+        val owner = principal.name.user
         val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
 
         // Get Start of Day
