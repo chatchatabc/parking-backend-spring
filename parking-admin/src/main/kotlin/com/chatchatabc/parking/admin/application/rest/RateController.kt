@@ -2,11 +2,11 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.RateMapper
 import com.chatchatabc.parking.domain.model.Rate
+import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.RateService
-import com.chatchatabc.parking.domain.parkingLot
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal

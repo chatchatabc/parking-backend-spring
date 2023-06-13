@@ -8,8 +8,8 @@ import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

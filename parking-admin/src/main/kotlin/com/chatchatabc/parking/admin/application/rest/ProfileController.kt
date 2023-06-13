@@ -2,8 +2,8 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

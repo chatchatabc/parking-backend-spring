@@ -4,8 +4,8 @@ import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.domain.vehicle
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*

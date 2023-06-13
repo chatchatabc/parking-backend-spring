@@ -3,10 +3,10 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.service.UserService
-import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.infra.service.FileStorageService
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers

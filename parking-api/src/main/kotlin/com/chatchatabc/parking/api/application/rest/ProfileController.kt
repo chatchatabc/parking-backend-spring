@@ -2,8 +2,8 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.bind.annotation.PostMapping

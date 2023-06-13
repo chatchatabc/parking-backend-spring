@@ -3,8 +3,8 @@ package com.chatchatabc.parking.admin.application.rest
 import com.chatchatabc.parking.admin.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.domain.vehicle
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.security.Principal

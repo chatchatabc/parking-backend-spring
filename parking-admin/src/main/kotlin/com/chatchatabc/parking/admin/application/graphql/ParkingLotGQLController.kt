@@ -1,12 +1,12 @@
 package com.chatchatabc.parking.admin.application.graphql
 
+import com.chatchatabc.parking.domain.parkingLot
+import com.chatchatabc.parking.domain.parkingLotByOwner
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
-import com.chatchatabc.parking.domain.parkingLot
-import com.chatchatabc.parking.domain.parkingLotByOwner
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toPagedResponse
+import com.chatchatabc.parking.web.common.application.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping

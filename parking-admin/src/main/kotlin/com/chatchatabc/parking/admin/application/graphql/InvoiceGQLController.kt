@@ -1,13 +1,13 @@
 package com.chatchatabc.parking.admin.application.graphql
 
+import com.chatchatabc.parking.domain.invoice
+import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.specification.InvoiceSpecification
-import com.chatchatabc.parking.domain.invoice
-import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicle
-import com.chatchatabc.parking.web.common.toPagedResponse
+import com.chatchatabc.parking.web.common.application.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.graphql.data.method.annotation.Argument

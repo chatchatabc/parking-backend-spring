@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.web.common
+package com.chatchatabc.parking.web.common.application
 
 import com.chatchatabc.parking.domain.SpringContextUtils
 import com.chatchatabc.parking.domain.enums.ResponseNames

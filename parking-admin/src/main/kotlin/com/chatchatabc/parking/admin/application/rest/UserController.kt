@@ -8,8 +8,8 @@ import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*

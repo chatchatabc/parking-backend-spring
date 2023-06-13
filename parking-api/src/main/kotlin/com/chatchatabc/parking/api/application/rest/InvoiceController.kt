@@ -5,12 +5,12 @@ import com.chatchatabc.parking.domain.*
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
-import com.chatchatabc.parking.web.common.NatsMessage
+import com.chatchatabc.parking.web.common.application.NatsMessage
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
-import com.chatchatabc.parking.web.common.toErrorResponse
-import com.chatchatabc.parking.web.common.toJson
-import com.chatchatabc.parking.web.common.toResponse
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toJson
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.nats.client.Connection
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*

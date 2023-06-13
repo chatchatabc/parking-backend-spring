@@ -2,7 +2,7 @@ package com.chatchatabc.parking.admin.application.graphql.log
 
 import com.chatchatabc.parking.domain.repository.log.UserLoginLogRepository
 import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.web.common.toPagedResponse
+import com.chatchatabc.parking.web.common.application.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping

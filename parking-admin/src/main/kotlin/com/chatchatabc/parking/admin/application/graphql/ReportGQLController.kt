@@ -2,8 +2,8 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.domain.model.Report
 import com.chatchatabc.parking.domain.repository.ReportRepository
-import com.chatchatabc.parking.web.common.PageInfo
-import com.chatchatabc.parking.web.common.PagedResponse
+import com.chatchatabc.parking.web.common.application.PageInfo
+import com.chatchatabc.parking.web.common.application.PagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
