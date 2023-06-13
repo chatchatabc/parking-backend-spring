@@ -1,25 +1,24 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
-import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
-import com.chatchatabc.parking.web.common.ApiResponse
-import com.chatchatabc.parking.web.common.ErrorElement
+import com.chatchatabc.parking.parkingLot
+import com.chatchatabc.parking.parkingLotByOwner
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
@@ -30,7 +29,6 @@ import java.time.LocalDateTime
 class ParkingLotController(
     private val parkingLotService: ParkingLotService,
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
     private val fileStorageService: FileStorageService,
@@ -50,14 +48,13 @@ class ParkingLotController(
      * Get parking lots by uuid
      */
     @GetMapping("/{parkingLotUuid}")
-    fun get(@PathVariable parkingLotUuid: String) =
-        parkingLotRepository.findByParkingLotUuid(parkingLotUuid).toResponse()
+    fun get(@PathVariable parkingLotUuid: String) = parkingLotUuid.parkingLot.toResponse()
 
     /**
      * Get Parking Lot by Owner
      */
     @GetMapping("/me")
-    fun getByManaging(principal: Principal) = parkingLotRepository.findByOwnerUuid(principal.name).toResponse()
+    fun getByManaging(principal: Principal) = principal.name.parkingLotByOwner.toResponse()
 
     /**
      * Get parking lots by distance
@@ -79,9 +76,13 @@ class ParkingLotController(
     fun getImages(
         @PathVariable parkingLotUuid: String,
         pageable: Pageable
-    ) = parkingLotImageRepository.findAllByParkingLotAndStatus(
-        parkingLotRepository.findByParkingLotUuid(parkingLotUuid).get().id, 0, pageable
-    ).toResponse()
+    ) = runCatching {
+        parkingLotImageRepository.findAllByParkingLotAndStatus(
+            parkingLotUuid.parkingLot.id, 0, pageable
+        ).toResponse()
+    }.getOrElse {
+        it.toErrorResponse()
+    }
 
     /**
      * Create parking lot data class
@@ -105,15 +106,15 @@ class ParkingLotController(
     fun register(
         @RequestBody req: ParkingLotCreateRequest,
         principal: Principal
-    ) = run {
-        val owner = userRepository.findByUserUuid(principal.name).get()
+    ) = runCatching {
+        val owner = principal.name.user
         val createdParkingLot = ParkingLot().apply {
             this.owner = owner.id
             this.availableSlots = req.capacity
         }
         parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
         parkingLotService.saveParkingLot(createdParkingLot).toResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Update parking lot data class
@@ -139,9 +140,9 @@ class ParkingLotController(
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         principal: Principal
-    ) = run {
+    ) = runCatching {
         // Map request to parking lot
-        val parkingLot = parkingLotRepository.findByOwnerUuid(principal.name).get()
+        val parkingLot = principal.name.parkingLotByOwner
         parkingLotMapper.updateParkingLotFromUpdateRequest(req, parkingLot)
         parkingLot.openDaysFlag = req.openDaysFlag ?: 0
 
@@ -156,7 +157,7 @@ class ParkingLotController(
         }
         // Save
         parkingLotService.saveParkingLot(parkingLot).toResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Set parking lot status to pending
@@ -164,12 +165,13 @@ class ParkingLotController(
     @PutMapping("/set-pending")
     fun setPending(
         principal: Principal
-    ) = run {
-        val user = userRepository.findByUserUuid(principal.name).get()
-        val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-        parkingLot.status = ParkingLot.PENDING
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner.apply {
+            this.status = ParkingLot.PENDING
+        }
         parkingLotRepository.save(parkingLot).toResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get parking lot avatar by image uuid
@@ -178,22 +180,18 @@ class ParkingLotController(
     fun getParkingLotImage(
         @PathVariable imageUuid: String,
         response: HttpServletResponse
-    ) {
-        try {
-            val image = parkingLotImageRepository.findByIdAndStatus(imageUuid, CloudFile.ACTIVE).get()
-            if (image.cloudFile == null) {
-                throw Exception("Image not found")
-            }
-            response.contentType = image.cloudFile.mimeType
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
-            inputStream.copyTo(response.outputStream)
-            response.flushBuffer()
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+    ) = runCatching {
+        val image = parkingLotImageRepository.findByIdAndStatus(imageUuid, CloudFile.ACTIVE).get()
+        if (image.cloudFile == null) {
+            throw Exception("Image not found")
         }
-    }
+        response.contentType = image.cloudFile.mimeType
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
+        inputStream.copyTo(response.outputStream)
+        response.flushBuffer()
+    }.getOrElse { response.sendError(HttpServletResponse.SC_NOT_FOUND) }
 
     /**
      * Get featured parking lot image if exists
@@ -202,30 +200,26 @@ class ParkingLotController(
     fun getFeaturedParkingLotImage(
         @PathVariable parkingLotUuid: String,
         response: HttpServletResponse
-    ) {
-        try {
-            val pr = PageRequest.of(0, 1)
-            val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
-            val image = parkingLotImageRepository.findAllByParkingLotAndStatus(
-                parkingLot.id,
-                CloudFile.ACTIVE,
-                pr
-            ).content.firstOrNull() ?: throw Exception("Image not found")
+    ) = runCatching {
+        val pr = PageRequest.of(0, 1)
+        val parkingLot = parkingLotUuid.parkingLot
+        val image = parkingLotImageRepository.findAllByParkingLotAndStatus(
+            parkingLot.id,
+            CloudFile.ACTIVE,
+            pr
+        ).content.firstOrNull() ?: throw Exception("Image not found")
 
-            if (image.cloudFile == null) {
-                throw Exception("Image not found")
-            }
-
-            response.contentType = image.cloudFile.mimeType
-            // Add 1 day cache
-            response.setHeader("Cache-Control", "max-age=86400")
-            val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
-            inputStream.copyTo(response.outputStream)
-            response.flushBuffer()
-        } catch (e: Exception) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND)
+        if (image.cloudFile == null) {
+            throw Exception("Image not found")
         }
-    }
+
+        response.contentType = image.cloudFile.mimeType
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val inputStream = fileStorageService.downloadFile(image.cloudFile.key)
+        inputStream.copyTo(response.outputStream)
+        response.flushBuffer()
+    }.getOrElse { response.sendError(HttpServletResponse.SC_NOT_FOUND) }
 
     /**
      * Upload image
@@ -234,29 +228,23 @@ class ParkingLotController(
     fun uploadImage(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
-        return try {
-            val user = userRepository.findByUserUuid(principal.name).get()
-            val parkingLot = parkingLotRepository.findByOwner(user.id).get()
-            var contentType = file.contentType
-            if (contentType == "image/jpg") {
-                contentType = "image/jpeg"
-            }
-            val fileData = parkingLotImageService.uploadImage(
-                user,
-                parkingLot,
-                fileNamespace,
-                file.inputStream,
-                file.originalFilename,
-                file.size,
-                contentType
-            )
-            return ResponseEntity.ok(ApiResponse(fileData, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        var contentType = file.contentType
+        if (contentType == "image/jpg") {
+            contentType = "image/jpeg"
         }
-    }
+        parkingLotImageService.uploadImage(
+            user,
+            parkingLot,
+            fileNamespace,
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            contentType
+        ).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Delete image
@@ -265,20 +253,14 @@ class ParkingLotController(
     fun deleteImage(
         @PathVariable imageUuid: String,
         principal: Principal
-    ): ResponseEntity<ApiResponse<ParkingLotImage>> {
-        return try {
-            // Only owner can delete image
-            val image = parkingLotImageRepository.findById(imageUuid).get()
-            val currentUser = userRepository.findByUserUuid(principal.name).get()
-            val parkingLot = parkingLotRepository.findById(image.parkingLot).get()
-            if (parkingLot.owner != currentUser.id) {
-                throw Exception("You are not owner of this parking lot")
-            }
-            parkingLotImageService.deleteImage(imageUuid)
-            ResponseEntity.ok(ApiResponse(null, listOf()))
-        } catch (e: Exception) {
-            ResponseEntity.badRequest()
-                .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_UPDATE.name, null))))
+    ) = runCatching {
+        // Only owner can delete image
+        val image = parkingLotImageRepository.findById(imageUuid).get()
+        val currentUser = principal.name.user
+        val parkingLot = image.parkingLot.parkingLot
+        if (parkingLot.owner != currentUser.id) {
+            throw Exception("You are not owner of this parking lot")
         }
-    }
+        parkingLotImageService.deleteImage(imageUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }
