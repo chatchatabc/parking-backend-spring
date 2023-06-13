@@ -25,6 +25,7 @@
 ## Refactors (Modify Entire Codebase)
 
 - Learn Manifold (https://github.com/manifold-systems/manifold)
+- Replace ObjectMapper with something better
 
 ## Deployments
 

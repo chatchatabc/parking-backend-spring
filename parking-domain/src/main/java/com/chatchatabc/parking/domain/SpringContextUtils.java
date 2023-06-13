@@ -44,7 +44,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
         vehicleRepository = beanFactory.getBean(VehicleRepository.class);
 
         // Others
-        objectMapper = beanFactory.getBean(ObjectMapper.class);
+        objectMapper = new ObjectMapper();
     }
 
     // Repositories
