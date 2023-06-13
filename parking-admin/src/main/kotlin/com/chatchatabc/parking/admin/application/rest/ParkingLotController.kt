@@ -99,6 +99,11 @@ class ParkingLotController(
             updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
         }
 
+        // Override available slots if available slots is not null
+        if (req.availableSlots != null) {
+            updatedParkingLot.availableSlots = req.availableSlots
+        }
+
         // Update images
         if (req.images.isNullOrEmpty().not()) {
             parkingLotImageService.updateOrderOfImages(req.images)
