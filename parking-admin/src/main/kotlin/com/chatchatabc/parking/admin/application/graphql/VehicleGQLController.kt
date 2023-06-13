@@ -1,22 +1,18 @@
 package com.chatchatabc.parking.admin.application.graphql
 
-import com.chatchatabc.parking.admin.application.dto.PageInfo
-import com.chatchatabc.parking.admin.application.dto.PagedResponse
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.Vehicle
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.specification.VehicleSpecification
+import com.chatchatabc.parking.user
+import com.chatchatabc.parking.vehicle
+import com.chatchatabc.parking.web.common.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
-import java.util.*
 
 @Controller
 class VehicleGQLController(
     private val vehicleRepository: VehicleRepository,
-    private val userRepository: UserRepository
 ) {
 
     /**
@@ -29,37 +25,21 @@ class VehicleGQLController(
         @Argument keyword: String?,
         @Argument sortField: String? = null,
         @Argument sortBy: Int? = null,
-    ): PagedResponse<Vehicle> {
+    ) = run {
         val pr = PageRequest.of(page, size)
         var spec = VehicleSpecification.withKeyword(keyword ?: "")
-
         // Sort
         if (sortField != null && sortBy != null) {
             spec = spec.and(VehicleSpecification.sortBy(sortField, sortBy))
         }
-
-        val vehicles = vehicleRepository.findAll(spec, pr)
-        return PagedResponse(
-            vehicles.content,
-            PageInfo(
-                vehicles.size,
-                vehicles.totalElements,
-                vehicles.isFirst,
-                vehicles.isLast,
-                vehicles.isEmpty
-            )
-        )
+        vehicleRepository.findAll(spec, pr).toPagedResponse()
     }
 
     /**
-     * Get vehicle by uuid
+     * Get vehicle by any identifier
      */
     @QueryMapping
-    fun getVehicleByUuid(
-        @Argument uuid: String
-    ): Optional<Vehicle> {
-        return vehicleRepository.findByVehicleUuid(uuid)
-    }
+    fun getVehicle(@Argument id: String) = run { id.vehicle }
 
     /**
      * Get vehicles by owner
@@ -69,40 +49,14 @@ class VehicleGQLController(
         @Argument ownerUuid: String,
         @Argument page: Int,
         @Argument size: Int
-    ): PagedResponse<Vehicle> {
-        val user = userRepository.findByUserUuid(ownerUuid).get()
+    ) = run {
         val pr = PageRequest.of(page, size)
-        val vehicles = vehicleRepository.findAllByOwner(user.id, pr)
-        return PagedResponse(
-            vehicles.content,
-            PageInfo(
-                vehicles.size,
-                vehicles.totalElements,
-                vehicles.isFirst,
-                vehicles.isLast,
-                vehicles.isEmpty
-            )
-        )
+        vehicleRepository.findAllByOwner(ownerUuid.user.id, pr).toPagedResponse()
     }
 
     /**
-     * Get owner by vehicle uuid
+     * Get owner by vehicle identified
      */
     @QueryMapping
-    fun getOwnerByVehicleUuid(
-        @Argument uuid: String
-    ): Optional<User> {
-        val vehicle = vehicleRepository.findByVehicleUuid(uuid).get()
-        return userRepository.findById(vehicle.owner)
-    }
-
-    /**
-     * Get Vehicle by plate number
-     */
-    @QueryMapping
-    fun getVehicleByPlateNumber(
-        @Argument plateNumber: String
-    ): Optional<Vehicle> {
-        return vehicleRepository.findByPlateNumber(plateNumber)
-    }
+    fun getOwnerByVehicleId(@Argument id: String) = run { id.vehicle.owner.user }
 }
