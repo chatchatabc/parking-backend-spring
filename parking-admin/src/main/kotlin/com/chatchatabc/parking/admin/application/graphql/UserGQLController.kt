@@ -15,7 +15,7 @@ class UserGQLController(
 ) {
 
     /**
-     * Get user by uuid
+     * Get user by any identifier
      */
     @QueryMapping
     fun getUser(@Argument id: String) = run { id.user }
