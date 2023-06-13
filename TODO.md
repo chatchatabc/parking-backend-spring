@@ -15,13 +15,8 @@
 
 - 20 real parking lots with fee information and images
 
-## Parking Lot App
-
-- Vehicle check-in and check-out with Parking fee
-
 ## User App
 
-- Sync all parking lots to local
 - Display on Map and click to display detail
 - Navigation to target parking lot
 
@@ -29,11 +24,7 @@
 
 ## Refactors (Modify Entire Codebase)
 
-- Unit Method Extensions (learn and apply)
-- Remove "/gets"
-- Implement Repository Hooks (@Component)
 - Learn Manifold (https://github.com/manifold-systems/manifold)
-- Add Kotlin Support to Domain
 - Add Kotlin DSL to Entities Model as "DomainDSL or ParkingDomainDSL"
 
 ## Deployments
