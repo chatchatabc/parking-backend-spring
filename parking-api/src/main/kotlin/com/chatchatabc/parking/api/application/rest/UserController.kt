@@ -77,9 +77,7 @@ class UserController(
         val user = principal.name.user
         userMapper.updateUserFromUpdateProfileRequest(request, user)
         userService.saveUser(user).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     // TODO: Implement update phone number api
 
@@ -100,9 +98,7 @@ class UserController(
             file.size,
             file.contentType
         ).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get user avatar by any identification (id, username, email, phone)

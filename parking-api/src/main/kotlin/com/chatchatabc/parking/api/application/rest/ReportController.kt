@@ -39,9 +39,7 @@ class ReportController(
         pageable: Pageable
     ) = runCatching {
         reportRepository.findAllByReportedBy(userUuid.user.id, pageable).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Create Report Data Class

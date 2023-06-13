@@ -98,9 +98,7 @@ class DashboardController(
             profit,
             profitPercentage
         ).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Capacity Increment Override
@@ -125,9 +123,7 @@ class DashboardController(
             }
         }
         parkingLotService.saveParkingLot(parkingLot).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
 
     /**
@@ -150,7 +146,5 @@ class DashboardController(
             endOfDay,
             pageable
         ).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 }

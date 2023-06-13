@@ -82,9 +82,7 @@ class ParkingLotController(
         parkingLotImageRepository.findAllByParkingLotAndStatus(
             parkingLotUuid.parkingLot.id, 0, pageable
         ).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Create parking lot data class

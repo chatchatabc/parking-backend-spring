@@ -29,9 +29,7 @@ class VehicleController(
     ) = runCatching {
         // TODO: Get user from security context
         vehicleRepository.findAllByUser(principal.name, pageable).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Get a vehicle by id
