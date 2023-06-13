@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.VehicleMapper
-import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.vehicle
 import com.chatchatabc.parking.web.common.toErrorResponse
@@ -13,7 +12,6 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/vehicle")
 class VehicleController(
-    private val vehicleRepository: VehicleRepository,
     private val vehicleService: VehicleService
 ) {
     private val vehicleMapper = Mappers.getMapper(VehicleMapper::class.java)
