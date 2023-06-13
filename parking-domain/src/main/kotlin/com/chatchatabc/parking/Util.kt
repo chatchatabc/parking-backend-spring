@@ -4,6 +4,7 @@ import com.chatchatabc.parking.domain.SpringContextUtils
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.Rate
 import com.chatchatabc.parking.domain.model.User
+import com.chatchatabc.parking.domain.model.Vehicle
 
 val String.user: User
     get() {
@@ -16,6 +17,12 @@ val String.user: User
             return SpringContextUtils.getUserRepository().findByPhone(this).orElseThrow()
         }
         return SpringContextUtils.getUserRepository().findByUsername(this).orElseThrow()
+    }
+
+val String.vehicle: Vehicle
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getVehicleRepository().findByVehicleUuid(this).orElseThrow()
     }
 
 val String.parkingLot: ParkingLot
