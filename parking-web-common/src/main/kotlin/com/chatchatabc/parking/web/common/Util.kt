@@ -26,6 +26,7 @@ fun <T> T.toResponse(): ApiResponse<T> {
 
 fun <T : Throwable> T.toErrorResponse(): ApiResponse<Nothing> {
     // TODO: Add logic for every exception
+    // TODO: INVOICE_VEHICLE_NOT_PARKED_TODAY
     val errorList = mutableListOf<ErrorElement>()
     errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
     return ApiResponse(null, errorList)
