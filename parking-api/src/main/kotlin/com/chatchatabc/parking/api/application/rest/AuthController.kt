@@ -41,9 +41,7 @@ class AuthController(
         val otp = userService.generateOTPAndSaveToKV(req.phone, 900L)
         // Send OTP to SMS using events
         applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp)).toResponse()
-    }.getOrElse {
-        it.toErrorResponse()
-    }
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Verify OTP dynamically users
@@ -58,31 +56,28 @@ class AuthController(
         @PathVariable type: String,
         request: HttpServletRequest,
         response: HttpServletResponse
-    ) =
-        runCatching {
-            var user: User? = null
-            try {
-                var roleName: Role.RoleNames = Role.RoleNames.ROLE_USER
-                if (type == "owner") {
-                    roleName = Role.RoleNames.ROLE_PARKING_OWNER
-                }
-                user = userService.verifyOTPAndAddRole(req.phone, req.otp, roleName)
-                // Convert granted authority roles to list of string roles
-                val roleStrings: List<String> = user?.roles?.stream()
-                    ?.map { it.authority }
-                    ?.toList() ?: emptyList()
-
-                val token: String = jwtService.generateToken(user!!.userUuid, user.username, roleStrings)
-                response.setHeader("X-Access-Token", token)
-                // Generate Successful Login Log
-                userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
-                user.toResponse()
-            } catch (e: Exception) {
-                // Generate Failed Login Log
-                userLoginLogService.createLog(user!!.id, request.remoteAddr, 0, false)
-                throw Exception("Invalid or expired OTP")
+    ) = runCatching {
+        var user: User? = null
+        try {
+            var roleName: Role.RoleNames = Role.RoleNames.ROLE_USER
+            if (type == "owner") {
+                roleName = Role.RoleNames.ROLE_PARKING_OWNER
             }
-        }.getOrElse {
-            it.toErrorResponse()
+            user = userService.verifyOTPAndAddRole(req.phone, req.otp, roleName)
+            // Convert granted authority roles to list of string roles
+            val roleStrings: List<String> = user?.roles?.stream()
+                ?.map { it.authority }
+                ?.toList() ?: emptyList()
+
+            val token: String = jwtService.generateToken(user!!.userUuid, user.username, roleStrings)
+            response.setHeader("X-Access-Token", token)
+            // Generate Successful Login Log
+            userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
+            user.toResponse()
+        } catch (e: Exception) {
+            // Generate Failed Login Log
+            userLoginLogService.createLog(user!!.id, request.remoteAddr, 0, false)
+            throw Exception("Invalid or expired OTP")
         }
+    }.getOrElse { it.toErrorResponse() }
 }
