@@ -1,11 +1,7 @@
 package com.chatchatabc.parking.admin.application.graphql.log
 
-import com.chatchatabc.parking.domain.model.log.UserLogoutLog
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserLogoutLogRepository
 import com.chatchatabc.parking.user
-import com.chatchatabc.parking.web.common.PageInfo
-import com.chatchatabc.parking.web.common.PagedResponse
 import com.chatchatabc.parking.web.common.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Controller
 @Controller
 class UserLogoutLogGQLController(
     private val userLogoutLogRepository: UserLogoutLogRepository,
-    private val userRepository: UserRepository
 ) {
     /**
      * Get user logout logs
