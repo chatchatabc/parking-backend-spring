@@ -32,10 +32,8 @@ type Query {
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
 
-    getBanHistoryLogsByUser(page: Int size: Int, uuid: String!): BanHistoryLogList!
+    getBanHistoryLogsByUser(page: Int size: Int, id: String!): BanHistoryLogList!
     getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
-    getBanHistoryLogsByUsername(page: Int size: Int, username: String!): BanHistoryLogList!
-    getBanHistoryLogsByPhone(page: Int size: Int, phone: String!): BanHistoryLogList!
 
     getDashboardPieGraph: DashboardPieGraph
 }
