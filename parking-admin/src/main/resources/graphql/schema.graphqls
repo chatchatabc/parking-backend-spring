@@ -27,10 +27,10 @@ type Query {
     getParkingLotImageKeysByParkingLotUuid(page: Int size: Int uuid: String!): [String]
 
     getInvoices(page: Int size: Int keyword: String sortField: String sortBy: Int): InvoiceList!
-    getInvoiceByUuid(uuid: String!): Invoice
-    getInvoicesByVehicleUuid(page: Int size: Int, uuid: String!): InvoiceList!
-    getInvoicesByParkingLotUuid(page: Int size: Int, uuid: String!): InvoiceList!
-    getInvoicesByUserUuid(page: Int size: Int, uuid: String!): InvoiceList!
+    getInvoice(id: String!): Invoice
+    getInvoicesByVehicle(page: Int size: Int, id: String!): InvoiceList!
+    getInvoicesByParkingLot(page: Int size: Int, id: String!): InvoiceList!
+    getInvoicesByUser(page: Int size: Int, id: String!): InvoiceList!
 
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
