@@ -19,10 +19,20 @@ val String.user: User
         return SpringContextUtils.getUserRepository().findByUsername(this).orElseThrow()
     }
 
+val Long.user: User
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getUserRepository().findById(this).orElseThrow()
+    }
+
 val String.vehicle: Vehicle
     get() {
         // TODO: Add custom errors
-        return SpringContextUtils.getVehicleRepository().findByVehicleUuid(this).orElseThrow()
+        // if string is uuid
+        if (this.length == 36) {
+            return SpringContextUtils.getVehicleRepository().findByVehicleUuid(this).orElseThrow()
+        }
+        return SpringContextUtils.getVehicleRepository().findByPlateNumber(this).orElseThrow()
     }
 
 val String.parkingLot: ParkingLot
