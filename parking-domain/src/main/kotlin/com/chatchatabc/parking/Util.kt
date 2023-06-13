@@ -1,10 +1,7 @@
 package com.chatchatabc.parking
 
 import com.chatchatabc.parking.domain.SpringContextUtils
-import com.chatchatabc.parking.domain.model.ParkingLot
-import com.chatchatabc.parking.domain.model.Rate
-import com.chatchatabc.parking.domain.model.User
-import com.chatchatabc.parking.domain.model.Vehicle
+import com.chatchatabc.parking.domain.model.*
 
 val String.user: User
     get() {
@@ -69,4 +66,10 @@ val String.rateByParkingLot: Rate
     get() {
         // TODO: Add custom errors
         return SpringContextUtils.getParkingLotRepository().findByParkingLotUuid(this).orElseThrow().getRate()
+    }
+
+val String.invoice: Invoice
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getInvoiceRepository().findByInvoiceUuid(this).orElseThrow()
     }
