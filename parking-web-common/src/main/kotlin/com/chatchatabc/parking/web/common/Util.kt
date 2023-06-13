@@ -23,3 +23,10 @@ fun <T> Optional<T>.toResponse(): ApiResponse<T> {
 fun <T> T.toResponse(): ApiResponse<T> {
     return ApiResponse(this, emptyList())
 }
+
+fun <T : Throwable> T.toErrorResponse(): ApiResponse<Nothing> {
+    // TODO: Add logic for every exception
+    val errorList = mutableListOf<ErrorElement>()
+    errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
+    return ApiResponse(null, errorList)
+}
