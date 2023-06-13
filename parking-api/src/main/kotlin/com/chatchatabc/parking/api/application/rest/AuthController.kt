@@ -72,10 +72,10 @@ class AuthController(
                     ?.map { it.authority }
                     ?.toList() ?: emptyList()
 
-                val token: String = jwtService.generateToken(user!!.userUuid, user!!.username, roleStrings)
+                val token: String = jwtService.generateToken(user!!.userUuid, user.username, roleStrings)
                 response.setHeader("X-Access-Token", token)
                 // Generate Successful Login Log
-                userLoginLogService.createLog(user!!.id, request.remoteAddr, 0, true)
+                userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
                 user.toResponse()
             } catch (e: Exception) {
                 // Generate Failed Login Log
