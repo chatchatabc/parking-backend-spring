@@ -16,9 +16,6 @@ import java.util.*
 
 @WebMvcTest(controllers = [VehicleController::class])
 class VehicleControllerTest : AuthorizedBaseTest() {
-    @Autowired
-    lateinit var mvc: MockMvc
-
     @MockBean
     lateinit var vehicleRepository: VehicleRepository
 
