@@ -3,7 +3,6 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.mapper.RateMapper
 import com.chatchatabc.parking.domain.model.Rate
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.RateRepository
 import com.chatchatabc.parking.domain.service.RateService
 import com.chatchatabc.parking.parkingLot
 import com.chatchatabc.parking.rate
@@ -17,7 +16,6 @@ import java.math.BigDecimal
 @RestController
 @RequestMapping("/api/rate")
 class RateController(
-    private val rateRepository: RateRepository,
     private val parkingLotRepository: ParkingLotRepository,
     private val rateService: RateService
 ) {
