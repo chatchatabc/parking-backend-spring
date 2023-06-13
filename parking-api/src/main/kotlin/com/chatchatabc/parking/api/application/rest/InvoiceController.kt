@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.*
+import com.chatchatabc.parking.domain.*
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService

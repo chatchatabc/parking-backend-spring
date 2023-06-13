@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import io.swagger.v3.oas.annotations.Operation

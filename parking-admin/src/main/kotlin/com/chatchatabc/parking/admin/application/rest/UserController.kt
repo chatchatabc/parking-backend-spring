@@ -7,7 +7,7 @@ import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers

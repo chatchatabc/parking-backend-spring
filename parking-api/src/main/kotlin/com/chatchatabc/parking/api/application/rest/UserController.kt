@@ -4,7 +4,7 @@ import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.infra.service.FileStorageService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import io.swagger.v3.oas.annotations.Operation

@@ -9,8 +9,8 @@ import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
 import com.chatchatabc.parking.infra.service.FileStorageService
-import com.chatchatabc.parking.parkingLot
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.parkingLot
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletResponse

@@ -2,7 +2,7 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse

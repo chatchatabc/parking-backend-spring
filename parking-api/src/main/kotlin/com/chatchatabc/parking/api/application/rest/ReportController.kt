@@ -4,7 +4,7 @@ import com.chatchatabc.parking.api.application.mapper.ReportMapper
 import com.chatchatabc.parking.domain.model.Report
 import com.chatchatabc.parking.domain.repository.ReportRepository
 import com.chatchatabc.parking.domain.service.ReportService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers

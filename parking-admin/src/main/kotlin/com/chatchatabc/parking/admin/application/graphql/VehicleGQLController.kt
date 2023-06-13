@@ -2,8 +2,8 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.specification.VehicleSpecification
-import com.chatchatabc.parking.user
-import com.chatchatabc.parking.vehicle
+import com.chatchatabc.parking.domain.user
+import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.web.common.toPagedResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument

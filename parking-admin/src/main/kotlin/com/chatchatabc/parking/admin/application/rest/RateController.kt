@@ -4,7 +4,7 @@ import com.chatchatabc.parking.admin.application.mapper.RateMapper
 import com.chatchatabc.parking.domain.model.Rate
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.RateService
-import com.chatchatabc.parking.parkingLot
+import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import org.mapstruct.factory.Mappers

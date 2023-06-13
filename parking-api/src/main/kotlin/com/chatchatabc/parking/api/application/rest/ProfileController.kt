@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
-import com.chatchatabc.parking.user
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.toErrorResponse
 import com.chatchatabc.parking.web.common.toResponse
 import jakarta.servlet.http.HttpServletRequest
