@@ -1,7 +1,6 @@
 package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
-import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import com.chatchatabc.parking.parkingLot
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller
 @Controller
 class ParkingLotGQLController(
     private val parkingLotRepository: ParkingLotRepository,
-    private val userRepository: UserRepository,
     private val parkingLotImageRepository: ParkingLotImageRepository
 ) {
 
