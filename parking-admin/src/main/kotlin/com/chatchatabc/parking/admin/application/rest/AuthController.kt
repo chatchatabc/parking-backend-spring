@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
@@ -19,6 +18,14 @@ class AuthController(
     private val jwtService: JwtService,
     private val userLoginLogService: UserLoginLogService
 ) {
+    /**
+     * Login User Request
+     */
+    data class UserLoginRequest(
+        val username: String,
+        val password: String
+    )
+
     /**
      * Login user and authenticate user
      */

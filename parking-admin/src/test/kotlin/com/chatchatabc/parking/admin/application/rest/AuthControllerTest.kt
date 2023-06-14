@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.UserLoginRequest
 import com.chatchatabc.parking.domain.model.Role
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.repository.UserRepository

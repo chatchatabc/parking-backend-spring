@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.DashboardStatistics
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
@@ -17,6 +16,19 @@ class DashboardController(
     private val vehicleRepository: VehicleRepository,
     private val invoiceRepository: InvoiceRepository
 ) {
+    /**
+     * Dashboard statistics data class
+     */
+    data class DashboardStatistics(
+        val totalUsers: Long?,
+        val totalVerifiedUsers: Long?,
+        val totalUnverifiedUsers: Long?,
+        val totalVehicles: Long?,
+        val totalParkingLots: Long?,
+        val totalVerifiedParkingLots: Long?,
+        val totalUnverifiedParkingLots: Long?,
+        val totalActiveInvoices: Long?
+    )
 
     /**
      * Get statistics of parking system

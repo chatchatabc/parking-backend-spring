@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import com.chatchatabc.parking.admin.application.dto.*
 import com.chatchatabc.parking.admin.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
@@ -90,6 +89,13 @@ class UserController(
     // TODO: Implement update phone number api
 
     /**
+     * User override password request
+     */
+    data class UserOverridePasswordRequest(
+        val newPassword: String,
+    )
+
+    /**
      * Override user password
      */
     @PutMapping("/override-password/{userUuid}")
@@ -102,6 +108,14 @@ class UserController(
         }
         userService.saveUser(user).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * User unban request
+     */
+    data class UserBanRequest(
+        val until: LocalDateTime,
+        val reason: String
+    )
 
     /**
      * Ban user
@@ -122,6 +136,13 @@ class UserController(
         // TODO: Convert to service
         userBanHistoryLogRepository.save(banLog).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * User unban request
+     */
+    data class UserUnbanRequest(
+        val unbanReason: String
+    )
 
     /**
      * Unban user
