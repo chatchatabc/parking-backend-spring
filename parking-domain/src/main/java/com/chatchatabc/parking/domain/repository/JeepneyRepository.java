@@ -2,12 +2,13 @@ package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.domain.model.Jeepney;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface JeepneyRepository extends JpaRepository<Jeepney, Long> {
+public interface JeepneyRepository extends JpaRepository<Jeepney, Long>, JpaSpecificationExecutor<Jeepney> {
 
     /**
      * Find jeepney by jeepney uuid
