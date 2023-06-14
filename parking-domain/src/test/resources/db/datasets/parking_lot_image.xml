@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dataset SYSTEM "../database.dtd">
+<!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
     <cloud_file id="1" bucket="parking_lot" key="a642b475-50f2-43c1-8685-066638dae7b2.png" status="0" tags="tag"

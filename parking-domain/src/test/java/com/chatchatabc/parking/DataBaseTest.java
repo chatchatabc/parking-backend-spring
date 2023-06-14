@@ -22,10 +22,10 @@ public class DataBaseTest extends TestContainersBaseTest {
             "db/datasets/parking_lot.xml",
             "db/datasets/rate.xml",
             "db/datasets/invoice.xml",
-            "db/datasets/log/user_login_log.xml",
-            "db/datasets/log/user_logout_log.xml",
-            "db/datasets/file/parking_lot_image.xml",
-            "db/datasets/log/user_ban_history_log.xml",
+            "db/datasets/user_login_log.xml",
+            "db/datasets/user_logout_log.xml",
+            "db/datasets/parking_lot_image.xml",
+            "db/datasets/user_ban_history_log.xml",
             "db/datasets/report.xml",
     })
     public void testLoadDataset() {

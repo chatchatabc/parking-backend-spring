@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dataset SYSTEM "../database.dtd">
+<!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
     <user_login_log id="1" user_id="6" success="1" ip_address="127.0.0.1" type="0"

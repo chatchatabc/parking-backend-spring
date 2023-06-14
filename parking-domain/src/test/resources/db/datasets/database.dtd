@@ -3,12 +3,15 @@
     cloud_file*,
     flyway_schema_history*,
     invoice*,
+    jeepney*,
+    jeepney_ride*,
     parking_lot*,
     parking_lot_image*,
     rate*,
     report*,
     report_status*,
     role*,
+    routes*,
     user_activity_log*,
     user_ban_history_log*,
     user_login_log*,
@@ -64,6 +67,38 @@
     paid_at CDATA #IMPLIED
     start_at CDATA #REQUIRED
     end_at CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT jeepney EMPTY>
+<!ATTLIST jeepney
+    id CDATA #IMPLIED
+    jeepney_uuid CDATA #REQUIRED
+    name CDATA #REQUIRED
+    plate_number CDATA #REQUIRED
+    current_ride_id CDATA #IMPLIED
+    capacity CDATA #REQUIRED
+    available_slots CDATA #REQUIRED
+    latitude CDATA #REQUIRED
+    longitude CDATA #REQUIRED
+    status CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT jeepney_ride EMPTY>
+<!ATTLIST jeepney_ride
+    id CDATA #IMPLIED
+    jeepney_id CDATA #REQUIRED
+    route_id CDATA #REQUIRED
+    driver_id CDATA #REQUIRED
+    start_at CDATA #IMPLIED
+    end_at CDATA #IMPLIED
+    status CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    total_passengers CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
 >
@@ -142,6 +177,18 @@
 <!ATTLIST role
     id CDATA #IMPLIED
     name CDATA #REQUIRED
+>
+
+<!ELEMENT routes EMPTY>
+<!ATTLIST routes
+    id CDATA #IMPLIED
+    route_uuid CDATA #REQUIRED
+    name CDATA #REQUIRED
+    description CDATA #REQUIRED
+    status CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
 >
 
 <!ELEMENT user_activity_log EMPTY>
