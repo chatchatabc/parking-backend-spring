@@ -84,6 +84,8 @@ val String.jeepney: Jeepney
         // TODO: Add custom errors
         if (this.length == 36) {
             return SpringContextUtils.getJeepneyRepository().findByJeepneyUuid(this).orElseThrow()
+        } else if (this.contains("-")) {
+            SpringContextUtils.getJeepneyRepository().findByPlateNumber(this).orElseThrow()
         }
-        return SpringContextUtils.getJeepneyRepository().findByPlateNumber(this).orElseThrow()
+        return SpringContextUtils.getJeepneyRepository().findByName(this).orElseThrow()
     }
