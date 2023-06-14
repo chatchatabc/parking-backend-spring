@@ -20,7 +20,7 @@ data class ErrorElement(
 
 fun <T> Optional<T>.toResponse(): ApiResponse<T> {
     if (this.isPresent) {
-        return ApiResponse(this.get(), null)
+        return ApiResponse(this.get(), listOf())
     }
     return ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
 }
