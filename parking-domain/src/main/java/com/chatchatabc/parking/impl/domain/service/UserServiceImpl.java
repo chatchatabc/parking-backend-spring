@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             if (username != null) {
                 createdUser.setUsername(username);
             }
-            userRepository.save(createdUser);
+            this.saveUser(createdUser);
         } else {
             // Check if username is correct for existing user
             if (username != null) {
