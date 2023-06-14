@@ -11,7 +11,7 @@
     report*,
     report_status*,
     role*,
-    routes*,
+    route*,
     user_activity_log*,
     user_ban_history_log*,
     user_login_log*,
@@ -179,8 +179,8 @@
     name CDATA #REQUIRED
 >
 
-<!ELEMENT routes EMPTY>
-<!ATTLIST routes
+<!ELEMENT route EMPTY>
+<!ATTLIST route
     id CDATA #IMPLIED
     route_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
