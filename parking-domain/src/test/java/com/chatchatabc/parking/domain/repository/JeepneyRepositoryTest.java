@@ -22,4 +22,15 @@ class JeepneyRepositoryTest extends TestContainersBaseTest {
         assertThat(jeepneyRepository.findByJeepneyUuid(jeepneyUuid)).isEmpty();
     }
 
+    @Test
+    void testFindByPlateNumber_WhenPlateNumberExist_ShouldReturnJeepney() {
+        String plateNumber = "AAA-1234";
+        assertThat(jeepneyRepository.findByPlateNumber(plateNumber)).isPresent();
+    }
+
+    @Test
+    void testFindByPlateNumber_WhenPlateNumberDoesNotExist_ShouldReturnEmpty() {
+        String plateNumber = "non-existent-plate-number";
+        assertThat(jeepneyRepository.findByPlateNumber(plateNumber)).isEmpty();
+    }
 }
