@@ -4,6 +4,8 @@ import com.chatchatabc.parking.domain.SpringContextUtils
 import com.chatchatabc.parking.domain.enums.ResponseNames
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import org.springframework.data.domain.Page
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import java.util.*
 
 data class ApiResponse<T>(
@@ -44,13 +46,16 @@ fun <T> Page<T>.toPagedResponse(): PagedResponse<T> {
     return PagedResponse(this.content, PageInfo(this.size, this.totalElements, this.isFirst, this.isLast, this.isEmpty))
 }
 
-fun <T : Throwable> T.toErrorResponse(): ApiResponse<Nothing> {
+fun <T : Throwable> T.toErrorResponse(): ResponseEntity<ApiResponse<Nothing>> {
+    this.printStackTrace()
     // TODO: Add logic for every exception
     // TODO: INVOICE_VEHICLE_NOT_PARKED_TODAY
     // TODO: ERROR_CREATE
     val errorList = mutableListOf<ErrorElement>()
     errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
-    return ApiResponse(null, errorList)
+    // TODO: Add logic to automatically determine status code
+    val status = HttpStatus.BAD_REQUEST
+    return ResponseEntity(ApiResponse(null, errorList), status)
 }
 
 data class NatsMessage<T>(
