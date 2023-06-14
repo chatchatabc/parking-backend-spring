@@ -15,6 +15,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
 
     // Repositories
     private static InvoiceRepository invoiceRepository;
+    private static JeepneyRepository jeepneyRepository;
     private static ParkingLotRepository parkingLotRepository;
     private static RateRepository rateRepository;
     private static ReportRepository reportRepository;
@@ -35,6 +36,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
     public void afterPropertiesSet() throws Exception {
         // Repositories
         invoiceRepository = beanFactory.getBean(InvoiceRepository.class);
+        jeepneyRepository = beanFactory.getBean(JeepneyRepository.class);
         parkingLotRepository = beanFactory.getBean(ParkingLotRepository.class);
         rateRepository = beanFactory.getBean(RateRepository.class);
         reportRepository = beanFactory.getBean(ReportRepository.class);
@@ -50,6 +52,10 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
     // Repositories
     public static InvoiceRepository getInvoiceRepository() {
         return invoiceRepository;
+    }
+
+    public static JeepneyRepository getJeepneyRepository() {
+        return jeepneyRepository;
     }
 
     public static ParkingLotRepository getParkingLotRepository() {
