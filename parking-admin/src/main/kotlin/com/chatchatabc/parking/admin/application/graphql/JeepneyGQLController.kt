@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.admin.application.graphql
 
+import com.chatchatabc.parking.domain.jeepney
 import com.chatchatabc.parking.domain.repository.JeepneyRepository
 import com.chatchatabc.parking.domain.specification.JeepneySpecification
 import com.chatchatabc.parking.web.common.application.toPagedResponse
@@ -33,4 +34,10 @@ class JeepneyGQLController(
 
         jeepneyRepository.findAll(spec, pr).toPagedResponse()
     }
+
+    /**
+     * Get Jeepney by Identifier
+     */
+    @QueryMapping
+    fun getJeepney(@Argument id: String) = run { id.jeepney }
 }

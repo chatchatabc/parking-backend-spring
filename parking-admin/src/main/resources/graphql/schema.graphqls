@@ -18,6 +18,7 @@ type Query {
     getOwnerByVehicleUuid(id: String!): User
 
     getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
+    getJeepney(id: String): Jeepney
 
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
