@@ -33,4 +33,16 @@ class JeepneyRepositoryTest extends TestContainersBaseTest {
         String plateNumber = "non-existent-plate-number";
         assertThat(jeepneyRepository.findByPlateNumber(plateNumber)).isEmpty();
     }
+
+    @Test
+    void testFindByName_WhenNameExists_ShouldReturnJeepney() {
+        String name = "Test";
+        assertThat(jeepneyRepository.findByName(name)).isPresent();
+    }
+
+    @Test
+    void testFindByName_WhenNameDoesNotExist_ShouldReturnEmpty() {
+        String name = "non-existent-name";
+        assertThat(jeepneyRepository.findByName(name)).isEmpty();
+    }
 }
