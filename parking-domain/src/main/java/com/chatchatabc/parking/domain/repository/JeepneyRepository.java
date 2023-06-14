@@ -4,6 +4,16 @@ import com.chatchatabc.parking.domain.model.Jeepney;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface JeepneyRepository extends JpaRepository<Jeepney, Long> {
+
+    /**
+     * Find jeepney by jeepney uuid
+     *
+     * @param jeepneyUuid jeepney uuid
+     * @return jeepney
+     */
+    Optional<Jeepney> findByJeepneyUuid(String jeepneyUuid);
 }
