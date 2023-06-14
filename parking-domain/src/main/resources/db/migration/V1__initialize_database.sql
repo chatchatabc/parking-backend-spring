@@ -276,3 +276,62 @@ CREATE TABLE IF NOT EXISTS report_status
 ALTER SEQUENCE report_status_id_seq RESTART WITH 1000;
 create index idx_report_status_on_report_id on report_status (report_id);
 create index idx_report_status_on_performed_by on report_status (performed_by);
+
+-- Create Jeepney table
+CREATE TABLE IF NOT EXISTS jeepney
+(
+    id              SERIAL PRIMARY KEY,
+    jeepney_uuid    VARCHAR(36)  NOT NULL UNIQUE,
+    name            VARCHAR(255) NOT NULL,
+    plate_number    VARCHAR(20)  NOT NULL UNIQUE,
+    current_ride_id BIGINT,
+    capacity        INT          NOT NULL,
+    available_slots INT          NOT NULL,
+    latitude        FLOAT        NOT NULL,
+    longitude       FLOAT        NOT NULL,
+    status          INT          NOT NULL DEFAULT 0,
+    flag            INT          NOT NULL DEFAULT 0,
+    created_at      TIMESTAMP    NOT NULL,
+    updated_at      TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE jeepney_id_seq RESTART WITH 1000;
+create index idx_jeepney_on_plate_number on jeepney (plate_number);
+create index idx_jeepney_on_status on jeepney (status);
+
+-- Create Routes table
+CREATE TABLE IF NOT EXISTS routes
+(
+    id          SERIAL PRIMARY KEY,
+    route_uuid  VARCHAR(36)  NOT NULL UNIQUE,
+    name        VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    status      INT          NOT NULL DEFAULT 0,
+    flag        INT          NOT NULL DEFAULT 0,
+    created_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE routes_id_seq RESTART WITH 1000;
+create index idx_routes_on_status on routes (status);
+
+-- Create Jeepney Ride table
+CREATE TABLE IF NOT EXISTS jeepney_ride
+(
+    id               SERIAL PRIMARY KEY,
+    jeepney_id       BIGINT    NOT NULL,
+    route_id         BIGINT    NOT NULL,
+    driver_id        BIGINT    NOT NULL,
+    start_at         TIMESTAMP,
+    end_at           TIMESTAMP,
+    status           INT       NOT NULL DEFAULT 0,
+    flag             INT       NOT NULL DEFAULT 0,
+    total_passengers INT       NOT NULL DEFAULT 0,
+    created_at       TIMESTAMP NOT NULL,
+    updated_at       TIMESTAMP NOT NULL
+);
+
+ALTER SEQUENCE jeepney_ride_id_seq RESTART WITH 1000;
+create index idx_jeepney_ride_on_jeepney_id on jeepney_ride (jeepney_id);
+create index idx_jeepney_ride_on_route_id on jeepney_ride (route_id);
+create index idx_jeepney_ride_on_driver_id on jeepney_ride (driver_id);
