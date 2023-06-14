@@ -1,15 +1,13 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.JeepneyMapper
+import com.chatchatabc.parking.domain.jeepney
 import com.chatchatabc.parking.domain.model.Jeepney
 import com.chatchatabc.parking.domain.service.JeepneyService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/jeepney")
@@ -40,6 +38,32 @@ class JeepneyController(
     ) = runCatching {
         val jeepney = Jeepney()
         jeepneyMapper.createJeepneyFromCreateRequest(req, jeepney)
+        jeepneyService.saveJeepney(jeepney).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Update Jeepney Request data class
+     */
+    data class JeepneyUpdateRequest(
+        val name: String?,
+        val plateNumber: String?,
+        val capacity: Int?,
+        val latitude: Double?,
+        val longitude: Double?,
+        val status: Int?,
+        val flag: Int?
+    )
+
+    /**
+     * Update a Jeepney
+     */
+    @PutMapping("/update/{id}")
+    fun update(
+        @RequestBody req: JeepneyUpdateRequest,
+        @PathVariable id: String
+    ) = runCatching {
+        val jeepney = id.jeepney
+        jeepneyMapper.updateJeepneyFromUpdateRequest(req, jeepney)
         jeepneyService.saveJeepney(jeepney).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
