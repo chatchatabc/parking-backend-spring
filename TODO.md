@@ -56,3 +56,11 @@
 ## Repository and Entity Models
 
 - Refactor some fields to use @NaturalId
+
+## Add and Implement Jeepney Feature
+
+- Add Jeepney Entity
+- Add Routes Entity
+- Add Jeepney Rides Entity
+- Add Driver Role
+- Implement corresponding Controllers, Services, and Repositories
