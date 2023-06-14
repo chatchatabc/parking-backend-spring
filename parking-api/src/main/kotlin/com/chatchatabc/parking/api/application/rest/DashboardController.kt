@@ -93,10 +93,10 @@ class DashboardController(
 
             // Traffic Calculation
             traffic,
-            trafficPercentage,
+            trafficPercentage.let { if (it.isNaN()) 0.0 else it },
             // Profit Calculation
             profit,
-            profitPercentage
+            profitPercentage.let { if (it.isNaN()) 0.0 else it }
         ).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
