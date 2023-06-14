@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "database.dtd">
+
+<dataset>
+    <jeepney id="1" jeepney_uuid="8821fff6-b725-454c-bdd3-0674b313ba45" name="Test" plate_number="AAA-1234" status="0"
+             flag="0" capacity="100" available_slots="100" latitude="1.0" longitude="1.0"
+             created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-05 16:14:47.307160"/>
+</dataset>
