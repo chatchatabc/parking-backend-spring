@@ -26,6 +26,7 @@
 
 - Learn Manifold (https://github.com/manifold-systems/manifold)
 - Replace ObjectMapper with something better
+- Rename all `id` fields from GraphQL to `keyword` for consistency and to avoid confusion with database ids
 
 ## Deployments
 
