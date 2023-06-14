@@ -299,8 +299,8 @@ ALTER SEQUENCE jeepney_id_seq RESTART WITH 1000;
 create index idx_jeepney_on_plate_number on jeepney (plate_number);
 create index idx_jeepney_on_status on jeepney (status);
 
--- Create Routes table
-CREATE TABLE IF NOT EXISTS routes
+-- Create Route table
+CREATE TABLE IF NOT EXISTS route
 (
     id          SERIAL PRIMARY KEY,
     route_uuid  VARCHAR(36)  NOT NULL UNIQUE,
@@ -312,8 +312,8 @@ CREATE TABLE IF NOT EXISTS routes
     updated_at  TIMESTAMP    NOT NULL
 );
 
-ALTER SEQUENCE routes_id_seq RESTART WITH 1000;
-create index idx_routes_on_status on routes (status);
+ALTER SEQUENCE route_id_seq RESTART WITH 1000;
+create index idx_route_on_status on route (status);
 
 -- Create Jeepney Ride table
 CREATE TABLE IF NOT EXISTS jeepney_ride
