@@ -29,6 +29,10 @@ fun <T> T.toResponse(): ApiResponse<T> {
     return ApiResponse(this, emptyList())
 }
 
+fun <T> Optional<T>.toNullableResponse(): ApiResponse<T> {
+    return ApiResponse(this.orElse(null), listOf())
+}
+
 data class PageInfo(
     val size: Int,
     val totalElements: Long,
