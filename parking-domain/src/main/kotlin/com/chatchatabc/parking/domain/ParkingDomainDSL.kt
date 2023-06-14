@@ -82,5 +82,8 @@ val Long.report: Report
 val String.jeepney: Jeepney
     get() {
         // TODO: Add custom errors
-        return SpringContextUtils.getJeepneyRepository().findByJeepneyUuid(this).orElseThrow()
+        if (this.length == 36) {
+            return SpringContextUtils.getJeepneyRepository().findByJeepneyUuid(this).orElseThrow()
+        }
+        return SpringContextUtils.getJeepneyRepository().findByPlateNumber(this).orElseThrow()
     }
