@@ -72,3 +72,9 @@ val String.invoice: Invoice
         // TODO: Add custom errors
         return SpringContextUtils.getInvoiceRepository().findByInvoiceUuid(this).orElseThrow()
     }
+
+val Long.report: Report
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getReportRepository().findById(this).orElseThrow()
+    }
