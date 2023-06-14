@@ -25,7 +25,6 @@ class ProfileController(
         response: HttpServletResponse,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user
-        userLogoutLogService.createLog(user.id, 1, request.remoteAddr).toResponse()
+        userLogoutLogService.createLog(principal.name.user.id, 1, request.remoteAddr).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }

@@ -1,7 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.UserPhoneLoginRequest
-import com.chatchatabc.parking.api.application.dto.UserVerifyOTPRequest
 import com.chatchatabc.parking.api.application.event.user.UserLoginEvent
 import com.chatchatabc.parking.domain.model.Role
 import com.chatchatabc.parking.domain.model.User
@@ -26,6 +24,14 @@ class AuthController(
 ) {
 
     /**
+     * Login User Request Data Class
+     */
+    data class UserPhoneLoginRequest(
+        val phone: String,
+        val username: String?
+    )
+
+    /**
      * Login with phone number or username
      */
     @Operation(
@@ -42,6 +48,14 @@ class AuthController(
         // Send OTP to SMS using events
         applicationEventPublisher.publishEvent(UserLoginEvent(this, req.phone, otp)).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Verify OTP Request Data Class
+     */
+    data class UserVerifyOTPRequest(
+        val phone: String,
+        val otp: String
+    )
 
     /**
      * Verify OTP dynamically users

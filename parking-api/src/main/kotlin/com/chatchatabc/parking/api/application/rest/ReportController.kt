@@ -2,6 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.ReportMapper
 import com.chatchatabc.parking.domain.model.Report
+import com.chatchatabc.parking.domain.report
 import com.chatchatabc.parking.domain.repository.ReportRepository
 import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.domain.user
@@ -83,8 +84,8 @@ class ReportController(
         @PathVariable reportId: Long,
         @RequestBody req: ReportUpdateRequest
     ) = runCatching {
-        val report = reportRepository.findById(reportId).orElseThrow()
+        val report = reportId.report
         reportMapper.updateReportFromRequest(req, report)
-        reportRepository.save(report).toResponse()
+        reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }

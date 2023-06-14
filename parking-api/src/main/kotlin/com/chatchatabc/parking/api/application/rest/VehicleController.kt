@@ -27,7 +27,6 @@ class VehicleController(
         principal: Principal,
         pageable: Pageable
     ) = runCatching {
-        // TODO: Get user from security context
         vehicleRepository.findAllByUser(principal.name, pageable).toResponse()
     }.getOrElse { it.toErrorResponse() }
 

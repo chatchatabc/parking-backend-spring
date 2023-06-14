@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.UserPhoneLoginRequest
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -32,7 +31,7 @@ class AuthControllerTest : AuthorizedBaseTest() {
         // Given
         val phone = "09123456789"
         val username = "admin"
-        val userPhoneLoginRequest = UserPhoneLoginRequest(phone, username)
+        val userPhoneLoginRequest = AuthController.UserPhoneLoginRequest(phone, username)
         val otp = "123456"
 
         // Behavior

@@ -5,7 +5,7 @@ import com.chatchatabc.parking.domain.model.Rate
 import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.rate
 import com.chatchatabc.parking.domain.rateByParkingLot
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
+import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.RateService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -16,7 +16,7 @@ import java.math.BigDecimal
 @RestController
 @RequestMapping("/api/rate")
 class RateController(
-    private val parkingLotRepository: ParkingLotRepository,
+    private val parkingLotService: ParkingLotService,
     private val rateService: RateService
 ) {
     private val rateMapper = Mappers.getMapper(RateMapper::class.java)
@@ -66,7 +66,7 @@ class RateController(
                     this.parkingLot = parkingLot
                 })
             parkingLot.rate = createdRate
-            parkingLotRepository.save(parkingLot)
+            parkingLotService.saveParkingLot(parkingLot)
         } else {
             // Update rate
             rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)

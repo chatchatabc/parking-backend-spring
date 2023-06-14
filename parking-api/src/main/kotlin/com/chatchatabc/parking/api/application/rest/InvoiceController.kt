@@ -3,7 +3,6 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.*
 import com.chatchatabc.parking.domain.*
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import com.chatchatabc.parking.web.common.application.NatsMessage
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
@@ -20,7 +19,6 @@ import java.security.Principal
 @RequestMapping("/api/invoice")
 class InvoiceController(
     private val invoiceRepository: InvoiceRepository,
-    private val vehicleRepository: VehicleRepository,
     private val invoiceService: InvoiceService,
     private val natsConnection: Connection
 ) {
@@ -54,8 +52,7 @@ class InvoiceController(
     ) = runCatching {
         val user = principal.name.user
         val parkingLot = user.id.parkingLotByOwner
-        val vehicle = vehicleRepository.findByVehicleUuid(vehicleUuid).orElseThrow()
-        invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicle.vehicleUuid)
+        invoiceRepository.findLatestActiveInvoice(parkingLot.parkingLotUuid, vehicleUuid.vehicle.vehicleUuid)
             .toResponse()
     }.getOrElse { it.toErrorResponse() }
 

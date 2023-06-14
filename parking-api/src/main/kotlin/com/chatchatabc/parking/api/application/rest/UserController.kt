@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.api.application.rest
 
-import com.chatchatabc.parking.api.application.dto.UserNotificationResponse
 import com.chatchatabc.parking.api.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.user
@@ -37,6 +36,13 @@ class UserController(
     fun getProfile(
         principal: Principal
     ) = runCatching { principal.name.user.toResponse() }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * User notification response data class
+     */
+    data class UserNotificationResponse(
+        val notificationId: String?
+    )
 
     /**
      * Get user notification id
@@ -79,8 +85,6 @@ class UserController(
         userService.saveUser(user).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
-    // TODO: Implement update phone number api
-
     /**
      * Upload user avatar
      */
@@ -89,9 +93,8 @@ class UserController(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
     ) = runCatching {
-        val user = principal.name.user
         userService.uploadImage(
-            user,
+            principal.name.user,
             "avatar",
             file.inputStream,
             file.originalFilename,
@@ -108,11 +111,10 @@ class UserController(
         @PathVariable id: String,
         response: HttpServletResponse
     ) = runCatching {
-        val user = id.user
         val headers = HttpHeaders()
         // Add 1 day cache
         response.setHeader("Cache-Control", "max-age=86400")
-        val resource = InputStreamResource(fileStorageService.downloadFile(user.avatar.key))
+        val resource = InputStreamResource(fileStorageService.downloadFile(id.user.avatar.key))
         ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
     }.getOrElse {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)

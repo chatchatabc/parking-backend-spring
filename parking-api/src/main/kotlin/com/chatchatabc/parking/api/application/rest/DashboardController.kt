@@ -1,7 +1,8 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.domain.parkingLot
+import com.chatchatabc.parking.domain.parkingLotByOwner
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
-import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.user
@@ -17,7 +18,6 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/dashboard")
 class DashboardController(
-    private val parkingLotRepository: ParkingLotRepository,
     private val invoiceRepository: InvoiceRepository,
     private val parkingLotService: ParkingLotService,
     private val vehicleRepository: VehicleRepository
@@ -44,7 +44,7 @@ class DashboardController(
     ) = runCatching {
         // Query required data for calculation
         val owner = principal.name.user
-        val parkingLot = parkingLotRepository.findByOwner(owner.id).orElseThrow()
+        val parkingLot = owner.id.parkingLotByOwner
 
         // Get Start of Day
         val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
@@ -112,7 +112,7 @@ class DashboardController(
         @PathVariable parkingLotUuid: String,
         @PathVariable type: String
     ) = runCatching {
-        val parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow()
+        val parkingLot = parkingLotUuid.parkingLot
         if (type == "decrement") {
             if (parkingLot.availableSlots > 0) {
                 parkingLot.availableSlots -= 1

@@ -170,7 +170,7 @@ class ParkingLotController(
         val parkingLot = user.id.parkingLotByOwner.apply {
             this.status = ParkingLot.PENDING
         }
-        parkingLotRepository.save(parkingLot).toResponse()
+        parkingLotService.saveParkingLot(parkingLot).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
