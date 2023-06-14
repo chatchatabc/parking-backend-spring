@@ -25,4 +25,12 @@ public interface JeepneyRepository extends JpaRepository<Jeepney, Long>, JpaSpec
      * @return jeepney
      */
     Optional<Jeepney> findByPlateNumber(String plateNumber);
+
+    /**
+     * Find jeepney by name
+     *
+     * @param name name
+     * @return jeepney
+     */
+    Optional<Jeepney> findByName(String name);
 }
