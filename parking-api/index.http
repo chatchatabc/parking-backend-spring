@@ -3,7 +3,8 @@ POST {{userBaseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-  "phone": "1234567890"
+  "phone": "1234567890",
+  "username": "admin"
 }
 
 ### Verify Manager Phone and OTP
