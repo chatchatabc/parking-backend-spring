@@ -9,7 +9,7 @@ val String.user: User
             return SpringContextUtils.getUserRepository().findByEmail(this).orElseThrow()
         } else if (this.contains("-")) {
             return SpringContextUtils.getUserRepository().findByUserUuid(this).orElseThrow()
-        } else if (this.matches(Regex("^\\+?[0-9]\\d{1,14}\$"))) {
+        } else if (this.matches(Regex("^\\+[0-9]\\d{1,14}\$"))) {
             return SpringContextUtils.getUserRepository().findByPhone(this).orElseThrow()
         }
         return SpringContextUtils.getUserRepository().findByUsername(this).orElseThrow()
