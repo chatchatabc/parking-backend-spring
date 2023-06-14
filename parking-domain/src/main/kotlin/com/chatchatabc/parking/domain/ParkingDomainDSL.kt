@@ -78,3 +78,9 @@ val Long.report: Report
         // TODO: Add custom errors
         return SpringContextUtils.getReportRepository().findById(this).orElseThrow()
     }
+
+val String.jeepney: Jeepney
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getJeepneyRepository().findByJeepneyUuid(this).orElseThrow()
+    }
