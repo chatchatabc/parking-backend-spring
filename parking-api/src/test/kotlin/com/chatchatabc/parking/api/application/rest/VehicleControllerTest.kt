@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
@@ -29,6 +30,7 @@ class VehicleControllerTest : AuthorizedBaseTest() {
         }
         given(vehicleRepository.findByVehicleUuid("1")).willReturn(Optional.of(vehicle))
         val result = this.mvc.perform(get("/api/vehicle/1"))
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk()).andReturn()
     }
 
