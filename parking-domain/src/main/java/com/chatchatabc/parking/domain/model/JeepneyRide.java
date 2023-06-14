@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "jeepney_ride")
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class JeepneyRide extends FlagEntity {
     public static class JeepneyRideStatus {
         public static final int INACTIVE = -1;
