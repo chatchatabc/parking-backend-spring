@@ -79,6 +79,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // Return status 401 if the token is invalid
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 logRequest(request, response);
+                // Stop the flow
+                return;
             }
         }
         // Continue flow with the user in the security context
