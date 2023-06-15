@@ -20,6 +20,9 @@ type Query {
     getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
     getJeepney(id: String): Jeepney
 
+    getRoutes(page: Int size: Int keyword: String sortField: String sortBy: Int): RouteList!
+    getRoute(id: String): Route
+
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
     getParkingLotByUser(id: String!): ParkingLot
@@ -142,6 +145,22 @@ type Vehicle {
 
 type VehicleList {
     content: [Vehicle]!
+    pageInfo: PageInfo!
+}
+
+# Route
+type Route {
+    routeUuid: String!
+    name: String
+    description: String
+    status: Int
+    points: String
+    createdAt: String
+    updatedAt: String
+}
+
+type RouteList {
+    content: [Route]!
     pageInfo: PageInfo!
 }
 
