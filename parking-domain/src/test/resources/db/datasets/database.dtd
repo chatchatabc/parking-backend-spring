@@ -78,6 +78,7 @@
     name CDATA #REQUIRED
     plate_number CDATA #REQUIRED
     current_ride_id CDATA #IMPLIED
+    route_uuid CDATA #IMPLIED
     capacity CDATA #REQUIRED
     available_slots CDATA #REQUIRED
     latitude CDATA #REQUIRED
