@@ -3,6 +3,7 @@ package com.chatchatabc.parking.domain.repository;
 import com.chatchatabc.parking.TestContainersBaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,5 +45,19 @@ class JeepneyRepositoryTest extends TestContainersBaseTest {
     void testFindByName_WhenNameDoesNotExist_ShouldReturnEmpty() {
         String name = "non-existent-name";
         assertThat(jeepneyRepository.findByName(name)).isEmpty();
+    }
+
+    @Test
+    void testFindAllByRouteUuid_ShouldReturnJeepneys() {
+        String routeUuid = "8821fff6-b725-454c-bdd3-0674b313ba45";
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(jeepneyRepository.findAllByRouteUuid(routeUuid, pr)).isNotEmpty();
+    }
+
+    @Test
+    void testFindAllByRouteUuid_WhenRouteUuidDoesNotExist_ShouldReturnEmpty() {
+        String routeUuid = "non-existent-route-uuid";
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(jeepneyRepository.findAllByRouteUuid(routeUuid, pr)).isEmpty();
     }
 }

@@ -42,6 +42,5 @@ public interface JeepneyRepository extends JpaRepository<Jeepney, Long>, JpaSpec
      * @param routeUuid route uuid
      * @return list of jeepneys
      */
-    // TODO: Make unit test for this
     Page<Jeepney> findAllByRouteUuid(String routeUuid, Pageable pageable);
 }
