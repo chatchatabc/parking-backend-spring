@@ -7,13 +7,16 @@ import com.chatchatabc.parking.web.common.application.config.security.filter.Jwt
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
@@ -24,11 +27,12 @@ import org.springframework.web.context.WebApplicationContext
 import java.util.*
 import javax.sql.DataSource
 
-@WebAppConfiguration
+@ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [SecurityConfig::class])
+@WebAppConfiguration
 @WithMockUser(username = "dfc3cd78-9c89-4da2-8749-253afed080af", password = "123456", roles = ["ADMIN"])
+@ActiveProfiles("test")
 open class AuthorizedBaseTest {
-    @Autowired
     lateinit var mvc: MockMvc
 
     @Autowired
@@ -51,7 +55,7 @@ open class AuthorizedBaseTest {
     fun setup() {
         mvc = MockMvcBuilders
             .webAppContextSetup(context)
-            .apply<DefaultMockMvcBuilder>(SecurityMockMvcConfigurers.springSecurity())
+            .apply<DefaultMockMvcBuilder>(springSecurity())
             .build()
     }
 
@@ -59,18 +63,8 @@ open class AuthorizedBaseTest {
         return MockMvcRequestBuilders.get(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
     }
 
-    // TODO: integrate as one with get()
-    fun getNoAuth(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
-        return MockMvcRequestBuilders.get(urlTemplate, *uriVariables)
-    }
-
     fun post(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
         return MockMvcRequestBuilders.post(urlTemplate, *uriVariables).header("Authorization", "Bearer $token")
-    }
-
-    // TODO: integrate as one with post()
-    fun postNoAuth(urlTemplate: String, vararg uriVariables: Any?): MockHttpServletRequestBuilder {
-        return MockMvcRequestBuilders.post(urlTemplate, *uriVariables)
     }
 
     // Based on JwtService generateToken

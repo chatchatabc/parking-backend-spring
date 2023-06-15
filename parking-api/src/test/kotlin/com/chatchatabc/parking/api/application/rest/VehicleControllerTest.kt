@@ -23,18 +23,24 @@ class VehicleControllerTest : AuthorizedBaseTest() {
 
     @Test
     fun testGetVehicleById() {
+        // Given
+        val vehicleUuid = UUID.randomUUID().toString()
         val vehicle = Vehicle().apply {
             this.id = 1
-            this.vehicleUuid = "1"
+            this.vehicleUuid = vehicleUuid
             this.owner = 1
             this.plateNumber = "xxx-1111"
         }
 
-        given(vehicleRepository.findByVehicleUuid("1")).willReturn(Optional.of(vehicle))
+        // Behaviors
+        given(vehicleRepository.findByVehicleUuid(vehicleUuid)).willReturn(Optional.of(vehicle))
 
-        val result = this.mvc.perform(get("/api/vehicle/1"))
+        // Actions
+        val result = this.mvc.perform(get("/api/vehicle/$vehicleUuid"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk()).andReturn()
+        println(result.response.contentAsString)
+        println("stop")
     }
 
     @Test
