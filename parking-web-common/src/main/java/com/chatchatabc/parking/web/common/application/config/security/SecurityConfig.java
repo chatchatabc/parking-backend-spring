@@ -63,6 +63,11 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/report/create-report").authenticated();
                     auth.requestMatchers("/api/report/**").hasAnyRole("ADMIN", "ENFORCER");
 
+                    // Routes for Routes
+                    auth.requestMatchers("/api/route/").authenticated();
+                    auth.requestMatchers("/api/route/last-updated-at/**").authenticated();
+                    auth.requestMatchers("/api/route/**").hasAnyRole("ADMIN", "ENFORCER");
+
                     // TODO: Add routes for other controllers
 
                     // Permit Graphql
