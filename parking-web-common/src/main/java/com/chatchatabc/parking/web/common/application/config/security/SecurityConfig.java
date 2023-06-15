@@ -55,6 +55,9 @@ public class SecurityConfig {
                     // User routes must be authenticated
                     auth.requestMatchers("/api/user/**").authenticated();
 
+                    // Routes for Vehicle
+                    auth.requestMatchers("/api/vehicle/**").authenticated();
+
                     // Routes for Report
                     // TODO: Get reports concerning user
                     auth.requestMatchers("/api/report/create-report").authenticated();
