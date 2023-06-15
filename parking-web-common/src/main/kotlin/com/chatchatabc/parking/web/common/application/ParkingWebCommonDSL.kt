@@ -50,15 +50,46 @@ fun <T> Page<T>.toPagedResponse(): PagedResponse<T> {
     return PagedResponse(this.content, PageInfo(this.size, this.totalElements, this.isFirst, this.isLast, this.isEmpty))
 }
 
+val exceptionStatusMapping = mapOf<Class<out Throwable>, HttpStatus>(
+    // TODO: Add other exceptions and their corresponding status codes
+    jakarta.validation.ConstraintViolationException::class.java to HttpStatus.BAD_REQUEST
+)
+
+fun extractDetailMessage(fullMessage: String?): String {
+    // This regex pattern looks for the substring that starts with "Detail: " and ends with a closing square bracket
+    val pattern = "Detail: (.*?)\\]".toPattern()
+    val matcher = pattern.matcher(fullMessage ?: "")
+    return if (matcher.find()) {
+        // return the extracted detail message
+        matcher.group(1) ?: "Unknown error"
+    } else {
+        // Return the full message if the detail part cannot be extracted
+        fullMessage ?: "Unknown error"
+    }
+}
+
+
 fun <T : Throwable> T.toErrorResponse(): ResponseEntity<ApiResponse<Nothing>> {
     this.printStackTrace()
-    // TODO: Add logic for every exception
-    // TODO: INVOICE_VEHICLE_NOT_PARKED_TODAY
-    // TODO: ERROR_CREATE
     val errorList = mutableListOf<ErrorElement>()
-    errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
-    // TODO: Add logic to automatically determine status code
-    val status = HttpStatus.BAD_REQUEST
+    val status = exceptionStatusMapping[this::class.java] ?: HttpStatus.BAD_REQUEST
+
+    when (this) {
+        is jakarta.validation.ConstraintViolationException -> {
+            this.constraintViolations.forEach {
+                errorList.add(ErrorElement(ResponseNames.ERROR_CREATE.name, it.messageTemplate))
+            }
+        }
+        is org.springframework.dao.DataIntegrityViolationException -> {
+            val detailMessage = extractDetailMessage(this.message)
+            errorList.add(ErrorElement(ResponseNames.ERROR_CREATE.name, detailMessage))
+        }
+        // TODO: Handle other specific exceptions
+        else -> {
+            errorList.add(ErrorElement(ResponseNames.ERROR.name, this.message))
+        }
+    }
+
     return ResponseEntity(ApiResponse(null, errorList), status)
 }
 
