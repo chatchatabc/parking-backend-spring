@@ -89,3 +89,9 @@ val String.jeepney: Jeepney
         }
         return SpringContextUtils.getJeepneyRepository().findByName(this).orElseThrow()
     }
+
+val String.route: Route
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
+    }
