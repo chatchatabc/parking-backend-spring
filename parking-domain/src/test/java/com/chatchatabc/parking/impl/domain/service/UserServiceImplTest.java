@@ -22,7 +22,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testSoftRegisterUser_ShouldSuccessfullyRegister() throws Exception {
-        String phone = "69420961111";
+        String phone = "+69420961111";
         String username = "soft_register";
 
         assertThat(userRepository.findByPhone(phone)).isEmpty();
@@ -34,7 +34,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testSoftRegisterUser_ExistingUserWithCorrectUsername_ShouldSuccessfullyRegister() throws Exception {
-        String phone = "1234567890";
+        String phone = "+1234567890";
         String username = "admin";
 
         assertThat(userRepository.findByPhone(phone)).isPresent();
@@ -46,7 +46,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testSoftRegisterUser_ExistingUserWithIncorrectUsername_ExceptionThrown() {
-        String phone = "1234567890";
+        String phone = "+1234567890";
         String username = "adminWrong";
 
         assertThat(userRepository.findByPhone(phone)).isPresent();
@@ -56,7 +56,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testVerifyOTPAndAddRole_WithValidOTP_ShouldSuccessfullyVerify() throws Exception {
-        String phone = "1234567890";
+        String phone = "+1234567890";
         String otp = "123456";
         Role.RoleNames roleName = Role.RoleNames.ROLE_ADMIN;
 
@@ -68,7 +68,7 @@ class UserServiceImplTest extends TestContainersBaseTest {
 
     @Test
     void testVerifyOTPAndAddRole_WithInvalidOTP_ShouldThrowException() {
-        String phone = "9906345322";
+        String phone = "+9906345322";
         String otp = "123456";
         String invalidOtp = "654321";
 

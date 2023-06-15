@@ -31,7 +31,7 @@ class UserRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByPhone_PhoneIsFound() {
-        String phone = "1234567890";
+        String phone = "+1234567890";
         Optional<User> user = userRepository.findByPhone(phone);
         assertThat(user).isPresent();
         assertThat(user.get().getPhone()).isEqualTo(phone);
@@ -39,7 +39,7 @@ class UserRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByPhone_PhoneNotFound() {
-        String phone = "9999999999";
+        String phone = "+9999999999";
         Optional<User> user = userRepository.findByPhone(phone);
         assertThat(user).isNotPresent();
     }
