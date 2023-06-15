@@ -29,6 +29,10 @@ fun <T> T.toResponse(): ApiResponse<T> {
     return ApiResponse(this, emptyList())
 }
 
+fun <T> T.toNullResponse(): ApiResponse<T> {
+    return ApiResponse(null, emptyList())
+}
+
 fun <T> Optional<T>.toNullableResponse(): ApiResponse<T> {
     return ApiResponse(this.orElse(null), listOf())
 }
