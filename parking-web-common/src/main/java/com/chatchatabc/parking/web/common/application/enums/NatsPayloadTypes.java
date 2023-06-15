@@ -5,4 +5,7 @@ public enum NatsPayloadTypes {
     INVOICE_CREATED,
     INVOICE_ENDED,
     INVOICE_PAID,
+
+    // Jeepney
+    JEEPNEY_LOCATION_UPDATE,
 }
