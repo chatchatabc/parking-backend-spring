@@ -62,3 +62,8 @@
 
 - Add Driver Role
 - Implement corresponding Controllers, Services, and Repositories
+
+## Others
+
+- Use `https://taskell.app/` for managing
+  TODO.md (https://github.com/smallhadroncollider/taskell/blob/master/templates/bindings.ini)
