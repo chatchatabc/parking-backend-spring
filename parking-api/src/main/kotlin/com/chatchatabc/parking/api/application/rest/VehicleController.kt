@@ -33,13 +33,13 @@ class VehicleController(
     /**
      * Get a vehicle by id
      */
-    @GetMapping("/{vehicleUuid}")
+    @GetMapping("/{id}")
     fun getVehicleById(
-        @PathVariable vehicleUuid: String,
+        @PathVariable id: String,
         principal: Principal
     ) = runCatching {
         // Get user from security context
-        vehicleUuid.vehicle.toResponse()
+        id.vehicle.toResponse()
         // TODO: User should have access to this vehicle. If user is not inside vehicle users array
         // if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
         //     throw Exception("User does not have access to this vehicle")
