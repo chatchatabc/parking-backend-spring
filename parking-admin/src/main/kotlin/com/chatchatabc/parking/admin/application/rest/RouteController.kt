@@ -1,9 +1,69 @@
 package com.chatchatabc.parking.admin.application.rest
 
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.chatchatabc.parking.admin.application.mapper.RouteMapper
+import com.chatchatabc.parking.domain.model.Route
+import com.chatchatabc.parking.domain.route
+import com.chatchatabc.parking.domain.service.RouteService
+import com.chatchatabc.parking.web.common.application.toErrorResponse
+import org.mapstruct.factory.Mappers
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/route")
-class RouteController {
+class RouteController(
+    private val routeService: RouteService
+) {
+    private val routeMapper = Mappers.getMapper(RouteMapper::class.java)
+
+    data class RouteCreateRequest(
+        val name: String,
+        val description: String,
+        val status: Int
+    )
+
+    /**
+     * Create Route
+     */
+    @PostMapping("/create")
+    fun createRoute(request: RouteCreateRequest) = runCatching {
+        val route = Route()
+        routeMapper.createRouteFromCreateRequest(request, route)
+        routeService.saveRoute(route)
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Update Route Data Class
+     */
+    data class RouteUpdateRequest(
+        val name: String?,
+        val description: String?,
+        val status: Int?
+    )
+
+    /**
+     * Update Route
+     */
+    @PutMapping("/update/{id}")
+    fun updateRoute(@PathVariable id: String, @RequestBody request: RouteUpdateRequest) = runCatching {
+        val route = id.route
+        routeMapper.updateRouteFromUpdateRequest(request, route)
+        routeService.saveRoute(route)
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Route Points Update Data Class
+     */
+    data class RoutePointUpdateRequest(
+        val points: String
+    )
+
+    /**
+     * Update Route Points
+     */
+    @PutMapping("/update-points/{id}")
+    fun updateRoutePoints(@PathVariable id: String, @RequestBody request: RoutePointUpdateRequest) = runCatching {
+        val route = id.route
+        route.points = request.points
+        routeService.saveRoute(route)
+    }.getOrElse { it.toErrorResponse() }
 }
