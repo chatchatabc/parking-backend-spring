@@ -117,4 +117,38 @@ class AuthControllerTest : UnauthorizedBaseTest() {
                 assert(tokenFromHeader == token)
             }
     }
+
+    @Test
+    fun testVerifyOTP_ShouldFail() {
+        // Given
+        val phone = "+1234567890"
+        val otp = "000000"
+        val roleName: Role.RoleNames = Role.RoleNames.ROLE_USER
+        val remoteAddr = "127.0.0.1"
+        val user = User().apply {
+            this.id = 1
+            this.userUuid = "1"
+            this.username = "admin"
+            this.phone = phone
+            this.roles = listOf(Role(4, "ROLE_USER"))
+        }
+
+        // Mock HttpServletRequest
+        val request = mock(HttpServletRequest::class.java)
+        `when`(request.remoteAddr).thenReturn(remoteAddr)
+
+        // Behaviors
+        BDDMockito.given(userService.verifyOTPAndAddRole(phone, otp, roleName))
+            .willThrow(RuntimeException("OTP is incorrect"))
+        BDDMockito.willDoNothing().given(userLoginLogService).createLog(user.id, remoteAddr, 0, false)
+
+        // Actions
+        this.mockMvc.perform(
+            post("/api/auth/verify/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(AuthController.UserVerifyOTPRequest(phone, otp)))
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().is4xxClientError())
+    }
 }
