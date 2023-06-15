@@ -57,7 +57,7 @@ val exceptionStatusMapping = mapOf<Class<out Throwable>, HttpStatus>(
 
 fun extractDetailMessage(fullMessage: String?): String {
     // This regex pattern looks for the substring that starts with "Detail: " and ends with a closing square bracket
-    val pattern = "Detail: (.*?)\\]".toPattern()
+    val pattern = "Detail: (.*?)]".toPattern()
     val matcher = pattern.matcher(fullMessage ?: "")
     return if (matcher.find()) {
         // return the extracted detail message
