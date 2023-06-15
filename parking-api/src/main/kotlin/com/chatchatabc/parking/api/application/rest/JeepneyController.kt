@@ -2,6 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.domain.jeepney
 import com.chatchatabc.parking.domain.repository.JeepneyRepository
+import com.chatchatabc.parking.domain.service.JeepneyService
 import com.chatchatabc.parking.web.common.application.NatsMessage
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/jeepney")
 class JeepneyController(
     private val jeepneyRepository: JeepneyRepository,
+    private val jeepneyService: JeepneyService,
     private val natsConnection: Connection
 ) {
 
@@ -65,8 +67,7 @@ class JeepneyController(
             latitude = request.latitude
             longitude = request.longitude
         }
-        // TODO: Change to service
-        jeepneyRepository.save(jeepney)
+        jeepneyService.saveJeepney(jeepney)
 
         // NATS message structure
         val natsMessage =
@@ -83,5 +84,4 @@ class JeepneyController(
         natsConnection.publish("route-${jeepney.routeUuid}", natsMessage)
         jeepney.toResponse()
     }.getOrElse { it.toErrorResponse() }
-
 }
