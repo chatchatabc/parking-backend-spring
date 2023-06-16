@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -30,8 +29,11 @@ public class Jeepney extends FlagEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TODO: Rename to vkey
     @Column(unique = true)
-    private String jeepneyUuid = UUID.randomUUID().toString();
+    private String jeepneyUuid;
+
+    // TODO: Add device ID
 
     @Column
     private String name;
