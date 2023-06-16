@@ -13,7 +13,7 @@ class JeepneyRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByJeepneyUuid_WhenJeepneyUuidExist_ShouldReturnJeepney() {
-        String jeepneyUuid = "8821fff6-b725-454c-bdd3-0674b313ba45";
+        String jeepneyUuid = "b01463a6b744d27dacb85052ce72f9fa";
         assertThat(jeepneyRepository.findByJeepneyUuid(jeepneyUuid)).isPresent();
     }
 
