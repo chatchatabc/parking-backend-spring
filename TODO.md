@@ -67,3 +67,18 @@
 
 - Use `https://taskell.app/` for managing
   TODO.md (https://github.com/smallhadroncollider/taskell/blob/master/templates/bindings.ini)
+
+## Additional Features (Future Implementation)
+
+- Maintenance of Vehicles
+    - Auto Parts
+    - Insurance
+    - One Demand Repair Services (go to your house)
+- Selling of Vehicles
+    - Second hand
+    - Transaction system
+    - Trust system
+- Car Wash
+    - Locations on Map for Drive Through
+    - On Demand Car Wash services (go to your house)
+  
