@@ -12,7 +12,8 @@ public class NatsPayload {
     public record JeepneyPayload(
             String jeepneyUuid,
             Double latitude,
-            Double longitude
+            Double longitude,
+            Integer direction
     ) {
 
     }
