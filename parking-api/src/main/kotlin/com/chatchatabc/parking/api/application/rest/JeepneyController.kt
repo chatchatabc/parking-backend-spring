@@ -76,7 +76,8 @@ class JeepneyController(
                 NatsPayload.JeepneyPayload(
                     jeepney.jeepneyUuid,
                     jeepney.latitude,
-                    jeepney.longitude
+                    jeepney.longitude,
+                    0 // TODO: Change
                 )
             ).toJson().toByteArray()
 
