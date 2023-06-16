@@ -34,8 +34,8 @@ class DashboardGQLController(
      * Get Dashboard Pie Graph DTO
      */
     @QueryMapping
-    fun getDashboardPieGraph(): DashboardPieGraphDTO {
-        val data = DashboardPieGraphDTO().apply {
+    fun getDashboardPieGraph() = run {
+        DashboardPieGraphDTO().apply {
             // Parking
             parkingLotVerifiedCount = parkingLotRepository.countVerified()
             parkingLotUnverifiedCount = parkingLotRepository.count() - parkingLotVerifiedCount
@@ -49,6 +49,5 @@ class DashboardGQLController(
             vehicleVerifiedCount = vehicleRepository.count()
             vehicleUnverifiedCount = 0
         }
-        return data
     }
 }
