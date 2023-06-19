@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.nats.client.Connection
 import org.quartz.Job
 import org.quartz.JobExecutionContext
-import org.springframework.beans.factory.annotation.Value
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
@@ -17,13 +17,8 @@ class JeepneyLocationSendJob(
     private val natsConnection: Connection,
     private val restService: RestService,
     private val objectMapper: ObjectMapper,
-
-    // Values from .env
-    @Value("\${azliot.api.tf-key}")
-    private val tfKey: String,
-    @Value("\${azliot.api.token}")
-    private val token: String
 ) : Job {
+    private val log = LoggerFactory.getLogger(this::class.java)
 
     /**
      * Car Home TF Response Data Class
@@ -52,12 +47,11 @@ class JeepneyLocationSendJob(
         // API Call get location of jeepney via Azliot
         val data = restService.makeGetRequest(
             "/Transfer/carHomeTF",
-            mapOf(
-                "tfKey" to tfKey,
-                "Authorization" to token
-            ),
+            null,
             mapOf()
-        )
+        ) ?: return
+
+        log.info("JeepneyLocationSendJob Executed")
 
         // Map string json data to data class
         objectMapper.readValue(data, CarHomeTFResponse::class.java).let {

@@ -30,7 +30,7 @@ public class RestServiceImpl implements RestService {
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
     private String token = null;
-    private Logger logger = LoggerFactory.getLogger(RestServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RestServiceImpl.class);
 
     public RestServiceImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
