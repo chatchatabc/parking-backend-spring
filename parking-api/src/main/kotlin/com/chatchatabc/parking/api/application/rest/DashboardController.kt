@@ -38,6 +38,10 @@ class DashboardController(
     /**
      * Get Dashboard Statistics
      */
+    @Operation(
+        summary = "Parking Owner Dashboard Statistics API",
+        description = "Allow owner to get dashboard statistics of the current state of their parking lot"
+    )
     @GetMapping("/")
     fun getDashboardStatistics(
         principal: Principal
@@ -129,6 +133,10 @@ class DashboardController(
     /**
      * Search Vehicle if parked today
      */
+    @Operation(
+        summary = "Search Vehicle if parked today",
+        description = "Search Vehicle if parked today"
+    )
     @GetMapping("/search/{parkingLotUuid}/{plateNumber}")
     fun searchVehicle(
         @PathVariable plateNumber: String,
