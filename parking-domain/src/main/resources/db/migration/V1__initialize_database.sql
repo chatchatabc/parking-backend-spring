@@ -337,3 +337,25 @@ ALTER SEQUENCE jeepney_ride_id_seq RESTART WITH 1000;
 create index idx_jeepney_ride_on_jeepney_id on jeepney_ride (jeepney_id);
 create index idx_jeepney_ride_on_route_id on jeepney_ride (route_id);
 create index idx_jeepney_ride_on_driver_id on jeepney_ride (driver_id);
+
+-- Create Coupon table
+CREATE TABLE IF NOT EXISTS coupon
+(
+    id          SERIAL PRIMARY KEY,
+    coupon_uuid VARCHAR(36)  NOT NULL UNIQUE,
+    name        VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    code        VARCHAR(255) NOT NULL UNIQUE,
+    status      INT          NOT NULL DEFAULT 0,
+    flag        INT          NOT NULL DEFAULT 0,
+    valid_until TIMESTAMP    NOT NULL,
+    created_by  BIGINT       NOT NULL,
+    approved_by BIGINT,
+    created_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE coupon_id_seq RESTART WITH 1000;
+create index idx_coupon_on_coupon_uuid on coupon (coupon_uuid);
+create index idx_coupon_on_status on coupon (status);
+create index idx_coupon_on_name on coupon (name);
