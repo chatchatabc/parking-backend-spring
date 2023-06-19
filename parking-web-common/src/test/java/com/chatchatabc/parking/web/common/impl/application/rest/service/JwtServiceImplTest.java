@@ -22,7 +22,6 @@ class JwtServiceImplTest {
     @Test
     public void testGenerateJwtToken() {
         final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "user", List.of("ROLE_USER"));
-        System.out.println(token);
         jwtService.validateTokenAndGetPayload(token);
     }
 
