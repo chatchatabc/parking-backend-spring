@@ -1,7 +1,7 @@
 package com.chatchatabc.parking.web.common.application
 
 import com.chatchatabc.parking.domain.SpringContextUtils
-import com.chatchatabc.parking.domain.enums.ResponseNames
+import com.chatchatabc.parking.web.common.application.enums.ResponseNames
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus

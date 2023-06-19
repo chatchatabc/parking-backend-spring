@@ -1,4 +1,4 @@
-package com.chatchatabc.parking.domain.enums;
+package com.chatchatabc.parking.web.common.application.enums;
 
 public enum ResponseNames {
     /**
