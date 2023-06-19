@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.web.common.impl.application.rest.service;
 
+import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
 import com.chatchatabc.parking.web.common.application.rest.service.RestService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +30,15 @@ public class RestServiceAzliotImpl implements RestService {
     @Value("${azliot.api.time}")
     private String time;
 
+    private final JwtService jwtService;
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
     private String token = null;
-    private final Logger logger = LoggerFactory.getLogger(RestServiceAzliotImpl.class);
+    private final Logger log = LoggerFactory.getLogger(RestServiceAzliotImpl.class);
 
-    public RestServiceAzliotImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
+    public RestServiceAzliotImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, JwtService jwtService) {
         this.objectMapper = objectMapper;
+        this.jwtService = jwtService;
         webClientBuilder.baseUrl("http://api-tf.azliot.com");
         this.webClient = webClientBuilder.build();
     }
@@ -46,7 +51,6 @@ public class RestServiceAzliotImpl implements RestService {
     public void init() throws JsonProcessingException {
         // On application startup generate a token
         this.token = generateToken();
-        logger.info("Azliot Token Successfully Generated");
     }
 
     /**
@@ -136,6 +140,31 @@ public class RestServiceAzliotImpl implements RestService {
     ) {
     }
 
+    /**
+     * Validate token every 10 minutes
+     */
+    @Scheduled(fixedRate = 10 * 60 * 1000)
+    public void validateToken() {
+        try {
+            // Buffer time in seconds (10 minutes)
+            int bufferTimeInSeconds = 10 * 60;
+
+            // If token is expired or about to expire, renew it
+            if (token != null) {
+                // Get the expiration timestamp from the token
+                Long exp = jwtService.getExpirationFromToken(this.token);
+
+                // Check if token is expired or about to expire
+                if (exp != null && Instant.now().getEpochSecond() + bufferTimeInSeconds >= exp) {
+                    log.info("Token expired or about to expire. Renewing...");
+                    this.generateToken();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error renewing token: " + e.getMessage());
+        }
+    }
+
 
     /**
      * Generate a token
@@ -154,7 +183,7 @@ public class RestServiceAzliotImpl implements RestService {
         loginParams.put("password", password);
         loginParams.put("time", time);
 
-        logger.info("Generating token...");
+        log.info("Generating Azliot token...");
 
         // Build URI with query parameters
         UriComponentsBuilder uriBuilder = this.buildUriWithQueryParams(endpoint, loginParams);
@@ -169,6 +198,7 @@ public class RestServiceAzliotImpl implements RestService {
                 .bodyToMono(String.class)
                 .block();
         AzliotLoginResponse azliotLoginResponse = objectMapper.readValue(response, AzliotLoginResponse.class);
+        log.info("Azliot token generated...");
         return azliotLoginResponse.results.token;
     }
 }
