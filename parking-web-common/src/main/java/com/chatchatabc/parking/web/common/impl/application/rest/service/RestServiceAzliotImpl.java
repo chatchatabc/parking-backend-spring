@@ -142,7 +142,6 @@ public class RestServiceAzliotImpl implements RestService {
      *
      * @return the token
      */
-    @Override
     public String generateToken() throws JsonProcessingException {
         String endpoint = "/Transfer/transferLogin";
 

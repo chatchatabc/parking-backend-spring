@@ -1,6 +1,5 @@
 package com.chatchatabc.parking.web.common.application.rest.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,11 +33,4 @@ public interface RestService {
      * @param headers the headers
      */
     void mapHeadersToRequest(WebClient.RequestHeadersSpec<?> request, Map<String, String> headers);
-
-    /**
-     * Generate a token
-     *
-     * @return the token
-     */
-    String generateToken() throws JsonProcessingException;
 }
