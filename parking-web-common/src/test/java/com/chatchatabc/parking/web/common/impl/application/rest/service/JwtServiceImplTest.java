@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.web.common.impl.application.rest.service;
 
 import com.auth0.jwt.interfaces.Payload;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class JwtServiceImplTest {
 
     @BeforeAll
     public static void setUp() {
-        jwtService = new JwtServiceImpl(SECRET, EXPIRATION);
+        jwtService = new JwtServiceImpl(SECRET, EXPIRATION, new ObjectMapper());
     }
 
     @Test
@@ -49,5 +50,12 @@ class JwtServiceImplTest {
         String invalidToken = "invalid-token";
         Payload payload = jwtService.validateTokenAndGetPayload(invalidToken);
         assertNull(payload);
+    }
+
+    @Test
+    void testGetExpirationFromToken_ShouldReturnGreaterThan0() {
+        final String token = jwtService.generateToken("dfc3cd78-9c89-4da2-8749-253afed080af", "user", List.of("ROLE_USER"));
+        final long expiration = jwtService.getExpirationFromToken(token);
+        assertTrue(expiration > 0);
     }
 }
