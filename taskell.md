@@ -1,6 +1,5 @@
 ## To Do (Business)
 
-- Implement a Coupon System
 
 ## To Do (Technical)
 
@@ -52,6 +51,9 @@
     > Using KMM, develop a mobile application for users
     * [ ] Android Version
     * [ ] iOS Version
+- Implement a Coupon System
+    > System to handle coupons given by business establishments to the users of Parking
+    * [ ] Created Initial Model, Service, Repos, and Controllers
 
 ## Doing (Technical)
 
