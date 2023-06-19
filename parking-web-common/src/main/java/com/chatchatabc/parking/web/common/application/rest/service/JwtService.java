@@ -23,4 +23,12 @@ public interface JwtService {
      * @return the jwt payload
      */
     Payload validateTokenAndGetPayload(String token);
+
+    /**
+     * Get the expiration from the given token
+     *
+     * @param token the token
+     * @return the expiration
+     */
+    Long getExpirationFromToken(String token);
 }

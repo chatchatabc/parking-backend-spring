@@ -5,15 +5,20 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Payload;
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JwtServiceImpl implements JwtService {
     private final Long expiration;
+    private final ObjectMapper objectMapper;
 
 
     private final Algorithm hmac512;
@@ -23,8 +28,10 @@ public class JwtServiceImpl implements JwtService {
             @Value("${server.jwt.secret}")
             String secret,
             @Value("${server.jwt.expiration}")
-            Long expiration
+            Long expiration,
+            ObjectMapper objectMapper
     ) {
+        this.objectMapper = objectMapper;
         this.expiration = expiration;
         hmac512 = Algorithm.HMAC512(secret);
         verifier = JWT.require(hmac512).build();
@@ -63,5 +70,35 @@ public class JwtServiceImpl implements JwtService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Get the expiration from the given token
+     *
+     * @param token the token
+     * @return the expiration
+     */
+    @Override
+    public Long getExpirationFromToken(String token) {
+        try {
+            // Split the token into header, payload, and signature
+            String[] parts = token.split("\\.");
+            if (parts.length < 2) {
+                return null; // Invalid token
+            }
+
+            // Decode the payload
+            String payload = parts[1];
+            String decodedPayload = new String(Base64.getUrlDecoder().decode(payload), StandardCharsets.UTF_8);
+
+            // Parse the payload as JSON and retrieve the "exp" claim
+            Map<String, Object> claims = objectMapper.readValue(decodedPayload, Map.class);
+            if (claims.containsKey("exp")) {
+                Number expNumber = (Number) claims.get("exp");
+                return expNumber.longValue();
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 }
