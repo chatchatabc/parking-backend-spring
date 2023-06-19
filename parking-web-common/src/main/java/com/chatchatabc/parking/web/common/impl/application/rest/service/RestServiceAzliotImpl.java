@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class RestServiceImpl implements RestService {
+public class RestServiceAzliotImpl implements RestService {
     // Values from .env
     @Value("${azliot.api.tf-key}")
     private String tfKey;
@@ -30,9 +30,9 @@ public class RestServiceImpl implements RestService {
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
     private String token = null;
-    private final Logger logger = LoggerFactory.getLogger(RestServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RestServiceAzliotImpl.class);
 
-    public RestServiceImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
+    public RestServiceAzliotImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         webClientBuilder.baseUrl("http://api-tf.azliot.com");
         this.webClient = webClientBuilder.build();
