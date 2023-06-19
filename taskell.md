@@ -1,15 +1,5 @@
 ## To Do (Business)
 
-- Develop Parking Owner Mobile Application
-    > Using KMM, develop a mobile application for Parking Owners
-    * [ ] Android Version
-    * [ ] iOS Version
-- Developer Parking User Mobile Application
-    > Using KMM, develop a mobile application for users
-    * [ ] Android Version
-    * [ ] iOS Version
-- Develop Admin Dashboard w/ React
-- Develop Spring Boot Backend Server
 
 ## To Do (Technical)
 
@@ -46,6 +36,21 @@
 
 ## Doing (Business)
 
+- Develop Spring Boot Backend Server
+    > Spring Boot server dedicated to serving the backend of the Parking Project. Backend is in both Java and Kotlin.
+    * [ ] Develop Admin Backend
+    * [ ] Develop API Backend
+- Develop Admin Dashboard w/ React
+    > Developed primarily by Bon Jovi Montes. This dashboard provides the admin of the Parking Project data and access to the process of the project for analysis and moderation.
+    * [ ] Develop Frontend Dashboard
+- Develop Parking Owner Mobile Application
+    > Using KMM, develop a mobile application for Parking Owners
+    * [ ] Android Version
+    * [ ] iOS Version
+- Developer Parking User Mobile Application
+    > Using KMM, develop a mobile application for users
+    * [ ] Android Version
+    * [ ] iOS Version
 
 ## Doing (Technical)
 
