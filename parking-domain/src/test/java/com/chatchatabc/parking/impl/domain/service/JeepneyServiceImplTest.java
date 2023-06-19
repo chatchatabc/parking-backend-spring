@@ -19,6 +19,7 @@ class JeepneyServiceImplTest extends TestContainersBaseTest {
         Long currentCount = jeepneyRepository.count();
 
         Jeepney jeepney = new Jeepney();
+        jeepney.setJeepneyUuid("uuid");
         jeepney.setPlateNumber("ABC-1234");
         jeepney.setName("Test Jeepney");
         jeepney.setLatitude(1.0);
