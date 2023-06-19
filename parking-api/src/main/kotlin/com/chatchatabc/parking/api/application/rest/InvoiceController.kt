@@ -8,6 +8,7 @@ import com.chatchatabc.parking.web.common.application.*
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
 import com.chatchatabc.parking.web.common.application.nats.NatsPayload.InvoicePayload
 import io.nats.client.Connection
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -31,6 +32,10 @@ class InvoiceController(
     /**
      * Get invoices by vehicle uuid
      */
+    @Operation(
+        summary = "Get invoices by vehicle uuid",
+        description = "Allow users to get invoices by vehicle uuid"
+    )
     @GetMapping("/vehicle/{vehicleUuid}")
     fun getInvoicesByVehicle(
         @PathVariable vehicleUuid: String,
@@ -42,6 +47,10 @@ class InvoiceController(
     /**
      * Get latest active invoices by parking lot vehicle uuid
      */
+    @Operation(
+        summary = "Get latest active invoices by parking lot vehicle uuid",
+        description = "Allow users to get latest active invoices by parking lot vehicle uuid"
+    )
     @GetMapping("/active/{vehicleUuid}")
     fun getActiveInvoice(
         @PathVariable vehicleUuid: String,
@@ -56,6 +65,10 @@ class InvoiceController(
     /**
      * Get invoices by parking lot uuid
      */
+    @Operation(
+        summary = "Get invoices by parking lot uuid",
+        description = "Allow users to get invoices by parking lot uuid"
+    )
     @GetMapping("/parking-lot/{parkingLotUuid}")
     fun getInvoicesByParkingLot(
         @PathVariable parkingLotUuid: String,
@@ -74,6 +87,10 @@ class InvoiceController(
     /**
      * Create an invoice
      */
+    @Operation(
+        summary = "Create an invoice",
+        description = "Allow users to create an invoice. A NATS message will be published to the owner and client"
+    )
     @PostMapping("/create/{vehicleUuid}")
     fun createInvoice(
         @PathVariable vehicleUuid: String,
@@ -112,6 +129,10 @@ class InvoiceController(
     /**
      * End an invoice
      */
+    @Operation(
+        summary = "End an invoice",
+        description = "Allow users to end an invoice. A NATS message will be published to the owner and client"
+    )
     @PostMapping("/end/{invoiceUuid}")
     fun endInvoice(
         @PathVariable invoiceUuid: String,
@@ -147,6 +168,10 @@ class InvoiceController(
     /**
      * Pay an invoice
      */
+    @Operation(
+        summary = "Pay an invoice",
+        description = "Allow users to pay an invoice."
+    )
     @PostMapping("/pay/{invoiceId}")
     fun payInvoice(
         @PathVariable invoiceId: String,
@@ -160,6 +185,10 @@ class InvoiceController(
     /**
      * Estimate Invoice
      */
+    @Operation(
+        summary = "Estimate Invoice",
+        description = "Allow users to estimate an invoice cost based on the parking lot rate"
+    )
     @GetMapping("/estimate/{invoiceUuid}")
     fun estimateInvoice(
         @PathVariable invoiceUuid: String
