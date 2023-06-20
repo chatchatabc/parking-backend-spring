@@ -9,12 +9,27 @@ import org.mapstruct.Mappings
 
 @Mapper(componentModel = "spring")
 interface VehicleBrandMapper {
+    /**
+     * Create vehicle brand from request
+     */
     @Mappings(
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "status", source = "request.status")
     )
     fun createVehicleBrandFromCreateRequest(
         request: VehicleBrandController.VehicleBrandCreateRequest,
+        @MappingTarget vehicleBrand: VehicleBrand
+    )
+
+    /**
+     * Update vehicle brand from request
+     */
+    @Mappings(
+        Mapping(target = "name", source = "request.name"),
+        Mapping(target = "status", source = "request.status")
+    )
+    fun updateVehicleBrandFromUpdateRequest(
+        request: VehicleBrandController.VehicleBrandUpdateRequest,
         @MappingTarget vehicleBrand: VehicleBrand
     )
 }
