@@ -4,12 +4,13 @@ import com.chatchatabc.parking.domain.model.VehicleModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long> {
+public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long>, JpaSpecificationExecutor<VehicleModel> {
 
     /**
      * Find Vehicle Model by Model UUID
