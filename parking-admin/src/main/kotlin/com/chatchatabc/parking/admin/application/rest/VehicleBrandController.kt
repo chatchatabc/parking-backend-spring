@@ -4,12 +4,10 @@ import com.chatchatabc.parking.admin.application.mapper.VehicleBrandMapper
 import com.chatchatabc.parking.domain.model.VehicleBrand
 import com.chatchatabc.parking.domain.service.VehicleBrandService
 import com.chatchatabc.parking.domain.user
+import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import org.mapstruct.factory.Mappers
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
@@ -42,5 +40,25 @@ class VehicleBrandController(
         vehicleBrandService.saveVehicleBrand(createdVehicleBrand)
     }.getOrElse { it.toErrorResponse() }
 
-    // TODO: Update Brand
+    /**
+     * Vehicle Brand Update Request Data Class
+     */
+    data class VehicleBrandUpdateRequest(
+        val name: String?,
+        val status: Int?
+    )
+
+    /**
+     * Admin update Vehicle Brand
+     */
+    @PutMapping("/update/{id}")
+    fun updateVehicleBrand(
+        @RequestBody req: VehicleBrandUpdateRequest,
+        principal: Principal,
+        @PathVariable id: String
+    ) = runCatching {
+        val updatedVehicleBrand = id.vehicleBrand
+        vehicleBrandMapper.updateVehicleBrandFromUpdateRequest(req, updatedVehicleBrand)
+        vehicleBrandService.saveVehicleBrand(updatedVehicleBrand)
+    }.getOrElse { it.toErrorResponse() }
 }
