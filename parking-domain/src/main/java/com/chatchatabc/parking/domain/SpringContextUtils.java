@@ -23,6 +23,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
     private static RoleRepository roleRepository;
     private static RouteRepository routeRepository;
     private static UserRepository userRepository;
+    private static VehicleBrandRepository vehicleBrandRepository;
     private static VehicleRepository vehicleRepository;
 
     // Others
@@ -45,6 +46,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
         roleRepository = beanFactory.getBean(RoleRepository.class);
         routeRepository = beanFactory.getBean(RouteRepository.class);
         userRepository = beanFactory.getBean(UserRepository.class);
+        vehicleBrandRepository = beanFactory.getBean(VehicleBrandRepository.class);
         vehicleRepository = beanFactory.getBean(VehicleRepository.class);
 
         // Others
@@ -86,6 +88,10 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
 
     public static UserRepository getUserRepository() {
         return userRepository;
+    }
+
+    public static VehicleBrandRepository getVehicleBrandRepository() {
+        return vehicleBrandRepository;
     }
 
     public static VehicleRepository getVehicleRepository() {
