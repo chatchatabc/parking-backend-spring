@@ -1,10 +1,10 @@
 package com.chatchatabc.parking.domain.specification;
 
-import com.chatchatabc.parking.domain.model.VehicleBrand;
+import com.chatchatabc.parking.domain.model.VehicleType;
 import org.springframework.data.jpa.domain.Specification;
 
-public class VehicleBrandSpecification extends GenericSpecification<VehicleBrand> {
-    public static Specification<VehicleBrand> withKeyword(String keyword) {
+public class VehicleTypeSpecification extends GenericSpecification<VehicleType> {
+    public static Specification<VehicleType> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
             return builder.or(
