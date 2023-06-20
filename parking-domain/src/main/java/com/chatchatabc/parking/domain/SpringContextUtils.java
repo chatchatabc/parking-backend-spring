@@ -25,6 +25,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
     private static UserRepository userRepository;
     private static VehicleBrandRepository vehicleBrandRepository;
     private static VehicleRepository vehicleRepository;
+    private static VehicleTypeRepository vehicleTypeRepository;
 
     // Others
     private static ObjectMapper objectMapper;
@@ -48,6 +49,7 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
         userRepository = beanFactory.getBean(UserRepository.class);
         vehicleBrandRepository = beanFactory.getBean(VehicleBrandRepository.class);
         vehicleRepository = beanFactory.getBean(VehicleRepository.class);
+        vehicleTypeRepository = beanFactory.getBean(VehicleTypeRepository.class);
 
         // Others
         objectMapper = new ObjectMapper();
@@ -96,6 +98,10 @@ public class SpringContextUtils implements InitializingBean, BeanFactoryAware {
 
     public static VehicleRepository getVehicleRepository() {
         return vehicleRepository;
+    }
+
+    public static VehicleTypeRepository getVehicleTypeRepository() {
+        return vehicleTypeRepository;
     }
 
     // Others
