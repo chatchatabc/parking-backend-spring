@@ -15,7 +15,11 @@ interface VehicleMapper {
     @Mappings(
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "plateNumber", source = "request.plateNumber"),
-        Mapping(target = "type", source = "request.type")
+        Mapping(target = "brandUuid", source = "request.brandUuid"),
+        Mapping(target = "modelUuid", source = "request.modelUuid"),
+        Mapping(target = "typeUuid", source = "request.typeUuid"),
+        Mapping(target = "color", source = "request.color"),
+        Mapping(target = "year", source = "request.year"),
     )
     fun updateVehicleFromUpdateRequest(
         request: VehicleController.VehicleUpdateRequest,
