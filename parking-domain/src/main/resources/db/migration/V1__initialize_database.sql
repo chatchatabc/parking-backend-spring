@@ -180,14 +180,18 @@ CREATE TABLE IF NOT EXISTS vehicle
     vehicle_uuid VARCHAR(36)  NOT NULL UNIQUE,
     name         VARCHAR(255) NOT NULL,
     plate_number VARCHAR(20)  NOT NULL UNIQUE,
-    type         INT          NOT NULL DEFAULT 0,
+    brand_uuid   VARCHAR(36)  NOT NULL,
+    model_uuid   VARCHAR(36)  NOT NULL,
+    type_uuid    VARCHAR(36)  NOT NULL,
+    color        VARCHAR(50),
+    year         VARCHAR(10),
     owner_id     BIGINT       NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
 );
 
 ALTER SEQUENCE vehicle_id_seq RESTART WITH 1000;
-create index idx_vehicle_on_type on vehicle (type);
+create index idx_vehicle_on_type_uuid on vehicle (type_uuid);
 create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
 
