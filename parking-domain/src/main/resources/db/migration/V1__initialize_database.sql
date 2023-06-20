@@ -154,6 +154,25 @@ create index idx_vehicle_type_on_type_uuid on vehicle_type (type_uuid);
 create index idx_vehicle_type_on_name on vehicle_type (name);
 create index idx_vehicle_type_on_status on vehicle_type (status);
 
+-- Create Vehicle Model table
+CREATE TABLE IF NOT EXISTS vehicle_model
+(
+    id         SERIAL PRIMARY KEY,
+    model_uuid VARCHAR(36)  NOT NULL UNIQUE,
+    brand_uuid VARCHAR(36)  NOT NULL,
+    name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
+    created_by BIGINT       NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE vehicle_model_id_seq RESTART WITH 1000;
+create index idx_vehicle_model_on_model_uuid on vehicle_model (model_uuid);
+create index idx_vehicle_model_on_brand_uuid on vehicle_model (brand_uuid);
+create index idx_vehicle_model_on_name on vehicle_model (name);
+create index idx_vehicle_model_on_status on vehicle_model (status);
+
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
 (
