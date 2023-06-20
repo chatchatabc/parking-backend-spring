@@ -36,7 +36,7 @@ class VehicleControllerTest : AuthorizedBaseTest() {
         given(vehicleRepository.findByVehicleUuid(vehicleUuid)).willReturn(Optional.of(vehicle))
 
         // Actions
-        val result = this.mvc.perform(get("/api/vehicle/$vehicleUuid"))
+        val result = this.mockMvc.perform(get("/api/vehicle/$vehicleUuid"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk()).andReturn()
         println(result.response.contentAsString)
@@ -49,7 +49,7 @@ class VehicleControllerTest : AuthorizedBaseTest() {
 
         given(vehicleRepository.findAllByUser("1", pr)).willReturn(Page.empty())
 
-        val result = this.mvc.perform(get("/api/vehicle/my-vehicles"))
+        val result = this.mockMvc.perform(get("/api/vehicle/my-vehicles"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk()).andReturn()
     }
