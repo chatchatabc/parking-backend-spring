@@ -16,7 +16,8 @@ public class DataBaseTest extends TestContainersBaseTest {
     private DataSource dataSource;
 
     @Test
-    @DataSet({"db/datasets/role.xml",
+    @DataSet({
+            "db/datasets/role.xml",
             "db/datasets/user.xml",
             "db/datasets/vehicle.xml",
             "db/datasets/parking_lot.xml",

@@ -292,7 +292,11 @@
     vehicle_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
     plate_number CDATA #REQUIRED
-    type CDATA #IMPLIED
+    brand_uuid CDATA #REQUIRED
+    model_uuid CDATA #REQUIRED
+    type_uuid CDATA #REQUIRED
+    color CDATA #IMPLIED
+    year CDATA #IMPLIED
     owner_id CDATA #REQUIRED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
