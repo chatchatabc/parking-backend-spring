@@ -28,6 +28,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
                 "db/datasets/jeepney.xml",
                 "db/datasets/vehicle_brand.xml",
                 "db/datasets/vehicle_type.xml",
+                "db/datasets/vehicle_model.xml",
         })
 public abstract class TestContainersBaseTest extends SpringBootBaseTest {
 }

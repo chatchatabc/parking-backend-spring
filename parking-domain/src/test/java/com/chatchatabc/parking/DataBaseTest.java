@@ -31,6 +31,7 @@ public class DataBaseTest extends TestContainersBaseTest {
             "db/datasets/jeepney.xml",
             "db/datasets/vehicle_brand.xml",
             "db/datasets/vehicle_type.xml",
+            "db/datasets/vehicle_model.xml",
     })
     public void testLoadDataset() {
         Assertions.assertTrue(true);
