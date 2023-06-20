@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class VehicleBrand {
         public static final int INACTIVE = -1;
     }
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +37,7 @@ public class VehicleBrand {
     @Column
     private Integer status = VehicleBrandStatus.DRAFT;
 
+    @JsonIgnore
     @Column
     private Long createdBy;
 
