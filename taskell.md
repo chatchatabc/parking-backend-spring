@@ -1,5 +1,11 @@
 ## To Do (Business)
 
+- Add more fields to Vehicle model
+    > Add fields that represent the vehicle model more
+    * [ ] Vehicle Make
+    * [ ] Vehicle Model
+    * [ ] Vehicle Year
+    * [ ] Vehicle Color
 
 ## To Do (Technical)
 
