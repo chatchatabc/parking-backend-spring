@@ -23,6 +23,10 @@ type Query {
     getVehicleTypes(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleTypeList!
     getVehicleType(id: String): VehicleType
 
+    getVehicleModels(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleModelList!
+    getVehicleModel(id: String): VehicleModel
+    getVehicleModelsByBrand(page: Int size: Int, brandUuid: String!): VehicleModelList!
+
     getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
     getJeepney(id: String): Jeepney
 
@@ -179,6 +183,21 @@ type VehicleType {
 
 type VehicleTypeList {
     content: [VehicleType]!
+    pageInfo: PageInfo!
+}
+
+# Vehicle Model
+type VehicleModel {
+    modelUuid: String!
+    brandUuid: String!
+    name: String
+    status: Int
+    createdAt: String
+    updatedAt: String
+}
+
+type VehicleModelList {
+    content: [VehicleModel]!
     pageInfo: PageInfo!
 }
 
