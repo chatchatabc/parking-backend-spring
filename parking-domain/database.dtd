@@ -1,6 +1,7 @@
 <!ELEMENT dataset (
     authorities*,
     cloud_file*,
+    coupon*,
     flyway_schema_history*,
     invoice*,
     jeepney*,
@@ -18,7 +19,8 @@
     user_logout_log*,
     user_vehicle*,
     users*,
-    vehicle*)>
+    vehicle*,
+    vehicle_brand*)>
 
 <!ELEMENT authorities EMPTY>
 <!ATTLIST authorities
@@ -39,6 +41,22 @@
     uploaded_by CDATA #REQUIRED
     created_at CDATA #REQUIRED
     updated_at CDATA #IMPLIED
+>
+
+<!ELEMENT coupon EMPTY>
+<!ATTLIST coupon
+    id CDATA #IMPLIED
+    coupon_uuid CDATA #REQUIRED
+    name CDATA #REQUIRED
+    description CDATA #REQUIRED
+    code CDATA #REQUIRED
+    status CDATA #IMPLIED
+    flag CDATA #IMPLIED
+    valid_until CDATA #REQUIRED
+    created_by CDATA #REQUIRED
+    approved_by CDATA #IMPLIED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
 >
 
 <!ELEMENT flyway_schema_history EMPTY>
@@ -274,6 +292,17 @@
     plate_number CDATA #REQUIRED
     type CDATA #IMPLIED
     owner_id CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT vehicle_brand EMPTY>
+<!ATTLIST vehicle_brand
+    id CDATA #IMPLIED
+    brand_uuid CDATA #REQUIRED
+    name CDATA #REQUIRED
+    status CDATA #IMPLIED
+    created_by CDATA #REQUIRED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
 >
