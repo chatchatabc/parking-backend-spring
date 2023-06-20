@@ -16,6 +16,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehicleBrand {
+    public static class VehicleBrandStatus {
+        public static final int ACTIVE = 1;
+        public static final int DRAFT = 0;
+        public static final int INACTIVE = -1;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +31,9 @@ public class VehicleBrand {
 
     @Column
     private String name;
+
+    @Column
+    private Integer status = VehicleBrandStatus.DRAFT;
 
     @Column
     private Long createdBy;
