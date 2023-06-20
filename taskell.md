@@ -14,10 +14,6 @@
     * [ ] Implement Controllers
     * [ ] Implement Services
     * [ ] Implement Repositories
-- Diagrams
-    * [ ] Update the Entity Relationship Diagram of the Project
-    * [ ] Update the Flowcharts of the Project's Logic
-    * [ ] Create App Flow Diagrams
 - Deployments
     * [ ] Implement automated deployments using GitHub actions and ECS
 - Refactor Repositories and Entities to use @NaturalId
@@ -69,6 +65,10 @@
 - Refactors
     * [ ] Replace ObjectMapper with something better
     * [ ] Rename all `id` fields from GraphQL to `keyword` for consistency and to avoid confusion with database ids
+- Diagrams
+    * [x] Update the Entity Relationship Diagram of the Project
+    * [ ] Update the Flowcharts of the Project's Logic
+    * [ ] Create App Flow Diagrams
 
 ## For Review
 
