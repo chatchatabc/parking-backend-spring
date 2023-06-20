@@ -21,6 +21,7 @@
     users*,
     vehicle*,
     vehicle_brand*,
+    vehicle_model*,
     vehicle_type*)>
 
 <!ELEMENT authorities EMPTY>
@@ -300,6 +301,18 @@
 <!ELEMENT vehicle_brand EMPTY>
 <!ATTLIST vehicle_brand
     id CDATA #IMPLIED
+    brand_uuid CDATA #REQUIRED
+    name CDATA #REQUIRED
+    status CDATA #IMPLIED
+    created_by CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+    updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT vehicle_model EMPTY>
+<!ATTLIST vehicle_model
+    id CDATA #IMPLIED
+    model_uuid CDATA #REQUIRED
     brand_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
     status CDATA #IMPLIED
