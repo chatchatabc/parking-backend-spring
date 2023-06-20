@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS vehicle_brand
     id         SERIAL PRIMARY KEY,
     brand_uuid VARCHAR(36)  NOT NULL UNIQUE,
     name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
     created_by BIGINT       NOT NULL,
     created_at TIMESTAMP    NOT NULL,
     updated_at TIMESTAMP    NOT NULL
