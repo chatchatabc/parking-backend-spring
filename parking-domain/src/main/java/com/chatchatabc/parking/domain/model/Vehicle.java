@@ -31,25 +31,23 @@ public class Vehicle {
     @Column(unique = true)
     private String plateNumber;
 
-    /**
-     * 0 - motorcycle
-     * 1 - car
-     * todo: add more types like sedan, suv, etc.
-     */
     @Column
-    private int type;
+    private String brandUuid;
 
-//    @Column
-//    private int make;
-//
-//    @Column
-//    private int model;
-//
-//    @Column
-//    private int year;
-//
-//    @Column
-//    private int color;
+    @Column
+    private String modelUuid;
+
+    @Column
+    private String typeUuid;
+
+    @Column
+    private String color;
+
+    @Column
+    private String year;
+
+    // TODO:
+    // add image for front, back, and side view of the vehicle
 
     // TODO: Verified at
     // TODO: Verified by
