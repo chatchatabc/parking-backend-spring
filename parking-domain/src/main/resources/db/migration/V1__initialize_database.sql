@@ -135,6 +135,24 @@ CREATE TABLE IF NOT EXISTS vehicle_brand
 ALTER SEQUENCE vehicle_brand_id_seq RESTART WITH 1000;
 create index idx_vehicle_brand_on_brand_uuid on vehicle_brand (brand_uuid);
 create index idx_vehicle_brand_on_name on vehicle_brand (name);
+create index idx_vehicle_brand_on_status on vehicle_brand (status);
+
+-- Create Vehicle Type table
+CREATE TABLE IF NOT EXISTS vehicle_type
+(
+    id         SERIAL PRIMARY KEY,
+    type_uuid  VARCHAR(36)  NOT NULL UNIQUE,
+    name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
+    created_by BIGINT       NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE vehicle_type_id_seq RESTART WITH 1000;
+create index idx_vehicle_type_on_type_uuid on vehicle_type (type_uuid);
+create index idx_vehicle_type_on_name on vehicle_type (name);
+create index idx_vehicle_type_on_status on vehicle_type (status);
 
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
