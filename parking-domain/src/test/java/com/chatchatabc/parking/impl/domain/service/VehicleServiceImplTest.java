@@ -20,13 +20,13 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     void testRegisterVehicle_WhenVehicleDoesNotExist_ShouldRegisterVehicle() throws Exception {
         PageRequest pr = PageRequest.of(0, 10);
         Long currentCount = vehicleRepository.findAllByUser("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements();
-        vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning DaQueen", "ASD12345", 0);
+        vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning DaQueen", "ASD12345", "8b06ff3f-6bef-434f-8b51-638c8ba30983", "1debf602-68d7-4f79-8f8d-67bcb5b6c5df", "a1f7061d-567e-415d-9010-2802343230d4", "Red", "2000");
         assertThat(vehicleRepository.findAllByUser("b0c50381-d0bd-455d-9e46-2b0bd599320b", pr).getTotalElements()).isGreaterThan(currentCount);
     }
 
     @Test
     void testRegisterVehicle_WhenVehicleAlreadyExists_ShouldThrowException() throws Exception {
-        assertThrows(Exception.class, () -> vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning McQueen", "ASD1234", 0));
+        assertThrows(Exception.class, () -> vehicleService.registerVehicle("b0c50381-d0bd-455d-9e46-2b0bd599320b", "Lightning McQueen", "ASD1234", "8b06ff3f-6bef-434f-8b51-638c8ba30983", "1debf602-68d7-4f79-8f8d-67bcb5b6c5df", "a1f7061d-567e-415d-9010-2802343230d4", "Red", "2000"));
     }
 
     @Test
