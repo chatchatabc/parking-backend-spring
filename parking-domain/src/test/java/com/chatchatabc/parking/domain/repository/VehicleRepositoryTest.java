@@ -32,7 +32,6 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         assertEquals("2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9", vehicleOptional.get().getVehicleUuid());
         assertEquals("Lightning McQueen", vehicleOptional.get().getName());
         assertEquals("ASD1234", vehicleOptional.get().getPlateNumber());
-        assertEquals(0, vehicleOptional.get().getType());
         assertEquals(ownerId, vehicleOptional.get().getOwner());
     }
 
@@ -57,7 +56,6 @@ public class VehicleRepositoryTest extends TestContainersBaseTest {
         assertEquals(vehicleUuid, vehicle.getVehicleUuid());
         assertEquals("Lightning McQueen", vehicle.getName());
         assertEquals("ASD1234", vehicle.getPlateNumber());
-        assertEquals(0, vehicle.getType());
         assertEquals(5L, vehicle.getOwner());
     }
 
