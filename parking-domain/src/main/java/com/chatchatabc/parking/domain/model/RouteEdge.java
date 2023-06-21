@@ -19,7 +19,7 @@ public class RouteEdge {
     private Long id;
 
     @Column
-    private String routeUuid;
+    private Long routeId;
 
     @Column
     private Long nodeFrom;
