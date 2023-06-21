@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Create Jeepney
-POST {{adminBaseUrl}}/api/jeepney/create
+POST {{adminBaseUrl}}/api/jeepney
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
