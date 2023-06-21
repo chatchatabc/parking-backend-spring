@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.service.VehicleBrandService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.web.common.application.toErrorResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -28,7 +29,11 @@ class VehicleBrandController(
     /**
      * Admin create Vehicle Brand
      */
-    @PostMapping("/create")
+    @Operation(
+        summary = "Create Vehicle Brand",
+        description = "Create Vehicle Brand"
+    )
+    @PostMapping("/")
     fun createVehicleBrand(
         @RequestBody req: VehicleBrandCreateRequest,
         principal: Principal
@@ -51,7 +56,11 @@ class VehicleBrandController(
     /**
      * Admin update Vehicle Brand
      */
-    @PutMapping("/update/{id}")
+    @Operation(
+        summary = "Update Vehicle Brand",
+        description = "Update Vehicle Brand"
+    )
+    @PutMapping("/{id}")
     fun updateVehicleBrand(
         @RequestBody req: VehicleBrandUpdateRequest,
         principal: Principal,
