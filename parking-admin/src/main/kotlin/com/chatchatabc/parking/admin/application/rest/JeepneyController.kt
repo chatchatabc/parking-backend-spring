@@ -21,6 +21,7 @@ class JeepneyController(
      * Create a new Jeepney Request data class
      */
     data class JeepneyCreateRequest(
+        val jeepneyUuid: String,
         val name: String,
         val plateNumber: String,
         val drivers: String,
@@ -38,7 +39,7 @@ class JeepneyController(
         summary = "Create a new Jeepney",
         description = "Create a new Jeepney"
     )
-    @PostMapping("/")
+    @PostMapping("/create")
     fun create(
         @RequestBody req: JeepneyCreateRequest
     ) = runCatching {
@@ -51,6 +52,7 @@ class JeepneyController(
      * Update Jeepney Request data class
      */
     data class JeepneyUpdateRequest(
+        val jeepneyUuid: String?,
         val name: String?,
         val plateNumber: String?,
         val drivers: String?,
