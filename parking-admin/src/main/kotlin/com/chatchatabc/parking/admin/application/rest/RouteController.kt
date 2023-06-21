@@ -5,6 +5,7 @@ import com.chatchatabc.parking.domain.model.Route
 import com.chatchatabc.parking.domain.route
 import com.chatchatabc.parking.domain.service.RouteService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 
@@ -24,7 +25,11 @@ class RouteController(
     /**
      * Create Route
      */
-    @PostMapping("/create")
+    @Operation(
+        summary = "Create Route",
+        description = "Create Route"
+    )
+    @PostMapping("/")
     fun createRoute(request: RouteCreateRequest) = runCatching {
         val route = Route()
         routeMapper.createRouteFromCreateRequest(request, route)
@@ -43,7 +48,11 @@ class RouteController(
     /**
      * Update Route
      */
-    @PutMapping("/update/{id}")
+    @Operation(
+        summary = "Update Route",
+        description = "Update Route"
+    )
+    @PutMapping("/{id}")
     fun updateRoute(@PathVariable id: String, @RequestBody request: RouteUpdateRequest) = runCatching {
         val route = id.route
         routeMapper.updateRouteFromUpdateRequest(request, route)
@@ -60,7 +69,11 @@ class RouteController(
     /**
      * Update Route Points
      */
-    @PutMapping("/update-points/{id}")
+    @Operation(
+        summary = "Update Route Points",
+        description = "Update Route Points"
+    )
+    @PutMapping("/points/{id}")
     fun updateRoutePoints(@PathVariable id: String, @RequestBody request: RoutePointUpdateRequest) = runCatching {
         val route = id.route
         route.points = request.points
