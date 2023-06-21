@@ -13,6 +13,8 @@
     report_status*,
     role*,
     route*,
+    route_edge*,
+    route_node*,
     user_activity_log*,
     user_ban_history_log*,
     user_login_log*,
@@ -212,6 +214,25 @@
     flag CDATA #IMPLIED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED
+>
+
+<!ELEMENT route_edge EMPTY>
+<!ATTLIST route_edge
+    id CDATA #IMPLIED
+    route_uuid CDATA #REQUIRED
+    node_from CDATA #REQUIRED
+    node_to CDATA #REQUIRED
+    distance CDATA #REQUIRED
+    created_at CDATA #REQUIRED
+>
+
+<!ELEMENT route_node EMPTY>
+<!ATTLIST route_node
+    id CDATA #IMPLIED
+    latitude CDATA #REQUIRED
+    longitude CDATA #REQUIRED
+    poi CDATA #IMPLIED
+    created_at CDATA #REQUIRED
 >
 
 <!ELEMENT user_activity_log EMPTY>
