@@ -42,7 +42,7 @@ class DashboardController(
         summary = "Parking Owner Dashboard Statistics API",
         description = "Allow owner to get dashboard statistics of the current state of their parking lot"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getDashboardStatistics(
         principal: Principal
     ) = runCatching {

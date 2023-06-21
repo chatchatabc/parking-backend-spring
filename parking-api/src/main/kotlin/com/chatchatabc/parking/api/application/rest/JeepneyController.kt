@@ -40,7 +40,7 @@ class JeepneyController(
         summary = "Get Jeepneys",
         description = "Allow users to get Jeepneys"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getAllJeepneys(
         pageable: Pageable
     ) = runCatching {

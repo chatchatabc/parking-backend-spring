@@ -29,7 +29,7 @@ class RouteController(
         summary = "Create Route",
         description = "Create Route"
     )
-    @PostMapping("/")
+    @PostMapping
     fun createRoute(request: RouteCreateRequest) = runCatching {
         val route = Route()
         routeMapper.createRouteFromCreateRequest(request, route)

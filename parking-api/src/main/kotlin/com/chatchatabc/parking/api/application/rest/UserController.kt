@@ -75,7 +75,7 @@ class UserController(
         summary = "Update the details of a user's profile",
         description = "User to update the details of a user's profile."
     )
-    @PutMapping("/")
+    @PutMapping
     fun updateUser(
         @RequestBody request: UserProfileUpdateRequest,
         principal: Principal

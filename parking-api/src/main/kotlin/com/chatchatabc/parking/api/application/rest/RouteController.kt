@@ -26,7 +26,7 @@ class RouteController(
         summary = "Get All Routes",
         description = "Allow users to get all routes"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getAllRoutes(pageable: Pageable) =
         runCatching { routeRepository.findAll(pageable).toResponse() }.getOrElse { it.toErrorResponse() }
 

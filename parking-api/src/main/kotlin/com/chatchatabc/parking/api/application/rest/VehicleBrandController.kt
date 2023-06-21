@@ -22,7 +22,7 @@ class VehicleBrandController(
         summary = "Get vehicle brands",
         description = "Allow users to get vehicle brands"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getAll(pageable: Pageable) = vehicleBrandRepository.findAll(pageable).toResponse()
 
     /**

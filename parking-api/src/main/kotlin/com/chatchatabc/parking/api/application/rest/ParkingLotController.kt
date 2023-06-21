@@ -45,7 +45,7 @@ class ParkingLotController(
         summary = "Get all parking lots",
         description = "Allow users to get all parking lots"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getAll(pageable: Pageable) =
         parkingLotRepository.findByStatusGreaterThanEqual(ParkingLot.DRAFT, pageable).toResponse()
 
@@ -127,7 +127,7 @@ class ParkingLotController(
         summary = "Register a parking lot",
         description = "Allow users to register a parking lot"
     )
-    @PostMapping("/")
+    @PostMapping
     fun register(
         @RequestBody req: ParkingLotCreateRequest,
         principal: Principal
@@ -165,7 +165,7 @@ class ParkingLotController(
         summary = "Update a parking lot",
         description = "Allow users to update a parking lot"
     )
-    @PutMapping("/")
+    @PutMapping
     fun update(
         @RequestBody req: ParkingLotUpdateRequest,
         principal: Principal

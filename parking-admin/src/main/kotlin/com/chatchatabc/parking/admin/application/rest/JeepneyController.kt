@@ -39,7 +39,7 @@ class JeepneyController(
         summary = "Create a new Jeepney",
         description = "Create a new Jeepney"
     )
-    @PostMapping("/")
+    @PostMapping
     fun create(
         @RequestBody req: JeepneyCreateRequest
     ) = runCatching {
