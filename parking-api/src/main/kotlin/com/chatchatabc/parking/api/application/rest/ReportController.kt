@@ -28,7 +28,7 @@ class ReportController(
         summary = "Get Reports",
         description = "Get Reports"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getReports(
         pageable: Pageable
     ) = runCatching {
@@ -69,7 +69,7 @@ class ReportController(
         summary = "Create Report",
         description = "Create Report"
     )
-    @PostMapping("/")
+    @PostMapping
     fun createReport(
         @RequestBody req: ReportCreateRequest
     ) = runCatching {

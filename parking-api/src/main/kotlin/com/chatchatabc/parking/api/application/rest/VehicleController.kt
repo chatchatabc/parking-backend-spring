@@ -75,7 +75,7 @@ class VehicleController(
         summary = "Register a vehicle",
         description = "Register a vehicle"
     )
-    @PostMapping("/")
+    @PostMapping
     fun registerVehicle(
         @RequestBody req: VehicleRegisterRequest,
         principal: Principal

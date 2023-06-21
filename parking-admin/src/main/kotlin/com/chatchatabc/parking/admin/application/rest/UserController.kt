@@ -44,7 +44,7 @@ class UserController(
         summary = "Create User",
         description = "Create User"
     )
-    @PostMapping("/")
+    @PostMapping
     fun createUser(
         @RequestBody req: UserCreateRequest
     ) = runCatching {

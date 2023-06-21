@@ -63,6 +63,10 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/report/create-report").authenticated();
                     auth.requestMatchers("/api/report/**").hasAnyRole("ADMIN", "ENFORCER");
 
+                    // Routes for Jeepney
+                    // TODO: Make specific routes for roles
+                    auth.requestMatchers("/api/jeepney/**").authenticated();
+
                     // Routes for Routes
                     auth.requestMatchers("/api/route/").authenticated();
                     auth.requestMatchers("/api/route/last-updated-at/**").authenticated();

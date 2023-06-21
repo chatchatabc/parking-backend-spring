@@ -23,7 +23,7 @@ class VehicleModelController(
         summary = "Get Vehicle Models",
         description = "Allow users to get Vehicle Models"
     )
-    @GetMapping("/")
+    @GetMapping
     fun getAll(pageable: Pageable) = vehicleModelRepository.findAll(pageable).toResponse()
 
     /**

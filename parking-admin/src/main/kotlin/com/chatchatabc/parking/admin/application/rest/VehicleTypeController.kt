@@ -33,7 +33,7 @@ class VehicleTypeController(
         summary = "Create Vehicle Type",
         description = "Create Vehicle Type"
     )
-    @PostMapping("/")
+    @PostMapping
     fun createVehicleType(
         @RequestBody req: VehicleTypeCreateRequest,
         principal: Principal

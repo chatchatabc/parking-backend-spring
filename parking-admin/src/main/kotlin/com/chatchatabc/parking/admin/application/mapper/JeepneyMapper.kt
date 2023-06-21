@@ -14,6 +14,7 @@ interface JeepneyMapper {
      * Jeepney Create Mapper
      */
     @Mappings(
+        Mapping(target = "jeepneyUuid", source = "request.jeepneyUuid"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "plateNumber", source = "request.plateNumber"),
         Mapping(target = "drivers", source = "request.drivers"),
@@ -32,6 +33,7 @@ interface JeepneyMapper {
      * Jeepney Update Mapper
      */
     @Mappings(
+        Mapping(target = "jeepneyUuid", source = "request.jeepneyUuid"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "plateNumber", source = "request.plateNumber"),
         Mapping(target = "drivers", source = "request.drivers"),
