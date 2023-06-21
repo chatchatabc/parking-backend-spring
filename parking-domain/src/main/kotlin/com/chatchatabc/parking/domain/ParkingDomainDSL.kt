@@ -119,3 +119,15 @@ val Long.routeEdges: List<RouteEdge>
         // TODO: Add custom errors
         return SpringContextUtils.getRouteEdgeRepository().findAllByRouteId(this)
     }
+
+val Long.routeEdge: RouteEdge
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteEdgeRepository().findById(this).orElseThrow()
+    }
+
+val Long.routeNode: RouteNode
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteNodeRepository().findById(this).orElseThrow()
+    }
