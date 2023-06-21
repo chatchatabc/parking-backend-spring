@@ -390,7 +390,7 @@ ALTER SEQUENCE route_node_id_seq RESTART WITH 1000;
 CREATE TABLE IF NOT EXISTS route_edge
 (
     id         SERIAL PRIMARY KEY,
-    route_uuid VARCHAR(36)              NOT NULL,
+    route_id   BIGINT                   NOT NULL,
     node_from  BIGINT                   NOT NULL,
     node_to    BIGINT                   NOT NULL,
     distance   FLOAT                    NOT NULL,
@@ -398,7 +398,7 @@ CREATE TABLE IF NOT EXISTS route_edge
 );
 
 ALTER SEQUENCE route_edge_id_seq RESTART WITH 1000;
-create index idx_route_edge_on_route_uuid on route_edge (route_uuid);
+create index idx_route_edge_on_route_id on route_edge (route_id);
 
 -- Create Jeepney Ride table
 CREATE TABLE IF NOT EXISTS jeepney_ride
