@@ -58,25 +58,4 @@ class RouteController(
         routeMapper.updateRouteFromUpdateRequest(request, route)
         routeService.saveRoute(route)
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Route Points Update Data Class
-     */
-    data class RoutePointUpdateRequest(
-        val points: String
-    )
-
-    /**
-     * Update Route Points
-     */
-    @Operation(
-        summary = "Update Route Points",
-        description = "Update Route Points"
-    )
-    @PutMapping("/points/{id}")
-    fun updateRoutePoints(@PathVariable id: String, @RequestBody request: RoutePointUpdateRequest) = runCatching {
-        val route = id.route
-        route.points = request.points
-        routeService.saveRoute(route)
-    }.getOrElse { it.toErrorResponse() }
 }

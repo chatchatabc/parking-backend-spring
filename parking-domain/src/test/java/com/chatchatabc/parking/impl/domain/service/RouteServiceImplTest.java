@@ -22,7 +22,6 @@ class RouteServiceImplTest extends TestContainersBaseTest {
         route.setName("route-name");
         route.setDescription("description");
         route.setStatus(Route.RouteStatus.DRAFT);
-        route.setPoints("points");
 
         routeService.saveRoute(route);
         assertThat(routeRepository.count()).isGreaterThan(count);

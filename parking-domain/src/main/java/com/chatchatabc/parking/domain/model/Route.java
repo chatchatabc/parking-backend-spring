@@ -42,9 +42,6 @@ public class Route extends FlagEntity {
     @Column
     private Integer status = RouteStatus.DRAFT;
 
-    @Column(columnDefinition = "TEXT")
-    private String points;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
