@@ -8,6 +8,7 @@ import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
@@ -23,7 +24,11 @@ class ReportController(
     /**
      * Get Reports
      */
-    @GetMapping("/reports")
+    @Operation(
+        summary = "Get Reports",
+        description = "Get Reports"
+    )
+    @GetMapping("/")
     fun getReports(
         pageable: Pageable
     ) = runCatching {
@@ -34,7 +39,11 @@ class ReportController(
     /**
      * Get reports by Reported By
      */
-    @GetMapping("/reported-by/{userUuid}")
+    @Operation(
+        summary = "Get reports by Reported By",
+        description = "Get reports by Reported By"
+    )
+    @GetMapping("/reporter/{userUuid}")
     fun getReportsBy(
         @PathVariable userUuid: String,
         pageable: Pageable
@@ -56,7 +65,11 @@ class ReportController(
     /**
      * Create Report
      */
-    @PostMapping("/create-report")
+    @Operation(
+        summary = "Create Report",
+        description = "Create Report"
+    )
+    @PostMapping("/")
     fun createReport(
         @RequestBody req: ReportCreateRequest
     ) = runCatching {
@@ -79,7 +92,11 @@ class ReportController(
     /**
      * Update Report
      */
-    @PutMapping("/update-report/{reportId}")
+    @Operation(
+        summary = "Update Report",
+        description = "Update Report"
+    )
+    @PutMapping("/{reportId}")
     fun updateReport(
         @PathVariable reportId: Long,
         @RequestBody req: ReportUpdateRequest
