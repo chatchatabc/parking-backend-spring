@@ -32,6 +32,7 @@ type Query {
 
     getRoutes(page: Int size: Int keyword: String sortField: String sortBy: Int): RouteList!
     getRoute(id: String): Route
+    getRouteNodesAndEdges(id: String): RouteNodesAndEdges
 
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
@@ -219,6 +220,31 @@ type Route {
 type RouteList {
     content: [Route]!
     pageInfo: PageInfo!
+}
+
+# RouteNodesAndEdges
+type RouteNodesAndEdges {
+    nodes: [RouteNode]!
+    edges: [RouteEdge]!
+}
+
+# RouteNode
+type RouteNode {
+    id: Int!
+    latitude: Float!
+    longitude: Float!
+    poi: String
+    createdAt: String!
+}
+
+# RouteEdge
+type RouteEdge {
+    id: Int!
+    routeId: Int!
+    nodeFrom: Int!
+    nodeTo: Int!
+    distance: Float!
+    createdAt: String!
 }
 
 # Jeepney
