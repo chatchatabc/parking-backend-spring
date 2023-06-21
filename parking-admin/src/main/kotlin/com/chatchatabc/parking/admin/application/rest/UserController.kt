@@ -9,6 +9,7 @@ import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
@@ -39,7 +40,11 @@ class UserController(
     /**
      * Create user
      */
-    @PostMapping("/create")
+    @Operation(
+        summary = "Create User",
+        description = "Create User"
+    )
+    @PostMapping("/")
     fun createUser(
         @RequestBody req: UserCreateRequest
     ) = runCatching {
@@ -70,7 +75,11 @@ class UserController(
     /**
      * Update user
      */
-    @PutMapping("/update/{userUuid}")
+    @Operation(
+        summary = "Update User",
+        description = "Update User"
+    )
+    @PutMapping("/{userUuid}")
     fun updateUser(
         @RequestBody req: UserUpdateRequest,
         @PathVariable userUuid: String,
@@ -98,6 +107,10 @@ class UserController(
     /**
      * Override user password
      */
+    @Operation(
+        summary = "Override User Password",
+        description = "Override User Password"
+    )
     @PutMapping("/override-password/{userUuid}")
     fun overrideUserPassword(
         @PathVariable userUuid: String,
@@ -120,6 +133,10 @@ class UserController(
     /**
      * Ban user
      */
+    @Operation(
+        summary = "Ban User",
+        description = "Ban User"
+    )
     @PostMapping("/ban/{userUuid}")
     fun banUser(
         @PathVariable userUuid: String,
@@ -147,6 +164,10 @@ class UserController(
     /**
      * Unban user
      */
+    @Operation(
+        summary = "Unban User",
+        description = "Unban User"
+    )
     @PostMapping("/unban/{userUuid}")
     fun unbanUser(
         @PathVariable userUuid: String,
