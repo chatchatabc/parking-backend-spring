@@ -144,6 +144,10 @@
                         <src>src/test/resources/db/datasets/route.xml</src>
                         <src>src/test/resources/db/datasets/jeepney.xml</src>
                         <src>src/test/resources/db/datasets/vehicle_brand.xml</src>
+                        <src>src/test/resources/db/datasets/vehicle_type.xml</src>
+                        <src>src/test/resources/db/datasets/vehicle_model.xml</src>
+                        <src>src/test/resources/db/datasets/route_node.xml</src>
+                        <src>src/test/resources/db/datasets/route_edge.xml</src>
                     </sources>
                 </configuration>
             </plugin>
