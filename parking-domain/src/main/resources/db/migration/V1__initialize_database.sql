@@ -120,6 +120,59 @@ CREATE TABLE IF NOT EXISTS user_ban_history_log
 ALTER SEQUENCE user_ban_history_log_id_seq RESTART WITH 1000;
 create index idx_user_ban_history_log_on_banned_by on user_ban_history_log (banned_by);
 
+-- Create Vehicle Brand table
+CREATE TABLE IF NOT EXISTS vehicle_brand
+(
+    id         SERIAL PRIMARY KEY,
+    brand_uuid VARCHAR(36)  NOT NULL UNIQUE,
+    name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
+    created_by BIGINT       NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE vehicle_brand_id_seq RESTART WITH 1000;
+create index idx_vehicle_brand_on_brand_uuid on vehicle_brand (brand_uuid);
+create index idx_vehicle_brand_on_name on vehicle_brand (name);
+create index idx_vehicle_brand_on_status on vehicle_brand (status);
+
+-- Create Vehicle Type table
+CREATE TABLE IF NOT EXISTS vehicle_type
+(
+    id         SERIAL PRIMARY KEY,
+    type_uuid  VARCHAR(36)  NOT NULL UNIQUE,
+    name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
+    created_by BIGINT       NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE vehicle_type_id_seq RESTART WITH 1000;
+create index idx_vehicle_type_on_type_uuid on vehicle_type (type_uuid);
+create index idx_vehicle_type_on_name on vehicle_type (name);
+create index idx_vehicle_type_on_status on vehicle_type (status);
+
+-- Create Vehicle Model table
+CREATE TABLE IF NOT EXISTS vehicle_model
+(
+    id         SERIAL PRIMARY KEY,
+    model_uuid VARCHAR(36)  NOT NULL UNIQUE,
+    brand_uuid VARCHAR(36)  NOT NULL,
+    name       VARCHAR(255) NOT NULL,
+    status     INT          NOT NULL DEFAULT 0,
+    created_by BIGINT       NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);
+
+ALTER SEQUENCE vehicle_model_id_seq RESTART WITH 1000;
+create index idx_vehicle_model_on_model_uuid on vehicle_model (model_uuid);
+create index idx_vehicle_model_on_brand_uuid on vehicle_model (brand_uuid);
+create index idx_vehicle_model_on_name on vehicle_model (name);
+create index idx_vehicle_model_on_status on vehicle_model (status);
+
 -- Create Vehicle table
 CREATE TABLE IF NOT EXISTS vehicle
 (
@@ -127,14 +180,18 @@ CREATE TABLE IF NOT EXISTS vehicle
     vehicle_uuid VARCHAR(36)  NOT NULL UNIQUE,
     name         VARCHAR(255) NOT NULL,
     plate_number VARCHAR(20)  NOT NULL UNIQUE,
-    type         INT          NOT NULL DEFAULT 0,
+    brand_uuid   VARCHAR(36)  NOT NULL,
+    model_uuid   VARCHAR(36)  NOT NULL,
+    type_uuid    VARCHAR(36)  NOT NULL,
+    color        VARCHAR(50),
+    year         VARCHAR(10),
     owner_id     BIGINT       NOT NULL,
     created_at   TIMESTAMP    NOT NULL,
     updated_at   TIMESTAMP    NOT NULL
 );
 
 ALTER SEQUENCE vehicle_id_seq RESTART WITH 1000;
-create index idx_vehicle_on_type on vehicle (type);
+create index idx_vehicle_on_type_uuid on vehicle (type_uuid);
 create index idx_vehicle_on_plate_number on vehicle (plate_number);
 create index idx_vehicle_on_owner_id on vehicle (owner_id);
 

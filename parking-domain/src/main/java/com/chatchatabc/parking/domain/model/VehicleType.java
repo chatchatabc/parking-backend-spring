@@ -9,56 +9,37 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "vehicle")
+@Table(name = "vehicle_type")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vehicle {
+public class VehicleType {
+    public static class VehicleTypeStatus {
+        public static final int ACTIVE = 1;
+        public static final int DRAFT = 0;
+        public static final int INACTIVE = -1;
+    }
+
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String vehicleUuid = UUID.randomUUID().toString();
+    private String typeUuid = UUID.randomUUID().toString();
 
     @Column
     private String name;
 
-    @Column(unique = true)
-    private String plateNumber;
-
     @Column
-    private String brandUuid;
-
-    @Column
-    private String modelUuid;
-
-    @Column
-    private String typeUuid;
-
-    @Column
-    private String color;
-
-    @Column
-    private String year;
-
-    // TODO:
-    // add image for front, back, and side view of the vehicle
-
-    // TODO: Verified at
-    // TODO: Verified by
+    private Integer status = VehicleTypeStatus.DRAFT;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "vehicles")
-    private Collection<User> users;
-
-    @JsonIgnore
-    @Column(name = "owner_id")
-    private Long owner;
+    @Column
+    private Long createdBy;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

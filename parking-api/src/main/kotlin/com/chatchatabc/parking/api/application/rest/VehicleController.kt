@@ -52,7 +52,11 @@ class VehicleController(
     data class VehicleRegisterRequest(
         val name: String,
         val plateNumber: String,
-        val type: Int,
+        val brandUuid: String,
+        val modelUuid: String,
+        val typeUuid: String,
+        val color: String,
+        val year: String
     )
 
     /**
@@ -63,7 +67,17 @@ class VehicleController(
         @RequestBody req: VehicleRegisterRequest,
         principal: Principal
     ) = runCatching {
-        vehicleService.registerVehicle(principal.name, req.name, req.plateNumber, req.type).toResponse()
+        // TODO: Refactor to a single save service
+        vehicleService.registerVehicle(
+            principal.name,
+            req.name,
+            req.plateNumber,
+            req.brandUuid,
+            req.modelUuid,
+            req.typeUuid,
+            req.color,
+            req.year
+        ).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
@@ -73,6 +87,11 @@ class VehicleController(
         val name: String?,
         val plateNumber: String?,
         val type: Int?,
+        val brandUuid: String?,
+        val modelUuid: String?,
+        val typeUuid: String?,
+        val color: String?,
+        val year: String?
     )
 
     /**

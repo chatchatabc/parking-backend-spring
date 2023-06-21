@@ -9,10 +9,14 @@ public interface VehicleService {
      * @param userUuid    the user uuid
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
-     * @param type        the type of the vehicle
+     * @param brandUuid   the brand of the vehicle
+     * @param modelUuid   the model of the vehicle
+     * @param typeUuid    the type of the vehicle
+     * @param color       the color of the vehicle
+     * @param year        the year of the vehicle
      * @return the vehicle
      */
-    Vehicle registerVehicle(String userUuid, String name, String plateNumber, int type) throws Exception;
+    Vehicle registerVehicle(String userUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year) throws Exception;
 
     /**
      * Update vehicle

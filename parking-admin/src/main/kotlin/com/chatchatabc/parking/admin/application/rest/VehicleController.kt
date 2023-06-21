@@ -22,7 +22,11 @@ class VehicleController(
     data class VehicleRegisterRequest(
         val name: String,
         val plateNumber: String,
-        val type: Int,
+        val brandUuid: String,
+        val modelUuid: String,
+        val typeUuid: String,
+        val color: String,
+        val year: String
     )
 
     /**
@@ -33,7 +37,15 @@ class VehicleController(
         @PathVariable userUuid: String,
         @RequestBody req: VehicleRegisterRequest
     ) = runCatching {
-        vehicleService.registerVehicle(userUuid, req.name, req.plateNumber, req.type).toResponse()
+        vehicleService.registerVehicle(
+            userUuid, req.name,
+            req.plateNumber,
+            req.brandUuid,
+            req.modelUuid,
+            req.typeUuid,
+            req.color,
+            req.year
+        ).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
 
@@ -44,6 +56,11 @@ class VehicleController(
         val name: String?,
         val plateNumber: String?,
         val type: Int?,
+        val brandUuid: String?,
+        val modelUuid: String?,
+        val typeUuid: String?,
+        val color: String?,
+        val year: String?
     )
 
     /**

@@ -143,6 +143,7 @@
                         <src>src/test/resources/db/datasets/report.xml</src>
                         <src>src/test/resources/db/datasets/route.xml</src>
                         <src>src/test/resources/db/datasets/jeepney.xml</src>
+                        <src>src/test/resources/db/datasets/vehicle_brand.xml</src>
                     </sources>
                 </configuration>
             </plugin>

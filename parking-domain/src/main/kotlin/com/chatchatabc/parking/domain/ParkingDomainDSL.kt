@@ -31,6 +31,24 @@ val String.vehicle: Vehicle
         return SpringContextUtils.getVehicleRepository().findByPlateNumber(this).orElseThrow()
     }
 
+val String.vehicleBrand: VehicleBrand
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getVehicleBrandRepository().findByBrandUuid(this).orElseThrow()
+    }
+
+val String.vehicleType: VehicleType
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getVehicleTypeRepository().findByTypeUuid(this).orElseThrow()
+    }
+
+val String.vehicleModel: VehicleModel
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getVehicleModelRepository().findByModelUuid(this).orElseThrow()
+    }
+
 val String.parkingLot: ParkingLot
     get() {
         // TODO: Add custom errors

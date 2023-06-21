@@ -16,7 +16,8 @@ public class DataBaseTest extends TestContainersBaseTest {
     private DataSource dataSource;
 
     @Test
-    @DataSet({"db/datasets/role.xml",
+    @DataSet({
+            "db/datasets/role.xml",
             "db/datasets/user.xml",
             "db/datasets/vehicle.xml",
             "db/datasets/parking_lot.xml",
@@ -29,6 +30,9 @@ public class DataBaseTest extends TestContainersBaseTest {
             "db/datasets/report.xml",
             "db/datasets/route.xml",
             "db/datasets/jeepney.xml",
+            "db/datasets/vehicle_brand.xml",
+            "db/datasets/vehicle_type.xml",
+            "db/datasets/vehicle_model.xml",
     })
     public void testLoadDataset() {
         Assertions.assertTrue(true);

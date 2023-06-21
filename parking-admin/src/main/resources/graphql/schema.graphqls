@@ -17,6 +17,16 @@ type Query {
     getVehiclesByOwner(page: Int size: Int, ownerUuid: String!): VehicleList!
     getOwnerByVehicleUuid(id: String!): User
 
+    getVehicleBrands(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleBrandList!
+    getVehicleBrand(id: String): VehicleBrand
+
+    getVehicleTypes(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleTypeList!
+    getVehicleType(id: String): VehicleType
+
+    getVehicleModels(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleModelList!
+    getVehicleModel(id: String): VehicleModel
+    getVehicleModelsByBrand(page: Int size: Int, brandUuid: String!): VehicleModelList!
+
     getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
     getJeepney(id: String): Jeepney
 
@@ -138,13 +148,60 @@ type Vehicle {
     vehicleUuid: String!
     name: String
     plateNumber: String
-    type: Int
+    brandUuid: String
+    modelUuid: String
+    typeUuid: String
+    color: String
+    year: String
     createdAt: String
     updatedAt: String
 }
 
 type VehicleList {
     content: [Vehicle]!
+    pageInfo: PageInfo!
+}
+
+# Vehicle Brand
+type VehicleBrand {
+    brandUuid: String!
+    name: String
+    status: Int
+    createdAt: String
+    updatedAt: String
+}
+
+type VehicleBrandList {
+    content: [VehicleBrand]!
+    pageInfo: PageInfo!
+}
+
+# Vehicle Type
+type VehicleType {
+    typeUuid: String!
+    name: String
+    status: Int
+    createdAt: String
+    updatedAt: String
+}
+
+type VehicleTypeList {
+    content: [VehicleType]!
+    pageInfo: PageInfo!
+}
+
+# Vehicle Model
+type VehicleModel {
+    modelUuid: String!
+    brandUuid: String!
+    name: String
+    status: Int
+    createdAt: String
+    updatedAt: String
+}
+
+type VehicleModelList {
+    content: [VehicleModel]!
     pageInfo: PageInfo!
 }
 
