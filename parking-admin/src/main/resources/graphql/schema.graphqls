@@ -148,7 +148,11 @@ type Vehicle {
     vehicleUuid: String!
     name: String
     plateNumber: String
-    type: Int
+    brandUuid: String
+    modelUuid: String
+    typeUuid: String
+    color: String
+    year: String
     createdAt: String
     updatedAt: String
 }
