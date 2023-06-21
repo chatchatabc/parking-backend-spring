@@ -343,6 +343,7 @@ CREATE TABLE IF NOT EXISTS jeepney
     plate_number    VARCHAR(20)  NOT NULL UNIQUE,
     current_ride_id BIGINT,
     route_uuid      VARCHAR(36),
+    drivers         TEXT         NOT NULL,
     capacity        INT          NOT NULL,
     available_slots INT          NOT NULL,
     latitude        FLOAT        NOT NULL,

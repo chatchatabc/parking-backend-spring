@@ -48,6 +48,9 @@ public class Jeepney extends FlagEntity {
     private String routeUuid;
 
     @Column
+    private String drivers;
+
+    @Column
     private Integer capacity = 0;
 
     @Column

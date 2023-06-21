@@ -227,6 +227,7 @@ type Jeepney {
     name: String
     routeUuid: String
     plateNumber: String
+    drivers: String
     capacity: Int
     availableSlots: Int
     latitude: Float

@@ -23,6 +23,7 @@ class JeepneyController(
     data class JeepneyCreateRequest(
         val name: String,
         val plateNumber: String,
+        val drivers: String,
         val capacity: Int,
         val latitude: Double,
         val longitude: Double,
@@ -52,6 +53,7 @@ class JeepneyController(
     data class JeepneyUpdateRequest(
         val name: String?,
         val plateNumber: String?,
+        val drivers: String?,
         val capacity: Int?,
         val latitude: Double?,
         val longitude: Double?,
