@@ -16,6 +16,7 @@ interface JeepneyMapper {
     @Mappings(
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "plateNumber", source = "request.plateNumber"),
+        Mapping(target = "drivers", source = "request.drivers"),
         Mapping(target = "capacity", source = "request.capacity"),
         Mapping(target = "latitude", source = "request.latitude"),
         Mapping(target = "longitude", source = "request.longitude"),
@@ -33,6 +34,7 @@ interface JeepneyMapper {
     @Mappings(
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "plateNumber", source = "request.plateNumber"),
+        Mapping(target = "drivers", source = "request.drivers"),
         Mapping(target = "capacity", source = "request.capacity"),
         Mapping(target = "latitude", source = "request.latitude"),
         Mapping(target = "longitude", source = "request.longitude"),
