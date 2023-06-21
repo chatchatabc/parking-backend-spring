@@ -22,6 +22,7 @@ class JeepneyServiceImplTest extends TestContainersBaseTest {
         jeepney.setJeepneyUuid("uuid");
         jeepney.setPlateNumber("ABC-1234");
         jeepney.setName("Test Jeepney");
+        jeepney.setDrivers("Test Drivers");
         jeepney.setLatitude(1.0);
         jeepney.setLongitude(1.0);
         jeepney.setCapacity(100);
