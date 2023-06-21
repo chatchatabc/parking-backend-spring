@@ -218,7 +218,7 @@
 <!ELEMENT route_edge EMPTY>
 <!ATTLIST route_edge
     id CDATA #IMPLIED
-    route_uuid CDATA #REQUIRED
+    route_id CDATA #REQUIRED
     node_from CDATA #REQUIRED
     node_to CDATA #REQUIRED
     distance CDATA #REQUIRED
