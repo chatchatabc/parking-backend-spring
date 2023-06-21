@@ -7,6 +7,23 @@ Content-Type: application/json
   "password": "123456"
 }
 
+### Create Jeepney
+POST {{adminBaseUrl}}/api/jeepney/create
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "jeepneyUuid": "string",
+  "name": "Jeepney 1",
+  "plateNumber": "ABC123",
+  "drivers": "ttest",
+  "capacity": 0,
+  "latitude": 0.0,
+  "longitude": 0.0,
+  "status": 1,
+  "flag": 0
+}
+
 ### Get User Profile
 GET {{adminBaseUrl}}/api/profile/me
 Authorization: Bearer {{adminToken}}
