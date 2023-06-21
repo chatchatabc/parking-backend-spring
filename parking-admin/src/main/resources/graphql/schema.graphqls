@@ -225,6 +225,7 @@ type RouteList {
 type Jeepney {
     jeepneyUuid: String!
     name: String
+    routeUuid: String
     plateNumber: String
     capacity: Int
     availableSlots: Int

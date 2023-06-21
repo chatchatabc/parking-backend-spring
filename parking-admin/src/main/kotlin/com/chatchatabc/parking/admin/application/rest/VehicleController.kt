@@ -5,6 +5,7 @@ import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -32,7 +33,11 @@ class VehicleController(
     /**
      * Register a vehicle
      */
-    @PostMapping("/register/{userUuid}")
+    @Operation(
+        summary = "Register Vehicle",
+        description = "Register Vehicle"
+    )
+    @PostMapping("/{userUuid}")
     fun registerVehicle(
         @PathVariable userUuid: String,
         @RequestBody req: VehicleRegisterRequest
@@ -66,7 +71,11 @@ class VehicleController(
     /**
      * Update a vehicle
      */
-    @PutMapping("/update/{vehicleUuid}")
+    @Operation(
+        summary = "Update Vehicle",
+        description = "Update Vehicle"
+    )
+    @PutMapping("/{vehicleUuid}")
     fun updateVehicle(
         @PathVariable vehicleUuid: String,
         @RequestBody req: VehicleUpdateRequest,

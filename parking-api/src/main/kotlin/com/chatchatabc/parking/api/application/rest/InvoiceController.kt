@@ -23,6 +23,10 @@ class InvoiceController(
     /**
      * Get Invoice by ID
      */
+    @Operation(
+        summary = "Get Invoice by ID",
+        description = "Allow users to get invoice by ID"
+    )
     @GetMapping("/{invoiceUuid}")
     fun getInvoice(
         @PathVariable invoiceUuid: String
@@ -91,7 +95,7 @@ class InvoiceController(
         summary = "Create an invoice",
         description = "Allow users to create an invoice. A NATS message will be published to the owner and client"
     )
-    @PostMapping("/create/{vehicleUuid}")
+    @PostMapping("/{vehicleUuid}")
     fun createInvoice(
         @PathVariable vehicleUuid: String,
         principal: Principal,

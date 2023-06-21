@@ -9,6 +9,7 @@ import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.RateService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
@@ -24,6 +25,10 @@ class RateController(
     /**
      * Get Rate By ID
      */
+    @Operation(
+        summary = "Get Rate By ID",
+        description = "Get Rate By ID"
+    )
     @GetMapping("/{rateId}")
     fun getRateById(
         @PathVariable rateId: String
@@ -32,7 +37,11 @@ class RateController(
     /**
      * Get Rate By ParkingLotId
      */
-    @GetMapping("/parkingLot/{parkingLotUuid}")
+    @Operation(
+        summary = "Get Rate By ParkingLotId",
+        description = "Get Rate By ParkingLotId"
+    )
+    @GetMapping("/parking-lot/{parkingLotUuid}")
     fun getRateByParkingLotUUid(
         @PathVariable parkingLotUuid: String
     ) = runCatching { parkingLotUuid.rateByParkingLot.toResponse() }.getOrElse { it.toErrorResponse() }
@@ -52,7 +61,11 @@ class RateController(
     /**
      * Update Rate By ParkingLotId
      */
-    @PostMapping("/update/{parkingLotUuid}")
+    @Operation(
+        summary = "Update Rate By ParkingLotId",
+        description = "Update Rate By ParkingLotId"
+    )
+    @PostMapping("/{parkingLotUuid}")
     fun updateRateByParkingLotUuid(
         @PathVariable parkingLotUuid: String,
         @RequestBody req: RateUpdateRequest

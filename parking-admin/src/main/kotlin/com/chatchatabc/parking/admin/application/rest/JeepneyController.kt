@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.model.Jeepney
 import com.chatchatabc.parking.domain.service.JeepneyService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 
@@ -32,7 +33,11 @@ class JeepneyController(
     /**
      * Create a new Jeepney
      */
-    @PostMapping("/create")
+    @Operation(
+        summary = "Create a new Jeepney",
+        description = "Create a new Jeepney"
+    )
+    @PostMapping("/")
     fun create(
         @RequestBody req: JeepneyCreateRequest
     ) = runCatching {
@@ -57,7 +62,11 @@ class JeepneyController(
     /**
      * Update a Jeepney
      */
-    @PutMapping("/update/{id}")
+    @Operation(
+        summary = "Update a Jeepney",
+        description = "Update a Jeepney"
+    )
+    @PutMapping("/{id}")
     fun update(
         @RequestBody req: JeepneyUpdateRequest,
         @PathVariable id: String

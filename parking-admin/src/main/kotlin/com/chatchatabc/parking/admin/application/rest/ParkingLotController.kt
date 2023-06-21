@@ -13,6 +13,7 @@ import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
@@ -49,7 +50,11 @@ class ParkingLotController(
     /**
      * Admin create Parking Lot
      */
-    @PostMapping("/create/{userUuid}")
+    @Operation(
+        summary = "Create Parking Lot",
+        description = "Create Parking Lot"
+    )
+    @PostMapping("/{userUuid}")
     fun createParkingLot(
         @PathVariable userUuid: String,
         @RequestBody req: ParkingLotCreateRequest
@@ -82,7 +87,11 @@ class ParkingLotController(
     /**
      * Admin update Parking Lot
      */
-    @PutMapping("/update/{parkingLotUuid}")
+    @Operation(
+        summary = "Update Parking Lot",
+        description = "Update Parking Lot"
+    )
+    @PutMapping("/{parkingLotUuid}")
     fun updateParkingLot(
         @PathVariable parkingLotUuid: String,
         @RequestBody req: ParkingLotUpdateRequest,
@@ -115,6 +124,10 @@ class ParkingLotController(
     /**
      * Verify Parking Lot
      */
+    @Operation(
+        summary = "Verify Parking Lot",
+        description = "Verify Parking Lot"
+    )
     @PutMapping("/verify/{parkingLotUuid}")
     fun verifyParkingLot(
         @PathVariable parkingLotUuid: String,
@@ -126,6 +139,10 @@ class ParkingLotController(
     /**
      * Delete Image
      */
+    @Operation(
+        summary = "Delete an Image of a Parking Lot",
+        description = "Delete an Image of a Parking Lot"
+    )
     @PostMapping("/delete-image/{imageId}")
     fun deleteImage(
         @PathVariable imageId: String
@@ -136,6 +153,10 @@ class ParkingLotController(
     /**
      * Restore Image
      */
+    @Operation(
+        summary = "Restore Image of a Parking Lot",
+        description = "Restore Image of a Parking Lot"
+    )
     @PostMapping("/restore-image/{imageId}")
     fun restoreImage(
         @PathVariable imageId: String
@@ -146,6 +167,10 @@ class ParkingLotController(
     /**
      * Get parking lot avatar by image uuid
      */
+    @Operation(
+        summary = "Get Image of a Parking Lot",
+        description = "Get Image of a Parking Lot"
+    )
     @GetMapping("/image/{imageUuid}")
     fun getParkingLotImage(
         @PathVariable imageUuid: String,
@@ -168,6 +193,10 @@ class ParkingLotController(
     /**
      * Get featured parking lot image if exists
      */
+    @Operation(
+        summary = "Get Featured Image of a Parking Lot",
+        description = "Get Featured Image of a Parking Lot"
+    )
     @GetMapping("/featured-image/{parkingLotUuid}")
     fun getFeaturedParkingLotImage(
         @PathVariable parkingLotUuid: String,
