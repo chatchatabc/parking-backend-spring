@@ -8,7 +8,6 @@ import com.chatchatabc.parking.domain.route
 import com.chatchatabc.parking.domain.routeEdges
 import com.chatchatabc.parking.domain.specification.RouteSpecification
 import com.chatchatabc.parking.web.common.application.toPagedResponse
-import com.chatchatabc.parking.web.common.application.toResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
