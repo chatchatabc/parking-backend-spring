@@ -19,6 +19,9 @@ class RouteGQLController(
     private val routeRepository: RouteRepository,
     private val routeNodeRepository: RouteNodeRepository
 ) {
+    /**
+     * Get all Routes
+     */
     @QueryMapping
     fun getRoutes(
         @Argument page: Int,
