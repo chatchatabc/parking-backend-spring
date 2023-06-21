@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.service.VehicleTypeService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicleType
 import com.chatchatabc.parking.web.common.application.toErrorResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -28,7 +29,11 @@ class VehicleTypeController(
     /**
      * Admin create Vehicle Type
      */
-    @PostMapping("/create")
+    @Operation(
+        summary = "Create Vehicle Type",
+        description = "Create Vehicle Type"
+    )
+    @PostMapping("/")
     fun createVehicleType(
         @RequestBody req: VehicleTypeCreateRequest,
         principal: Principal
@@ -51,7 +56,11 @@ class VehicleTypeController(
     /**
      * Admin update Vehicle Type
      */
-    @PutMapping("/update/{id}")
+    @Operation(
+        summary = "Update Vehicle Type",
+        description = "Update Vehicle Type"
+    )
+    @PutMapping("/{id}")
     fun updateVehicleType(
         @RequestBody req: VehicleTypeUpdateRequest,
         principal: Principal,
