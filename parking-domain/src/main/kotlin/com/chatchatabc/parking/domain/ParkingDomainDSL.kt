@@ -113,3 +113,9 @@ val String.route: Route
         // TODO: Add custom errors
         return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
     }
+
+val Long.routeEdges: List<RouteEdge>
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteEdgeRepository().findAllByRouteId(this)
+    }
