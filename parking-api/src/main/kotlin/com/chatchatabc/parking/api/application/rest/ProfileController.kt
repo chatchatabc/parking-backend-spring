@@ -4,6 +4,7 @@ import com.chatchatabc.parking.domain.service.log.UserLogoutLogService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,6 +20,10 @@ class ProfileController(
     /**
      * Logout user
      */
+    @Operation(
+        summary = "Logout user",
+        description = "Logout user"
+    )
     @PostMapping("/logout")
     fun logoutUser(
         request: HttpServletRequest,
