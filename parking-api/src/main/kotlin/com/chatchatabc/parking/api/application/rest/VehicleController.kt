@@ -6,6 +6,7 @@ import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
@@ -22,7 +23,11 @@ class VehicleController(
     /**
      * Get all vehicles by user
      */
-    @GetMapping("/my-vehicles")
+    @Operation(
+        summary = "Get all vehicles by user",
+        description = "Get all vehicles by user"
+    )
+    @GetMapping("/me")
     fun getMyVehicles(
         principal: Principal,
         pageable: Pageable
@@ -33,6 +38,10 @@ class VehicleController(
     /**
      * Get a vehicle by id
      */
+    @Operation(
+        summary = "Get a vehicle by id",
+        description = "Get a vehicle by id"
+    )
     @GetMapping("/{id}")
     fun getVehicleById(
         @PathVariable id: String,
@@ -62,7 +71,11 @@ class VehicleController(
     /**
      * Register a vehicle
      */
-    @PostMapping("/register")
+    @Operation(
+        summary = "Register a vehicle",
+        description = "Register a vehicle"
+    )
+    @PostMapping("/")
     fun registerVehicle(
         @RequestBody req: VehicleRegisterRequest,
         principal: Principal
@@ -97,7 +110,11 @@ class VehicleController(
     /**
      * Update a vehicle
      */
-    @PutMapping("/update/{vehicleUuid}")
+    @Operation(
+        summary = "Update a vehicle",
+        description = "Update a vehicle"
+    )
+    @PutMapping("/{vehicleUuid}")
     fun updateVehicle(
         @PathVariable vehicleUuid: String,
         @RequestBody req: VehicleUpdateRequest,
@@ -112,7 +129,11 @@ class VehicleController(
     /**
      * Add a user to a vehicle
      */
-    @PutMapping("/add-user/{vehicleUuid}/{userUuid}")
+    @Operation(
+        summary = "Add a user to a vehicle",
+        description = "Add a user to a vehicle"
+    )
+    @PutMapping("/add/{vehicleUuid}/{userUuid}")
     fun addUserToVehicle(
         @PathVariable vehicleUuid: String,
         @PathVariable userUuid: String,
@@ -125,7 +146,11 @@ class VehicleController(
     /**
      * Remove a user from a vehicle
      */
-    @PutMapping("/remove-user/{vehicleUuid}/{userUuid}")
+    @Operation(
+        summary = "Remove a user from a vehicle",
+        description = "Remove a user from a vehicle"
+    )
+    @PutMapping("/remove/{vehicleUuid}/{userUuid}")
     fun removeUserFromVehicle(
         @PathVariable vehicleUuid: String,
         @PathVariable userUuid: String,
