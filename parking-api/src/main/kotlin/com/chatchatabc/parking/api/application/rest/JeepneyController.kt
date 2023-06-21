@@ -10,6 +10,7 @@ import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toJson
 import com.chatchatabc.parking.web.common.application.toResponse
 import io.nats.client.Connection
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 
@@ -24,6 +25,10 @@ class JeepneyController(
     /**
      * Get Jeepney by Identifier
      */
+    @Operation(
+        summary = "Get Jeepney by Identifier",
+        description = "Allow users to get Jeepney by Identifier"
+    )
     @GetMapping("/{id}")
     fun getJeepney(@PathVariable id: String) =
         runCatching { id.jeepney.toResponse() }.getOrElse { it.toErrorResponse() }
@@ -31,7 +36,11 @@ class JeepneyController(
     /**
      * Get all Jeepneys
      */
-    @GetMapping("/all")
+    @Operation(
+        summary = "Get Jeepneys",
+        description = "Allow users to get Jeepneys"
+    )
+    @GetMapping("/")
     fun getAllJeepneys(
         pageable: Pageable
     ) = runCatching {
@@ -41,23 +50,32 @@ class JeepneyController(
     /**
      * Get All Jeepneys by Routes
      */
+    @Operation(
+        summary = "Get Jeepneys by Routes",
+        description = "Allow users to get Jeepneys by Routes"
+    )
     @GetMapping("/route/{id}")
     fun getAllJeepneysByRoute(
         @PathVariable id: String,
         pageable: Pageable
     ) = runCatching {
-        // TODO: Convert to method extension
         jeepneyRepository.findAllByRouteUuid(id, pageable).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     data class JeepneyUpdateLocationRequest(
         val latitude: Double,
-        val longitude: Double
+        val longitude: Double,
+        val direction: Int
     )
 
     /**
      * Update Jeepney Location
      */
+    // TODO: Might be used for Driver Role. This is not for user and owner role
+    @Operation(
+        summary = "Update Jeepney Location",
+        description = "Allow users to update Jeepney Location"
+    )
     @PutMapping("/update-location/{id}")
     fun updateJeepneyLocation(
         @PathVariable id: String,
@@ -77,7 +95,7 @@ class JeepneyController(
                     jeepney.jeepneyUuid,
                     jeepney.latitude,
                     jeepney.longitude,
-                    0 // TODO: Change
+                    request.direction
                 )
             ).toJson().toByteArray()
 
