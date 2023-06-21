@@ -7,6 +7,7 @@ import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.RateService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
+import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
@@ -34,7 +35,11 @@ class RateController(
     /**
      * Update Rate by ParkingLotId
      */
-    @PostMapping("/update/{parkingLotUuid}")
+    @Operation(
+        summary = "Update Rate",
+        description = "Update Rate"
+    )
+    @PostMapping("/{parkingLotUuid}")
     fun updateRateByParkingLotUuid(
         @PathVariable parkingLotUuid: String,
         @RequestBody req: RateUpdateRequest
