@@ -375,6 +375,32 @@ CREATE TABLE IF NOT EXISTS route
 ALTER SEQUENCE route_id_seq RESTART WITH 1000;
 create index idx_route_on_status on route (status);
 
+-- Create Route Node table
+CREATE TABLE IF NOT EXISTS route_node
+(
+    id         SERIAL PRIMARY KEY,
+    latitude   FLOAT     NOT NULL,
+    longitude  FLOAT     NOT NULL,
+    poi        TEXT,
+    created_at TIMESTAMP NOT NULL
+);
+
+ALTER SEQUENCE route_node_id_seq RESTART WITH 1000;
+
+-- Create Route Edge table
+CREATE TABLE IF NOT EXISTS route_edge
+(
+    id         SERIAL PRIMARY KEY,
+    route_id   BIGINT    NOT NULL,
+    node_from  BIGINT    NOT NULL,
+    node_to    BIGINT    NOT NULL,
+    distance   FLOAT     NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);
+
+ALTER SEQUENCE route_edge_id_seq RESTART WITH 1000;
+create index idx_route_edge_on_route_id on route_edge (route_id);
+
 -- Create Jeepney Ride table
 CREATE TABLE IF NOT EXISTS jeepney_ride
 (
