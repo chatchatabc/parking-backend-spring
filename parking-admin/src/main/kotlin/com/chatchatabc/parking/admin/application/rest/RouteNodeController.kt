@@ -30,13 +30,32 @@ class RouteNodeController(
     )
 
     /**
+     * Create a Route Node
+     */
+    @Operation(
+        summary = "Create a Route Node",
+        description = "Create a Route Node"
+    )
+    @PostMapping
+    fun createNode(
+        @RequestBody request: RouteNode,
+    ) = runCatching {
+        val routeNode = RouteNode().apply {
+            this.latitude = request.latitude
+            this.longitude = request.longitude
+            this.poi = request.poi
+        }
+        routeNodeService.saveRouteNode(routeNode).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
      * Create Route Nodes
      */
     @Operation(
         summary = "Create Route Nodes",
         description = "Create Route Nodes"
     )
-    @PostMapping
+    @PostMapping("/many")
     fun createNodes(
         @RequestBody request: RouteNodeCreateRequest,
     ) = runCatching {
