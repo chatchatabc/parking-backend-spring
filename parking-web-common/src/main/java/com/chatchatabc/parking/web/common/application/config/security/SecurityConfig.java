@@ -68,7 +68,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/jeepney/**").authenticated();
 
                     // Routes for Routes
-                    auth.requestMatchers("/api/route/").authenticated();
+                    auth.requestMatchers("/api/route").authenticated();
                     auth.requestMatchers("/api/route/last-updated-at/**").authenticated();
                     auth.requestMatchers("/api/route/**").hasAnyRole("ADMIN", "ENFORCER");
 
