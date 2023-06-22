@@ -96,7 +96,7 @@ class RouteEdgeController(
         summary = "Update Route Edge",
         description = "Update Route Edge"
     )
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     fun updateEdge(
         @RequestBody request: RouteEdgeUpdateRequest,
         @PathVariable id: Long,
