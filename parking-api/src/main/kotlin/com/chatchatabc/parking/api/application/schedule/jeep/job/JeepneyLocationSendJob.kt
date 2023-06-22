@@ -67,7 +67,14 @@ class JeepneyLocationSendJob(
                             jeep.dir
                         )
                     )
-                natsConnection.publish("jeepney-${jeep.vkey}", natsMessage.toJson().toByteArray())
+                val message = natsMessage.toJson().toByteArray()
+                natsConnection.publish("jeepney-${jeep.vkey}", message)
+                // TODO: Make this better. rename Azliot groupname instead of hardcoded route id
+                try {
+                    natsConnection.publish("route-8821fff6-b725-454c-bdd3-0674b313ba45", message)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
