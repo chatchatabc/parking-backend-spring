@@ -1,10 +1,10 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.domain.model.RouteEdge
-import com.chatchatabc.parking.domain.repository.RouteNodeRepository
 import com.chatchatabc.parking.domain.routeNode
 import com.chatchatabc.parking.domain.service.RouteEdgeService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/route-edge")
 class RouteEdgeController(
     private val routeEdgeService: RouteEdgeService,
-    private val routeNodeRepository: RouteNodeRepository
 ) {
 
     /**
@@ -56,5 +55,31 @@ class RouteEdgeController(
                 )
             }
         )
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Create Route Edges
+     */
+    @Operation(
+        summary = "Create Route Edges",
+        description = "Create Route Edges"
+    )
+    @PostMapping("/many")
+    fun createEdges(
+        @RequestBody request: RouteEdgeCreateRequest,
+    ) = runCatching {
+        routeEdgeService.saveRouteEdges(
+            request.edges.map {
+                RouteEdge().apply {
+                    this.routeId = it.routeId
+                    this.nodeFrom = it.nodeFrom
+                    this.nodeTo = it.nodeTo
+                    this.distance = routeEdgeService.calculateDistanceBetweenNodes(
+                        it.nodeFrom.routeNode,
+                        it.nodeTo.routeNode
+                    )
+                }
+            }
+        ).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }
