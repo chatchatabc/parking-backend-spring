@@ -111,7 +111,10 @@ val String.jeepney: Jeepney
 val String.route: Route
     get() {
         // TODO: Add custom errors
-        return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
+        if (this.length == 36) {
+            return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
+        }
+        return SpringContextUtils.getRouteRepository().findBySlug(this).orElseThrow()
     }
 
 val Long.routeEdges: List<RouteEdge>
