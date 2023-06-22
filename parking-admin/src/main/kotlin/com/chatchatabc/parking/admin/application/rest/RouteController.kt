@@ -17,6 +17,7 @@ class RouteController(
     private val routeMapper = Mappers.getMapper(RouteMapper::class.java)
 
     data class RouteCreateRequest(
+        val slug: String,
         val name: String,
         val description: String,
         val status: Int
@@ -40,6 +41,7 @@ class RouteController(
      * Update Route Data Class
      */
     data class RouteUpdateRequest(
+        val slug: String?,
         val name: String?,
         val description: String?,
         val status: Int?

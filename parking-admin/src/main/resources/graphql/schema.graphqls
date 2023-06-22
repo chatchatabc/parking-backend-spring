@@ -216,6 +216,7 @@ type VehicleModelList {
 type Route {
     id: Int!
     routeUuid: String!
+    slug: String
     name: String
     description: String
     status: Int
