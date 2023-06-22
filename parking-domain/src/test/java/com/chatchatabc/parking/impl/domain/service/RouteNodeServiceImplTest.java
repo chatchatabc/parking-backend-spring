@@ -18,6 +18,22 @@ class RouteNodeServiceImplTest extends TestContainersBaseTest {
     private RouteNodeServiceImpl routeNodeService;
 
     @Test
+    void testSaveRouteNode_ShouldBeSuccessful() {
+        // Given
+        RouteNode routeNode = new RouteNode();
+        routeNode.setLatitude(1.0);
+        routeNode.setLongitude(1.0);
+        routeNode.setPoi("POI");
+        Long count = routeNodeRepository.count();
+
+        // When
+        routeNodeService.saveRouteNode(routeNode);
+
+        // Then
+        assertThat(routeNodeRepository.count()).isGreaterThan(count);
+    }
+
+    @Test
     void testSaveRouteNodes_ShouldBeSuccessful() {
         // Given
         RouteNode routeNode = new RouteNode();
