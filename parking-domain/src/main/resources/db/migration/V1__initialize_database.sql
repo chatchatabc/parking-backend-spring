@@ -363,6 +363,7 @@ CREATE TABLE IF NOT EXISTS route
 (
     id          SERIAL PRIMARY KEY,
     route_uuid  VARCHAR(36)              NOT NULL UNIQUE,
+    slug        VARCHAR(255)             NOT NULL UNIQUE,
     name        VARCHAR(255)             NOT NULL,
     description VARCHAR(255)             NOT NULL,
     status      INT                      NOT NULL DEFAULT 0,
@@ -373,6 +374,7 @@ CREATE TABLE IF NOT EXISTS route
 
 ALTER SEQUENCE route_id_seq RESTART WITH 1000;
 create index idx_route_on_status on route (status);
+create index idx_route_on_slug on route (slug);
 
 -- Create Route Node table
 CREATE TABLE IF NOT EXISTS route_node
