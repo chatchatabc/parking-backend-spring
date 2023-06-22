@@ -57,24 +57,19 @@ class JeepneyLocationSendJob(
         objectMapper.readValue(data, CarHomeTFResponse::class.java).let {
             // Send location to NATS channel
             it.results.forEach { jeep ->
-                val natsMessage =
-                    NatsMessage(
-                        NatsPayloadTypes.JEEPNEY_LOCATION_UPDATE,
-                        NatsPayload.JeepneyPayload(
-                            jeep.vkey,
-                            jeep.lat,
-                            jeep.lng,
-                            jeep.dir
-                        )
+                NatsMessage(
+                    NatsPayloadTypes.JEEPNEY_LOCATION_UPDATE,
+                    NatsPayload.JeepneyPayload(
+                        jeep.vkey,
+                        jeep.lat,
+                        jeep.lng,
+                        jeep.dir
                     )
-                val message = natsMessage.toJson().toByteArray()
-                natsConnection.publish("jeepney-${jeep.vkey}", message)
-                // TODO: Make this better. rename Azliot groupname instead of hardcoded route id
-                try {
-                    natsConnection.publish("route-8821fff6-b725-454c-bdd3-0674b313ba45", message)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                )
+                    .toJson().toByteArray().runCatching {
+                        natsConnection.publish("jeepney-${jeep.vkey}", this)
+                        natsConnection.publish("route-${jeep.groupName}", this)
+                    }
             }
         }
     }
