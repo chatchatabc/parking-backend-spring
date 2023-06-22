@@ -1,7 +1,11 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.domain.model.RouteEdge
+import com.chatchatabc.parking.domain.model.RouteNode
+import com.chatchatabc.parking.domain.repository.RouteNodeRepository
 import com.chatchatabc.parking.domain.repository.RouteRepository
 import com.chatchatabc.parking.domain.route
+import com.chatchatabc.parking.domain.routeEdges
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toNullResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -16,7 +20,8 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/route")
 class RouteController(
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteRepository,
+    private val routeNodeRepository: RouteNodeRepository
 ) {
 
     /**
@@ -47,5 +52,31 @@ class RouteController(
                 // Return empty response
                 route.toNullResponse()
             }
+        }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Route Nodes and Edges data class
+     */
+    data class RouteNodesAndEdges(
+        val nodes: List<RouteNode>,
+        val edges: List<RouteEdge>
+    )
+
+    /**
+     * Get Route nodes and edges by route identifier
+     */
+    @Operation(
+        summary = "Get Route nodes and edges by route identifier",
+        description = "Allow users to get route nodes and edges by route identifier"
+    )
+    @GetMapping("/nodes-and-edges/{id}")
+    fun getRouteNodesAndEdgesById(@PathVariable id: String) =
+        runCatching {
+            val edges = id.route.id.routeEdges
+            val nodes = routeNodeRepository.findAllByIdIn(edges.flatMap { listOf(it.nodeFrom, it.nodeTo) }.toSet())
+            RouteNodesAndEdges(
+                nodes,
+                edges
+            ).toResponse()
         }.getOrElse { it.toErrorResponse() }
 }
