@@ -207,6 +207,7 @@
 <!ATTLIST route
     id CDATA #IMPLIED
     route_uuid CDATA #REQUIRED
+    slug CDATA #REQUIRED
     name CDATA #REQUIRED
     description CDATA #REQUIRED
     status CDATA #IMPLIED
