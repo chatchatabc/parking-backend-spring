@@ -7,6 +7,8 @@ import com.chatchatabc.parking.domain.repository.RouteEdgeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class RouteEdgeServiceImplTest extends TestContainersBaseTest {
@@ -31,6 +33,31 @@ class RouteEdgeServiceImplTest extends TestContainersBaseTest {
 
         // Then
         assertThat(routeEdgeRepository.count()).isGreaterThan(count);
+    }
+
+    @Test
+    void testSaveRouteEdges_ShouldBeSuccessful() {
+        // Given
+        RouteEdge routeEdge = new RouteEdge();
+        routeEdge.setRouteId(1L);
+        routeEdge.setNodeTo(1L);
+        routeEdge.setNodeFrom(2L);
+        routeEdge.setDistance(1.0);
+
+        RouteEdge routeEdge2 = new RouteEdge();
+        routeEdge2.setRouteId(1L);
+        routeEdge2.setNodeTo(2L);
+        routeEdge2.setNodeFrom(3L);
+        routeEdge2.setDistance(2.0);
+
+        Long count = routeEdgeRepository.count();
+
+        // When
+        routeEdgeService.saveRouteEdges(List.of(routeEdge, routeEdge2));
+
+        // Then
+        assertThat(routeEdgeRepository.count()).isGreaterThan(count);
+
     }
 
     @Test
