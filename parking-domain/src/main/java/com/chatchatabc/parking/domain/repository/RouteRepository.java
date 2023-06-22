@@ -17,4 +17,12 @@ public interface RouteRepository extends JpaRepository<Route, Long>, JpaSpecific
      * @return route
      */
     Optional<Route> findByRouteUuid(String routeUuid);
+
+    /**
+     * Find route by slug
+     *
+     * @param slug slug
+     * @return route
+     */
+    Optional<Route> findBySlug(String slug);
 }
