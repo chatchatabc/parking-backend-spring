@@ -59,8 +59,6 @@ class RouteGQLController(
     fun getRouteNodesAndEdges(@Argument id: String) = run {
         val edges = id.route.id.routeEdges
         val nodes = routeNodeRepository.findAllByIdIn(edges.flatMap { listOf(it.nodeFrom, it.nodeTo) }.toSet())
-        println("nodes: $nodes")
-        println("edges: $edges")
         RouteNodesAndEdges(
             nodes,
             edges
