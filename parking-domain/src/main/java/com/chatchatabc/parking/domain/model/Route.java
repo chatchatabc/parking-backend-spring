@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +31,10 @@ public class Route extends FlagEntity {
 
     @Column(unique = true)
     private String routeUuid = UUID.randomUUID().toString();
+
+    @Column(unique = true)
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$\n", message = "Invalid slug format.")
+    private String slug;
 
     @Column
     private String name;
