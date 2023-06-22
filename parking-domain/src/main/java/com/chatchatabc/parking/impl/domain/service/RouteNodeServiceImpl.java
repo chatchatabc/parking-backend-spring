@@ -16,6 +16,16 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
 
     /**
+     * Save route node
+     *
+     * @param routeNode route node
+     */
+    @Override
+    public void saveRouteNode(RouteNode routeNode) {
+        routeNodeRepository.save(routeNode);
+    }
+
+    /**
      * Save route nodes
      *
      * @param routeNodes route nodes

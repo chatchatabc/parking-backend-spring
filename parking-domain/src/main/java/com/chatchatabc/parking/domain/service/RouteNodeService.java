@@ -7,6 +7,13 @@ import java.util.List;
 public interface RouteNodeService {
 
     /**
+     * Save route node
+     *
+     * @param routeNode route node
+     */
+    void saveRouteNode(RouteNode routeNode);
+
+    /**
      * Save route nodes
      *
      * @param routeNodes route nodes
