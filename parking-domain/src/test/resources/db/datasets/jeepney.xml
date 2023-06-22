@@ -6,7 +6,8 @@
              route_uuid="8821fff6-b725-454c-bdd3-0674b313ba45" name="Vios" plate_number="AAA-1234" status="0" flag="0"
              capacity="100" available_slots="100" latitude="1.0" longitude="1.0" created_at="2023-05-05 16:14:47.307160"
              updated_at="2023-05-05 16:14:47.307160"/>
-    <jeepney id="2" jeepney_uuid="dea4356c-a23b-4f32-b264-09ca2920938e" name="GPS-1" plate_number="AAA-1235"
-             drivers="Mike Arnado" capacity="0" available_slots="0" latitude="1.0" longitude="1.0" status="1" flag="0"
-             created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-05 16:14:47.307160"/>
+    <jeepney id="2" jeepney_uuid="dea4356c-a23b-4f32-b264-09ca2920938e"
+             route_uuid="8821fff6-b725-454c-bdd3-0674b313ba45" name="GPS-1" plate_number="AAA-1235"
+             drivers="Mike Arnado" capacity="100" available_slots="100" latitude="1.0" longitude="1.0" status="1"
+             flag="0" created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-05 16:14:47.307160"/>
 </dataset>
