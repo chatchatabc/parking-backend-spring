@@ -6,6 +6,8 @@ import com.chatchatabc.parking.domain.repository.RouteEdgeRepository;
 import com.chatchatabc.parking.domain.service.RouteEdgeService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static java.lang.Math.*;
 
 @Service
@@ -24,6 +26,16 @@ public class RouteEdgeServiceImpl implements RouteEdgeService {
     @Override
     public void saveRouteEdge(RouteEdge routeEdge) {
         routeEdgeRepository.save(routeEdge);
+    }
+
+    /**
+     * Save route edges
+     *
+     * @param routeEdges route edges
+     */
+    @Override
+    public void saveRouteEdges(List<RouteEdge> routeEdges) {
+        routeEdgeRepository.saveAll(routeEdges);
     }
 
     /**

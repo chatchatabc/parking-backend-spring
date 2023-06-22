@@ -3,6 +3,8 @@ package com.chatchatabc.parking.domain.service;
 import com.chatchatabc.parking.domain.model.RouteEdge;
 import com.chatchatabc.parking.domain.model.RouteNode;
 
+import java.util.List;
+
 public interface RouteEdgeService {
 
     /**
@@ -11,6 +13,13 @@ public interface RouteEdgeService {
      * @param routeEdge route edge
      */
     void saveRouteEdge(RouteEdge routeEdge);
+
+    /**
+     * Save route edges
+     *
+     * @param routeEdges route edges
+     */
+    void saveRouteEdges(List<RouteEdge> routeEdges);
 
     /**
      * Calculate distance between two nodes
