@@ -25,7 +25,6 @@ public class Route extends FlagEntity {
         public static final int ACTIVE = 1;
     }
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
