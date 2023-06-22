@@ -21,4 +21,16 @@ class RouteRepositoryTest extends TestContainersBaseTest {
         String routeUuid = "non-existent-route-uuid";
         assertThat(routeRepository.findByRouteUuid(routeUuid)).isEmpty();
     }
+
+    @Test
+    void testFindBySlug_ShouldReturnRoute() {
+        String slug = "route-11";
+        assertThat(routeRepository.findBySlug(slug)).isPresent();
+    }
+
+    @Test
+    void testFindBySlug_WhenSlugDoesNotExist_ShouldReturnEmpty() {
+        String slug = "non-existent-slug";
+        assertThat(routeRepository.findBySlug(slug)).isEmpty();
+    }
 }
