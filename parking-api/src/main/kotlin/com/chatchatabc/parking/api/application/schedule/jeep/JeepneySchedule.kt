@@ -44,10 +44,13 @@ class JeepneySchedule(
             .build()
         val trigger = TriggerBuilder
             .newTrigger()
+            .withIdentity("jeepneyLocationSendTrigger", "jeepTrigger")
             .withSchedule(
                 SimpleScheduleBuilder.repeatSecondlyForever(10)
             )
+            .forJob(job)
             .build()
+        scheduler.addJob(job, true)
         scheduler.scheduleJob(job, trigger)
     }
 
