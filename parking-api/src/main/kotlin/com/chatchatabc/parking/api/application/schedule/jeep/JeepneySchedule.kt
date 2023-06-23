@@ -84,7 +84,7 @@ class JeepneySchedule(
             // Check if token is expired or about to expire
             if (exp != null && Instant.now().epochSecond + bufferTimeInSeconds >= exp) {
                 // Renew token
-                log.info("Token expired or about to expire. Renewing...");
+                log.info("Token expired or about to expire. Renewing...")
                 AzliotRestConfig.AZLIOT_TOKEN = gpsRestService.generateToken(
                     tfKey,
                     userKey,
