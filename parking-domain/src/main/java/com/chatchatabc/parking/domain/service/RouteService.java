@@ -9,5 +9,5 @@ public interface RouteService {
      *
      * @param route route
      */
-    void saveRoute(Route route);
+    Route saveRoute(Route route);
 }

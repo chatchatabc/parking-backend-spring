@@ -19,7 +19,7 @@ public class RouteServiceImpl implements RouteService {
      * @param route route
      */
     @Override
-    public void saveRoute(Route route) {
-        routeRepository.save(route);
+    public Route saveRoute(Route route) {
+        return routeRepository.save(route);
     }
 }
