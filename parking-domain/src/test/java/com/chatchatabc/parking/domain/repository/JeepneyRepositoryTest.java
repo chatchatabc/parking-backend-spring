@@ -37,7 +37,7 @@ class JeepneyRepositoryTest extends TestContainersBaseTest {
 
     @Test
     void testFindByName_WhenNameExists_ShouldReturnJeepney() {
-        String name = "Vios MGK231";
+        String name = "Vios";
         assertThat(jeepneyRepository.findByName(name)).isPresent();
     }
 
