@@ -5,6 +5,7 @@ import com.chatchatabc.parking.domain.model.Route
 import com.chatchatabc.parking.domain.route
 import com.chatchatabc.parking.domain.service.RouteService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
+import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
@@ -34,7 +35,7 @@ class RouteController(
     fun createRoute(request: RouteCreateRequest) = runCatching {
         val route = Route()
         routeMapper.createRouteFromCreateRequest(request, route)
-        routeService.saveRoute(route)
+        routeService.saveRoute(route).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
@@ -58,6 +59,6 @@ class RouteController(
     fun updateRoute(@PathVariable id: String, @RequestBody request: RouteUpdateRequest) = runCatching {
         val route = id.route
         routeMapper.updateRouteFromUpdateRequest(request, route)
-        routeService.saveRoute(route)
+        routeService.saveRoute(route).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }
