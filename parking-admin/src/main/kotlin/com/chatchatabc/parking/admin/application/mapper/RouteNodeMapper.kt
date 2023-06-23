@@ -34,4 +34,18 @@ interface RouteNodeMapper {
         request: RouteNodeController.RouteNodeUpdateRequest,
         @MappingTarget routeNode: RouteNode
     )
+
+    /**
+     * Route Nodes Create Mapper
+     */
+    @Mappings(
+        Mapping(target = "id", source = "request.id"),
+        Mapping(target = "latitude", source = "request.latitude"),
+        Mapping(target = "longitude", source = "request.longitude"),
+        Mapping(target = "poi", source = "request.poi"),
+    )
+    fun updateRouteNodesFromUpdateRequest(
+        request: RouteNodeController.RouteNodesItem,
+        @MappingTarget routeNode: RouteNode
+    )
 }

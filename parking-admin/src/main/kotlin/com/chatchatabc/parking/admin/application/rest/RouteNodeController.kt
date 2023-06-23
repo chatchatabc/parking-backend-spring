@@ -93,4 +93,37 @@ class RouteNodeController(
         routeNodeMapper.updateRouteNodeFromUpdateRequest(request, node)
         routeNodeService.saveRouteNode(node).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Update Many Route Nodes data class
+     */
+    data class RouteNodesUpdateRequest(
+        val nodes: List<RouteNodesItem>
+    )
+
+    data class RouteNodesItem(
+        val id: Long,
+        val latitude: Double?,
+        val longitude: Double?,
+        val poi: String?
+    )
+
+    /**
+     * Update Many Route Nodes
+     */
+    @Operation(
+        summary = "Update Many Route Nodes",
+        description = "Update Many Route Nodes"
+    )
+    @PutMapping("/many")
+    fun updateNodes(
+        @RequestBody request: RouteNodesUpdateRequest,
+    ) = runCatching {
+        routeNodeService.saveRouteNodes(
+            request.nodes.map {
+                val node = it.id.routeNode
+                routeNodeMapper.updateRouteNodesFromUpdateRequest(it, node)
+                node
+            }).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }
