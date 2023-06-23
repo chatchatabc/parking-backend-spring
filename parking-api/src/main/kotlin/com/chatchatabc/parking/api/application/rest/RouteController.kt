@@ -60,6 +60,7 @@ class RouteController(
      * Route Nodes and Edges data class
      */
     data class RouteNodesAndEdges(
+        val routeUuid: String,
         val nodes: List<RouteNode>,
         val edges: List<RouteEdge>
     )
@@ -77,6 +78,7 @@ class RouteController(
             val edges = id.route.id.routeEdges
             val nodes = routeNodeRepository.findAllByIdIn(edges.flatMap { listOf(it.nodeFrom, it.nodeTo) }.toSet())
             RouteNodesAndEdges(
+                id,
                 nodes,
                 edges
             ).toResponse()
