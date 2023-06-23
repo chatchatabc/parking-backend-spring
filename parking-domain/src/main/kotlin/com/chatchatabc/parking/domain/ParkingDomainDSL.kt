@@ -111,5 +111,26 @@ val String.jeepney: Jeepney
 val String.route: Route
     get() {
         // TODO: Add custom errors
-        return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
+        if (this.length == 36) {
+            return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
+        }
+        return SpringContextUtils.getRouteRepository().findBySlug(this).orElseThrow()
+    }
+
+val Long.routeEdges: List<RouteEdge>
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteEdgeRepository().findAllByRouteId(this)
+    }
+
+val Long.routeEdge: RouteEdge
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteEdgeRepository().findById(this).orElseThrow()
+    }
+
+val Long.routeNode: RouteNode
+    get() {
+        // TODO: Add custom errors
+        return SpringContextUtils.getRouteNodeRepository().findById(this).orElseThrow()
     }

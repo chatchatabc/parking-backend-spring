@@ -57,17 +57,19 @@ class JeepneyLocationSendJob(
         objectMapper.readValue(data, CarHomeTFResponse::class.java).let {
             // Send location to NATS channel
             it.results.forEach { jeep ->
-                val natsMessage =
-                    NatsMessage(
-                        NatsPayloadTypes.JEEPNEY_LOCATION_UPDATE,
-                        NatsPayload.JeepneyPayload(
-                            jeep.vkey,
-                            jeep.lat,
-                            jeep.lng,
-                            jeep.dir
-                        )
+                NatsMessage(
+                    NatsPayloadTypes.JEEPNEY_LOCATION_UPDATE,
+                    NatsPayload.JeepneyPayload(
+                        jeep.vkey,
+                        jeep.lat,
+                        jeep.lng,
+                        jeep.dir
                     )
-                natsConnection.publish("jeepney-${jeep.vkey}", natsMessage.toJson().toByteArray())
+                )
+                    .toJson().toByteArray().runCatching {
+                        natsConnection.publish("jeepney-${jeep.vkey}", this)
+                        natsConnection.publish("route-${jeep.groupName}", this)
+                    }
             }
         }
     }

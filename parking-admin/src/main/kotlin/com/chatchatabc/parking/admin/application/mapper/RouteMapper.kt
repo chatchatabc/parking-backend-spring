@@ -13,6 +13,7 @@ interface RouteMapper {
      * Route Create Mapper
      */
     @Mappings(
+        Mapping(target = "slug", source = "request.slug"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "description", source = "request.description"),
         Mapping(target = "status", source = "request.status"),
@@ -26,6 +27,7 @@ interface RouteMapper {
      * Route Update Mapper
      */
     @Mappings(
+        Mapping(target = "slug", source = "request.slug"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "description", source = "request.description"),
         Mapping(target = "status", source = "request.status"),

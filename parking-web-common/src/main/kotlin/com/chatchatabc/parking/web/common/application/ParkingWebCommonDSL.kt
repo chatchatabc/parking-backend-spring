@@ -1,8 +1,8 @@
 package com.chatchatabc.parking.web.common.application
 
 import com.chatchatabc.parking.domain.SpringContextUtils
-import com.chatchatabc.parking.web.common.application.enums.ResponseNames
 import com.chatchatabc.parking.web.common.application.enums.NatsPayloadTypes
+import com.chatchatabc.parking.web.common.application.enums.ResponseNames
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,23 +18,24 @@ data class ErrorElement(
     val message: String?
 )
 
-fun <T> Optional<T>.toResponse(): ApiResponse<T> {
+fun <T> Optional<T>.toResponse(): ResponseEntity<ApiResponse<T>> {
     if (this.isPresent) {
-        return ApiResponse(this.get(), listOf())
+        return ResponseEntity.ok(ApiResponse(this.get(), listOf()))
     }
-    return ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null)))
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(ApiResponse(null, listOf(ErrorElement(ResponseNames.ERROR_NOT_FOUND.name, null))))
 }
 
-fun <T> T.toResponse(): ApiResponse<T> {
-    return ApiResponse(this, emptyList())
+fun <T> T.toResponse(): ResponseEntity<ApiResponse<T>> {
+    return ResponseEntity.ok(ApiResponse(this, emptyList()))
 }
 
-fun <T> T.toNullResponse(): ApiResponse<T> {
-    return ApiResponse(null, emptyList())
+fun <T> T.toNullResponse(): ResponseEntity<ApiResponse<T>> {
+    return ResponseEntity.ok(ApiResponse(null, emptyList()))
 }
 
-fun <T> Optional<T>.toNullableResponse(): ApiResponse<T> {
-    return ApiResponse(this.orElse(null), listOf())
+fun <T> Optional<T>.toNullableResponse(): ResponseEntity<ApiResponse<T>> {
+    return ResponseEntity.ok(ApiResponse(this.orElse(null), listOf()))
 }
 
 data class PageInfo(
@@ -84,6 +85,7 @@ fun <T : Throwable> T.toErrorResponse(): ResponseEntity<ApiResponse<Nothing>> {
                 errorList.add(ErrorElement(ResponseNames.ERROR_CREATE.name, it.messageTemplate))
             }
         }
+
         is org.springframework.dao.DataIntegrityViolationException -> {
             val detailMessage = extractDetailMessage(this.message)
             errorList.add(ErrorElement(ResponseNames.ERROR_CREATE.name, detailMessage))

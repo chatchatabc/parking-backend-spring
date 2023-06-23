@@ -68,10 +68,11 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/jeepney/**").authenticated();
 
                     // Routes for Routes
-                    auth.requestMatchers("/api/route/").authenticated();
+                    auth.requestMatchers("/api/route/go").permitAll();
+                    auth.requestMatchers("/api/route/nodes-and-edges/**").permitAll();
+                    auth.requestMatchers("/api/route").authenticated();
                     auth.requestMatchers("/api/route/last-updated-at/**").authenticated();
                     auth.requestMatchers("/api/route/**").hasAnyRole("ADMIN", "ENFORCER");
-
                     // TODO: Add routes for other controllers
 
                     // Permit Graphql
@@ -106,6 +107,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:3000",
+                        "http://127.0.0.1:5500",
+                        "http://localhost:5500",
                         "https://davao-parking-admin.pages.dev",
                         "http://192.168.1.11:5180",
                         "https://admin-api.microservices.club",

@@ -32,6 +32,13 @@ type Query {
 
     getRoutes(page: Int size: Int keyword: String sortField: String sortBy: Int): RouteList!
     getRoute(id: String): Route
+    getRouteNodesAndEdges(id: String): RouteNodesAndEdges
+
+    getRouteNodes(page: Int size: Int): RouteNodeList!
+    getRouteNode(id: Int): RouteNode
+
+    getRouteEdges(page: Int size: Int): RouteEdgeList!
+    getRouteEdge(id: Int): RouteEdge
 
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
@@ -207,7 +214,9 @@ type VehicleModelList {
 
 # Route
 type Route {
+    id: Int!
     routeUuid: String!
+    slug: String
     name: String
     description: String
     status: Int
@@ -218,6 +227,41 @@ type Route {
 
 type RouteList {
     content: [Route]!
+    pageInfo: PageInfo!
+}
+
+# RouteNodesAndEdges
+type RouteNodesAndEdges {
+    nodes: [RouteNode]!
+    edges: [RouteEdge]!
+}
+
+# RouteNode
+type RouteNode {
+    id: Int!
+    latitude: Float!
+    longitude: Float!
+    poi: String
+    createdAt: String!
+}
+
+type RouteNodeList {
+    content: [RouteNode]!
+    pageInfo: PageInfo!
+}
+
+# RouteEdge
+type RouteEdge {
+    id: Int!
+    routeId: Int!
+    nodeFrom: Int!
+    nodeTo: Int!
+    distance: Float!
+    createdAt: String!
+}
+
+type RouteEdgeList {
+    content: [RouteEdge]!
     pageInfo: PageInfo!
 }
 

@@ -1,7 +1,11 @@
 package com.chatchatabc.parking.admin.application.graphql
 
+import com.chatchatabc.parking.domain.model.RouteEdge
+import com.chatchatabc.parking.domain.model.RouteNode
+import com.chatchatabc.parking.domain.repository.RouteNodeRepository
 import com.chatchatabc.parking.domain.repository.RouteRepository
 import com.chatchatabc.parking.domain.route
+import com.chatchatabc.parking.domain.routeEdges
 import com.chatchatabc.parking.domain.specification.RouteSpecification
 import com.chatchatabc.parking.web.common.application.toPagedResponse
 import org.springframework.data.domain.PageRequest
@@ -11,8 +15,12 @@ import org.springframework.stereotype.Controller
 
 @Controller
 class RouteGQLController(
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteRepository,
+    private val routeNodeRepository: RouteNodeRepository
 ) {
+    /**
+     * Get all Routes
+     */
     @QueryMapping
     fun getRoutes(
         @Argument page: Int,
@@ -35,4 +43,25 @@ class RouteGQLController(
      */
     @QueryMapping
     fun getRoute(@Argument id: String) = run { id.route }
+
+    /**
+     * Route Nodes and Edges data class
+     */
+    data class RouteNodesAndEdges(
+        val nodes: List<RouteNode>,
+        val edges: List<RouteEdge>
+    )
+
+    /**
+     * Get Route nodes and edges by route identifier
+     */
+    @QueryMapping
+    fun getRouteNodesAndEdges(@Argument id: String) = run {
+        val edges = id.route.id.routeEdges
+        val nodes = routeNodeRepository.findAllByIdIn(edges.flatMap { listOf(it.nodeFrom, it.nodeTo) }.toSet())
+        RouteNodesAndEdges(
+            nodes,
+            edges
+        )
+    }
 }
