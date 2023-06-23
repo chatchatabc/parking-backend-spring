@@ -27,4 +27,9 @@ class RouteNodeRepositoryTest extends TestContainersBaseTest {
         nodeIds.add(0L);
         assertThat(routeNodeRepository.findAllByIdIn(nodeIds).size()).isEqualTo(0);
     }
+
+    @Test
+    void testFindClosestNode_ShouldReturnGreaterThan0() {
+        assertThat(routeNodeRepository.findClosestNode(1.0, 1.0, null).getTotalElements()).isGreaterThan(0);
+    }
 }
