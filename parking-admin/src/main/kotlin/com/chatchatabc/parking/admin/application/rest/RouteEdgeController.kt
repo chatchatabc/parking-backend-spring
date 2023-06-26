@@ -145,4 +145,25 @@ class RouteEdgeController(
                 edge
             }).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     *  Delete Route Edges
+     */
+    data class RouteEdgesDeleteRequest(
+        val ids: List<Long>
+    )
+
+    /**
+     * Delete Route Edges
+     */
+    @Operation(
+        summary = "Delete Route Edges",
+        description = "Delete Route Edges"
+    )
+    @DeleteMapping("/many")
+    fun deleteEdges(
+        @RequestBody request: RouteEdgesDeleteRequest
+    ) = runCatching {
+        routeEdgeService.deleteRouteEdges(request.ids).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }
