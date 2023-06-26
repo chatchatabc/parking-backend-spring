@@ -38,23 +38,32 @@ class JeepneySchedule(
         // Keys
         val jobKey = JobKey.jobKey("jeepneyLocationSend", "jeep")
         val triggerKey = TriggerKey.triggerKey("jeepneyLocationSendTrigger", "jeepTrigger")
+        val jobStatus = scheduler.getTriggerState(triggerKey)
 
-        // Instantiate and schedule job if it doesn't exist
-        if (!scheduler.checkExists(jobKey) && !scheduler.checkExists(triggerKey)) {
-            val job = JobBuilder
-                .newJob(JeepneyLocationSendJob::class.java)
-                .withIdentity(jobKey)
-                .storeDurably()
-                .build()
+        val job = JobBuilder
+            .newJob(JeepneyLocationSendJob::class.java)
+            .withIdentity(jobKey)
+            .storeDurably()
+            .requestRecovery(true)
+            .build()
 
-            val trigger = TriggerBuilder
-                .newTrigger()
-                .withIdentity(triggerKey)
-                .withSchedule(
-                    SimpleScheduleBuilder.repeatSecondlyForever(10)
-                )
-                .forJob(job)
-                .build()
+        val trigger = TriggerBuilder
+            .newTrigger()
+            .withIdentity(triggerKey)
+            .withSchedule(
+                SimpleScheduleBuilder
+                    .repeatSecondlyForever(10)
+                    .withMisfireHandlingInstructionFireNow()
+            )
+            .forJob(job)
+            .build()
+
+        // Instantiate and schedule job if it doesn't exist or is in error
+        if (!scheduler.checkExists(jobKey) || !scheduler.checkExists(triggerKey) || jobStatus == Trigger.TriggerState.ERROR) {
+            if (jobStatus == Trigger.TriggerState.ERROR) {
+                // delete the job
+                scheduler.deleteJob(jobKey)
+            }
             scheduler.scheduleJob(job, trigger)
         }
     }
