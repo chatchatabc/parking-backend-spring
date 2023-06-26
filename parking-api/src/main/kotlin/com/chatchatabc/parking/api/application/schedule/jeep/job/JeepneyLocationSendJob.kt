@@ -21,7 +21,7 @@ class JeepneyLocationSendJob(
     /**
      * Send Jeepney Location to NATS channel
      */
-    override fun execute(context: JobExecutionContext?) {
+    override fun execute(context: JobExecutionContext?): Unit = runCatching {
         // API Call get location of jeepney via Azliot
         val data = gpsRestService.carHomeTF
         log.info("JeepneyLocationSendJob Executed")
@@ -42,5 +42,7 @@ class JeepneyLocationSendJob(
                     natsConnection.publish("route-${jeep.groupName}", this)
                 }
         }
+    }.getOrElse { e ->
+        log.error("Error in JeepneyLocationSendJob: ${e.message}")
     }
 }
