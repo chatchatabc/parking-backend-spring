@@ -8,6 +8,17 @@
     jeepney_ride*,
     parking_lot*,
     parking_lot_image*,
+    qrtz_blob_triggers*,
+    qrtz_calendars*,
+    qrtz_cron_triggers*,
+    qrtz_fired_triggers*,
+    qrtz_job_details*,
+    qrtz_locks*,
+    qrtz_paused_trigger_grps*,
+    qrtz_scheduler_state*,
+    qrtz_simple_triggers*,
+    qrtz_simprop_triggers*,
+    qrtz_triggers*,
     rate*,
     report*,
     report_status*,
@@ -158,6 +169,129 @@
     cloud_file_id CDATA #REQUIRED
     parking_lot_id CDATA #REQUIRED
     file_order CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_blob_triggers EMPTY>
+<!ATTLIST qrtz_blob_triggers
+    sched_name CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    blob_data CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_calendars EMPTY>
+<!ATTLIST qrtz_calendars
+    sched_name CDATA #REQUIRED
+    calendar_name CDATA #REQUIRED
+    calendar CDATA #REQUIRED
+>
+
+<!ELEMENT qrtz_cron_triggers EMPTY>
+<!ATTLIST qrtz_cron_triggers
+    sched_name CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    cron_expression CDATA #REQUIRED
+    time_zone_id CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_fired_triggers EMPTY>
+<!ATTLIST qrtz_fired_triggers
+    sched_name CDATA #REQUIRED
+    entry_id CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    instance_name CDATA #REQUIRED
+    fired_time CDATA #REQUIRED
+    sched_time CDATA #REQUIRED
+    priority CDATA #REQUIRED
+    state CDATA #REQUIRED
+    job_name CDATA #IMPLIED
+    job_group CDATA #IMPLIED
+    is_nonconcurrent CDATA #IMPLIED
+    requests_recovery CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_job_details EMPTY>
+<!ATTLIST qrtz_job_details
+    sched_name CDATA #REQUIRED
+    job_name CDATA #REQUIRED
+    job_group CDATA #REQUIRED
+    description CDATA #IMPLIED
+    job_class_name CDATA #REQUIRED
+    is_durable CDATA #REQUIRED
+    is_nonconcurrent CDATA #REQUIRED
+    is_update_data CDATA #REQUIRED
+    requests_recovery CDATA #REQUIRED
+    job_data CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_locks EMPTY>
+<!ATTLIST qrtz_locks
+    sched_name CDATA #REQUIRED
+    lock_name CDATA #REQUIRED
+>
+
+<!ELEMENT qrtz_paused_trigger_grps EMPTY>
+<!ATTLIST qrtz_paused_trigger_grps
+    sched_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+>
+
+<!ELEMENT qrtz_scheduler_state EMPTY>
+<!ATTLIST qrtz_scheduler_state
+    sched_name CDATA #REQUIRED
+    instance_name CDATA #REQUIRED
+    last_checkin_time CDATA #REQUIRED
+    checkin_interval CDATA #REQUIRED
+>
+
+<!ELEMENT qrtz_simple_triggers EMPTY>
+<!ATTLIST qrtz_simple_triggers
+    sched_name CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    repeat_count CDATA #REQUIRED
+    repeat_interval CDATA #REQUIRED
+    times_triggered CDATA #REQUIRED
+>
+
+<!ELEMENT qrtz_simprop_triggers EMPTY>
+<!ATTLIST qrtz_simprop_triggers
+    sched_name CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    str_prop_1 CDATA #IMPLIED
+    str_prop_2 CDATA #IMPLIED
+    str_prop_3 CDATA #IMPLIED
+    int_prop_1 CDATA #IMPLIED
+    int_prop_2 CDATA #IMPLIED
+    long_prop_1 CDATA #IMPLIED
+    long_prop_2 CDATA #IMPLIED
+    dec_prop_1 CDATA #IMPLIED
+    dec_prop_2 CDATA #IMPLIED
+    bool_prop_1 CDATA #IMPLIED
+    bool_prop_2 CDATA #IMPLIED
+>
+
+<!ELEMENT qrtz_triggers EMPTY>
+<!ATTLIST qrtz_triggers
+    sched_name CDATA #REQUIRED
+    trigger_name CDATA #REQUIRED
+    trigger_group CDATA #REQUIRED
+    job_name CDATA #REQUIRED
+    job_group CDATA #REQUIRED
+    description CDATA #IMPLIED
+    next_fire_time CDATA #IMPLIED
+    prev_fire_time CDATA #IMPLIED
+    priority CDATA #IMPLIED
+    trigger_state CDATA #REQUIRED
+    trigger_type CDATA #REQUIRED
+    start_time CDATA #REQUIRED
+    end_time CDATA #IMPLIED
+    calendar_name CDATA #IMPLIED
+    misfire_instr CDATA #IMPLIED
+    job_data CDATA #IMPLIED
 >
 
 <!ELEMENT rate EMPTY>
