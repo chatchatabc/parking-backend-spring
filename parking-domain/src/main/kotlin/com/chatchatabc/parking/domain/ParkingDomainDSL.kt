@@ -114,6 +114,10 @@ val String.route: Route
         if (this.length == 36) {
             return SpringContextUtils.getRouteRepository().findByRouteUuid(this).orElseThrow()
         }
+        // Regex if string is a Long number
+        else if (this.matches(Regex("^[0-9]\$"))) {
+            return SpringContextUtils.getRouteRepository().findById(this.toLong()).orElseThrow()
+        }
         return SpringContextUtils.getRouteRepository().findBySlug(this).orElseThrow()
     }
 
