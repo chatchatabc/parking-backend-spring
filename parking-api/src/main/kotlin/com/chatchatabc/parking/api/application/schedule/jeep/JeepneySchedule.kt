@@ -4,10 +4,7 @@ import com.chatchatabc.parking.api.application.schedule.jeep.job.JeepneyLocation
 import com.chatchatabc.parking.web.common.application.config.rest.AzliotRestConfig
 import com.chatchatabc.parking.web.common.application.rest.service.GpsRestService
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
-import org.quartz.JobBuilder
-import org.quartz.Scheduler
-import org.quartz.SimpleScheduleBuilder
-import org.quartz.TriggerBuilder
+import org.quartz.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -38,20 +35,28 @@ class JeepneySchedule(
      */
     @Bean
     fun jeepneyLocationSend() {
-        val job = JobBuilder
-            .newJob(JeepneyLocationSendJob::class.java)
-            .withIdentity("jeepneyLocationSend", "jeep")
-            .build()
-        val trigger = TriggerBuilder
-            .newTrigger()
-            .withIdentity("jeepneyLocationSendTrigger", "jeepTrigger")
-            .withSchedule(
-                SimpleScheduleBuilder.repeatSecondlyForever(10)
-            )
-            .forJob(job)
-            .build()
-        scheduler.addJob(job, true)
-        scheduler.scheduleJob(job, trigger)
+        // Keys
+        val jobKey = JobKey.jobKey("jeepneyLocationSend", "jeep")
+        val triggerKey = TriggerKey.triggerKey("jeepneyLocationSendTrigger", "jeepTrigger")
+
+        // Instantiate and schedule job if it doesn't exist
+        if (!scheduler.checkExists(jobKey) && !scheduler.checkExists(triggerKey)) {
+            val job = JobBuilder
+                .newJob(JeepneyLocationSendJob::class.java)
+                .withIdentity(jobKey)
+                .storeDurably()
+                .build()
+
+            val trigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity(triggerKey)
+                .withSchedule(
+                    SimpleScheduleBuilder.repeatSecondlyForever(10)
+                )
+                .forJob(job)
+                .build()
+            scheduler.scheduleJob(job, trigger)
+        }
     }
 
     /**
