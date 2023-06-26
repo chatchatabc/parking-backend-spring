@@ -28,7 +28,7 @@ class RouteController(
         val slug: String,
         val name: String,
         val description: String,
-        val status: Int
+        val status: Int = Route.RouteStatus.DRAFT
     )
 
     /**
@@ -39,7 +39,9 @@ class RouteController(
         description = "Create Route"
     )
     @PostMapping
-    fun createRoute(request: RouteCreateRequest) = runCatching {
+    fun createRoute(
+        @RequestBody request: RouteCreateRequest
+    ) = runCatching {
         val route = Route()
         routeMapper.createRouteFromCreateRequest(request, route)
         routeService.saveRoute(route).toResponse()

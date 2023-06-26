@@ -38,23 +38,33 @@ class JeepneySchedule(
         // Keys
         val jobKey = JobKey.jobKey("jeepneyLocationSend", "jeep")
         val triggerKey = TriggerKey.triggerKey("jeepneyLocationSendTrigger", "jeepTrigger")
+        val jobStatus = scheduler.getTriggerState(triggerKey)
+
+        val job = JobBuilder
+            .newJob(JeepneyLocationSendJob::class.java)
+            .withIdentity(jobKey)
+            .storeDurably()
+            .requestRecovery(true)
+            .build()
+
+        val trigger = TriggerBuilder
+            .newTrigger()
+            .withIdentity(triggerKey)
+            .withSchedule(
+                SimpleScheduleBuilder
+                    .repeatSecondlyForever(10)
+                    .withMisfireHandlingInstructionFireNow()
+            )
+            .forJob(job)
+            .build()
+
+        // Reset Job if error
+        if (jobStatus == Trigger.TriggerState.ERROR) {
+            scheduler.resetTriggerFromErrorState(triggerKey)
+        }
 
         // Instantiate and schedule job if it doesn't exist
-        if (!scheduler.checkExists(jobKey) && !scheduler.checkExists(triggerKey)) {
-            val job = JobBuilder
-                .newJob(JeepneyLocationSendJob::class.java)
-                .withIdentity(jobKey)
-                .storeDurably()
-                .build()
-
-            val trigger = TriggerBuilder
-                .newTrigger()
-                .withIdentity(triggerKey)
-                .withSchedule(
-                    SimpleScheduleBuilder.repeatSecondlyForever(10)
-                )
-                .forJob(job)
-                .build()
+        if (!scheduler.checkExists(jobKey) || !scheduler.checkExists(triggerKey)) {
             scheduler.scheduleJob(job, trigger)
         }
     }

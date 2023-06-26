@@ -33,7 +33,7 @@ public class Route extends FlagEntity {
     private String routeUuid = UUID.randomUUID().toString();
 
     @Column(unique = true)
-    @Pattern(regexp = "^[a-zA-Z0-9-]+$\n", message = "Invalid slug format.")
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "Invalid slug format.")
     private String slug;
 
     @Column
