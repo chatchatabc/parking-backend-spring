@@ -39,6 +39,16 @@ public class RouteEdgeServiceImpl implements RouteEdgeService {
     }
 
     /**
+     * Delete route edges by ids
+     *
+     * @param ids ids
+     */
+    @Override
+    public void deleteRouteEdges(List<Long> ids) {
+        routeEdgeRepository.deleteAllById(ids);
+    }
+
+    /**
      * Calculate distance between two nodes
      *
      * @param nodeFrom node from

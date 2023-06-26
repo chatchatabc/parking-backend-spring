@@ -110,4 +110,60 @@ class RouteEdgeController(
         routeEdgeMapper.updateRouteEdgeFromUpdateRequest(request, edge)
         routeEdgeService.saveRouteEdge(edge).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    data class RouteEdgesUpdateRequest(
+        val edges: List<RouteEdgesItem>
+    )
+
+    data class RouteEdgesItem(
+        val id: Long,
+        val routeId: Long?,
+        val nodeFrom: Long?,
+        val nodeTo: Long?
+    )
+
+    /**
+     * Update Many Route Edges
+     */
+    @Operation(
+        summary = "Update Many Route Edges",
+        description = "Update Many Route Edges"
+    )
+    @PutMapping("/many")
+    fun updateEdges(
+        @RequestBody request: RouteEdgesUpdateRequest
+    ) = runCatching {
+        routeEdgeService.saveRouteEdges(
+            request.edges.map {
+                val edge = it.id.routeEdge.apply {
+                    this.distance = routeEdgeService.calculateDistanceBetweenNodes(
+                        it.nodeFrom?.routeNode,
+                        it.nodeTo?.routeNode
+                    )
+                }
+                routeEdgeMapper.updateRouteEdgesFromUpdateRequest(it, edge)
+                edge
+            }).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     *  Delete Route Edges
+     */
+    data class RouteEdgesDeleteRequest(
+        val ids: List<Long>
+    )
+
+    /**
+     * Delete Route Edges
+     */
+    @Operation(
+        summary = "Delete Route Edges",
+        description = "Delete Route Edges"
+    )
+    @DeleteMapping("/many")
+    fun deleteEdges(
+        @RequestBody request: RouteEdgesDeleteRequest
+    ) = runCatching {
+        routeEdgeService.deleteRouteEdges(request.ids).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }

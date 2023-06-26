@@ -2,70 +2,84 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-    <route_node id="1" latitude="7.109815773766583" longitude="125.63233674148502"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="2" latitude="7.1098137999999995" longitude="125.63231180000001"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="3" latitude="7.109215100000001" longitude="125.63234209999999"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="4" latitude="7.1085999" longitude="125.63238369999999" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="5" latitude="7.1081077" longitude="125.6324129" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="6" latitude="7.107831499999999" longitude="125.6324389" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="7" latitude="7.1074545" longitude="125.63246669999998" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="8" latitude="7.1064978" longitude="125.6325274" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="9" latitude="7.106537899999999" longitude="125.6329105" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="10" latitude="7.1065776" longitude="125.63318899999999" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="11" latitude="7.106617563095244" longitude="125.63334300695739"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="12" latitude="7.1066446" longitude="125.63344719999998" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="13" latitude="7.1072699" longitude="125.6346553" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="14" latitude="7.107508532199416" longitude="125.63510068075436"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="15" latitude="7.1075108999999985" longitude="125.6351051" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="16" latitude="7.1081088999999995" longitude="125.6351265" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="17" latitude="7.108833" longitude="125.63504710000001" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="18" latitude="7.109130399999999" longitude="125.63500479999999"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="19" latitude="7.109522" longitude="125.63495789999999" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="20" latitude="7.1098618" longitude="125.6349311" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="21" latitude="7.1098688999999995" longitude="125.63419509999999"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="22" latitude="7.1098716999999985" longitude="125.63370540000001"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="23" latitude="7.109868099999999" longitude="125.633218" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="24" latitude="7.1098559" longitude="125.6328438" created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="25" latitude="7.107381569297203" longitude="125.63511082633812"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="26" latitude="7.105909628131386" longitude="125.63484148360908"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="27" latitude="7.106370578634923" longitude="125.63295608451728"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="28" latitude="7.1061575343416195" longitude="125.6338343760197"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="29" latitude="7.107381569297203" longitude="125.63511082633812"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="30" latitude="7.105909628131386" longitude="125.63484148360908"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="31" latitude="7.106370578634923" longitude="125.63295608451728"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="32" latitude="7.1061575343416195" longitude="125.6338343760197"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="33" latitude="7.106019370797085" longitude="125.63258287298623"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="34" latitude="7.104552225649741" longitude="125.63267886757359"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="35" latitude="7.103776834353511" longitude="125.63271525396232"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="36" latitude="7.105421081233786" longitude="125.63262600720878"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="37" latitude="7.1030202180254065" longitude="125.63277313950641"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="38" latitude="7.102501175865527" longitude="125.6328231709582"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="39" latitude="7.102591563531234" longitude="125.63308242487273"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="40" latitude="7.103345302665417" longitude="125.6330232967909"
-                created_at="2023-05-10 16:14:47.307160"/>
-    <route_node id="41" latitude="7.103358842878407" longitude="125.63275494627356"
-                created_at="2023-05-10 16:14:47.307160"/>
+    <route_node id="1" latitude="7.109130399999999" longitude="125.63500479999999"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="2" latitude="7.109868099999999" longitude="125.633218" created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="3" latitude="7.105909628131386" longitude="125.63484148360908"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="4" latitude="7.106370578634923" longitude="125.63295608451728"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="5" latitude="7.1061575343416195" longitude="125.6338343760197"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="6" latitude="7.105909628131386" longitude="125.63484148360908"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="7" latitude="7.106370578634923" longitude="125.63295608451728"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="8" latitude="7.1061575343416195" longitude="125.6338343760197"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="9" latitude="7.106019370797085" longitude="125.63258287298623"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="10" latitude="7.104552225649741" longitude="125.63267886757359"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="11" latitude="7.103776834353511" longitude="125.63271525396232"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="12" latitude="7.105421081233786" longitude="125.63262600720878"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="13" latitude="7.1030202180254065" longitude="125.63277313950641"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="14" latitude="7.102501175865527" longitude="125.6328231709582"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="15" latitude="7.102591563531234" longitude="125.63308242487273"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="16" latitude="7.103345302665417" longitude="125.6330232967909"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="17" latitude="7.103358842878407" longitude="125.63275494627356"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="18" latitude="7.106545016608669" longitude="125.63318402490282"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="19" latitude="7.10662434234317" longitude="125.633488181251"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="20" latitude="7.106656263893417" longitude="125.6335670941628"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="21" latitude="7.107232278892562" longitude="125.63464332765959"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="22" latitude="7.1074925199036425" longitude="125.63513116041554"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="23" latitude="7.107885228445544" longitude="125.63581147667114"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="24" latitude="7.108080140029964" longitude="125.6351265" created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="25" latitude="7.108819840515049" longitude="125.63504267952402"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="26" latitude="7.1097806888294155" longitude="125.63231552740349"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="27" latitude="7.109669332315905" longitude="125.63232594272169"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="28" latitude="7.109863493468355" longitude="125.63444640491187"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="29" latitude="7.109845427031014" longitude="125.63492638575944"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="30" latitude="7.1098642220089845" longitude="125.6343600984158"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="31" latitude="7.109881055980806" longitude="125.63378789920888"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="32" latitude="7.109827832052788" longitude="125.63263165917864"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="33" latitude="7.1091911251402005" longitude="125.63235820707021"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="34" latitude="7.108566012874432" longitude="125.63240077480987"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="35" latitude="7.108081474073595" longitude="125.6324291640294"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="36" latitude="7.107792510520009" longitude="125.63244763142784"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="37" latitude="7.107387351393112" longitude="125.63248198000096"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="38" latitude="7.106480365123176" longitude="125.63253969889381"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="39" latitude="7.1065134911757255" longitude="125.63292104190971"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="40" latitude="7.106375322630981" longitude="125.63449729109146"
+                created_at='2023-05-10 16:14:47.307160'/>
+    <route_node id="41" latitude="7.107133005842357" longitude="125.63345081168711"
+                created_at='2023-05-10 16:14:47.307160'/>
 </dataset>

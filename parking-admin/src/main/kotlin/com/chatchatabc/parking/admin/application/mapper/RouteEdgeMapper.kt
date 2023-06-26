@@ -34,4 +34,18 @@ interface RouteEdgeMapper {
         request: RouteEdgeController.RouteEdgeUpdateRequest,
         @MappingTarget routeEdge: RouteEdge
     )
+
+    /**
+     * Route Edges Update Mapper
+     */
+    @Mappings(
+        Mapping(target = "id", source = "request.id"),
+        Mapping(target = "routeId", source = "request.routeId"),
+        Mapping(target = "nodeFrom", source = "request.nodeFrom"),
+        Mapping(target = "nodeTo", source = "request.nodeTo"),
+    )
+    fun updateRouteEdgesFromUpdateRequest(
+        request: RouteEdgeController.RouteEdgesItem,
+        @MappingTarget routeEdge: RouteEdge
+    )
 }
