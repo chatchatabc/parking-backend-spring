@@ -22,6 +22,13 @@ public interface RouteEdgeService {
     void saveRouteEdges(List<RouteEdge> routeEdges);
 
     /**
+     * Delete route edges by ids
+     *
+     * @param ids ids
+     */
+    void deleteRouteEdges(List<Long> ids);
+
+    /**
      * Calculate distance between two nodes
      *
      * @param nodeFrom node from
