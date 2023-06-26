@@ -58,12 +58,13 @@ class JeepneySchedule(
             .forJob(job)
             .build()
 
-        // Instantiate and schedule job if it doesn't exist or is in error
-        if (!scheduler.checkExists(jobKey) || !scheduler.checkExists(triggerKey) || jobStatus == Trigger.TriggerState.ERROR) {
-            if (jobStatus == Trigger.TriggerState.ERROR) {
-                // delete the job
-                scheduler.deleteJob(jobKey)
-            }
+        // Reset Job if error
+        if (jobStatus == Trigger.TriggerState.ERROR) {
+            scheduler.resetTriggerFromErrorState(triggerKey)
+        }
+
+        // Instantiate and schedule job if it doesn't exist
+        if (!scheduler.checkExists(jobKey) || !scheduler.checkExists(triggerKey)) {
             scheduler.scheduleJob(job, trigger)
         }
     }
