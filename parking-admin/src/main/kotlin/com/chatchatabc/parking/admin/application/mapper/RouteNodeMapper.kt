@@ -36,7 +36,7 @@ interface RouteNodeMapper {
     )
 
     /**
-     * Route Nodes Create Mapper
+     * Route Nodes Update Mapper
      */
     @Mappings(
         Mapping(target = "id", source = "request.id"),
