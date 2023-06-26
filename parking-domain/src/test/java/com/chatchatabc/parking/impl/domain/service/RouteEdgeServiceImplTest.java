@@ -57,7 +57,19 @@ class RouteEdgeServiceImplTest extends TestContainersBaseTest {
 
         // Then
         assertThat(routeEdgeRepository.count()).isGreaterThan(count);
+    }
 
+    @Test
+    void testDeleteRouteEdges_ShouldBeSuccessful() {
+        // Given
+        List<Long> ids = List.of(1L, 2L);
+        Long count = routeEdgeRepository.count();
+
+        // When
+        routeEdgeService.deleteRouteEdges(ids);
+
+        // Then
+        assertThat(routeEdgeRepository.count()).isLessThan(count);
     }
 
     @Test
@@ -82,4 +94,6 @@ class RouteEdgeServiceImplTest extends TestContainersBaseTest {
         Double degree = 1.0;
         assertThat(routeEdgeService.toRadians(degree)).isEqualTo(0.017453292519943295);
     }
+
+
 }
