@@ -2,52 +2,10 @@
 <!DOCTYPE dataset SYSTEM "database.dtd">
 
 <dataset>
-<!--    <route_edge id="1" route_id="1" node_from="1" node_to="2" distance="2.7607789976906547"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="2" route_id="1" node_from="2" node_to="3" distance="66.65630092051774"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="3" route_id="1" node_from="3" node_to="4" distance="68.56094651756193"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="4" route_id="1" node_from="4" node_to="5" distance="54.82489774248476"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="5" route_id="1" node_from="5" node_to="6" distance="30.845739102939895"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="6" route_id="1" node_from="6" node_to="7" distance="42.03256590419731"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="7" route_id="1" node_from="7" node_to="8" distance="106.59081989845991"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="8" route_id="1" node_from="8" node_to="9" distance="42.50604591916703"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="9" route_id="1" node_from="9" node_to="10" distance="31.04534027952657"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="10" route_id="1" node_from="10" node_to="11" distance="17.564635798649054"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="11" route_id="1" node_from="11" node_to="12" distance="11.88331105218578"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="12" route_id="1" node_from="12" node_to="13" distance="150.34626776536444"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="13" route_id="1" node_from="13" node_to="14" distance="55.84959240832024"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="14" route_id="1" node_from="14" node_to="15" distance="0.5541616609535185"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="15" route_id="1" node_from="15" node_to="16" distance="66.5364786438535"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="16" route_id="1" node_from="16" node_to="17" distance="80.99148919377976"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="17" route_id="1" node_from="17" node_to="18" distance="33.39712282685782"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="18" route_id="1" node_from="18" node_to="19" distance="43.850361569228546"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="19" route_id="1" node_from="19" node_to="20" distance="37.89957632441794"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="20" route_id="1" node_from="20" node_to="21" distance="81.2140103779399"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="21" route_id="1" node_from="21" node_to="22" distance="54.034349821166245"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="22" route_id="1" node_from="22" node_to="23" distance="53.78116086531829"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="23" route_id="1" node_from="23" node_to="24" distance="41.31147376024589"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
-<!--    <route_edge id="24" route_id="1" node_from="24" node_to="1" distance="56.12642430743771"-->
-<!--                created_at="2023-05-11 16:14:47.307160"/>-->
+    <route_edge id="1" route_id="1" node_from="20" node_to="40" distance="107.2873292197062"
+                created_at="2023-05-11 16:14:47.307160"/>
+    <route_edge id="2" route_id="1" node_from="40" node_to="21" distance="96.64203549144511"
+                created_at="2023-05-11 16:14:47.307160"/>
+    <route_edge id="3" route_id="1" node_from="21" node_to="20" distance="134.9240342967994"
+                created_at="2023-05-11 16:14:47.307160"/>
 </dataset>
