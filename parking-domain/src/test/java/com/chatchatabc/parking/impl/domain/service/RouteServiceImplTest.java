@@ -25,6 +25,7 @@ class RouteServiceImplTest extends TestContainersBaseTest {
         route.setName("route-name");
         route.setDescription("description");
         route.setSlug("route-slug");
+        route.setColor("Red");
         route.setStatus(Route.RouteStatus.DRAFT);
 
         routeService.saveRoute(route);
