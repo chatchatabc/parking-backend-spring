@@ -43,6 +43,9 @@ public class Route extends FlagEntity {
     private String description;
 
     @Column
+    private String color;
+
+    @Column
     private Integer status = RouteStatus.DRAFT;
 
     @CreationTimestamp

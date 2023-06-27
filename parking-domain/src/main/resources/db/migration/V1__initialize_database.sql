@@ -366,6 +366,7 @@ CREATE TABLE IF NOT EXISTS route
     slug        VARCHAR(255)             NOT NULL UNIQUE,
     name        VARCHAR(255)             NOT NULL,
     description VARCHAR(255)             NOT NULL,
+    color       VARCHAR(15)              NOT NULL,
     status      INT                      NOT NULL DEFAULT 0,
     flag        INT                      NOT NULL DEFAULT 0,
     created_at  TIMESTAMP WITH TIME ZONE NOT NULL,

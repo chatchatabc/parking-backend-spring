@@ -16,6 +16,7 @@ interface RouteMapper {
         Mapping(target = "slug", source = "request.slug"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "description", source = "request.description"),
+        Mapping(target = "color", source = "request.color"),
         Mapping(target = "status", source = "request.status"),
     )
     fun createRouteFromCreateRequest(
@@ -30,6 +31,7 @@ interface RouteMapper {
         Mapping(target = "slug", source = "request.slug"),
         Mapping(target = "name", source = "request.name"),
         Mapping(target = "description", source = "request.description"),
+        Mapping(target = "color", source = "request.color"),
         Mapping(target = "status", source = "request.status"),
     )
     fun updateRouteFromUpdateRequest(
