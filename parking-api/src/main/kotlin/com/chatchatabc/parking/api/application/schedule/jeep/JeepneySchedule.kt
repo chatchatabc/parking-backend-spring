@@ -38,13 +38,11 @@ class JeepneySchedule(
         // Keys
         val jobKey = JobKey.jobKey("jeepneyLocationSend", "jeep")
         val triggerKey = TriggerKey.triggerKey("jeepneyLocationSendTrigger", "jeepTrigger")
-        val jobStatus = scheduler.getTriggerState(triggerKey)
 
         val job = JobBuilder
             .newJob(JeepneyLocationSendJob::class.java)
             .withIdentity(jobKey)
             .storeDurably()
-            .requestRecovery(true)
             .build()
 
         val trigger = TriggerBuilder
@@ -58,14 +56,25 @@ class JeepneySchedule(
             .forJob(job)
             .build()
 
-        // Reset Job if error
-        if (jobStatus == Trigger.TriggerState.ERROR) {
-            scheduler.resetTriggerFromErrorState(triggerKey)
-        }
-
         // Instantiate and schedule job if it doesn't exist
         if (!scheduler.checkExists(jobKey) || !scheduler.checkExists(triggerKey)) {
             scheduler.scheduleJob(job, trigger)
+        }
+    }
+
+    /**
+     * Reset jeepneyLocationSend if it's in error state very 1 minute
+     */
+    // TODO: This could be removed if we can find a way to fix the error
+    @Bean
+    @Scheduled(fixedRate = 1 * 60 * 1000)
+    fun resetJeepneyLocationSend() {
+        val triggerKey = TriggerKey.triggerKey("jeepneyLocationSendTrigger", "jeepTrigger")
+        val jobStatus = scheduler.getTriggerState(triggerKey)
+
+        if (jobStatus == Trigger.TriggerState.ERROR) {
+            log.info("Resetting jeepneyLocationSend...")
+            scheduler.resetTriggerFromErrorState(triggerKey)
         }
     }
 
