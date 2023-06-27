@@ -28,6 +28,7 @@ class RouteController(
         val slug: String,
         val name: String,
         val description: String,
+        val color: String,
         val status: Int = Route.RouteStatus.DRAFT
     )
 
@@ -54,6 +55,7 @@ class RouteController(
         val slug: String?,
         val name: String?,
         val description: String?,
+        val color: String,
         val status: Int?
     )
 

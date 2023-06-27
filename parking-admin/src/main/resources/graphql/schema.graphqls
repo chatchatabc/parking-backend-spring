@@ -219,6 +219,7 @@ type Route {
     slug: String
     name: String
     description: String
+    color: String
     status: Int
     points: String
     createdAt: String
