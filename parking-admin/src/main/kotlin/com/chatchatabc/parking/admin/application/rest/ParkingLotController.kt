@@ -3,7 +3,6 @@ package com.chatchatabc.parking.admin.application.rest
 import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.CloudFile
-import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
@@ -19,7 +18,6 @@ import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -33,21 +31,6 @@ class ParkingLotController(
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
 
     /**
-     * Admin create Parking Lot Request
-     */
-    data class ParkingLotCreateRequest(
-        val name: String,
-        val latitude: Double,
-        val longitude: Double,
-        val address: String,
-        val description: String,
-        val capacity: Int,
-        val businessHoursStart: LocalDateTime?,
-        val businessHoursEnd: LocalDateTime?,
-        val openDaysFlag: Int = 0
-    )
-
-    /**
      * Admin create Parking Lot
      */
     @Operation(
@@ -57,32 +40,15 @@ class ParkingLotController(
     @PostMapping("/{userUuid}")
     fun createParkingLot(
         @PathVariable userUuid: String,
-        @RequestBody req: ParkingLotCreateRequest
+        @RequestBody req: ParkingLotMapper.ParkingLotMapDTO
     ) = runCatching {
         val createdParkingLot = ParkingLot()
         createdParkingLot.owner = userUuid.user.id
         createdParkingLot.availableSlots = req.capacity
-        parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
+        parkingLotMapper.mapRequestToParkingLot(req, createdParkingLot)
         parkingLotService.saveParkingLot(createdParkingLot).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
-
-    /**
-     * Admin update Parking Lot Request
-     */
-    data class ParkingLotUpdateRequest(
-        val name: String?,
-        val latitude: Double?,
-        val longitude: Double?,
-        val address: String?,
-        val description: String?,
-        val capacity: Int?,
-        val availableSlots: Int?,
-        val businessHoursStart: LocalDateTime?,
-        val businessHoursEnd: LocalDateTime?,
-        val openDaysFlag: Int?,
-        val images: List<ParkingLotImage>?
-    )
 
     /**
      * Admin update Parking Lot
@@ -94,24 +60,20 @@ class ParkingLotController(
     @PutMapping("/{parkingLotUuid}")
     fun updateParkingLot(
         @PathVariable parkingLotUuid: String,
-        @RequestBody req: ParkingLotUpdateRequest,
+        @RequestBody req: ParkingLotMapper.ParkingLotMapDTO,
         principal: Principal
     ) = runCatching {
         // Map request to parking lot
         val updatedParkingLot = parkingLotUuid.parkingLot
-        parkingLotMapper.updateParkingLotFromUpdateRequest(req, updatedParkingLot)
+        parkingLotMapper.mapRequestToParkingLot(req, updatedParkingLot)
 
         // Update available slots if there are active invoices and if capacity is updated
-        if (req.capacity != null) {
-            val activeInvoices =
-                invoiceRepository.countActiveInvoicesByParkingLotUuid(updatedParkingLot.parkingLotUuid)
-            updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
-        }
+        val activeInvoices =
+            invoiceRepository.countActiveInvoicesByParkingLotUuid(updatedParkingLot.parkingLotUuid)
+        updatedParkingLot.availableSlots = req.capacity - activeInvoices.toInt()
 
         // Override available slots if available slots is not null
-        if (req.availableSlots != null) {
-            updatedParkingLot.availableSlots = req.availableSlots
-        }
+        updatedParkingLot.availableSlots = req.availableSlots
 
         // Update images
         if (req.images.isNullOrEmpty().not()) {
