@@ -2,16 +2,10 @@ package com.chatchatabc.parking.domain.model.file;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
-@Data
 @Entity
 @Table(name = "parking_lot_image")
-@AllArgsConstructor
-@NoArgsConstructor
 public class ParkingLotImage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,4 +22,46 @@ public class ParkingLotImage {
 
     @Column
     private int fileOrder = 0;
+
+    public ParkingLotImage() {
+    }
+
+    public ParkingLotImage(String id, CloudFile cloudFile, Long parkingLot, int fileOrder) {
+        this.id = id;
+        this.cloudFile = cloudFile;
+        this.parkingLot = parkingLot;
+        this.fileOrder = fileOrder;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public CloudFile getCloudFile() {
+        return cloudFile;
+    }
+
+    public void setCloudFile(CloudFile cloudFile) {
+        this.cloudFile = cloudFile;
+    }
+
+    public Long getParkingLot() {
+        return parkingLot;
+    }
+
+    public void setParkingLot(Long parkingLot) {
+        this.parkingLot = parkingLot;
+    }
+
+    public int getFileOrder() {
+        return fileOrder;
+    }
+
+    public void setFileOrder(int fileOrder) {
+        this.fileOrder = fileOrder;
+    }
 }

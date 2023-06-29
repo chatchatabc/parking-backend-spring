@@ -56,7 +56,7 @@ class UserController(
                 this.status = -1
             }
         }
-        userMapper.createUserFromCreateRequest(req, user)
+        userMapper.mapRequestToUser(req, user)
         userService.saveUser(user).toResponse()
     }.getOrElse { it.toErrorResponse() }
 

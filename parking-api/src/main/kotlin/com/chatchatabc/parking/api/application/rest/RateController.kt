@@ -68,21 +68,21 @@ class RateController(
     @PostMapping("/{parkingLotUuid}")
     fun updateRateByParkingLotUuid(
         @PathVariable parkingLotUuid: String,
-        @RequestBody req: RateUpdateRequest
+        @RequestBody req: RateMapper.RateMapDTO
     ) = runCatching {
         val parkingLot = parkingLotUuid.parkingLot
         if (parkingLot.rate == null) {
             // Set rate as rate to a parking lot
             val createdRate = rateService.saveRate(
                 Rate().apply {
-                    rateMapper.updateRateFromUpdateRateRequest(req, this)
+                    rateMapper.mapRequestToRate(req, this)
                     this.parkingLot = parkingLot
                 })
             parkingLot.rate = createdRate
             parkingLotService.saveParkingLot(parkingLot)
         } else {
             // Update rate
-            rateMapper.updateRateFromUpdateRateRequest(req, parkingLot.rate!!)
+            rateMapper.mapRequestToRate(req, parkingLot.rate!!)
             rateService.saveRate(parkingLot.rate!!)
         }
         parkingLot.rate!!.toResponse()

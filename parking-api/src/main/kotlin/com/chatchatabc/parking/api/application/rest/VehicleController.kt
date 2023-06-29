@@ -94,20 +94,6 @@ class VehicleController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
-     * Update vehicle request
-     */
-    data class VehicleUpdateRequest(
-        val name: String?,
-        val plateNumber: String?,
-        val type: Int?,
-        val brandUuid: String?,
-        val modelUuid: String?,
-        val typeUuid: String?,
-        val color: String?,
-        val year: String?
-    )
-
-    /**
      * Update a vehicle
      */
     @Operation(
@@ -117,12 +103,12 @@ class VehicleController(
     @PutMapping("/{vehicleUuid}")
     fun updateVehicle(
         @PathVariable vehicleUuid: String,
-        @RequestBody req: VehicleUpdateRequest,
+        @RequestBody req: VehicleMapper.VehicleMapDTO,
         principal: Principal
     ) = runCatching {
         // TODO: check if user has access to vehicle or maybe make it so that the only is the only one that can update vehicle
         val vehicle = vehicleUuid.vehicle
-        vehicleMapper.updateVehicleFromUpdateRequest(req, vehicle)
+        vehicleMapper.mapRequestToVehicle(req, vehicle)
         vehicleService.updateVehicle(vehicle).toResponse()
     }.getOrElse { it.toErrorResponse() }
 

@@ -3,9 +3,7 @@ package com.chatchatabc.parking.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
 
-@Data
 @MappedSuperclass
 public class FlagEntity {
     @JsonIgnore
@@ -24,4 +22,11 @@ public class FlagEntity {
         }
     }
 
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 }

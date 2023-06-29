@@ -21,16 +21,7 @@ class RouteNodeController(
      * Create Route Nodes data class
      */
     data class RouteNodesCreateRequest(
-        val nodes: List<RouteNodeCreateRequest>
-    )
-
-    /**
-     * Route Node data class
-     */
-    data class RouteNodeCreateRequest(
-        val latitude: Double,
-        val longitude: Double,
-        val poi: String
+        val nodes: List<RouteNodeMapper.RouteNodeMapDTO>
     )
 
     /**
@@ -42,10 +33,10 @@ class RouteNodeController(
     )
     @PostMapping
     fun createNode(
-        @RequestBody request: RouteNodeCreateRequest,
+        @RequestBody request: RouteNodeMapper.RouteNodeMapDTO,
     ) = runCatching {
         val node = RouteNode()
-        routeNodeMapper.createRouteNodeFromCreateRequest(request, node)
+        routeNodeMapper.mapRequestToRouteNode(request, node)
         routeNodeService.saveRouteNode(node).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
@@ -63,19 +54,10 @@ class RouteNodeController(
         routeNodeService.saveRouteNodes(
             request.nodes.map {
                 val node = RouteNode()
-                routeNodeMapper.createRouteNodeFromCreateRequest(it, node)
+                routeNodeMapper.mapRequestToRouteNode(it, node)
                 node
             }).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update Route Node data class
-     */
-    data class RouteNodeUpdateRequest(
-        val latitude: Double?,
-        val longitude: Double?,
-        val poi: String?
-    )
 
     /**
      * Update Route Node
@@ -86,11 +68,11 @@ class RouteNodeController(
     )
     @PutMapping("/{id}")
     fun updateNode(
-        @RequestBody request: RouteNodeUpdateRequest,
+        @RequestBody request: RouteNodeMapper.RouteNodeMapDTO,
         @PathVariable id: Long,
     ) = runCatching {
         val node = id.routeNode
-        routeNodeMapper.updateRouteNodeFromUpdateRequest(request, node)
+        routeNodeMapper.mapRequestToRouteNode(request, node)
         routeNodeService.saveRouteNode(node).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
@@ -98,14 +80,7 @@ class RouteNodeController(
      * Update Many Route Nodes data class
      */
     data class RouteNodesUpdateRequest(
-        val nodes: List<RouteNodesItem>
-    )
-
-    data class RouteNodesItem(
-        val id: Long,
-        val latitude: Double?,
-        val longitude: Double?,
-        val poi: String?
+        val nodes: List<RouteNodeMapper.RouteNodeMapDTO>
     )
 
     /**
@@ -122,7 +97,7 @@ class RouteNodeController(
         routeNodeService.saveRouteNodes(
             request.nodes.map {
                 val node = it.id.routeNode
-                routeNodeMapper.updateRouteNodesFromUpdateRequest(it, node)
+                routeNodeMapper.mapRequestToRouteNode(it, node)
                 node
             }).toResponse()
     }.getOrElse { it.toErrorResponse() }

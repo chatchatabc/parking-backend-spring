@@ -2,22 +2,14 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "parking_lot")
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class ParkingLot extends FlagEntity {
     /**
      * -1: Deleted
@@ -124,4 +116,187 @@ public class ParkingLot extends FlagEntity {
 //                .map(ParkingLotImage::getId)
 //                .collect(Collectors.toList());
 //    }
+
+    public ParkingLot() {
+    }
+
+    public ParkingLot(Long id, String parkingLotUuid, Long owner, Rate rate, String name, String address, Double latitude, Double longitude, String description, Integer capacity, Integer availableSlots, LocalDateTime businessHoursStart, LocalDateTime businessHoursEnd, Integer openDaysFlag, Integer status, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.parkingLotUuid = parkingLotUuid;
+        this.owner = owner;
+        this.rate = rate;
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.description = description;
+        this.capacity = capacity;
+        this.availableSlots = availableSlots;
+        this.businessHoursStart = businessHoursStart;
+        this.businessHoursEnd = businessHoursEnd;
+        this.openDaysFlag = openDaysFlag;
+        this.status = status;
+        this.verifiedAt = verifiedAt;
+        this.verifiedBy = verifiedBy;
+        this.rejectionReason = rejectionReason;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getParkingLotUuid() {
+        return parkingLotUuid;
+    }
+
+    public void setParkingLotUuid(String parkingLotUuid) {
+        this.parkingLotUuid = parkingLotUuid;
+    }
+
+    public Long getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Long owner) {
+        this.owner = owner;
+    }
+
+    public void setRate(Rate rate) {
+        this.rate = rate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public Integer getAvailableSlots() {
+        return availableSlots;
+    }
+
+    public void setAvailableSlots(Integer availableSlots) {
+        this.availableSlots = availableSlots;
+    }
+
+    public LocalDateTime getBusinessHoursStart() {
+        return businessHoursStart;
+    }
+
+    public void setBusinessHoursStart(LocalDateTime businessHoursStart) {
+        this.businessHoursStart = businessHoursStart;
+    }
+
+    public LocalDateTime getBusinessHoursEnd() {
+        return businessHoursEnd;
+    }
+
+    public void setBusinessHoursEnd(LocalDateTime businessHoursEnd) {
+        this.businessHoursEnd = businessHoursEnd;
+    }
+
+    public Integer getOpenDaysFlag() {
+        return openDaysFlag;
+    }
+
+    public void setOpenDaysFlag(Integer openDaysFlag) {
+        this.openDaysFlag = openDaysFlag;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getVerifiedAt() {
+        return verifiedAt;
+    }
+
+    public void setVerifiedAt(LocalDateTime verifiedAt) {
+        this.verifiedAt = verifiedAt;
+    }
+
+    public Long getVerifiedBy() {
+        return verifiedBy;
+    }
+
+    public void setVerifiedBy(Long verifiedBy) {
+        this.verifiedBy = verifiedBy;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

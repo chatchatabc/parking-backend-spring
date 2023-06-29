@@ -2,18 +2,12 @@ package com.chatchatabc.parking.domain.model.log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "user_login_log")
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserLoginLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +32,64 @@ public class UserLoginLog {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public UserLoginLog() {
+    }
+
+    public UserLoginLog(Long id, Long user, Integer type, String ipAddress, Boolean success, LocalDateTime createdAt) {
+        this.id = id;
+        this.user = user;
+        this.type = type;
+        this.ipAddress = ipAddress;
+        this.success = success;
+        this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUser() {
+        return user;
+    }
+
+    public void setUser(Long user) {
+        this.user = user;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

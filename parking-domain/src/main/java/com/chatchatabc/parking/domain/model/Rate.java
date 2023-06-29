@@ -2,20 +2,14 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "rate")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Rate {
     public static class RateType {
         public static final int FIXED = 0;
@@ -60,4 +54,100 @@ public class Rate {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ParkingLot getParkingLot() {
+        return parkingLot;
+    }
+
+    public void setParkingLot(ParkingLot parkingLot) {
+        this.parkingLot = parkingLot;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public int getFreeHours() {
+        return freeHours;
+    }
+
+    public void setFreeHours(int freeHours) {
+        this.freeHours = freeHours;
+    }
+
+    public boolean isPayForFreeHoursWhenExceeding() {
+        return payForFreeHoursWhenExceeding;
+    }
+
+    public void setPayForFreeHoursWhenExceeding(boolean payForFreeHoursWhenExceeding) {
+        this.payForFreeHoursWhenExceeding = payForFreeHoursWhenExceeding;
+    }
+
+    public BigDecimal getStartingRate() {
+        return startingRate;
+    }
+
+    public void setStartingRate(BigDecimal startingRate) {
+        this.startingRate = startingRate;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Rate() {
+    }
+
+    public Rate(String id, ParkingLot parkingLot, int type, int interval, int freeHours, boolean payForFreeHoursWhenExceeding, BigDecimal startingRate, BigDecimal rate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.parkingLot = parkingLot;
+        this.type = type;
+        this.interval = interval;
+        this.freeHours = freeHours;
+        this.payForFreeHoursWhenExceeding = payForFreeHoursWhenExceeding;
+        this.startingRate = startingRate;
+        this.rate = rate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }

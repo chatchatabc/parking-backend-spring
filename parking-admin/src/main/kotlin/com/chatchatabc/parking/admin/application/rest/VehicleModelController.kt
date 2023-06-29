@@ -19,15 +19,6 @@ class VehicleModelController(
     private val vehicleModelMapper = Mappers.getMapper(VehicleModelMapper::class.java)
 
     /**
-     * Vehicle model create request
-     */
-    data class VehicleModelCreateRequest(
-        val brandUuid: String,
-        val name: String,
-        val status: Int = 0
-    )
-
-    /**
      * Admin create Vehicle Model
      */
     @Operation(
@@ -36,24 +27,15 @@ class VehicleModelController(
     )
     @PostMapping
     fun createVehicleModel(
-        @RequestBody req: VehicleModelCreateRequest,
+        @RequestBody req: VehicleModelMapper.VehicleModelResponse,
         principal: Principal
     ) = runCatching {
         val createdVehicleModel = VehicleModel().apply {
             this.createdBy = principal.name.user.id
         }
-        vehicleModelMapper.createVehicleModelFromCreateRequest(req, createdVehicleModel)
+        vehicleModelMapper.mapRequestToVehicleModel(req, createdVehicleModel)
         vehicleModelService.saveVehicleModel(createdVehicleModel)
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Vehicle model update request
-     */
-    data class VehicleModelUpdateRequest(
-        val brandUuid: String?,
-        val name: String?,
-        val status: Int?
-    )
 
     /**
      * Admin update Vehicle Model
@@ -64,12 +46,12 @@ class VehicleModelController(
     )
     @PutMapping("/{id}")
     fun updateVehicleModel(
-        @RequestBody req: VehicleModelUpdateRequest,
+        @RequestBody req: VehicleModelMapper.VehicleModelResponse,
         principal: Principal,
         @PathVariable id: String
     ) = runCatching {
         val updatedVehicleModel = id.vehicleModel
-        vehicleModelMapper.updateVehicleModelFromUpdateRequest(req, updatedVehicleModel)
+        vehicleModelMapper.mapRequestToVehicleModel(req, updatedVehicleModel)
         vehicleModelService.saveVehicleModel(updatedVehicleModel)
     }.getOrElse { it.toErrorResponse() }
 }

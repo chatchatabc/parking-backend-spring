@@ -52,17 +52,6 @@ class ReportController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
-     * Create Report Data Class
-     */
-    data class ReportCreateRequest(
-        val name: String,
-        val description: String,
-        val plateNumber: String,
-        val latitude: Double,
-        val longitude: Double
-    )
-
-    /**
      * Create Report
      */
     @Operation(
@@ -71,23 +60,12 @@ class ReportController(
     )
     @PostMapping
     fun createReport(
-        @RequestBody req: ReportCreateRequest
+        @RequestBody req: ReportMapper.ReportMapDTO
     ) = runCatching {
         val report = Report()
-        reportMapper.createReportFromRequest(req, report)
+        reportMapper.mapRequestToReport(req, report)
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update Report Data Class
-     */
-    data class ReportUpdateRequest(
-        val name: String?,
-        val description: String?,
-        val plateNumber: String?,
-        val latitude: Double?,
-        val longitude: Double?
-    )
 
     /**
      * Update Report
@@ -99,10 +77,10 @@ class ReportController(
     @PutMapping("/{reportId}")
     fun updateReport(
         @PathVariable reportId: Long,
-        @RequestBody req: ReportUpdateRequest
+        @RequestBody req: ReportMapper.ReportMapDTO
     ) = runCatching {
         val report = reportId.report
-        reportMapper.updateReportFromRequest(req, report)
+        reportMapper.mapRequestToReport(req, report)
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }

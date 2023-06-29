@@ -62,12 +62,6 @@ class UserController(
 
     // TODO: Create API for change phone number
 
-    data class UserProfileUpdateRequest(
-        val email: String?,
-        val firstName: String?,
-        val lastName: String?,
-    )
-
     /**
      * Update user
      */
@@ -77,11 +71,11 @@ class UserController(
     )
     @PutMapping
     fun updateUser(
-        @RequestBody request: UserProfileUpdateRequest,
+        @RequestBody request: UserMapper.UserMapDTO,
         principal: Principal
     ) = runCatching {
         val user = principal.name.user
-        userMapper.updateUserFromUpdateProfileRequest(request, user)
+        userMapper.mapRequestToUser(request, user)
         userService.saveUser(user).toResponse()
     }.getOrElse { it.toErrorResponse() }
 

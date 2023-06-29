@@ -3,7 +3,6 @@ package com.chatchatabc.parking.api.application.rest
 import com.chatchatabc.parking.api.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.CloudFile
-import com.chatchatabc.parking.domain.model.file.ParkingLotImage
 import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.parkingLotByOwner
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/parking-lot")
@@ -106,21 +104,6 @@ class ParkingLotController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
-     * Create parking lot data class
-     */
-    data class ParkingLotCreateRequest(
-        val name: String,
-        val latitude: Double,
-        val longitude: Double,
-        val address: String,
-        val description: String,
-        val capacity: Int,
-        val businessHoursStart: LocalDateTime?,
-        val businessHoursEnd: LocalDateTime?,
-        val openDaysFlag: Int = 0
-    )
-
-    /**
      * Register a parking lot
      */
     @Operation(
@@ -129,7 +112,7 @@ class ParkingLotController(
     )
     @PostMapping
     fun register(
-        @RequestBody req: ParkingLotCreateRequest,
+        @RequestBody req: ParkingLotMapper.ParkingLotMapDTO,
         principal: Principal
     ) = runCatching {
         val owner = principal.name.user
@@ -137,26 +120,9 @@ class ParkingLotController(
             this.owner = owner.id
             this.availableSlots = req.capacity
         }
-        parkingLotMapper.createParkingLotFromCreateRequest(req, createdParkingLot)
+        parkingLotMapper.mapRequestToParkingLot(req, createdParkingLot)
         parkingLotService.saveParkingLot(createdParkingLot).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update parking lot data class
-     */
-    data class ParkingLotUpdateRequest(
-        val name: String?,
-        val latitude: Double?,
-        val longitude: Double?,
-        val address: String?,
-        val description: String?,
-        val capacity: Int?,
-        val availableSlots: Int?,
-        val businessHoursStart: LocalDateTime?,
-        val businessHoursEnd: LocalDateTime?,
-        val openDaysFlag: Int?,
-        val images: List<ParkingLotImage>?
-    )
 
     /**
      * Update a parking lot and image order
@@ -167,19 +133,18 @@ class ParkingLotController(
     )
     @PutMapping
     fun update(
-        @RequestBody req: ParkingLotUpdateRequest,
+        @RequestBody req: ParkingLotMapper.ParkingLotMapDTO,
         principal: Principal
     ) = runCatching {
         // Map request to parking lot
         val parkingLot = principal.name.parkingLotByOwner
-        parkingLotMapper.updateParkingLotFromUpdateRequest(req, parkingLot)
+        parkingLotMapper.mapRequestToParkingLot(req, parkingLot)
         parkingLot.openDaysFlag = req.openDaysFlag ?: 0
 
         // Update available slots if there are active invoices and if capacity is updated
-        if (req.capacity != null) {
-            val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
-            parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
-        }
+        val activeInvoices = invoiceRepository.countActiveInvoicesByParkingLotUuid(parkingLot.parkingLotUuid)
+        parkingLot.availableSlots = req.capacity - activeInvoices.toInt()
+
         if (req.images != null) {
             // Update images
             parkingLotImageService.updateOrderOfImages(req.images)

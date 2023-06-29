@@ -2,22 +2,14 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "coupon")
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class Coupon extends FlagEntity {
     public static class CouponStatus {
         public static final int ACTIVE = 1;
@@ -59,4 +51,109 @@ public class Coupon extends FlagEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Coupon() {
+    }
+
+    public Coupon(Long id, String couponUuid, String name, String description, String code, int status, LocalDateTime valid_until, Long createdBy, long approvedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.couponUuid = couponUuid;
+        this.name = name;
+        this.description = description;
+        this.code = code;
+        this.status = status;
+        this.valid_until = valid_until;
+        this.createdBy = createdBy;
+        this.approvedBy = approvedBy;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCouponUuid() {
+        return couponUuid;
+    }
+
+    public void setCouponUuid(String couponUuid) {
+        this.couponUuid = couponUuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getValid_until() {
+        return valid_until;
+    }
+
+    public void setValid_until(LocalDateTime valid_until) {
+        this.valid_until = valid_until;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public long getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(long approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

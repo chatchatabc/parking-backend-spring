@@ -18,22 +18,6 @@ class JeepneyController(
     private val jeepneyMapper = Mappers.getMapper(JeepneyMapper::class.java)
 
     /**
-     * Create a new Jeepney Request data class
-     */
-    data class JeepneyCreateRequest(
-        val jeepneyUuid: String,
-        val name: String,
-        val plateNumber: String,
-        val routeUuid: String,
-        val drivers: String,
-        val capacity: Int,
-        val latitude: Double,
-        val longitude: Double,
-        val status: Int = Jeepney.JeepneyStatus.DRAFT,
-        val flag: Int = 0
-    )
-
-    /**
      * Create a new Jeepney
      */
     @Operation(
@@ -42,28 +26,12 @@ class JeepneyController(
     )
     @PostMapping
     fun create(
-        @RequestBody req: JeepneyCreateRequest
+        @RequestBody req: JeepneyMapper.JeepneyMapDTO
     ) = runCatching {
         val jeepney = Jeepney()
-        jeepneyMapper.createJeepneyFromCreateRequest(req, jeepney)
+        jeepneyMapper.mapRequestToJeepney(req, jeepney)
         jeepneyService.saveJeepney(jeepney).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update Jeepney Request data class
-     */
-    data class JeepneyUpdateRequest(
-        val jeepneyUuid: String?,
-        val name: String?,
-        val plateNumber: String?,
-        val routeUuid: String,
-        val drivers: String?,
-        val capacity: Int?,
-        val latitude: Double?,
-        val longitude: Double?,
-        val status: Int?,
-        val flag: Int?
-    )
 
     /**
      * Update a Jeepney
@@ -74,13 +42,11 @@ class JeepneyController(
     )
     @PutMapping("/{id}")
     fun update(
-        @RequestBody req: JeepneyUpdateRequest,
+        @RequestBody req: JeepneyMapper.JeepneyMapDTO,
         @PathVariable id: String
     ) = runCatching {
         val jeepney = id.jeepney
-        jeepneyMapper.updateJeepneyFromUpdateRequest(req, jeepney)
+        jeepneyMapper.mapRequestToJeepney(req, jeepney)
         jeepneyService.saveJeepney(jeepney).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-
 }
