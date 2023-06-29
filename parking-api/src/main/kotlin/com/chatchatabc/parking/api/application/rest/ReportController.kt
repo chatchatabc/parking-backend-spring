@@ -52,17 +52,6 @@ class ReportController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
-     * Create Report Data Class
-     */
-    data class ReportCreateRequest(
-        val name: String,
-        val description: String,
-        val plateNumber: String,
-        val latitude: Double,
-        val longitude: Double
-    )
-
-    /**
      * Create Report
      */
     @Operation(
@@ -77,17 +66,6 @@ class ReportController(
         reportMapper.mapRequestToReport(req, report)
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update Report Data Class
-     */
-    data class ReportUpdateRequest(
-        val name: String?,
-        val description: String?,
-        val plateNumber: String?,
-        val latitude: Double?,
-        val longitude: Double?
-    )
 
     /**
      * Update Report
