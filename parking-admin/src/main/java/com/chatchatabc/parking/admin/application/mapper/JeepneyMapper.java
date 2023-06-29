@@ -24,7 +24,7 @@ public interface JeepneyMapper {
     }
 
     /**
-     * Jeepney Create Mapper
+     * Jeepney Mapper
      */
     @Mappings({
             @Mapping(target = "jeepneyUuid", source = "request.jeepneyUuid"),

@@ -29,7 +29,7 @@ public interface ParkingLotMapper {
     }
 
     /**
-     * Parking Lot Create Mapper
+     * Parking Lot Mapper
      */
     @Mappings({
             @Mapping(target = "name", source = "request.name"),
