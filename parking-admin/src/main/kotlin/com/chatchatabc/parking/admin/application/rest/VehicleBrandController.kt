@@ -19,14 +19,6 @@ class VehicleBrandController(
     private val vehicleBrandMapper = Mappers.getMapper(VehicleBrandMapper::class.java)
 
     /**
-     * Vehicle Brand Create Request Data Class
-     */
-    data class VehicleBrandCreateRequest(
-        val name: String,
-        val status: Int = 0
-    )
-
-    /**
      * Admin create Vehicle Brand
      */
     @Operation(
@@ -35,23 +27,15 @@ class VehicleBrandController(
     )
     @PostMapping
     fun createVehicleBrand(
-        @RequestBody req: VehicleBrandCreateRequest,
+        @RequestBody req: VehicleBrandMapper.VehicleBrandMapDTO,
         principal: Principal
     ) = runCatching {
         val createdVehicleBrand = VehicleBrand().apply {
             this.createdBy = principal.name.user.id
         }
-        vehicleBrandMapper.createVehicleBrandFromCreateRequest(req, createdVehicleBrand)
+        vehicleBrandMapper.mapRequestToVehicleBrand(req, createdVehicleBrand)
         vehicleBrandService.saveVehicleBrand(createdVehicleBrand)
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Vehicle Brand Update Request Data Class
-     */
-    data class VehicleBrandUpdateRequest(
-        val name: String?,
-        val status: Int?
-    )
 
     /**
      * Admin update Vehicle Brand
@@ -62,12 +46,12 @@ class VehicleBrandController(
     )
     @PutMapping("/{id}")
     fun updateVehicleBrand(
-        @RequestBody req: VehicleBrandUpdateRequest,
+        @RequestBody req: VehicleBrandMapper.VehicleBrandMapDTO,
         principal: Principal,
         @PathVariable id: String
     ) = runCatching {
         val updatedVehicleBrand = id.vehicleBrand
-        vehicleBrandMapper.updateVehicleBrandFromUpdateRequest(req, updatedVehicleBrand)
+        vehicleBrandMapper.mapRequestToVehicleBrand(req, updatedVehicleBrand)
         vehicleBrandService.saveVehicleBrand(updatedVehicleBrand)
     }.getOrElse { it.toErrorResponse() }
 }
