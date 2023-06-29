@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,12 +16,8 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Data
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class User extends FlagEntity implements UserDetails {
     @JsonIgnore
     @Id
@@ -133,5 +125,175 @@ public class User extends FlagEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public User() {
+    }
+
+    public User(Long id, String userUuid, String notificationUuid, String email, String username, String password, String phone, String firstName, String lastName, CloudFile avatar, Boolean enabled, Integer status, LocalDateTime emailVerifiedAt, LocalDateTime phoneVerifiedAt, LocalDateTime createdAt, LocalDateTime updatedAt, Collection<Role> roles, Collection<Vehicle> vehicles) {
+        this.id = id;
+        this.userUuid = userUuid;
+        this.notificationUuid = notificationUuid;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.avatar = avatar;
+        this.enabled = enabled;
+        this.status = status;
+        this.emailVerifiedAt = emailVerifiedAt;
+        this.phoneVerifiedAt = phoneVerifiedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.roles = roles;
+        this.vehicles = vehicles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
+    }
+
+    public String getNotificationUuid() {
+        return notificationUuid;
+    }
+
+    public void setNotificationUuid(String notificationUuid) {
+        this.notificationUuid = notificationUuid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public CloudFile getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(CloudFile avatar) {
+        this.avatar = avatar;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getEmailVerifiedAt() {
+        return emailVerifiedAt;
+    }
+
+    public void setEmailVerifiedAt(LocalDateTime emailVerifiedAt) {
+        this.emailVerifiedAt = emailVerifiedAt;
+    }
+
+    public LocalDateTime getPhoneVerifiedAt() {
+        return phoneVerifiedAt;
+    }
+
+    public void setPhoneVerifiedAt(LocalDateTime phoneVerifiedAt) {
+        this.phoneVerifiedAt = phoneVerifiedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Collection<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 }
