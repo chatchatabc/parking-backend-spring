@@ -71,10 +71,10 @@ class ReportController(
     )
     @PostMapping
     fun createReport(
-        @RequestBody req: ReportCreateRequest
+        @RequestBody req: ReportMapper.ReportMapDTO
     ) = runCatching {
         val report = Report()
-        reportMapper.createReportFromRequest(req, report)
+        reportMapper.mapRequestToReport(req, report)
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
@@ -99,10 +99,10 @@ class ReportController(
     @PutMapping("/{reportId}")
     fun updateReport(
         @PathVariable reportId: Long,
-        @RequestBody req: ReportUpdateRequest
+        @RequestBody req: ReportMapper.ReportMapDTO
     ) = runCatching {
         val report = reportId.report
-        reportMapper.updateReportFromRequest(req, report)
+        reportMapper.mapRequestToReport(req, report)
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }
