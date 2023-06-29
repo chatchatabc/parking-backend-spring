@@ -24,14 +24,6 @@ class RouteController(
 ) {
     private val routeMapper = Mappers.getMapper(RouteMapper::class.java)
 
-    data class RouteCreateRequest(
-        val slug: String,
-        val name: String,
-        val description: String,
-        val color: String,
-        val status: Int = Route.RouteStatus.DRAFT
-    )
-
     /**
      * Create Route
      */
@@ -41,23 +33,12 @@ class RouteController(
     )
     @PostMapping
     fun createRoute(
-        @RequestBody request: RouteCreateRequest
+        @RequestBody request: RouteMapper.RouteMapDTO
     ) = runCatching {
         val route = Route()
-        routeMapper.createRouteFromCreateRequest(request, route)
+        routeMapper.mapRequestToRoute(request, route)
         routeService.saveRoute(route).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update Route Data Class
-     */
-    data class RouteUpdateRequest(
-        val slug: String?,
-        val name: String?,
-        val description: String?,
-        val color: String,
-        val status: Int?
-    )
 
     /**
      * Update Route
@@ -67,9 +48,12 @@ class RouteController(
         description = "Update Route"
     )
     @PutMapping("/{id}")
-    fun updateRoute(@PathVariable id: String, @RequestBody request: RouteUpdateRequest) = runCatching {
+    fun updateRoute(
+        @PathVariable id: String,
+        @RequestBody request: RouteMapper.RouteMapDTO
+    ) = runCatching {
         val route = id.route
-        routeMapper.updateRouteFromUpdateRequest(request, route)
+        routeMapper.mapRequestToRoute(request, route)
         routeService.saveRoute(route).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
