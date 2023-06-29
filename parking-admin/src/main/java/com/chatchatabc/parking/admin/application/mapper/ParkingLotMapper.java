@@ -42,7 +42,6 @@ public interface ParkingLotMapper {
             @Mapping(target = "businessHoursStart", source = "request.businessHoursStart"),
             @Mapping(target = "businessHoursEnd", source = "request.businessHoursEnd"),
             @Mapping(target = "openDaysFlag", source = "request.openDaysFlag"),
-            @Mapping(target = "images", source = "request.images", ignore = true),
     })
     void mapRequestToParkingLot(
             ParkingLotMapDTO request,
