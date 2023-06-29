@@ -9,6 +9,7 @@ import org.springframework.core.task.support.TaskExecutorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
+// TODO: Note, the following annotation makes all controllers async by default
 @EnableAsync
 public class TomcatVirtualThreadConfiguration {
     /**
