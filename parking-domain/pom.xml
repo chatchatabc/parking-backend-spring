@@ -48,11 +48,6 @@
             <version>3.16.3</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -154,6 +149,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.20.0</version>
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://${dbHost}:${dbPort}/postgres</url>
@@ -161,7 +157,7 @@
                     <password>${dbPass}</password>
                     <cleanDisabled>false</cleanDisabled>
                     <locations>
-                        <location>filesystem:src/main/resources/db/migration</location>
+                        <location>filesystem:src/main/resources/dbm/migration</location>
                     </locations>
                 </configuration>
             </plugin>
@@ -200,7 +196,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>1.8</jvmTarget>
+                    <jvmTarget>${kotlin.jvmTarget}</jvmTarget>
                 </configuration>
             </plugin>
             <plugin>
