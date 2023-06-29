@@ -117,25 +117,6 @@
                 <version>${kotlin.version}</version>
                 <executions>
                     <execution>
-                        <id>kapt</id>
-                        <goals>
-                            <goal>kapt</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <sourceDir>src/main/kotlin</sourceDir>
-                                <sourceDir>src/main/java</sourceDir>
-                            </sourceDirs>
-                            <annotationProcessorPaths>
-                                <annotationProcessorPath>
-                                    <groupId>org.mapstruct</groupId>
-                                    <artifactId>mapstruct-processor</artifactId>
-                                    <version>${mapstruct.version}</version>
-                                </annotationProcessorPath>
-                            </annotationProcessorPaths>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>compile</id>
                         <goals>
                             <goal>compile</goal>
@@ -143,6 +124,7 @@
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                <source>${project.basedir}/target/generated-sources/annotations</source>
                                 <sourceDir>${project.basedir}/src/main/java</sourceDir>
                             </sourceDirs>
                         </configuration>
@@ -156,6 +138,7 @@
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
                                 <sourceDir>${project.basedir}/src/test/java</sourceDir>
+                                <source>target/generated-test-sources/test-annotations</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
