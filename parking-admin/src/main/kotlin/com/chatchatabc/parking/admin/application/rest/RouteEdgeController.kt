@@ -22,16 +22,7 @@ class RouteEdgeController(
      * Create Route Edges data class
      */
     data class RouteEdgesCreateRequest(
-        val edges: List<RouteEdgeCreateRequest>
-    )
-
-    /**
-     * Route Edges data class
-     */
-    data class RouteEdgeCreateRequest(
-        val routeId: Long,
-        val nodeFrom: Long,
-        val nodeTo: Long
+        val edges: List<RouteEdgeMapper.RouteEdgeMapDTO>
     )
 
     /**
@@ -43,7 +34,7 @@ class RouteEdgeController(
     )
     @PostMapping
     fun createEdge(
-        @RequestBody request: RouteEdgeCreateRequest,
+        @RequestBody request: RouteEdgeMapper.RouteEdgeMapDTO,
     ) = runCatching {
         val edge = RouteEdge().apply {
             this.distance = routeEdgeService.calculateDistanceBetweenNodes(
@@ -51,7 +42,7 @@ class RouteEdgeController(
                 request.nodeTo.routeNode
             )
         }
-        routeEdgeMapper.createRouteEdgeFromCreateRequest(request, edge)
+        routeEdgeMapper.mapRequestToRouteEdge(request, edge)
         routeEdgeService.saveRouteEdge(edge)
     }.getOrElse { it.toErrorResponse() }
 
@@ -74,7 +65,7 @@ class RouteEdgeController(
                         it.nodeTo.routeNode
                     )
                 }
-                routeEdgeMapper.createRouteEdgeFromCreateRequest(it, edge)
+                routeEdgeMapper.mapRequestToRouteEdge(it, edge)
                 edge
             }
         ).toResponse()
@@ -98,7 +89,7 @@ class RouteEdgeController(
     )
     @PutMapping("/{id}")
     fun updateEdge(
-        @RequestBody request: RouteEdgeUpdateRequest,
+        @RequestBody request: RouteEdgeMapper.RouteEdgeMapDTO,
         @PathVariable id: Long,
     ) = runCatching {
         val edge = id.routeEdge.apply {
@@ -107,19 +98,12 @@ class RouteEdgeController(
                 request.nodeTo?.routeNode
             )
         }
-        routeEdgeMapper.updateRouteEdgeFromUpdateRequest(request, edge)
+        routeEdgeMapper.mapRequestToRouteEdge(request, edge)
         routeEdgeService.saveRouteEdge(edge).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     data class RouteEdgesUpdateRequest(
-        val edges: List<RouteEdgesItem>
-    )
-
-    data class RouteEdgesItem(
-        val id: Long,
-        val routeId: Long?,
-        val nodeFrom: Long?,
-        val nodeTo: Long?
+        val edges: List<RouteEdgeMapper.RouteEdgeMapDTO>
     )
 
     /**
@@ -141,7 +125,7 @@ class RouteEdgeController(
                         it.nodeTo?.routeNode
                     )
                 }
-                routeEdgeMapper.updateRouteEdgesFromUpdateRequest(it, edge)
+                routeEdgeMapper.mapRequestToRouteEdge(it, edge)
                 edge
             }).toResponse()
     }.getOrElse { it.toErrorResponse() }
