@@ -2,9 +2,6 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,11 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "vehicle")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,4 +59,127 @@ public class Vehicle {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Vehicle() {
+    }
+
+    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.vehicleUuid = vehicleUuid;
+        this.name = name;
+        this.plateNumber = plateNumber;
+        this.brandUuid = brandUuid;
+        this.modelUuid = modelUuid;
+        this.typeUuid = typeUuid;
+        this.color = color;
+        this.year = year;
+        this.users = users;
+        this.owner = owner;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getVehicleUuid() {
+        return vehicleUuid;
+    }
+
+    public void setVehicleUuid(String vehicleUuid) {
+        this.vehicleUuid = vehicleUuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public String getBrandUuid() {
+        return brandUuid;
+    }
+
+    public void setBrandUuid(String brandUuid) {
+        this.brandUuid = brandUuid;
+    }
+
+    public String getModelUuid() {
+        return modelUuid;
+    }
+
+    public void setModelUuid(String modelUuid) {
+        this.modelUuid = modelUuid;
+    }
+
+    public String getTypeUuid() {
+        return typeUuid;
+    }
+
+    public void setTypeUuid(String typeUuid) {
+        this.typeUuid = typeUuid;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
+    }
+
+    public Long getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Long owner) {
+        this.owner = owner;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
