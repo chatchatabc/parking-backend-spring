@@ -9,8 +9,13 @@ import io.nats.client.Nats
 import io.nats.client.Options
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
+import org.springframework.scheduling.quartz.SchedulerFactoryBean
+import org.springframework.scheduling.quartz.SpringBeanJobFactory
+import javax.sql.DataSource
 
 @Configuration
 class Config(
@@ -21,6 +26,9 @@ class Config(
     private val accessKeySecret: String,
     @Value("\${aliyun.oss.endpoint}")
     private val ossEndpoint: String,
+
+    private val dataSource: DataSource,
+    private val applicationContext: ApplicationContext,
 
     // NATS
     @Value("\${spring.nats.uri}")
@@ -70,5 +78,20 @@ class Config(
     @Bean
     fun ossClient(): OSS {
         return OSSClientBuilder().build(ossEndpoint, accessKeyId, accessKeySecret)
+    }
+
+    /**
+     * Configure Quartz
+     */
+    @Bean
+    fun schedulerFactoryBean(): SchedulerFactoryBean {
+        val jobFactory = SpringBeanJobFactory()
+        jobFactory.setApplicationContext(applicationContext)
+
+        val schedulerFactoryBean = SchedulerFactoryBean()
+        schedulerFactoryBean.setJobFactory(jobFactory)
+        schedulerFactoryBean.setConfigLocation(ClassPathResource("quartz.properties"))
+        schedulerFactoryBean.setDataSource(dataSource)
+        return schedulerFactoryBean
     }
 }

@@ -157,7 +157,7 @@
                     <password>${dbPass}</password>
                     <cleanDisabled>false</cleanDisabled>
                     <locations>
-                        <location>filesystem:src/main/resources/dbm/migration</location>
+                        <location>filesystem:src/main/resources/db/migration</location>
                     </locations>
                 </configuration>
             </plugin>
