@@ -161,10 +161,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${java.version}</jvmTarget>
+                    <jvmTarget>${kotlin.jvmTarget}</jvmTarget>
                     <args>
                         <arg>-Xjsr305=strict</arg>
-                        <arg>-jvm-target=${java.version}</arg>
+                        <arg>-jvm-target=${kotlin.jvmTarget}</arg>
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
