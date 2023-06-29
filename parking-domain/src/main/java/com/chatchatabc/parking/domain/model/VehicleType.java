@@ -2,20 +2,14 @@ package com.chatchatabc.parking.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "vehicle_type")
-@AllArgsConstructor
-@NoArgsConstructor
 public class VehicleType {
     public static class VehicleTypeStatus {
         public static final int ACTIVE = 1;
@@ -46,4 +40,73 @@ public class VehicleType {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public VehicleType() {
+    }
+
+    public VehicleType(Long id, String typeUuid, String name, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.typeUuid = typeUuid;
+        this.name = name;
+        this.status = status;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTypeUuid() {
+        return typeUuid;
+    }
+
+    public void setTypeUuid(String typeUuid) {
+        this.typeUuid = typeUuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
