@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
+import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
 import com.chatchatabc.parking.domain.vehicle
@@ -94,11 +95,31 @@ class VehicleController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
+     * Set Vehicle Status to Pending
+     */
+    @Operation(
+        summary = "Set Vehicle Status to Pending",
+        description = "Set Vehicle Status to Pending"
+    )
+    @PutMapping("/set-pending/{vehicleUuid}")
+    fun setVehicleStatusToPending(
+        @PathVariable vehicleUuid: String,
+        principal: Principal
+    ) = runCatching {
+        val vehicle = vehicleUuid.vehicle
+        if (vehicle.status != Vehicle.VehicleStatus.DRAFT) {
+            throw Exception("Vehicle status is not draft")
+        }
+        vehicle.status = Vehicle.VehicleStatus.PENDING
+        vehicleService.saveVehicle(vehicle).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
      * Update a vehicle
      */
     @Operation(
         summary = "Update a vehicle",
-        description = "Update a vehicle"
+        description = "Update a vehicle, will only work if vehicle status is draft"
     )
     @PutMapping("/{vehicleUuid}")
     fun updateVehicle(
@@ -108,6 +129,9 @@ class VehicleController(
     ) = runCatching {
         // TODO: check if user has access to vehicle or maybe make it so that the only is the only one that can update vehicle
         val vehicle = vehicleUuid.vehicle
+        if (vehicle.status != Vehicle.VehicleStatus.DRAFT) {
+            throw Exception("Vehicle status is not draft")
+        }
         vehicleMapper.mapRequestToVehicle(req, vehicle)
         vehicleService.updateVehicle(vehicle).toResponse()
     }.getOrElse { it.toErrorResponse() }
