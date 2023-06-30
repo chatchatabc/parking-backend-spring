@@ -30,6 +30,27 @@ class VehicleServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testSaveVehicle_ShouldBeSuccessful() {
+        // Given
+        Vehicle vehicle = new Vehicle();
+        vehicle.setName("Lightning McQueen");
+        vehicle.setPlateNumber("ASD2234");
+        vehicle.setBrandUuid("1");
+        vehicle.setModelUuid("1");
+        vehicle.setTypeUuid("1");
+        vehicle.setColor("Red");
+        vehicle.setYear("2000");
+        vehicle.setOwner(1L);
+        Long count = vehicleRepository.count();
+
+        // When
+        vehicleService.saveVehicle(vehicle);
+
+        // Then
+        assertThat(vehicleRepository.count()).isGreaterThan(count);
+    }
+
+    @Test
     void testUpdateVehicle_WhenVehicleExist_ShouldUpdateVehicle() {
         Vehicle updatedVehicle = vehicleRepository.findById(1L).orElseThrow();
         updatedVehicle.setName("Hyperion");

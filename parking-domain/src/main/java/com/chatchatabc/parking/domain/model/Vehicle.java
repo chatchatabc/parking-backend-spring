@@ -12,6 +12,14 @@ import java.util.UUID;
 @Entity
 @Table(name = "vehicle")
 public class Vehicle {
+    public static class VehicleStatus {
+        public static final int DELETED = -1;
+        public static final int DRAFT = 0;
+        public static final int PENDING = 1;
+        public static final int REJECTED = 2;
+        public static final int VERIFIED = 3;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,11 +48,20 @@ public class Vehicle {
     @Column
     private String year;
 
-    // TODO:
-    // add image for front, back, and side view of the vehicle
+    // TODO: add image for front, back, and side view of the vehicle
 
-    // TODO: Verified at
-    // TODO: Verified by
+    @Column
+    private LocalDateTime verifiedAt;
+
+    @JsonIgnore
+    @Column
+    private Long verifiedBy;
+
+    @Column(columnDefinition = "TEXT")
+    private String rejectionReason;
+
+    @Column
+    private Integer status = VehicleStatus.DRAFT;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "vehicles")
@@ -63,7 +80,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.vehicleUuid = vehicleUuid;
         this.name = name;
@@ -73,6 +90,10 @@ public class Vehicle {
         this.typeUuid = typeUuid;
         this.color = color;
         this.year = year;
+        this.verifiedAt = verifiedAt;
+        this.verifiedBy = verifiedBy;
+        this.rejectionReason = rejectionReason;
+        this.status = status;
         this.users = users;
         this.owner = owner;
         this.createdAt = createdAt;
@@ -149,6 +170,38 @@ public class Vehicle {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public LocalDateTime getVerifiedAt() {
+        return verifiedAt;
+    }
+
+    public void setVerifiedAt(LocalDateTime verifiedAt) {
+        this.verifiedAt = verifiedAt;
+    }
+
+    public Long getVerifiedBy() {
+        return verifiedBy;
+    }
+
+    public void setVerifiedBy(Long verifiedBy) {
+        this.verifiedBy = verifiedBy;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Collection<User> getUsers() {

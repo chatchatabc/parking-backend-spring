@@ -5,4 +5,7 @@
     <route id="1" route_uuid="8821fff6-b725-454c-bdd3-0674b313ba45" name="Damosa Road Trip" slug="route-11"
            description="ChatChatABC Trip" color="red" status="1" flag="0" created_at="2023-05-05 16:14:47.307160"
            updated_at="2023-05-05 16:14:47.307160"/>
+    <route id="2" route_uuid="9741d89a-a539-498a-8235-b5e7c5739a28" name="Damosa Road Trip 2" slug="route-12"
+           description="ChatChatABC Trip 2" color="blue" status="1" flag="0" created_at="2023-05-05 16:14:47.307160"
+           updated_at="2023-05-05 16:14:47.307160"/>
 </dataset>

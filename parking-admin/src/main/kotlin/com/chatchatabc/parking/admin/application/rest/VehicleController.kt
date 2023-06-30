@@ -1,7 +1,9 @@
 package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.VehicleMapper
+import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.service.VehicleService
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -9,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/vehicle")
@@ -51,6 +54,36 @@ class VehicleController(
             req.color,
             req.year
         ).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    data class VehicleVerifyRequest(
+        val status: Int = Vehicle.VehicleStatus.DRAFT,
+        val rejectionReason: String?
+    )
+
+    /**
+     * Verify a vehicle
+     */
+    @Operation(
+        summary = "Verify Vehicle",
+        description = "Verify Vehicle"
+    )
+    @PutMapping("/verify/{id}")
+    fun verifyVehicle(
+        @PathVariable id: String,
+        principal: Principal,
+        @RequestBody req: VehicleVerifyRequest
+    ) = runCatching {
+        val vehicle = id.vehicle
+        vehicle.status = req.status
+        if (req.rejectionReason != null) {
+            vehicle.rejectionReason = req.rejectionReason
+        }
+        if (req.status == Vehicle.VehicleStatus.VERIFIED) {
+            vehicle.verifiedBy = principal.name.user.id
+            vehicle.verifiedAt = LocalDateTime.now()
+        }
+        vehicleService.saveVehicle(vehicle).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**

@@ -19,6 +19,13 @@ public interface VehicleService {
     Vehicle registerVehicle(String userUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year) throws Exception;
 
     /**
+     * Save Vehicle
+     *
+     * @param vehicle the vehicle
+     */
+    void saveVehicle(Vehicle vehicle);
+
+    /**
      * Update vehicle
      *
      * @param updatedVehicle the updated vehicle

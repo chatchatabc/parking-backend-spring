@@ -2,6 +2,7 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.*
 import com.chatchatabc.parking.domain.*
+import com.chatchatabc.parking.domain.model.Vehicle
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
 import com.chatchatabc.parking.domain.service.InvoiceService
 import com.chatchatabc.parking.web.common.application.*
@@ -101,6 +102,12 @@ class InvoiceController(
         principal: Principal,
         @RequestBody req: InvoiceCreateRequest
     ) = runCatching {
+        // Vehicle should be verified before creating an invoice
+        val vehicle = vehicleUuid.vehicle
+        if (vehicle.status != Vehicle.VehicleStatus.VERIFIED) {
+            throw Exception("Vehicle is not verified")
+        }
+
         val user = principal.name.user
         val parkingLot = user.id.parkingLotByOwner
         val invoice = invoiceService.createInvoice(
@@ -110,7 +117,6 @@ class InvoiceController(
         )
 
         // NATS publish to owner and client
-        val vehicle = vehicleUuid.vehicle
         val client = vehicle.owner.user
 
         // Message structure

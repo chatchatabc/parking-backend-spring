@@ -55,6 +55,16 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     /**
+     * Save Vehicle
+     *
+     * @param vehicle the vehicle
+     */
+    @Override
+    public void saveVehicle(Vehicle vehicle) {
+        vehicleRepository.save(vehicle);
+    }
+
+    /**
      * Update vehicle
      *
      * @param updatedVehicle the updated vehicle
