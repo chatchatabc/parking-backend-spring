@@ -160,6 +160,10 @@ type Vehicle {
     typeUuid: String
     color: String
     year: String
+    verifiedAt: String
+    verifiedBy: Int
+    rejectionReason: String
+    status: Int
     createdAt: String
     updatedAt: String
 }
