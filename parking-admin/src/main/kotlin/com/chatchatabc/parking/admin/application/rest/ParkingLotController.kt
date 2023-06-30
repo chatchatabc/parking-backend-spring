@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
@@ -28,6 +29,7 @@ class ParkingLotController(
     private val fileStorageService: FileStorageService,
     private val invoiceRepository: InvoiceRepository
 ) {
+    private val fileNamespace = "parkingLot"
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
 
     /**
@@ -124,6 +126,37 @@ class ParkingLotController(
         @PathVariable imageId: String
     ) = runCatching {
         parkingLotImageService.restoreImage(imageId).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Upload Image
+     */
+    @Operation(
+        summary = "Upload Image of a Parking Lot",
+        description = "Upload Image of a Parking Lot"
+    )
+    @PostMapping("/upload-image/{parkingLotUuid}")
+    fun uploadImage(
+        @PathVariable parkingLotUuid: String,
+        @RequestParam("file", required = true) file: MultipartFile,
+        principal: Principal
+    ) = runCatching {
+        val parkingLot = parkingLotUuid.parkingLot
+        val user = principal.name.user
+        var contentType = file.contentType
+        if (contentType == "image/jpg") {
+            contentType = "image/jpeg"
+        }
+
+        parkingLotImageService.uploadImage(
+            user,
+            parkingLot,
+            fileNamespace,
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            contentType
+        ).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
