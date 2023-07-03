@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.graphql
 
 import com.chatchatabc.parking.domain.jeepney
 import com.chatchatabc.parking.domain.repository.JeepneyRepository
+import com.chatchatabc.parking.domain.route
 import com.chatchatabc.parking.domain.specification.JeepneySpecification
 import com.chatchatabc.parking.web.common.application.toPagedResponse
 import org.springframework.data.domain.PageRequest
@@ -40,4 +41,17 @@ class JeepneyGQLController(
      */
     @QueryMapping
     fun getJeepney(@Argument id: String) = run { id.jeepney }
+
+    /**
+     * Get Jeepneys by route
+     */
+    @QueryMapping
+    fun getJeepneysByRoute(
+        @Argument page: Int,
+        @Argument size: Int,
+        @Argument id: String,
+    ) = run {
+        val pr = PageRequest.of(page, size)
+        jeepneyRepository.findAllByRouteUuid(id.route.routeUuid, pr).toPagedResponse()
+    }
 }
