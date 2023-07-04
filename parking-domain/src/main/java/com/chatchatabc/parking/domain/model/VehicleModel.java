@@ -29,6 +29,9 @@ public class VehicleModel {
     private String brandUuid;
 
     @Column
+    private String typeUuid;
+
+    @Column
     private String name;
 
     @Column
@@ -47,10 +50,11 @@ public class VehicleModel {
     public VehicleModel() {
     }
 
-    public VehicleModel(Long id, String modelUuid, String brandUuid, String name, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public VehicleModel(Long id, String modelUuid, String brandUuid, String typeUuid, String name, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.modelUuid = modelUuid;
         this.brandUuid = brandUuid;
+        this.typeUuid = typeUuid;
         this.name = name;
         this.status = status;
         this.createdBy = createdBy;
@@ -80,6 +84,14 @@ public class VehicleModel {
 
     public void setBrandUuid(String brandUuid) {
         this.brandUuid = brandUuid;
+    }
+
+    public String getTypeUuid() {
+        return typeUuid;
+    }
+
+    public void setTypeUuid(String typeUuid) {
+        this.typeUuid = typeUuid;
     }
 
     public String getName() {
