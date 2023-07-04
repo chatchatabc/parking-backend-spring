@@ -28,7 +28,6 @@ class VehicleController(
         val plateNumber: String,
         val brandUuid: String,
         val modelUuid: String,
-        val typeUuid: String,
         val color: String,
         val year: String
     )
@@ -48,9 +47,7 @@ class VehicleController(
         vehicleService.registerVehicle(
             userUuid, req.name,
             req.plateNumber,
-            req.brandUuid,
             req.modelUuid,
-            req.typeUuid,
             req.color,
             req.year
         ).toResponse()

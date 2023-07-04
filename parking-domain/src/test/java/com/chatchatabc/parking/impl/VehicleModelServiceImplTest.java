@@ -22,6 +22,7 @@ class VehicleModelServiceImplTest extends TestContainersBaseTest {
         vehicleModel.setName("Camry");
         vehicleModel.setStatus(VehicleModel.VehicleModelStatus.ACTIVE);
         vehicleModel.setCreatedBy(1L);
+        vehicleModel.setTypeUuid("1");
         vehicleModel.setBrandUuid("8b06ff3f-6bef-434f-8b51-638c8ba30983");
         Long count = vehicleModelRepository.count();
 

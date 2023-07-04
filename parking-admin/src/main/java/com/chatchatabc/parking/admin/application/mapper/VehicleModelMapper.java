@@ -8,8 +8,9 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface VehicleModelMapper {
-    record VehicleModelResponse(
+    record VehicleModelRequest(
             String brandUuid,
+            String typeUuid,
             String name,
             int status
     ) {
@@ -20,11 +21,12 @@ public interface VehicleModelMapper {
      */
     @Mappings({
             @Mapping(target = "brandUuid", source = "request.brandUuid"),
+            @Mapping(target = "typeUuid", source = "request.typeUuid"),
             @Mapping(target = "name", source = "request.name"),
             @Mapping(target = "status", source = "request.status")
     })
     void mapRequestToVehicleModel(
-            VehicleModelResponse request,
+            VehicleModelRequest request,
             @MappingTarget VehicleModel vehicleModel
     );
 }

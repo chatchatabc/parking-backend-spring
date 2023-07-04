@@ -34,13 +34,7 @@ public class Vehicle {
     private String plateNumber;
 
     @Column
-    private String brandUuid;
-
-    @Column
     private String modelUuid;
-
-    @Column
-    private String typeUuid;
 
     @Column
     private String color;
@@ -80,14 +74,12 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String modelUuid, String color, String year, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.vehicleUuid = vehicleUuid;
         this.name = name;
         this.plateNumber = plateNumber;
-        this.brandUuid = brandUuid;
         this.modelUuid = modelUuid;
-        this.typeUuid = typeUuid;
         this.color = color;
         this.year = year;
         this.verifiedAt = verifiedAt;
@@ -132,28 +124,12 @@ public class Vehicle {
         this.plateNumber = plateNumber;
     }
 
-    public String getBrandUuid() {
-        return brandUuid;
-    }
-
-    public void setBrandUuid(String brandUuid) {
-        this.brandUuid = brandUuid;
-    }
-
     public String getModelUuid() {
         return modelUuid;
     }
 
     public void setModelUuid(String modelUuid) {
         this.modelUuid = modelUuid;
-    }
-
-    public String getTypeUuid() {
-        return typeUuid;
-    }
-
-    public void setTypeUuid(String typeUuid) {
-        this.typeUuid = typeUuid;
     }
 
     public String getColor() {
