@@ -25,15 +25,13 @@ public class VehicleServiceImpl implements VehicleService {
      * @param userUuid    the user uuid
      * @param name        the name of the vehicle
      * @param plateNumber the plate number of the vehicle
-     * @param brandUuid   the brand of the vehicle
      * @param modelUuid   the model of the vehicle
-     * @param typeUuid    the type of the vehicle
      * @param color       the color of the vehicle
      * @param year        the year of the vehicle
      * @return the vehicle
      */
     @Override
-    public Vehicle registerVehicle(String userUuid, String name, String plateNumber, String brandUuid, String modelUuid, String typeUuid, String color, String year) throws Exception {
+    public Vehicle registerVehicle(String userUuid, String name, String plateNumber, String modelUuid, String color, String year) throws Exception {
         Optional<User> owner = userRepository.findByUserUuid(userUuid);
         if (owner.isEmpty()) {
             throw new Exception("User not found");
@@ -41,9 +39,7 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = new Vehicle();
         vehicle.setName(name);
         vehicle.setPlateNumber(plateNumber);
-        vehicle.setBrandUuid(brandUuid);
         vehicle.setModelUuid(modelUuid);
-        vehicle.setTypeUuid(typeUuid);
         vehicle.setColor(color);
         vehicle.setYear(year);
         vehicle.setOwner(owner.get().getId());
