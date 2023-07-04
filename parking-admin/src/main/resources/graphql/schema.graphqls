@@ -335,7 +335,7 @@ type Rate {
 
 # Invoice Related
 type Invoice {
-    id: String!
+    invoiceUuid: String!
     createdAt: String
     endAt: String
     estimatedParkingDurationInHours: Int
