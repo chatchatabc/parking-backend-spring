@@ -5,7 +5,6 @@ import com.chatchatabc.parking.domain.specification.VehicleModelSpecification
 import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.domain.vehicleModel
 import com.chatchatabc.parking.web.common.application.toPagedResponse
-import com.chatchatabc.parking.web.common.application.toResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -39,7 +38,7 @@ class VehicleModelGQLController(
      * Get Vehicle Model by identifier
      */
     @QueryMapping
-    fun getVehicleModel(@Argument id: String) = run { id.vehicleModel.toResponse() }
+    fun getVehicleModel(@Argument id: String) = run { id.vehicleModel }
 
     /**
      * Get Vehicle Model by brand identifier
@@ -51,6 +50,6 @@ class VehicleModelGQLController(
         @Argument brandId: String
     ) = run {
         val pr = PageRequest.of(page, size)
-        vehicleModelRepository.findAllByBrandUuid(brandId.vehicleBrand.brandUuid, pr).toResponse()
+        vehicleModelRepository.findAllByBrandUuid(brandId.vehicleBrand.brandUuid, pr).toPagedResponse()
     }
 }

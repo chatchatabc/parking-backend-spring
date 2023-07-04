@@ -4,7 +4,6 @@ import com.chatchatabc.parking.domain.repository.VehicleTypeRepository
 import com.chatchatabc.parking.domain.specification.VehicleTypeSpecification
 import com.chatchatabc.parking.domain.vehicleType
 import com.chatchatabc.parking.web.common.application.toPagedResponse
-import com.chatchatabc.parking.web.common.application.toResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -38,5 +37,5 @@ class VehicleTypeGQLController(
      * Get Vehicle Type by identifier
      */
     @QueryMapping
-    fun getVehicleType(@Argument id: String) = run { id.vehicleType.toResponse() }
+    fun getVehicleType(@Argument id: String) = run { id.vehicleType }
 }
