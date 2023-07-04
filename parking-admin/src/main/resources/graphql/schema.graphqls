@@ -156,9 +156,7 @@ type Vehicle {
     vehicleUuid: String!
     name: String
     plateNumber: String
-    brandUuid: String
     modelUuid: String
-    typeUuid: String
     color: String
     year: String
     verifiedAt: String
@@ -206,6 +204,7 @@ type VehicleTypeList {
 type VehicleModel {
     modelUuid: String!
     brandUuid: String!
+    typeUuid: String!
     name: String
     status: Int
     createdAt: String

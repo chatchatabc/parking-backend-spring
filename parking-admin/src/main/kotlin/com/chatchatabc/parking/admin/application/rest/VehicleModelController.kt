@@ -27,7 +27,7 @@ class VehicleModelController(
     )
     @PostMapping
     fun createVehicleModel(
-        @RequestBody req: VehicleModelMapper.VehicleModelResponse,
+        @RequestBody req: VehicleModelMapper.VehicleModelRequest,
         principal: Principal
     ) = runCatching {
         val createdVehicleModel = VehicleModel().apply {
@@ -46,7 +46,7 @@ class VehicleModelController(
     )
     @PutMapping("/{id}")
     fun updateVehicleModel(
-        @RequestBody req: VehicleModelMapper.VehicleModelResponse,
+        @RequestBody req: VehicleModelMapper.VehicleModelRequest,
         principal: Principal,
         @PathVariable id: String
     ) = runCatching {
