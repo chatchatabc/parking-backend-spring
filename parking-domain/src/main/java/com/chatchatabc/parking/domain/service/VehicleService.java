@@ -1,6 +1,9 @@
 package com.chatchatabc.parking.domain.service;
 
+import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.model.Vehicle;
+
+import java.io.InputStream;
 
 public interface VehicleService {
     /**
@@ -51,4 +54,20 @@ public interface VehicleService {
      * @throws Exception the exception
      */
     Vehicle removeUserFromVehicle(String userUuid, String vehicleUuid, String userToRemoveId) throws Exception;
+
+    /**
+     * Upload Vehicle Image
+     *
+     * @param user        the user
+     * @param vehicle     the vehicle
+     * @param type        the image type
+     * @param namespace   the namespace
+     * @param inputStream the input stream
+     * @param fileName    the file name
+     * @param filesize    the file size
+     * @param mimetype    the mime type
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    Vehicle uploadVehicleImage(User user, Vehicle vehicle, Integer type, String namespace, InputStream inputStream, String fileName, Long filesize, String mimetype) throws Exception;
 }

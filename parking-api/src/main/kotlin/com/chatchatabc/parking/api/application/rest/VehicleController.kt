@@ -2,23 +2,30 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
 import com.chatchatabc.parking.domain.model.Vehicle
+import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicle
+import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
 @RequestMapping("/api/vehicle")
 class VehicleController(
     private val vehicleRepository: VehicleRepository,
-    private val vehicleService: VehicleService
+    private val vehicleService: VehicleService,
+    private val fileStorageService: FileStorageService
 ) {
+    private val fileNamespace = "vehicle"
     private val vehicleMapper = Mappers.getMapper(VehicleMapper::class.java)
 
     /**
@@ -165,4 +172,69 @@ class VehicleController(
     ) = runCatching {
         vehicleService.removeUserFromVehicle(principal.name, vehicleUuid, userUuid).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Update Vehicle Photo
+     */
+    @Operation(
+        summary = "Update Vehicle Photo",
+        description = "Update Vehicle Photo. Side value: Front = 1, Back = 2, Left = 3, Right = 4"
+    )
+    @PostMapping("/upload-photo/{id}/{side}")
+    fun updatePhoto(
+        @PathVariable id: String,
+        @PathVariable side: Int,
+        @RequestParam("file", required = true) file: MultipartFile,
+        principal: Principal,
+    ) = runCatching {
+        var contentType = file.contentType
+        if (contentType == "image/jpg") {
+            contentType = "image/jpeg"
+        }
+        vehicleService.uploadVehicleImage(
+            principal.name.user,
+            id.vehicle,
+            side,
+            fileNamespace,
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            contentType
+        ).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Get Vehicle Image
+     */
+    @Operation(
+        summary = "Get Vehicle Image",
+        description = "Get Vehicle Image. Side value: Front = 1, Back = 2, Left = 3, Right = 4"
+    )
+    @GetMapping("/image/{id}/{side}")
+    fun getVehicleImage(
+        @PathVariable id: String,
+        @PathVariable side: Int,
+        principal: Principal,
+        response: HttpServletResponse
+    ) = runCatching {
+        val vehicle = id.vehicle
+        var cloudFile: CloudFile? = null
+
+        when (side) {
+            Vehicle.VehicleImageType.FRONT -> cloudFile = vehicle.imageFront
+            Vehicle.VehicleImageType.BACK -> cloudFile = vehicle.imageBack
+            Vehicle.VehicleImageType.LEFT -> cloudFile = vehicle.imageLeft
+            Vehicle.VehicleImageType.RIGHT -> cloudFile = vehicle.imageRight
+        }
+
+        if (cloudFile == null) {
+            throw Exception("Vehicle image not found")
+        }
+        response.contentType = cloudFile.mimeType
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val inputStream = fileStorageService.downloadFile(cloudFile.key)
+        inputStream.copyTo(response.outputStream)
+        response.flushBuffer()
+    }.getOrElse { response.sendError(HttpServletResponse.SC_NOT_FOUND) }
 }

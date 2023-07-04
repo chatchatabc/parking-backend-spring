@@ -2,21 +2,26 @@ package com.chatchatabc.parking.impl.domain.service;
 
 import com.chatchatabc.parking.domain.model.User;
 import com.chatchatabc.parking.domain.model.Vehicle;
+import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.chatchatabc.parking.domain.repository.UserRepository;
 import com.chatchatabc.parking.domain.repository.VehicleRepository;
 import com.chatchatabc.parking.domain.service.VehicleService;
+import com.chatchatabc.parking.infra.service.FileStorageService;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, UserRepository userRepository) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, UserRepository userRepository, FileStorageService fileStorageService) {
         this.vehicleRepository = vehicleRepository;
         this.userRepository = userRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -156,4 +161,41 @@ public class VehicleServiceImpl implements VehicleService {
 
         return vehicle.get();
     }
+
+    /**
+     * Upload Vehicle Image
+     *
+     * @param user        the user
+     * @param vehicle     the vehicle
+     * @param type        the image type
+     * @param namespace   the namespace
+     * @param inputStream the input stream
+     * @param fileName    the file name
+     * @param filesize    the file size
+     * @param mimetype    the mime type
+     * @return the vehicle
+     * @throws Exception the exception
+     */
+    @Override
+    public Vehicle uploadVehicleImage(User user, Vehicle vehicle, Integer type, String namespace, InputStream inputStream, String fileName, Long filesize, String mimetype) throws Exception {
+        // Upload file to cloud storage
+        CloudFile cloudFile = fileStorageService.uploadFile(user.getId(), namespace, inputStream, fileName, filesize, mimetype);
+
+        // Save record to vehicle
+        if (type == Vehicle.VehicleImageType.FRONT) {
+            vehicle.setImageFront(cloudFile);
+        } else if (type == Vehicle.VehicleImageType.BACK) {
+            vehicle.setImageBack(cloudFile);
+        } else if (type == Vehicle.VehicleImageType.LEFT) {
+            vehicle.setImageLeft(cloudFile);
+        } else if (type == Vehicle.VehicleImageType.RIGHT) {
+            vehicle.setImageRight(cloudFile);
+        } else {
+            throw new Exception("Invalid image type");
+        }
+
+        return vehicleRepository.save(vehicle);
+    }
+
+
 }
