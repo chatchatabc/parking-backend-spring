@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,6 +19,13 @@ public class Vehicle {
         public static final int PENDING = 1;
         public static final int REJECTED = 2;
         public static final int VERIFIED = 3;
+    }
+
+    public static class VehicleImageType {
+        public static final int FRONT = 1;
+        public static final int BACK = 2;
+        public static final int LEFT = 3;
+        public static final int RIGHT = 4;
     }
 
     @Id
@@ -42,14 +50,21 @@ public class Vehicle {
     @Column
     private String year;
 
-    @Column
-    private String imageFrontKey;
+    @OneToOne
+    @JoinColumn(name = "image_front")
+    private CloudFile imageFront;
 
-    @Column
-    private String imageBackKey;
+    @OneToOne
+    @JoinColumn(name = "image_back")
+    private CloudFile imageBack;
 
-    @Column
-    private String imageSideKey;
+    @OneToOne
+    @JoinColumn(name = "image_left")
+    private CloudFile imageLeft;
+
+    @OneToOne
+    @JoinColumn(name = "image_right")
+    private CloudFile imageRight;
 
     @Column
     private LocalDateTime verifiedAt;
@@ -81,7 +96,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String modelUuid, String color, String year, String imageFrontKey, String imageBackKey, String imageSideKey, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String modelUuid, String color, String year, CloudFile imageFront, CloudFile imageBack, CloudFile imageLeft, CloudFile imageRight, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.vehicleUuid = vehicleUuid;
         this.name = name;
@@ -89,9 +104,10 @@ public class Vehicle {
         this.modelUuid = modelUuid;
         this.color = color;
         this.year = year;
-        this.imageFrontKey = imageFrontKey;
-        this.imageBackKey = imageBackKey;
-        this.imageSideKey = imageSideKey;
+        this.imageFront = imageFront;
+        this.imageBack = imageBack;
+        this.imageLeft = imageLeft;
+        this.imageRight = imageRight;
         this.verifiedAt = verifiedAt;
         this.verifiedBy = verifiedBy;
         this.rejectionReason = rejectionReason;
@@ -158,28 +174,36 @@ public class Vehicle {
         this.year = year;
     }
 
-    public String getImageFrontKey() {
-        return imageFrontKey;
+    public CloudFile getImageFront() {
+        return imageFront;
     }
 
-    public void setImageFrontKey(String imageFrontKey) {
-        this.imageFrontKey = imageFrontKey;
+    public void setImageFront(CloudFile imageFront) {
+        this.imageFront = imageFront;
     }
 
-    public String getImageBackKey() {
-        return imageBackKey;
+    public CloudFile getImageBack() {
+        return imageBack;
     }
 
-    public void setImageBackKey(String imageBackKey) {
-        this.imageBackKey = imageBackKey;
+    public void setImageBack(CloudFile imageBack) {
+        this.imageBack = imageBack;
     }
 
-    public String getImageSideKey() {
-        return imageSideKey;
+    public CloudFile getImageLeft() {
+        return imageLeft;
     }
 
-    public void setImageSideKey(String imageSideKey) {
-        this.imageSideKey = imageSideKey;
+    public void setImageLeft(CloudFile imageLeft) {
+        this.imageLeft = imageLeft;
+    }
+
+    public CloudFile getImageRight() {
+        return imageRight;
+    }
+
+    public void setImageRight(CloudFile imageRight) {
+        this.imageRight = imageRight;
     }
 
     public LocalDateTime getVerifiedAt() {
