@@ -27,17 +27,6 @@ class UserController(
     private val userMapper = Mappers.getMapper(UserMapper::class.java)
 
     /**
-     * Create User Request
-     */
-    data class UserCreateRequest(
-        val email: String?,
-        val phone: String,
-        val username: String?,
-        val roles: List<String>,
-        val enabled: Boolean = true
-    )
-
-    /**
      * Create user
      */
     @Operation(
@@ -46,7 +35,7 @@ class UserController(
     )
     @PostMapping
     fun createUser(
-        @RequestBody req: UserCreateRequest
+        @RequestBody req: UserMapper.UserCreateDTO
     ) = runCatching {
         val user = User().apply {
             this.roles = roleRepository.findRolesIn(req.roles)
@@ -81,7 +70,7 @@ class UserController(
     )
     @PutMapping("/{userUuid}")
     fun updateUser(
-        @RequestBody req: UserUpdateRequest,
+        @RequestBody req: UserMapper.UserUpdateDTO,
         @PathVariable userUuid: String,
         principal: Principal
     ) = runCatching {
