@@ -42,7 +42,14 @@ public class Vehicle {
     @Column
     private String year;
 
-    // TODO: add image for front, back, and side view of the vehicle
+    @Column
+    private String imageFrontKey;
+
+    @Column
+    private String imageBackKey;
+
+    @Column
+    private String imageSideKey;
 
     @Column
     private LocalDateTime verifiedAt;
@@ -74,7 +81,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String modelUuid, String color, String year, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Vehicle(Long id, String vehicleUuid, String name, String plateNumber, String modelUuid, String color, String year, String imageFrontKey, String imageBackKey, String imageSideKey, LocalDateTime verifiedAt, Long verifiedBy, String rejectionReason, Integer status, Collection<User> users, Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.vehicleUuid = vehicleUuid;
         this.name = name;
@@ -82,6 +89,9 @@ public class Vehicle {
         this.modelUuid = modelUuid;
         this.color = color;
         this.year = year;
+        this.imageFrontKey = imageFrontKey;
+        this.imageBackKey = imageBackKey;
+        this.imageSideKey = imageSideKey;
         this.verifiedAt = verifiedAt;
         this.verifiedBy = verifiedBy;
         this.rejectionReason = rejectionReason;
@@ -146,6 +156,30 @@ public class Vehicle {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getImageFrontKey() {
+        return imageFrontKey;
+    }
+
+    public void setImageFrontKey(String imageFrontKey) {
+        this.imageFrontKey = imageFrontKey;
+    }
+
+    public String getImageBackKey() {
+        return imageBackKey;
+    }
+
+    public void setImageBackKey(String imageBackKey) {
+        this.imageBackKey = imageBackKey;
+    }
+
+    public String getImageSideKey() {
+        return imageSideKey;
+    }
+
+    public void setImageSideKey(String imageSideKey) {
+        this.imageSideKey = imageSideKey;
     }
 
     public LocalDateTime getVerifiedAt() {
