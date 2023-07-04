@@ -39,5 +39,5 @@ class VehicleBrandGQLController(
      * Get vehicle brand by identifier
      */
     @QueryMapping
-    fun getVehicleBrand(@Argument id: String) = run { id.vehicleBrand.toResponse() }
+    fun getVehicleBrand(@Argument id: String) = run { id.vehicleBrand }
 }
