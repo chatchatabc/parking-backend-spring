@@ -12,9 +12,7 @@ public interface VehicleMapper {
     record VehicleMapDTO(
             String name,
             String plateNumber,
-            String brandUuid,
             String modelUuid,
-            String typeUuid,
             String color,
             String year
     ) {
@@ -26,9 +24,7 @@ public interface VehicleMapper {
     @Mappings({
             @Mapping(target = "name", source = "request.name"),
             @Mapping(target = "plateNumber", source = "request.plateNumber"),
-            @Mapping(target = "brandUuid", source = "request.brandUuid"),
             @Mapping(target = "modelUuid", source = "request.modelUuid"),
-            @Mapping(target = "typeUuid", source = "request.typeUuid"),
             @Mapping(target = "color", source = "request.color"),
             @Mapping(target = "year", source = "request.year")
     })

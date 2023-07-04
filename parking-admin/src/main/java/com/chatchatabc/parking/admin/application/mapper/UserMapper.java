@@ -1,14 +1,25 @@
 package com.chatchatabc.parking.admin.application.mapper;
 
-import com.chatchatabc.parking.admin.application.rest.UserController;
 import com.chatchatabc.parking.domain.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
+    record UserCreateDTO(
+            String email,
+            String phone,
+            String username,
+            List<String> roles,
+            boolean enabled
+    ) {
+    }
+
     /**
      * Map User From Request
      */
@@ -20,9 +31,19 @@ public interface UserMapper {
             @Mapping(target = "enabled", ignore = true),
     })
     void mapRequestToUser(
-            UserController.UserCreateRequest request,
+            UserCreateDTO request,
             @MappingTarget User user
     );
+
+    record UserUpdateDTO(
+            String email,
+            String phone,
+            String username,
+            String firstName,
+            String lastName,
+            List<String> roles
+    ) {
+    }
 
     /**
      * Update User Map Request
@@ -36,7 +57,7 @@ public interface UserMapper {
             @Mapping(target = "roles", ignore = true)
     })
     void updateUserFromUpdateRequest(
-            UserController.UserUpdateRequest request,
+            UserUpdateDTO request,
             @MappingTarget User user
     );
 }

@@ -26,7 +26,6 @@ class VehicleController(
     data class VehicleRegisterRequest(
         val name: String,
         val plateNumber: String,
-        val brandUuid: String,
         val modelUuid: String,
         val color: String,
         val year: String
