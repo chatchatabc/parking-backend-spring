@@ -586,9 +586,10 @@
     model_uuid CDATA #REQUIRED
     color CDATA #IMPLIED
     year CDATA #IMPLIED
-    image_front_key CDATA #IMPLIED
-    image_back_key CDATA #IMPLIED
-    image_side_key CDATA #IMPLIED
+    image_front CDATA #IMPLIED
+    image_back CDATA #IMPLIED
+    image_left CDATA #IMPLIED
+    image_right CDATA #IMPLIED
     owner_id CDATA #REQUIRED
     verified_at CDATA #IMPLIED
     verified_by CDATA #IMPLIED
