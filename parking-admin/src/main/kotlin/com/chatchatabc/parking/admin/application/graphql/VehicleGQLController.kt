@@ -45,13 +45,13 @@ class VehicleGQLController(
      * Get vehicles by owner
      */
     @QueryMapping
-    fun getVehiclesByOwner(
-        @Argument ownerUuid: String,
+    fun getVehiclesByUser(
+        @Argument id: String,
         @Argument page: Int,
         @Argument size: Int
     ) = run {
         val pr = PageRequest.of(page, size)
-        vehicleRepository.findAllByOwner(ownerUuid.user.id, pr).toPagedResponse()
+        vehicleRepository.findAllByOwner(id.user.id, pr).toPagedResponse()
     }
 
     /**

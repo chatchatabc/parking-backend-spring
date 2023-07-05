@@ -14,7 +14,7 @@ type Query {
 
     getVehicles(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleList!
     getVehicle(id: String): Vehicle
-    getVehiclesByOwner(page: Int size: Int, ownerUuid: String!): VehicleList!
+    getVehiclesByUser(page: Int size: Int, id: String!): VehicleList!
     getUserByVehicle(id: String!): User
 
     getVehicleBrands(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleBrandList!
