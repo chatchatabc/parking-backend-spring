@@ -58,5 +58,5 @@ class VehicleGQLController(
      * Get owner by vehicle identified
      */
     @QueryMapping
-    fun getOwnerByVehicleId(@Argument id: String) = run { id.vehicle.owner.user }
+    fun getUserByVehicle(@Argument id: String) = run { id.vehicle.owner.user }
 }
