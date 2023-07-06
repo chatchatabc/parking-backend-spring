@@ -10,7 +10,8 @@ public class InvoiceSpecification extends GenericSpecification<Invoice> {
             return builder.or(
                     builder.like(builder.lower(root.get("invoiceUuid")), pattern),
                     builder.like(builder.lower(root.get("parkingLotUuid")), pattern),
-                    builder.like(builder.lower(root.get("vehicleUuid")), pattern)
+                    builder.like(builder.lower(root.get("vehicleUuid")), pattern),
+                    builder.like(builder.lower(root.get("plateNumber")), pattern)
             );
         };
     }
