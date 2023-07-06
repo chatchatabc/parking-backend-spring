@@ -104,7 +104,8 @@
     id CDATA #IMPLIED
     invoice_uuid CDATA #REQUIRED
     parking_lot_uuid CDATA #REQUIRED
-    vehicle_uuid CDATA #REQUIRED
+    vehicle_uuid CDATA #IMPLIED
+    plate_number CDATA #IMPLIED
     estimated_parking_duration_in_hours CDATA #IMPLIED
     estimated_end_at CDATA #IMPLIED
     total CDATA #IMPLIED

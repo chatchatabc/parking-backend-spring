@@ -52,6 +52,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = new Invoice();
         invoice.setParkingLotUuid(parkingLot.getParkingLotUuid());
         invoice.setVehicleUuid(vehicle.getVehicleUuid());
+        invoice.setPlateNumber(vehicle.getPlateNumber());
         invoice.setStartAt(LocalDateTime.now());
         invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
         invoice.setEstimatedEndAt(LocalDateTime.now().plusHours(estimatedParkingDurationInHours));
