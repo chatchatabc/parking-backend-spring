@@ -3,51 +3,48 @@
 
 <dataset>
     <invoice id="1" invoice_uuid="d189b0cc-e7bb-4ba6-8d84-3d2512e1e27f"
-             parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57"
-             vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="100"
-             start_at="2023-05-05 16:14:47.307160" end_at="2023-05-07 16:14:47.307160"
-             estimated_end_at="2023-05-06 16:14:47.307160" estimated_parking_duration_in_hours="24"
-             paid_at="2023-05-06 16:14:47.307160" created_at="2023-05-05 16:14:47.307160"
-             updated_at="2023-05-06 16:14:47.307160"/>
+             parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9"
+             total="100" plate_number="ASD1234" start_at="2023-05-05 16:14:47.307160"
+             end_at="2023-05-07 16:14:47.307160" estimated_end_at="2023-05-06 16:14:47.307160"
+             estimated_parking_duration_in_hours="24" paid_at="2023-05-06 16:14:47.307160"
+             created_at="2023-05-05 16:14:47.307160" updated_at="2023-05-06 16:14:47.307160"/>
 
     <invoice id="2" invoice_uuid="a27b2f39-3d98-4e4a-9ae8-6c15f6b7cde2"
              parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1" vehicle_uuid="ddd6ed87-3d29-4b87-890c-75a86f684278"
-             total="75" start_at="2023-05-07 09:30:15.512345" end_at="2023-05-07 17:45:22.123456"
+             plate_number="QWE1234" total="75" start_at="2023-05-07 09:30:15.512345" end_at="2023-05-07 17:45:22.123456"
              estimated_end_at="2023-05-06 16:14:47.307160" estimated_parking_duration_in_hours="8"
              paid_at="2023-05-07 17:45:22.123456" created_at="2023-05-07 09:30:15.512345"
              updated_at="2023-05-07 17:45:22.123456"/>
 
     <invoice id="3" invoice_uuid="f1a5d4ef-6b9c-4f8a-8e79-2d3d4a1b9f92"
-             parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p"
-             vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="50"
-             start_at="2023-05-08 14:00:00.000000" end_at="2023-05-09 09:30:00.000000"
+             parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9"
+             total="50" plate_number="ASD1234" start_at="2023-05-08 14:00:00.000000" end_at="2023-05-09 09:30:00.000000"
              estimated_parking_duration_in_hours="19.5" paid_at="2023-05-09 09:30:00.000000"
              created_at="2023-05-08 14:00:00.000000" updated_at="2023-05-09 09:30:00.000000"/>
 
     <invoice id="4" invoice_uuid="6a7b4d3c-2e1f-4e5a-8b9c-0d1e2f3a4b5c"
              parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" vehicle_uuid="ddd6ed87-3d29-4b87-890c-75a86f684278"
-             total="120"
-             start_at="2023-05-10 08:45:30.987654" end_at="2023-05-11 08:45:30.987654"
-             estimated_parking_duration_in_hours="24" paid_at="2023-05-11 08:45:30.987654"
-             created_at="2023-05-10 08:45:30.987654" updated_at="2023-05-11 08:45:30.987654"/>
+             total="120" plate_number="QWE1234" start_at="2023-05-10 08:45:30.987654"
+             end_at="2023-05-11 08:45:30.987654" estimated_parking_duration_in_hours="24"
+             paid_at="2023-05-11 08:45:30.987654" created_at="2023-05-10 08:45:30.987654"
+             updated_at="2023-05-11 08:45:30.987654"/>
 
     <invoice id="5" invoice_uuid="8d2e1f3a-4b5c-6a7b-9c8d-e0f1a2d3b4c5"
-             parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1"
-             vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="90"
-             start_at="2023-05-12 12:00:00.000000" end_at="2023-05-12 16:30:00.000000"
+             parking_lot_uuid="9c45f764-b54d-4fb1-8aa0-293c7e73c9c1" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9"
+             total="90" plate_number="ASD1234" start_at="2023-05-12 12:00:00.000000" end_at="2023-05-12 16:30:00.000000"
              estimated_parking_duration_in_hours="0" created_at="2023-05-12 12:00:00.000000"
              updated_at="2023-05-12 16:30:00.000000"/>
 
     <invoice id="6" invoice_uuid="9e8f7c6b-5a4d-3e2f-1a0b-cd9e8f7a6b5c"
              parking_lot_uuid="a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p" vehicle_uuid="ddd6ed87-3d29-4b87-890c-75a86f684278"
-             start_at="2023-05-13 17:20:00.000000" estimated_parking_duration_in_hours="0"
-             created_at="2023-05-13 17:20:00.000000" updated_at="2023-05-14 10:10:00.000000"/>
+             total="120" plate_number="QWE1234" start_at="2023-05-13 17:20:00.000000"
+             estimated_parking_duration_in_hours="0" created_at="2023-05-13 17:20:00.000000"
+             updated_at="2023-05-14 10:10:00.000000"/>
 
     <invoice id="7" invoice_uuid="4e3f7c6b-5a4d-3e3f-1a0b-cd9e8f7a6b9c"
-             parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57"
-             vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9" total="150"
-             start_at="2023-05-14 09:00:00.000000"
-             estimated_parking_duration_in_hours="12"
-             created_at="2023-05-14 09:00:00.000000" updated_at="2023-05-14 09:00:00.000000"/>
+             parking_lot_uuid="fe5c1764-d192-4690-834e-c611f078dd57" vehicle_uuid="2da0ddab-9e9d-45cb-a2a5-f6bff1765ea9"
+             total="150" plate_number="ASD1234" start_at="2023-05-14 09:00:00.000000"
+             estimated_parking_duration_in_hours="12" created_at="2023-05-14 09:00:00.000000"
+             updated_at="2023-05-14 09:00:00.000000"/>
 
 </dataset>
