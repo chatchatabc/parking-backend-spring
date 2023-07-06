@@ -214,7 +214,7 @@ class UserController(
     ) = runCatching {
         val headers = HttpHeaders()
         // Add 1 day cache
-        response.setHeader("Cache-Control", "max-age=86400")
+        // response.setHeader("Cache-Control", "max-age=86400")
         val resource = InputStreamResource(fileStorageService.downloadFile(id.user.avatar.key))
         ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
     }.getOrElse {
