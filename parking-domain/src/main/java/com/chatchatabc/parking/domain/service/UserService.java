@@ -42,6 +42,7 @@ public interface UserService extends UserDetailsService {
      * Upload a file to the storage service.
      *
      * @param uploadedBy  the user who uploaded the file
+     * @param targetUser  the user who will receive the avatar
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
      * @param filename    the filename
@@ -49,5 +50,5 @@ public interface UserService extends UserDetailsService {
      * @param mimetype    the mimetype
      * @throws Exception if an error occurs
      */
-    void uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception;
+    void uploadImage(User uploadedBy, User targetUser, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception;
 }
