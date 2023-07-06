@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService {
      * Upload a file to the storage service.
      *
      * @param uploadedBy  the user who uploaded the file
+     * @param targetUser  the user who will receive the avatar
      * @param namespace   the namespace of the file
      * @param inputStream the file to upload
      * @param filename    the filename
@@ -133,10 +134,10 @@ public class UserServiceImpl implements UserService {
      * @throws Exception if an error occurs
      */
     @Override
-    public void uploadImage(User uploadedBy, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
+    public void uploadImage(User uploadedBy, User targetUser, String namespace, InputStream inputStream, String filename, Long filesize, String mimetype) throws Exception {
         // Update user avatar field
-        uploadedBy.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
-        userRepository.save(uploadedBy);
+        targetUser.setAvatar(fileStorageService.uploadFile(uploadedBy.getId(), namespace, inputStream, filename, filesize, mimetype));
+        userRepository.save(targetUser);
     }
 
     /**
