@@ -27,6 +27,9 @@ public class Invoice {
     private String vehicleUuid;
 
     @Column
+    private String plateNumber;
+
+    @Column
     private int estimatedParkingDurationInHours;
 
     @Column
@@ -49,6 +52,25 @@ public class Invoice {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Invoice() {
+    }
+
+    public Invoice(Long id, String invoiceUuid, String parkingLotUuid, String vehicleUuid, String plateNumber, int estimatedParkingDurationInHours, LocalDateTime estimatedEndAt, BigDecimal total, LocalDateTime paidAt, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.invoiceUuid = invoiceUuid;
+        this.parkingLotUuid = parkingLotUuid;
+        this.vehicleUuid = vehicleUuid;
+        this.plateNumber = plateNumber;
+        this.estimatedParkingDurationInHours = estimatedParkingDurationInHours;
+        this.estimatedEndAt = estimatedEndAt;
+        this.total = total;
+        this.paidAt = paidAt;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     public Long getId() {
         return id;
@@ -80,6 +102,14 @@ public class Invoice {
 
     public void setVehicleUuid(String vehicleUuid) {
         this.vehicleUuid = vehicleUuid;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
     }
 
     public int getEstimatedParkingDurationInHours() {
@@ -143,24 +173,6 @@ public class Invoice {
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Invoice() {
-    }
-
-    public Invoice(Long id, String invoiceUuid, String parkingLotUuid, String vehicleUuid, int estimatedParkingDurationInHours, LocalDateTime estimatedEndAt, BigDecimal total, LocalDateTime paidAt, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.invoiceUuid = invoiceUuid;
-        this.parkingLotUuid = parkingLotUuid;
-        this.vehicleUuid = vehicleUuid;
-        this.estimatedParkingDurationInHours = estimatedParkingDurationInHours;
-        this.estimatedEndAt = estimatedEndAt;
-        this.total = total;
-        this.paidAt = paidAt;
-        this.startAt = startAt;
-        this.endAt = endAt;
-        this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 }
