@@ -87,8 +87,10 @@ class UserController(
         @RequestParam("file", required = true) file: MultipartFile,
         principal: Principal
     ) = runCatching {
+        val user = principal.name.user
         userService.uploadImage(
-            principal.name.user,
+            user,
+            user,
             "avatar",
             file.inputStream,
             file.originalFilename,
