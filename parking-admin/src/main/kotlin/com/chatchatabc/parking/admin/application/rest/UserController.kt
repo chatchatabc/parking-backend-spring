@@ -7,12 +7,19 @@ import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.user
+import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
+import org.springframework.core.io.InputStreamResource
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 import java.time.LocalDateTime
 
@@ -22,7 +29,8 @@ class UserController(
     private val userService: UserService,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val userBanHistoryLogRepository: UserBanHistoryLogRepository
+    private val userBanHistoryLogRepository: UserBanHistoryLogRepository,
+    private val fileStorageService: FileStorageService,
 ) {
     private val userMapper = Mappers.getMapper(UserMapper::class.java)
 
@@ -173,4 +181,44 @@ class UserController(
         // TODO: Convert to service
         userBanHistoryLogRepository.save(banLog).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Upload user avatar
+     */
+    @PostMapping("/upload-avatar/{id}")
+    fun uploadAvatar(
+        @RequestParam("file", required = true) file: MultipartFile,
+        @PathVariable id: String,
+        principal: Principal,
+    ) = runCatching {
+        val uploadedBy = principal.name.user
+        val targetUser = id.user
+        userService.uploadImage(
+            uploadedBy,
+            targetUser,
+            "avatar",
+            file.inputStream,
+            file.originalFilename,
+            file.size,
+            file.contentType
+        ).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Get user avatar by any identification (id, username, email, phone)
+     */
+    @GetMapping("/avatar/{id}")
+    fun getUserAvatar(
+        @PathVariable id: String,
+        response: HttpServletResponse
+    ) = runCatching {
+        val headers = HttpHeaders()
+        // Add 1 day cache
+        response.setHeader("Cache-Control", "max-age=86400")
+        val resource = InputStreamResource(fileStorageService.downloadFile(id.user.avatar.key))
+        ResponseEntity<InputStreamResource>(resource, headers, HttpStatus.OK)
+    }.getOrElse {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND)
+        ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
+    }
 }
