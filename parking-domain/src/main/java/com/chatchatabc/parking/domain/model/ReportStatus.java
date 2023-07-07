@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ReportStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @JsonIgnore
     @Column(name = "report_id")
@@ -33,7 +33,7 @@ public class ReportStatus {
     public ReportStatus() {
     }
 
-    public ReportStatus(String id, Long report, Long performedBy, Integer status, String remarks, LocalDateTime createdAt) {
+    public ReportStatus(Long id, Long report, Long performedBy, Integer status, String remarks, LocalDateTime createdAt) {
         this.id = id;
         this.report = report;
         this.performedBy = performedBy;
@@ -42,11 +42,11 @@ public class ReportStatus {
         this.createdAt = createdAt;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
