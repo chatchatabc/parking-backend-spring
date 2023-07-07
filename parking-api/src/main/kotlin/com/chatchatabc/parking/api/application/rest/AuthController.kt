@@ -5,6 +5,7 @@ import com.chatchatabc.parking.domain.model.Role
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.service.log.UserLoginLogService
+import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.rest.service.JwtService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,8 +23,50 @@ class AuthController(
     private val userService: UserService,
     private val jwtService: JwtService,
     private val applicationEventPublisher: ApplicationEventPublisher,
-    private val userLoginLogService: UserLoginLogService
+    private val userLoginLogService: UserLoginLogService,
+    private val authenticationManager: AuthenticationManager,
 ) {
+    /**
+     * Login User Request
+     */
+    data class UserLoginRequest(
+        val username: String,
+        val password: String
+    )
+    @PostMapping("/login-password")
+    fun loginUser(
+        @RequestBody req: UserLoginRequest,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ) =
+        runCatching {
+            val user = req.username.user
+            try {
+                // Authenticate user
+                authenticationManager.authenticate(
+                    UsernamePasswordAuthenticationToken(
+                        req.username,
+                        req.password
+                    )
+                )
+                // Convert granted authority roles to list of string roles
+                val roleStrings: List<String> = user.roles.stream()
+                    .map { it.authority }
+                    .toList()
+
+                // Generate JWT Token
+                val token: String = jwtService.generateToken(user.userUuid, user.username, roleStrings)
+                response.setHeader("X-Access-Token", token)
+
+                // Generate Successful Login Log
+                userLoginLogService.createLog(user.id, request.remoteAddr, 1, true)
+                user.toResponse()
+            } catch (e: Exception) {
+                // Generate Failed Login Log
+                userLoginLogService.createLog(user.id, request.remoteAddr, 1, false)
+                throw Exception("Invalid username/password supplied")
+            }
+        }.getOrElse { it.toErrorResponse() }
 
     /**
      * Login User Request Data Class
