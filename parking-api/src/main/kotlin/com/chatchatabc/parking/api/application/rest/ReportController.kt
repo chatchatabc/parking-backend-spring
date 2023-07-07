@@ -4,6 +4,7 @@ import com.chatchatabc.parking.api.application.mapper.ReportMapper
 import com.chatchatabc.parking.domain.model.Report
 import com.chatchatabc.parking.domain.report
 import com.chatchatabc.parking.domain.repository.ReportRepository
+import com.chatchatabc.parking.domain.repository.ReportStatusRepository
 import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*
 class ReportController(
     private val reportRepository: ReportRepository,
     private val reportService: ReportService,
+    private val reportStatusRepository: ReportStatusRepository
 ) {
     private val reportMapper = Mappers.getMapper(ReportMapper::class.java)
 
@@ -34,6 +36,21 @@ class ReportController(
     ) = runCatching {
         // TODO: Get user from security context
         reportRepository.findAll(pageable).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Get Report Status
+     */
+    @Operation(
+        summary = "Get Report Status",
+        description = "Get Report Status"
+    )
+    @GetMapping("/status/{id}")
+    fun getReportStatus(
+        @PathVariable id: Long,
+        pageable: Pageable
+    ) = runCatching {
+        reportStatusRepository.findAllByReport(id, pageable).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
@@ -80,7 +97,29 @@ class ReportController(
         @RequestBody req: ReportMapper.ReportMapDTO
     ) = runCatching {
         val report = reportId.report
+        if (report.status != Report.ReportStatus.DRAFT) {
+            throw Exception("Report no longer in draft status")
+        }
         reportMapper.mapRequestToReport(req, report)
+        reportService.saveReport(report).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Set Report to Pending
+     */
+    @Operation(
+        summary = "Set Report to Pending",
+        description = "Set Report to Pending"
+    )
+    @PutMapping("/set-pending/{id}")
+    fun setReportToPending(
+        @PathVariable id: Long
+    ) = runCatching {
+        val report = id.report
+        if (report.status != Report.ReportStatus.DRAFT) {
+            throw Exception("Report no longer in draft status")
+        }
+        report.apply { status = Report.ReportStatus.PENDING }
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }
