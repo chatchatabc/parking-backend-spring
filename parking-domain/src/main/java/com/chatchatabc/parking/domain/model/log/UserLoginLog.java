@@ -18,7 +18,7 @@ public class UserLoginLog {
     private Long user;
 
     /**
-     * 0: KMM Mobile
+     * 0: API
      * 1: Admin
      */
     @Column
