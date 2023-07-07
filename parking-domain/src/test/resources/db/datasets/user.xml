@@ -20,7 +20,7 @@
     <!-- User -->
     <users id="4" status="0" user_uuid="dfc3cd78-9c89-4da2-8749-253afed080af" enabled="true"
            notification_uuid="ffa2b156-70d3-48a8-929e-63752beee96b" email="user@gmail.com" username="user"
-           phone="+5512355678" phone_verified_at="2023-05-10 16:14:47.307160"
+           phone="+6390000000000" phone_verified_at="2023-05-10 16:14:47.307160"
            password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
            created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-08 16:14:47.307160"/>
     <authorities username="user" authority="ROLE_USER"/>
@@ -28,7 +28,7 @@
     <!-- owner -->
     <users id="2" status="0" user_uuid="b69bf0f3-3a3a-4079-94e6-776f747fd3de" enabled="true"
            notification_uuid="c9e085dc-4dda-462b-8bab-a5dedd62f1a9" email="owner@gmail.com" username="owner"
-           email_verified_at="2023-05-09 16:14:47.307160" phone="+9906345322"
+           email_verified_at="2023-05-09 16:14:47.307160" phone="+639906345322"
            phone_verified_at="2023-05-10 16:14:47.307160"
            password="{bcrypt}$2a$10$HfewouomThstiUJu.zfYPOsLJahJHCVnqS7GbEz0KFBQjiZUcsINK" flag="0"
            created_at="2023-05-09 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
