@@ -59,11 +59,11 @@ class AuthController(
                 response.setHeader("X-Access-Token", token)
 
                 // Generate Successful Login Log
-                userLoginLogService.createLog(user.id, request.remoteAddr, 1, true)
+                userLoginLogService.createLog(user.id, request.remoteAddr, 0, true)
                 user.toResponse()
             } catch (e: Exception) {
                 // Generate Failed Login Log
-                userLoginLogService.createLog(user.id, request.remoteAddr, 1, false)
+                userLoginLogService.createLog(user.id, request.remoteAddr, 0, false)
                 throw Exception("Invalid username/password supplied")
             }
         }.getOrElse { it.toErrorResponse() }
