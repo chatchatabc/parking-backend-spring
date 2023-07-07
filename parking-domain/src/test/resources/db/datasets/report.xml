@@ -3,5 +3,8 @@
 
 <dataset>
     <report id="1" name="report" description="desc" plate_number="ASD1234" latitude="7" longitude="7" reported_by="1"
-            created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+            status="1" created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
+
+    <report id="2" name="report 2" description="desc 2" plate_number="ASD1234" latitude="7" longitude="7"
+            reported_by="1" status="0" created_at="2023-05-10 16:14:47.307160" updated_at="2023-05-10 16:14:47.307160"/>
 </dataset>
