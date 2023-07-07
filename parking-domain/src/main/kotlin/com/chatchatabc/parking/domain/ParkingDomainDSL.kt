@@ -100,7 +100,7 @@ val Long.report: Report
 val String.jeepney: Jeepney
     get() {
         // TODO: Add custom errors
-        if (this.length == 36) {
+        if (this.length == 32) {
             return SpringContextUtils.getJeepneyRepository().findByJeepneyUuid(this).orElseThrow()
         } else if (this.contains("-")) {
             SpringContextUtils.getJeepneyRepository().findByPlateNumber(this).orElseThrow()
