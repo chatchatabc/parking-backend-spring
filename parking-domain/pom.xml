@@ -136,6 +136,7 @@
                         <src>src/test/resources/db/datasets/parking_lot_image.xml</src>
                         <src>src/test/resources/db/datasets/user_ban_history_log.xml</src>
                         <src>src/test/resources/db/datasets/report.xml</src>
+                        <src>src/test/resources/db/datasets/report_status.xml</src>
                         <src>src/test/resources/db/datasets/route.xml</src>
                         <src>src/test/resources/db/datasets/jeepney.xml</src>
                         <src>src/test/resources/db/datasets/vehicle_brand.xml</src>

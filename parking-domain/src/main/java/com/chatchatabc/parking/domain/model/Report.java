@@ -10,6 +10,15 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "report")
 public class Report {
+    public static class ReportStatus {
+        public static final int CANCELLED = -1;
+        public static final int DRAFT = 0;
+        public static final int PENDING = 1;
+        public static final int REJECTED = 2;
+        public static final int ONGOING = 3;
+        public static final int RESOLVED = 4;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +38,9 @@ public class Report {
     @Column
     private Double longitude;
 
+    @Column
+    private Integer status = ReportStatus.DRAFT;
+
     @JsonIgnore
     @Column(name = "reported_by")
     private Long reportedBy;
@@ -45,13 +57,14 @@ public class Report {
     public Report() {
     }
 
-    public Report(Long id, String name, String description, String plateNumber, Double latitude, Double longitude, Long reportedBy, LocalDateTime cancelledAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Report(Long id, String name, String description, String plateNumber, Double latitude, Double longitude, Integer status, Long reportedBy, LocalDateTime cancelledAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.plateNumber = plateNumber;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.status = status;
         this.reportedBy = reportedBy;
         this.cancelledAt = cancelledAt;
         this.createdAt = createdAt;
@@ -104,6 +117,14 @@ public class Report {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Long getReportedBy() {

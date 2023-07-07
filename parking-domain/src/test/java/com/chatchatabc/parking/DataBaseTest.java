@@ -28,6 +28,7 @@ public class DataBaseTest extends TestContainersBaseTest {
             "db/datasets/parking_lot_image.xml",
             "db/datasets/user_ban_history_log.xml",
             "db/datasets/report.xml",
+            "db/datasets/report_status.xml",
             "db/datasets/route.xml",
             "db/datasets/jeepney.xml",
             "db/datasets/vehicle_brand.xml",
