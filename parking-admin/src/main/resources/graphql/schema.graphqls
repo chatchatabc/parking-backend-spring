@@ -55,6 +55,7 @@ type Query {
 
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
+    getReportStatuses(page: Int size: Int id: Int!): ReportStatusList!
 
     getBanHistoryLogsByUser(page: Int size: Int, id: String!): BanHistoryLogList!
     getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
@@ -362,7 +363,7 @@ type Report {
     longitude: Float
     reportedBy: User
     cancelledAt: String
-    status: [ReportStatus]
+    status: Int
     createdAt: String
     updatedAt: String
 }
@@ -378,6 +379,11 @@ type ReportStatus {
     status: Int
     remarks: String
     createdAt: String
+}
+
+type ReportStatusList {
+    content: [ReportStatus]!
+    pageInfo: PageInfo!
 }
 
 # Ban History Log Related
