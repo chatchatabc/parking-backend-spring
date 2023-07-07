@@ -318,6 +318,7 @@ CREATE TABLE IF NOT EXISTS report
     plate_number VARCHAR(20)              NOT NULL,
     latitude     FLOAT                    NOT NULL,
     longitude    FLOAT                    NOT NULL,
+    status       INT DEFAULT 0            NOT NULL,
     reported_by  BIGINT                   NOT NULL,
     cancelled_at TIMESTAMP WITH TIME ZONE,
     created_at   TIMESTAMP WITH TIME ZONE NOT NULL,
