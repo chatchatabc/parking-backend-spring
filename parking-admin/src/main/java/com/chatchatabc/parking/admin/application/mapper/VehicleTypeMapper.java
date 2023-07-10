@@ -10,6 +10,7 @@ import org.mapstruct.Mappings;
 public interface VehicleTypeMapper {
     record VehicleTypeResponse(
             String name,
+            int plateNumberType,
             int status
     ) {
     }
@@ -19,7 +20,8 @@ public interface VehicleTypeMapper {
      */
     @Mappings({
             @Mapping(target = "name", source = "request.name"),
-            @Mapping(target = "status", source = "request.status")
+            @Mapping(target = "status", source = "request.status"),
+            @Mapping(target = "plateNumberType", source = "request.plateNumberType")
     })
     void mapRequestToVehicleType(
             VehicleTypeResponse request,
