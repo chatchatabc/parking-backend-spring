@@ -140,13 +140,14 @@ create index idx_vehicle_brand_on_status on vehicle_brand (status);
 -- Create Vehicle Type table
 CREATE TABLE IF NOT EXISTS vehicle_type
 (
-    id         SERIAL PRIMARY KEY,
-    type_uuid  VARCHAR(36)              NOT NULL UNIQUE,
-    name       VARCHAR(255)             NOT NULL,
-    status     INT                      NOT NULL DEFAULT 0,
-    created_by BIGINT                   NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+    id                SERIAL PRIMARY KEY,
+    type_uuid         VARCHAR(36)              NOT NULL UNIQUE,
+    name              VARCHAR(255)             NOT NULL,
+    status            INT                      NOT NULL DEFAULT 0,
+    plate_number_type INT                      NOT NULL DEFAULT 0,
+    created_by        BIGINT                   NOT NULL,
+    created_at        TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at        TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 ALTER SEQUENCE vehicle_type_id_seq RESTART WITH 1000;
