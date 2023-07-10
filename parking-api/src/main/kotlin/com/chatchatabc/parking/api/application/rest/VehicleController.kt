@@ -98,7 +98,6 @@ class VehicleController(
         val name: String,
         val plateNumber: String,
         val modelUuid: String,
-        val typeUuid: String,
         val color: String,
         val year: String
     )
