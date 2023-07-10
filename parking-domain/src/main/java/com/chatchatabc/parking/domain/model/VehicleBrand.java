@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.domain.model;
 
+import com.chatchatabc.parking.domain.model.file.CloudFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,10 @@ public class VehicleBrand {
     @Column
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "logo")
+    private CloudFile logo;
+
     @Column
     private Integer status = VehicleBrandStatus.DRAFT;
 
@@ -44,10 +49,11 @@ public class VehicleBrand {
     public VehicleBrand() {
     }
 
-    public VehicleBrand(Long id, String brandUuid, String name, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public VehicleBrand(Long id, String brandUuid, String name, CloudFile logo, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.brandUuid = brandUuid;
         this.name = name;
+        this.logo = logo;
         this.status = status;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
@@ -76,6 +82,14 @@ public class VehicleBrand {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CloudFile getLogo() {
+        return logo;
+    }
+
+    public void setLogo(CloudFile logo) {
+        this.logo = logo;
     }
 
     public Integer getStatus() {
