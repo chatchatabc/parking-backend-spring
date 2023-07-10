@@ -55,6 +55,9 @@ public class SecurityConfig {
                     // User routes must be authenticated
                     auth.requestMatchers("/api/user/**").authenticated();
 
+                    // Allow public access for vehicle brand logos
+                    auth.requestMatchers("/api/vehicle-brand/logo/**").permitAll();
+
                     // Routes for Vehicle
                     auth.requestMatchers("/api/vehicle/**").authenticated();
 
