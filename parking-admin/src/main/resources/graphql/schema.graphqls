@@ -192,6 +192,7 @@ type VehicleType {
     typeUuid: String!
     name: String
     status: Int
+    plateNumberType: Int
     createdAt: String
     updatedAt: String
 }

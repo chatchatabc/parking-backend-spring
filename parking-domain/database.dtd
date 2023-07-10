@@ -631,6 +631,7 @@
     type_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
     status CDATA #IMPLIED
+    plate_number_type CDATA #IMPLIED
     created_by CDATA #REQUIRED
     created_at CDATA #REQUIRED
     updated_at CDATA #REQUIRED

@@ -28,4 +28,14 @@ public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long
      * @return Page of Vehicle Model
      */
     Page<VehicleModel> findAllByBrandUuid(String brandUuid, Pageable pageable);
+
+    /**
+     * Find Vehicle Model by Brand UUID and Type UUID
+     *
+     * @param typeUuid  Type UUID
+     * @param brandUuid Brand UUID
+     * @param pageable  Pageable
+     * @return Page of Vehicle Model
+     */
+    Page<VehicleModel> findAllByTypeUuidAndBrandUuid(String typeUuid, String brandUuid, Pageable pageable);
 }

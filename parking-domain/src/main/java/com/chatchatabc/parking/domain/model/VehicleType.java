@@ -17,6 +17,11 @@ public class VehicleType {
         public static final int INACTIVE = -1;
     }
 
+    public static class VehiclePlateNumberType {
+        public static final int CAR = 0;
+        public static final int MOTOR = 1;
+    }
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +36,9 @@ public class VehicleType {
     @Column
     private Integer status = VehicleTypeStatus.DRAFT;
 
+    @Column
+    private Integer plateNumberType = VehiclePlateNumberType.CAR;
+
     @JsonIgnore
     @Column
     private Long createdBy;
@@ -44,11 +52,12 @@ public class VehicleType {
     public VehicleType() {
     }
 
-    public VehicleType(Long id, String typeUuid, String name, Integer status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public VehicleType(Long id, String typeUuid, String name, Integer status, Integer plateNumberType, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.typeUuid = typeUuid;
         this.name = name;
         this.status = status;
+        this.plateNumberType = plateNumberType;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -84,6 +93,14 @@ public class VehicleType {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getPlateNumberType() {
+        return plateNumberType;
+    }
+
+    public void setPlateNumberType(Integer plateNumberType) {
+        this.plateNumberType = plateNumberType;
     }
 
     public Long getCreatedBy() {
