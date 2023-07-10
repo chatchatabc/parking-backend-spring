@@ -36,4 +36,20 @@ class VehicleModelRepositoryTest extends TestContainersBaseTest {
         String brandUuid = "non-existent-uuid";
         assertThat(vehicleModelRepository.findAllByBrandUuid(brandUuid, pr).getTotalElements()).isEqualTo(0L);
     }
+
+    @Test
+    void testFindAllByTypeUuidAndBrandUuid_ShouldReturnGreaterThan0() {
+        String typeUuid = "a22a75df-9c4c-49b8-80f6-139d5df83dca";
+        String brandUuid = "8b06ff3f-6bef-434f-8b51-638c8ba30983";
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByTypeUuidAndBrandUuid(typeUuid, brandUuid, pr).getTotalElements()).isGreaterThan(0L);
+    }
+
+    @Test
+    void testFindAllByTypeUuidAndBrandUuid_ShouldReturn0() {
+        String typeUuid = "non-existent-uuid";
+        String brandUuid = "non-existent-uuid";
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByTypeUuidAndBrandUuid(typeUuid, brandUuid, pr).getTotalElements()).isEqualTo(0L);
+    }
 }
