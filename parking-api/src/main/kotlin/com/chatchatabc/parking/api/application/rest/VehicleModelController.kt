@@ -46,4 +46,19 @@ class VehicleModelController(
     @GetMapping("/brand/{id}")
     fun getByBrand(@PathVariable id: String, pageable: Pageable) =
         vehicleModelRepository.findAllByBrandUuid(id.vehicleBrand.brandUuid, pageable).toResponse()
+
+    /**
+     * Get Vehicle Models by Brand identifier and Type identifier
+     */
+    @Operation(
+        summary = "Get Vehicle Models by Brand identifier and Type identifier",
+        description = "Allow users to get Vehicle Models by Brand identifier and Type identifier"
+    )
+    @GetMapping("/type/{typeUuid}/brand/{brandUuid}")
+    fun getByTypeAndBrand(
+        @PathVariable typeUuid: String,
+        @PathVariable brandUuid: String,
+        pageable: Pageable
+    ) = vehicleModelRepository.findAllByTypeUuidAndBrandUuid(typeUuid,brandUuid,  pageable).toResponse()
+
 }
