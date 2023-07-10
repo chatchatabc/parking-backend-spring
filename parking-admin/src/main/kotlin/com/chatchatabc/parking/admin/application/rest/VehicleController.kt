@@ -109,12 +109,12 @@ class VehicleController(
      */
     @Operation(
         summary = "Get Vehicle Image",
-        description = "Get Vehicle Image. Side value: Front = 1, Back = 2, Left = 3, Right = 4"
+        description = "Get Vehicle Image. Side value: front, back, left, right"
     )
     @GetMapping("/image/{id}/{side}")
     fun getVehicleImage(
         @PathVariable id: String,
-        @PathVariable side: Int,
+        @PathVariable side: String,
         principal: Principal,
         response: HttpServletResponse
     ) = runCatching {
@@ -122,10 +122,10 @@ class VehicleController(
         var cloudFile: CloudFile? = null
 
         when (side) {
-            Vehicle.VehicleImageType.FRONT -> cloudFile = vehicle.imageFront
-            Vehicle.VehicleImageType.BACK -> cloudFile = vehicle.imageBack
-            Vehicle.VehicleImageType.LEFT -> cloudFile = vehicle.imageLeft
-            Vehicle.VehicleImageType.RIGHT -> cloudFile = vehicle.imageRight
+            "front" -> cloudFile = vehicle.imageFront
+            "back" -> cloudFile = vehicle.imageBack
+            "left" -> cloudFile = vehicle.imageLeft
+            "right" -> cloudFile = vehicle.imageRight
         }
 
         if (cloudFile == null) {
