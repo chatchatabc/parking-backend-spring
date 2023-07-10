@@ -3,17 +3,22 @@
 
 <dataset>
     <vehicle_type id="1" type_uuid="a22a75df-9c4c-49b8-80f6-139d5df83dca" name="SUV" status="1" created_by="1"
-                  created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-07 16:14:47.307160"/>
+                  plate_number_type="0" created_at="2023-05-07 16:14:47.307160"
+                  updated_at="2023-05-07 16:14:47.307160"/>
 
     <vehicle_type id="2" type_uuid="a1f7061d-567e-415d-9010-2802343230d4" name="Sedan" status="1" created_by="1"
-                  created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-07 16:14:47.307160"/>
+                  plate_number_type="0" created_at="2023-05-07 16:14:47.307160"
+                  updated_at="2023-05-07 16:14:47.307160"/>
 
     <vehicle_type id="3" type_uuid="115cf2d3-35bf-43e1-a67e-b26cbe536bd0" name="Hatchback" status="1" created_by="1"
-                  created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-07 16:14:47.307160"/>
+                  plate_number_type="0" created_at="2023-05-07 16:14:47.307160"
+                  updated_at="2023-05-07 16:14:47.307160"/>
 
     <vehicle_type id="4" type_uuid="b5b881b4-a1ef-436b-b467-c315677c0683" name="Pickup" status="1" created_by="1"
-                  created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-07 16:14:47.307160"/>
+                  plate_number_type="0" created_at="2023-05-07 16:14:47.307160"
+                  updated_at="2023-05-07 16:14:47.307160"/>
 
     <vehicle_type id="5" type_uuid="a298f7d7-7009-441e-93b3-ae9fac5fb1e8" name="Coupe" status="1" created_by="1"
-                  created_at="2023-05-07 16:14:47.307160" updated_at="2023-05-07 16:14:47.307160"/>
+                  plate_number_type="0" created_at="2023-05-07 16:14:47.307160"
+                  updated_at="2023-05-07 16:14:47.307160"/>
 </dataset>
