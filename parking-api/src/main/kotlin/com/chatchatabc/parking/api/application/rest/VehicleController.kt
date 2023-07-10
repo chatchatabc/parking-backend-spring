@@ -1,12 +1,14 @@
 package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.VehicleMapper
+import com.chatchatabc.parking.domain.*
 import com.chatchatabc.parking.domain.model.Vehicle
+import com.chatchatabc.parking.domain.model.VehicleBrand
+import com.chatchatabc.parking.domain.model.VehicleModel
+import com.chatchatabc.parking.domain.model.VehicleType
 import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.repository.VehicleRepository
 import com.chatchatabc.parking.domain.service.VehicleService
-import com.chatchatabc.parking.domain.user
-import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -61,6 +63,32 @@ class VehicleController(
         // if (vehicle.get().users.find { it.userUuid == principal.name } == null) {
         //     throw Exception("User does not have access to this vehicle")
         // }
+    }.getOrElse { it.toErrorResponse() }
+
+    data class VehicleProfileResponse(
+        val vehicle: Vehicle,
+        val model: VehicleModel,
+        val type: VehicleType,
+        val brand: VehicleBrand,
+    )
+
+    /**
+     * Get vehicle profile w/ complete details
+     */
+    @Operation(
+        summary = "Get vehicle profile w/ complete details",
+        description = "Get vehicle profile w/ complete details"
+    )
+    @GetMapping("/profile/{vehicleUuid}")
+    fun getVehicleProfile(
+        @PathVariable vehicleUuid: String,
+        principal: Principal
+    ) = runCatching {
+        val vehicle = vehicleUuid.vehicle
+        val model = vehicle.modelUuid.vehicleModel
+        val type = model.typeUuid.vehicleType
+        val brand = model.brandUuid.vehicleBrand
+        VehicleProfileResponse(vehicle, model, type, brand).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
