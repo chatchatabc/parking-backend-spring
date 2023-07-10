@@ -606,6 +606,7 @@
     id CDATA #IMPLIED
     brand_uuid CDATA #REQUIRED
     name CDATA #REQUIRED
+    logo CDATA #IMPLIED
     status CDATA #IMPLIED
     created_by CDATA #REQUIRED
     created_at CDATA #REQUIRED
