@@ -64,6 +64,36 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     /**
+     * Create invoice for vehicle manually
+     *
+     * @param parkingLotUuid                  the parking lot uuid
+     * @param plateNumber                     the plate number
+     * @param estimatedParkingDurationInHours the estimated parking duration in hours
+     * @return the invoice
+     * @throws Exception the exception
+     */
+    @Override
+    public Invoice createInvoiceManual(String parkingLotUuid, String plateNumber, Integer estimatedParkingDurationInHours) throws Exception {
+        ParkingLot parkingLot = parkingLotRepository.findByParkingLotUuid(parkingLotUuid).orElseThrow();
+
+        if (parkingLot.getRate() == null) {
+            throw new Exception("Parking lot rate not found");
+        }
+
+        Invoice invoice = new Invoice();
+        invoice.setParkingLotUuid(parkingLot.getParkingLotUuid());
+        invoice.setPlateNumber(plateNumber);
+        invoice.setStartAt(LocalDateTime.now());
+        invoice.setEstimatedParkingDurationInHours(estimatedParkingDurationInHours);
+        invoice.setEstimatedEndAt(LocalDateTime.now().plusHours(estimatedParkingDurationInHours));
+
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        parkingLot.setCapacity(parkingLot.getCapacity() - 1);
+        parkingLotRepository.save(parkingLot);
+        return savedInvoice;
+    }
+
+    /**
      * End invoice
      *
      * @param invoiceUuid    the invoice uuid
