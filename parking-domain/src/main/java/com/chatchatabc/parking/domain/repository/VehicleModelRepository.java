@@ -13,6 +13,15 @@ import java.util.Optional;
 public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long>, JpaSpecificationExecutor<VehicleModel> {
 
     /**
+     * Find Vehicle Model by Status
+     *
+     * @param status   Vehicle Model Status
+     * @param pageable Pageable
+     * @return Page of Vehicle Model
+     */
+    Page<VehicleModel> findAllByStatus(Integer status, Pageable pageable);
+
+    /**
      * Find Vehicle Model by Model UUID
      *
      * @param modelUuid Model UUID
@@ -38,4 +47,15 @@ public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long
      * @return Page of Vehicle Model
      */
     Page<VehicleModel> findAllByTypeUuidAndBrandUuid(String typeUuid, String brandUuid, Pageable pageable);
+
+    /**
+     * Find Vehicle Model by Brand UUID and Type UUID and Status
+     *
+     * @param typeUuid  the type uuid
+     * @param brandUuid the brand uuid
+     * @param status    the status
+     * @param pageable  the pageable
+     * @return Page of Vehicle Model
+     */
+    Page<VehicleModel> findAllByTypeUuidAndBrandUuidAndStatus(String typeUuid, String brandUuid, Integer status, Pageable pageable);
 }
