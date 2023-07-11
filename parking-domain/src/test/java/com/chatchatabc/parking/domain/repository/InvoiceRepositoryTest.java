@@ -32,6 +32,20 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNull_ShouldBeSuccessful() {
+        String parkingLot = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
+        String plateNumber = "QWE1234";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot, plateNumber)).isPresent();
+    }
+
+    @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNull_ShouldNotFindInvoice() {
+        String parkingLot = "None";
+        String plateNumber = "None";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot, plateNumber)).isNotPresent();
+    }
+
+    @Test
     void testCountActiveInvoices_ShouldReturnGreaterThan0() {
         assertThat(invoiceRepository.countActiveInvoices()).isGreaterThan(0L);
     }
