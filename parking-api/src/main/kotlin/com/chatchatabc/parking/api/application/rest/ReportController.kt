@@ -39,6 +39,18 @@ class ReportController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
+     * Get Report by Identifier
+     */
+    @Operation(
+        summary = "Get Report by Identifier",
+        description = "Get Report by Identifier"
+    )
+    @GetMapping("/{id}")
+    fun getReport(
+        @PathVariable id: Long
+    ) = runCatching { id.report.toResponse() }.getOrElse { it.toErrorResponse() }
+
+    /**
      * Get Report Status
      */
     @Operation(
