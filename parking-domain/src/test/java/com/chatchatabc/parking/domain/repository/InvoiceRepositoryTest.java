@@ -32,6 +32,34 @@ class InvoiceRepositoryTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNull_ShouldReturnInvoice() {
+        String parkingLot = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";
+        String plateNumber = "QWE1234";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot, plateNumber)).isPresent();
+    }
+
+    @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNull_ShouldNotFindInvoice() {
+        String parkingLot = "None";
+        String plateNumber = "None";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot, plateNumber)).isNotPresent();
+    }
+
+    @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull_ShouldReturnInvoice() {
+        String parkingLot = "9c45f764-b54d-4fb1-8aa0-293c7e73c9c1";
+        String plateNumber = "ASD1234";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull(parkingLot, plateNumber)).isPresent();
+    }
+
+    @Test
+    void testFindByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull_ShouldNotFindInvoice() {
+        String parkingLot = "None";
+        String plateNumber = "None";
+        assertThat(invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull(parkingLot, plateNumber)).isNotPresent();
+    }
+
+    @Test
     void testCountActiveInvoices_ShouldReturnGreaterThan0() {
         assertThat(invoiceRepository.countActiveInvoices()).isGreaterThan(0L);
     }

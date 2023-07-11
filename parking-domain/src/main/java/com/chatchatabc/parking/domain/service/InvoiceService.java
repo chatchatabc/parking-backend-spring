@@ -17,6 +17,17 @@ public interface InvoiceService {
     Invoice createInvoice(String parkingLotUuid, String vehicleUuid, Integer estimatedParkingDurationInHours) throws Exception;
 
     /**
+     * Create invoice for vehicle manually
+     *
+     * @param parkingLotUuid                  the parking lot uuid
+     * @param plateNumber                     the plate number
+     * @param estimatedParkingDurationInHours the estimated parking duration in hours
+     * @return the invoice
+     * @throws Exception the exception
+     */
+    Invoice createInvoiceManual(String parkingLotUuid, String plateNumber, Integer estimatedParkingDurationInHours) throws Exception;
+
+    /**
      * End invoice
      *
      * @param invoiceUuid    the invoice uuid

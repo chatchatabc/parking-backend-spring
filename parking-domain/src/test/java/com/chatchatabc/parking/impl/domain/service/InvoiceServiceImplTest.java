@@ -41,6 +41,20 @@ class InvoiceServiceImplTest extends TestContainersBaseTest {
     }
 
     @Test
+    void testCreateInvoiceManual_ShouldCreateInvoice() throws Exception {
+        // Given
+        String plateNumber = "XXX-1234";
+        String parkingLotUuid = "fe5c1764-d192-4690-834e-c611f078dd57";
+        Long currentCount = invoiceRepository.count();
+
+        // When
+        invoiceService.createInvoiceManual(parkingLotUuid, plateNumber, 0);
+
+        // Then
+        assertThat(invoiceRepository.count()).isGreaterThan(currentCount);
+    }
+
+    @Test
     void testEndInvoice_WhenInvoiceIsActive_ShouldEndSuccessfully() throws Exception {
         String invoiceUuid = "9e8f7c6b-5a4d-3e2f-1a0b-cd9e8f7a6b5c";
         String parkingLotUuid = "a2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p";

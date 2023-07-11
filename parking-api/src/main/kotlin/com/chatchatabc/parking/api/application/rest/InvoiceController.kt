@@ -126,15 +126,63 @@ class InvoiceController(
                 InvoicePayload(
                     parkingLot.parkingLotUuid,
                     vehicle.vehicleUuid,
+                    vehicle.plateNumber,
                     invoice.invoiceUuid
                 )
             ).toJson().toByteArray()
+
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Create Invoice data class
+     */
+    data class InvoiceManualCreateRequest(
+        val plateNumber: String,
+        val estimatedParkingDurationInHours: Int,
+    )
+
+    /**
+     * Create Invoice for Vehicles with no Accounts
+     */
+    @Operation(
+        summary = "Create an invoice for vehicles with no accounts",
+        description = "Allow users to create an invoice for vehicles with no accounts. A NATS message will be published to the owner"
+    )
+    @PostMapping("/manual")
+    fun createInvoiceManual(
+        principal: Principal,
+        @RequestBody req: InvoiceManualCreateRequest
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice = invoiceService.createInvoiceManual(
+            parkingLot.parkingLotUuid,
+            req.plateNumber,
+            req.estimatedParkingDurationInHours
+        )
+
+        // Message structure
+        val natsMessage =
+            NatsMessage(
+                NatsPayloadTypes.INVOICE_CREATED,
+                InvoicePayload(
+                    parkingLot.parkingLotUuid,
+                    null,
+                    req.plateNumber,
+                    invoice.invoiceUuid
+                )
+            ).toJson().toByteArray()
+
+        // Publish to owner
+        natsConnection.publish(user.notificationUuid, natsMessage)
+        invoice.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
 
     /**
      * End an invoice
@@ -164,12 +212,52 @@ class InvoiceController(
                 InvoicePayload(
                     parkingLot.parkingLotUuid,
                     vehicle.vehicleUuid,
+                    vehicle.plateNumber,
                     invoice.invoiceUuid
                 )
             ).toJson().toByteArray()
 
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
+        // Publish to owner
+        natsConnection.publish(user.notificationUuid, natsMessage)
+        invoice.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * End an invoice manually
+     */
+    @Operation(
+        summary = "End an invoice manually",
+        description = "Allow users to end an invoice manually. A NATS message will be published to the owner"
+    )
+    @PostMapping("/manual/end/{plateNumber}")
+    fun endInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+
+        val invoice = invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(
+            parkingLot.parkingLotUuid,
+            plateNumber
+        ).orElseThrow { Exception("Invoice not found") }
+
+        // Find the invoice by plate number and parking lot
+        invoiceService.endInvoice(invoice.invoiceUuid, parkingLot.parkingLotUuid)
+
+        // Message structure
+        val natsMessage =
+            NatsMessage(
+                NatsPayloadTypes.INVOICE_ENDED,
+                InvoicePayload(
+                    parkingLot.parkingLotUuid,
+                    null,
+                    invoice.plateNumber,
+                    invoice.invoiceUuid
+                )
+            ).toJson().toByteArray()
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
@@ -193,6 +281,27 @@ class InvoiceController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
+     * Pay an invoice manually
+     */
+    @Operation(
+        summary = "Pay an invoice manually",
+        description = "Allow users to pay an invoice manually."
+    )
+    @PostMapping("/manual/pay/{plateNumber}")
+    fun payInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice = invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull(
+            parkingLot.parkingLotUuid,
+            plateNumber
+        ).orElseThrow { Exception("Invoice not found") }
+        invoiceService.payInvoice(invoice.invoiceUuid, parkingLot.parkingLotUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
      * Estimate Invoice
      */
     @Operation(
@@ -205,6 +314,26 @@ class InvoiceController(
     ) = runCatching {
         val invoice = invoiceUuid.invoice
         val parkingLot = invoice.parkingLotUuid.parkingLot
+        invoiceService.calculateInvoice(invoice, parkingLot.rate).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Estimate Invoice Manually
+     */
+    @Operation(
+        summary = "Estimate Invoice Manually",
+        description = "Allow users to estimate an invoice cost based on the parking lot rate"
+    )
+    @GetMapping("/manual/estimate/{plateNumber}")
+    fun estimateInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice =
+            invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot.parkingLotUuid, plateNumber)
+                .orElseThrow { Exception("Invoice not found") }
         invoiceService.calculateInvoice(invoice, parkingLot.rate).toResponse()
     }.getOrElse { it.toErrorResponse() }
 }

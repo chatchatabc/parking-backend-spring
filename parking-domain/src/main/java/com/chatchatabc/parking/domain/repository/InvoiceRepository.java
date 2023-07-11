@@ -25,6 +25,24 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
     Optional<Invoice> findByInvoiceUuid(String invoiceUuid);
 
     /**
+     * Find invoice by parking lot uuid, vehicle plate number, and end at is null
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param plateNumber    the plate number
+     * @return the invoice
+     */
+    Optional<Invoice> findByParkingLotUuidAndPlateNumberAndEndAtIsNull(String parkingLotUuid, String plateNumber);
+
+    /**
+     * Find invoice by parking lot uuid, vehicle plate number, end at is not null, and paid at is null
+     *
+     * @param parkingLotUuid the parking lot uuid
+     * @param plateNumber    the plate number
+     * @return the invoice
+     */
+    Optional<Invoice> findByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull(String parkingLotUuid, String plateNumber);
+
+    /**
      * Find invoice by vehicle
      *
      * @param vehicleUuid the vehicle uuid
