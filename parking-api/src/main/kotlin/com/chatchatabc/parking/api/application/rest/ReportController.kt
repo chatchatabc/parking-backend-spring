@@ -2,10 +2,12 @@ package com.chatchatabc.parking.api.application.rest
 
 import com.chatchatabc.parking.api.application.mapper.ReportMapper
 import com.chatchatabc.parking.domain.model.Report
+import com.chatchatabc.parking.domain.model.ReportStatus
 import com.chatchatabc.parking.domain.report
 import com.chatchatabc.parking.domain.repository.ReportRepository
 import com.chatchatabc.parking.domain.repository.ReportStatusRepository
 import com.chatchatabc.parking.domain.service.ReportService
+import com.chatchatabc.parking.domain.service.ReportStatusService
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -13,13 +15,15 @@ import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/report")
 class ReportController(
     private val reportRepository: ReportRepository,
     private val reportService: ReportService,
-    private val reportStatusRepository: ReportStatusRepository
+    private val reportStatusRepository: ReportStatusRepository,
+    private val reportStatusService: ReportStatusService
 ) {
     private val reportMapper = Mappers.getMapper(ReportMapper::class.java)
 
@@ -89,12 +93,46 @@ class ReportController(
     )
     @PostMapping
     fun createReport(
-        @RequestBody req: ReportMapper.ReportMapDTO
+        @RequestBody req: ReportMapper.ReportMapDTO,
+        principal: Principal
     ) = runCatching {
         val report = Report()
         reportMapper.mapRequestToReport(req, report)
+        report.reportedBy = principal.name.user.id
         reportService.saveReport(report).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    data class ReportStatusCreateRequest(
+        val status: Int,
+        val remarks: String
+    )
+
+    /**
+     * Create Report Status
+     */
+    @Operation(
+        summary = "Create Report Status",
+        description = "Create Report Status. -1 = Cancelled, 0 = Draft, 1 = Pending, 2 = Rejected, 3 = Ongoing, 4 = Resolved"
+    )
+    @PostMapping("/status/{id}")
+    fun createReportStatus(
+        @PathVariable id: Long,
+        request: ReportStatusCreateRequest,
+        principal: Principal
+    ) = runCatching {
+        val report = id.report
+        report.status = request.status
+
+        val reportStatus = ReportStatus().apply {
+            this.status = request.status
+            this.remarks = request.remarks
+            this.performedBy = principal.name.user.id
+            this.report = report.id
+        }
+
+        reportService.saveReport(report)
+        reportStatusService.saveReportStatus(reportStatus)
+    }
 
     /**
      * Update Report
