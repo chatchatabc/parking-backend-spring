@@ -151,7 +151,7 @@ class InvoiceController(
      */
     @Operation(
         summary = "Create an invoice for vehicles with no accounts",
-        description = "Allow users to create an invoice for vehicles with no accounts. A NATS message will be published to the owner and client"
+        description = "Allow users to create an invoice for vehicles with no accounts. A NATS message will be published to the owner"
     )
     @PostMapping("/manual")
     fun createInvoiceManual(
@@ -219,6 +219,45 @@ class InvoiceController(
 
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
+        // Publish to owner
+        natsConnection.publish(user.notificationUuid, natsMessage)
+        invoice.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * End an invoice manually
+     */
+    @Operation(
+        summary = "End an invoice manually",
+        description = "Allow users to end an invoice manually. A NATS message will be published to the owner"
+    )
+    @PostMapping("/manual/end/{plateNumber}")
+    fun endInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+
+        val invoice = invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(
+            parkingLot.parkingLotUuid,
+            plateNumber
+        ).orElseThrow { Exception("Invoice not found") }
+
+        // Find the invoice by plate number and parking lot
+        invoiceService.endInvoice(invoice.invoiceUuid, parkingLot.parkingLotUuid)
+
+        // Message structure
+        val natsMessage =
+            NatsMessage(
+                NatsPayloadTypes.INVOICE_ENDED,
+                InvoicePayload(
+                    parkingLot.parkingLotUuid,
+                    null,
+                    invoice.plateNumber,
+                    invoice.invoiceUuid
+                )
+            ).toJson().toByteArray()
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
