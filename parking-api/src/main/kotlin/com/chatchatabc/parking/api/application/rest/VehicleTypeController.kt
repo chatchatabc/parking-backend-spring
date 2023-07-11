@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.domain.model.VehicleType
 import com.chatchatabc.parking.domain.repository.VehicleTypeRepository
 import com.chatchatabc.parking.domain.vehicleType
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -23,7 +24,8 @@ class VehicleTypeController(
         description = "Allow users to get vehicle types"
     )
     @GetMapping
-    fun getAll(pageable: Pageable) = vehicleTypeRepository.findAll(pageable).toResponse()
+    fun getAll(pageable: Pageable) =
+        vehicleTypeRepository.findAllByStatus(VehicleType.VehicleTypeStatus.ACTIVE, pageable).toResponse()
 
     /**
      * Get vehicle type by identifier

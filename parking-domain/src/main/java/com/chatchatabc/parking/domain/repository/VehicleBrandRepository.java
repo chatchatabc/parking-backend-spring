@@ -1,6 +1,8 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.domain.model.VehicleBrand;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -9,6 +11,15 @@ import java.util.Optional;
 
 @Repository
 public interface VehicleBrandRepository extends JpaRepository<VehicleBrand, Long>, JpaSpecificationExecutor<VehicleBrand> {
+
+    /**
+     * Find Vehicle Brand by Status
+     *
+     * @param status   Vehicle Brand Status
+     * @param pageable Pageable
+     * @return Page of Vehicle Brand
+     */
+    Page<VehicleBrand> findAllByStatus(Integer status, Pageable pageable);
 
     /**
      * Find Vehicle Brand by Brand UUID

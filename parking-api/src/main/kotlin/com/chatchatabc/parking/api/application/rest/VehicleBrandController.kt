@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.domain.model.VehicleBrand
 import com.chatchatabc.parking.domain.repository.VehicleBrandRepository
 import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.infra.service.FileStorageService
@@ -26,7 +27,8 @@ class VehicleBrandController(
         description = "Allow users to get vehicle brands"
     )
     @GetMapping
-    fun getAll(pageable: Pageable) = vehicleBrandRepository.findAll(pageable).toResponse()
+    fun getAll(pageable: Pageable) =
+        vehicleBrandRepository.findAllByStatus(VehicleBrand.VehicleBrandStatus.ACTIVE, pageable).toResponse()
 
     /**
      * Get vehicle brand by identifier

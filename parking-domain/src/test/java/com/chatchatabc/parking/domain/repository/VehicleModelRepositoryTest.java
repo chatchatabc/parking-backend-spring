@@ -1,6 +1,7 @@
 package com.chatchatabc.parking.domain.repository;
 
 import com.chatchatabc.parking.TestContainersBaseTest;
+import com.chatchatabc.parking.domain.model.VehicleModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VehicleModelRepositoryTest extends TestContainersBaseTest {
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
+
+    @Test
+    void testFindAllByStatus_ShouldReturnGreaterThan0() {
+        Integer status = VehicleModel.VehicleModelStatus.ACTIVE;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByStatus(status, pr).getTotalElements()).isGreaterThan(0);
+    }
+
+    @Test
+    void testFindAllByStatus_WithNonExistingStatus_ShouldReturn0() {
+        Integer status = VehicleModel.VehicleModelStatus.INACTIVE;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByStatus(status, pr).getTotalElements()).isEqualTo(0);
+    }
 
     @Test
     void testFindByModelUuid_ShouldReturnVehicleType() {
@@ -51,5 +66,23 @@ class VehicleModelRepositoryTest extends TestContainersBaseTest {
         String brandUuid = "non-existent-uuid";
         PageRequest pr = PageRequest.of(0, 10);
         assertThat(vehicleModelRepository.findAllByTypeUuidAndBrandUuid(typeUuid, brandUuid, pr).getTotalElements()).isEqualTo(0L);
+    }
+
+    @Test
+    void findAllByTypeUuidAndBrandUuidAndStatus() {
+        String typeUuid = "a22a75df-9c4c-49b8-80f6-139d5df83dca";
+        String brandUuid = "8b06ff3f-6bef-434f-8b51-638c8ba30983";
+        Integer status = VehicleModel.VehicleModelStatus.ACTIVE;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByTypeUuidAndBrandUuidAndStatus(typeUuid, brandUuid, status, pr).getTotalElements()).isGreaterThan(0L);
+    }
+
+    @Test
+    void findAllByTypeUuidAndBrandUuidAndStatus_ShouldReturn0() {
+        String typeUuid = "non-existent-uuid";
+        String brandUuid = "non-existent-uuid";
+        Integer status = VehicleModel.VehicleModelStatus.ACTIVE;
+        PageRequest pr = PageRequest.of(0, 10);
+        assertThat(vehicleModelRepository.findAllByTypeUuidAndBrandUuidAndStatus(typeUuid, brandUuid, status, pr).getTotalElements()).isEqualTo(0L);
     }
 }
