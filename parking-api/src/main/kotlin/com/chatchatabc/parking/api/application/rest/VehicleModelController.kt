@@ -1,5 +1,6 @@
 package com.chatchatabc.parking.api.application.rest
 
+import com.chatchatabc.parking.domain.model.VehicleModel
 import com.chatchatabc.parking.domain.repository.VehicleModelRepository
 import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.domain.vehicleModel
@@ -24,7 +25,8 @@ class VehicleModelController(
         description = "Allow users to get Vehicle Models"
     )
     @GetMapping
-    fun getAll(pageable: Pageable) = vehicleModelRepository.findAll(pageable).toResponse()
+    fun getAll(pageable: Pageable) =
+        vehicleModelRepository.findAllByStatus(VehicleModel.VehicleModelStatus.ACTIVE, pageable).toResponse()
 
     /**
      * Get Vehicle Model by identifier
@@ -59,6 +61,11 @@ class VehicleModelController(
         @PathVariable typeUuid: String,
         @PathVariable brandUuid: String,
         pageable: Pageable
-    ) = vehicleModelRepository.findAllByTypeUuidAndBrandUuid(typeUuid,brandUuid,  pageable).toResponse()
+    ) = vehicleModelRepository.findAllByTypeUuidAndBrandUuidAndStatus(
+        typeUuid,
+        brandUuid,
+        VehicleModel.VehicleModelStatus.ACTIVE,
+        pageable
+    ).toResponse()
 
 }
