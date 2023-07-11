@@ -316,4 +316,24 @@ class InvoiceController(
         val parkingLot = invoice.parkingLotUuid.parkingLot
         invoiceService.calculateInvoice(invoice, parkingLot.rate).toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Estimate Invoice Manually
+     */
+    @Operation(
+        summary = "Estimate Invoice Manually",
+        description = "Allow users to estimate an invoice cost based on the parking lot rate"
+    )
+    @GetMapping("/manual/estimate/{plateNumber}")
+    fun estimateInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice =
+            invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot.parkingLotUuid, plateNumber)
+                .orElseThrow { Exception("Invoice not found") }
+        invoiceService.calculateInvoice(invoice, parkingLot.rate).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 }
