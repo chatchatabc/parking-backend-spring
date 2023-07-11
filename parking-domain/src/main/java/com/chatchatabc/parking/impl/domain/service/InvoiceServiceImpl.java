@@ -80,6 +80,12 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new Exception("Parking lot rate not found");
         }
 
+        // Throw error if plateNumber has active invoice on this parking lot
+        Optional<Invoice> activeInvoice = invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNull(parkingLot.getParkingLotUuid(), plateNumber);
+        if (activeInvoice.isPresent()) {
+            throw new Exception("Vehicle has active invoice on this parking lot");
+        }
+
         Invoice invoice = new Invoice();
         invoice.setParkingLotUuid(parkingLot.getParkingLotUuid());
         invoice.setPlateNumber(plateNumber);
