@@ -30,7 +30,7 @@ class ReportController(
         summary = "Create Report Status",
         description = "Create Report Status. -1 = Cancelled, 0 = Draft, 1 = Pending, 2 = Rejected, 3 = Ongoing, 4 = Resolved"
     )
-    @PostMapping("/{id}")
+    @PostMapping("/status/{id}")
     fun createReportStatus(
         @PathVariable id: Long,
         request: ReportStatusCreateRequest,
