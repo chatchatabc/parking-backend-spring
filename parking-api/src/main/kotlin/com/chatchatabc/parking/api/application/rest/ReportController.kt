@@ -117,7 +117,7 @@ class ReportController(
     @PostMapping("/status/{id}")
     fun createReportStatus(
         @PathVariable id: Long,
-        request: ReportStatusCreateRequest,
+        @RequestBody request: ReportStatusCreateRequest,
         principal: Principal
     ) = runCatching {
         val report = id.report
