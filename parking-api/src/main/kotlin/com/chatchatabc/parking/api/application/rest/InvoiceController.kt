@@ -281,6 +281,27 @@ class InvoiceController(
     }.getOrElse { it.toErrorResponse() }
 
     /**
+     * Pay an invoice manually
+     */
+    @Operation(
+        summary = "Pay an invoice manually",
+        description = "Allow users to pay an invoice manually."
+    )
+    @PostMapping("/manual/pay/{plateNumber}")
+    fun payInvoiceManual(
+        @PathVariable plateNumber: String,
+        principal: Principal
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice = invoiceRepository.findByParkingLotUuidAndPlateNumberAndEndAtIsNotNullAndPaidAtIsNull(
+            parkingLot.parkingLotUuid,
+            plateNumber
+        ).orElseThrow { Exception("Invoice not found") }
+        invoiceService.payInvoice(invoice.invoiceUuid, parkingLot.parkingLotUuid).toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
      * Estimate Invoice
      */
     @Operation(
