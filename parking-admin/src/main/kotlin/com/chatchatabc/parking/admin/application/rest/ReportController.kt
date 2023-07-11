@@ -6,10 +6,7 @@ import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.domain.service.ReportStatusService
 import com.chatchatabc.parking.domain.user
 import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
@@ -33,7 +30,7 @@ class ReportController(
     @PostMapping("/status/{id}")
     fun createReportStatus(
         @PathVariable id: Long,
-        request: ReportStatusCreateRequest,
+        @RequestBody request: ReportStatusCreateRequest,
         principal: Principal
     ) = runCatching {
         val report = id.report
