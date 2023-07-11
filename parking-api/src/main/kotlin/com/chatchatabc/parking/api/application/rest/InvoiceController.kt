@@ -126,15 +126,63 @@ class InvoiceController(
                 InvoicePayload(
                     parkingLot.parkingLotUuid,
                     vehicle.vehicleUuid,
+                    vehicle.plateNumber,
                     invoice.invoiceUuid
                 )
             ).toJson().toByteArray()
+
         // Publish to Client
         natsConnection.publish(client.notificationUuid, natsMessage)
         // Publish to owner
         natsConnection.publish(user.notificationUuid, natsMessage)
         invoice.toResponse()
     }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Create Invoice data class
+     */
+    data class InvoiceManualCreateRequest(
+        val plateNumber: String,
+        val estimatedParkingDurationInHours: Int,
+    )
+
+    /**
+     * Create Invoice for Vehicles with no Accounts
+     */
+    @Operation(
+        summary = "Create an invoice for vehicles with no accounts",
+        description = "Allow users to create an invoice for vehicles with no accounts. A NATS message will be published to the owner and client"
+    )
+    @PostMapping("/manual")
+    fun createInvoiceManual(
+        principal: Principal,
+        @RequestBody req: InvoiceManualCreateRequest
+    ) = runCatching {
+        val user = principal.name.user
+        val parkingLot = user.id.parkingLotByOwner
+        val invoice = invoiceService.createInvoiceManual(
+            parkingLot.parkingLotUuid,
+            req.plateNumber,
+            req.estimatedParkingDurationInHours
+        )
+
+        // Message structure
+        val natsMessage =
+            NatsMessage(
+                NatsPayloadTypes.INVOICE_CREATED,
+                InvoicePayload(
+                    parkingLot.parkingLotUuid,
+                    null,
+                    req.plateNumber,
+                    invoice.invoiceUuid
+                )
+            ).toJson().toByteArray()
+
+        // Publish to owner
+        natsConnection.publish(user.notificationUuid, natsMessage)
+        invoice.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
 
     /**
      * End an invoice
@@ -164,6 +212,7 @@ class InvoiceController(
                 InvoicePayload(
                     parkingLot.parkingLotUuid,
                     vehicle.vehicleUuid,
+                    vehicle.plateNumber,
                     invoice.invoiceUuid
                 )
             ).toJson().toByteArray()
