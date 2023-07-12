@@ -1,8 +1,4 @@
 type Query {
-    getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
-    getJeepney(id: String): Jeepney
-    getJeepneysByRoute(page: Int size: Int, id: String!): JeepneyList!
-
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
     getParkingLotByUser(id: String!): ParkingLot
