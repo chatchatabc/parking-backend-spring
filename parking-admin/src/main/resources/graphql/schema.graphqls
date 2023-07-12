@@ -1,8 +1,4 @@
 type Query {
-    getVehicleModels(page: Int size: Int keyword: String sortField: String sortBy: Int): VehicleModelList!
-    getVehicleModel(id: String): VehicleModel
-    getVehicleModelsByBrand(page: Int size: Int, brandUuid: String!): VehicleModelList!
-
     getJeepneys(page: Int size: Int keyword: String sortField: String sortBy: Int): JeepneyList!
     getJeepney(id: String): Jeepney
     getJeepneysByRoute(page: Int size: Int, id: String!): JeepneyList!
