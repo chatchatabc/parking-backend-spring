@@ -8,6 +8,7 @@ import com.chatchatabc.parking.domain.repository.ReportRepository
 import com.chatchatabc.parking.domain.repository.ReportStatusRepository
 import com.chatchatabc.parking.domain.service.ReportService
 import com.chatchatabc.parking.domain.service.ReportStatusService
+import com.chatchatabc.parking.domain.specification.GenericSpecification
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -36,10 +37,12 @@ class ReportController(
     )
     @GetMapping
     fun getReports(
-        pageable: Pageable
+        pageable: Pageable,
+        @RequestParam params: Map<String, String>
     ) = runCatching {
-        // TODO: Get user from security context
-        reportRepository.findAll(pageable).toResponse()
+        val spec = GenericSpecification<Report>()
+            .withParams(params)
+        reportRepository.findAll(spec, pageable).toResponse()
     }.getOrElse { it.toErrorResponse() }
 
     /**
