@@ -44,9 +44,6 @@ type Query {
     getReportById(id: Int!): Report
     getReportStatuses(page: Int size: Int id: Int!): ReportStatusList!
 
-    getBanHistoryLogsByUser(page: Int size: Int, id: String!): BanHistoryLogList!
-    getAllBanHistoryLogs(page: Int size: Int): BanHistoryLogList!
-
     getDashboardPieGraph: DashboardPieGraph
 }
 
