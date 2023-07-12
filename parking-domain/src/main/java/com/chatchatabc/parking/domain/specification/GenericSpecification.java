@@ -46,6 +46,18 @@ public class GenericSpecification<T> implements Specification<T> {
                 operation = "eq";
             }
 
+            // If key is == id
+            if (Objects.equals(entry.getKey(), "id")) {
+                // Check if value is a number
+                if (entry.getValue() instanceof Number) {
+                    operation = "eq";
+                }
+                // Regex if value is a long number
+                else if (entry.getValue().toString().matches("^\\d+$")) {
+                    operation = "eq";
+                }
+            }
+
             params.add(new Criteria(entry.getKey(), operation, entry.getValue().toString()));
         }
         return this;
