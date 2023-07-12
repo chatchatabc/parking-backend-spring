@@ -4,10 +4,13 @@ import com.chatchatabc.parking.admin.application.mapper.ParkingLotMapper
 import com.chatchatabc.parking.domain.model.ParkingLot
 import com.chatchatabc.parking.domain.model.file.CloudFile
 import com.chatchatabc.parking.domain.parkingLot
+import com.chatchatabc.parking.domain.parkingLotByOwner
 import com.chatchatabc.parking.domain.repository.InvoiceRepository
+import com.chatchatabc.parking.domain.repository.ParkingLotRepository
 import com.chatchatabc.parking.domain.repository.file.ParkingLotImageRepository
 import com.chatchatabc.parking.domain.service.ParkingLotService
 import com.chatchatabc.parking.domain.service.file.ParkingLotImageService
+import com.chatchatabc.parking.domain.specification.ParkingLotSpecification
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
@@ -16,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
@@ -23,6 +27,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/parking-lot")
 class ParkingLotController(
+    private val parkingLotRepository: ParkingLotRepository,
     private val parkingLotService: ParkingLotService,
     private val parkingLotImageService: ParkingLotImageService,
     private val parkingLotImageRepository: ParkingLotImageRepository,
@@ -31,6 +36,78 @@ class ParkingLotController(
 ) {
     private val fileNamespace = "parkingLot"
     private val parkingLotMapper = Mappers.getMapper(ParkingLotMapper::class.java)
+
+    /**
+     * Get Parking Lots
+     */
+    @Operation(
+        summary = "Get Parking Lots",
+        description = "Get Parking Lots"
+    )
+    @GetMapping
+    fun getParkingLots(
+        pageable: Pageable,
+        @RequestParam params: Map<String, String>
+    ) = run {
+        val spec = ParkingLotSpecification.withKeyword(params["keyword"] ?: "")
+
+        // Search with Keyword
+        if (params.containsKey("keyword")) {
+            val keyword = params["keyword"]
+            spec.or(ParkingLotSpecification.withKeyword(keyword ?: ""))
+        }
+
+        parkingLotRepository.findAll(spec, pageable).toResponse()
+    }
+
+    /**
+     * Get Parking Lot by Identifier
+     */
+    @Operation(
+        summary = "Get Parking Lot by Identifier",
+        description = "Get Parking Lot by Identifier"
+    )
+    @GetMapping("/{id}")
+    fun getParkingLot(@PathVariable id: String) = run { id.parkingLot.toResponse() }
+
+    /**
+     * Get User by Parking Lot Identifier
+     */
+    @Operation(
+        summary = "Get User by Parking Lot Identifier",
+        description = "Get User by Parking Lot Identifier"
+    )
+    @GetMapping("/user/{id}")
+    fun getUserByParkingLot(@PathVariable id: String) = run { id.parkingLot.owner.toResponse() }
+
+    /**
+     * Get Parking Lot by User Identifier
+     */
+    @Operation(
+        summary = "Get Parking Lot by User Identifier",
+        description = "Get Parking Lot by User Identifier"
+    )
+    @GetMapping("/user/{id}/parking-lot")
+    fun getParkingLotByUser(@PathVariable id: String) = run { id.user.userUuid.parkingLotByOwner.toResponse() }
+
+    /**
+     * Get Parking Lot Image Keys
+     */
+    @Operation(
+        summary = "Get Parking Lot Image Keys",
+        description = "Get Parking Lot Image Keys"
+    )
+    @GetMapping("/images/{id}")
+    fun getParkingLotImageKeys(
+        @PathVariable id: String,
+        pageable: Pageable
+    ) = run {
+        parkingLotImageRepository.findAllParkingLotKeysByParkingLotAndStatus(
+            id.parkingLot.id,
+            0,
+            pageable
+        ).content.toResponse()
+    }
 
     /**
      * Admin create Parking Lot
