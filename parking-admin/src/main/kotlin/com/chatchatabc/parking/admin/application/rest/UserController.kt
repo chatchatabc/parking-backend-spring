@@ -4,8 +4,10 @@ import com.chatchatabc.parking.admin.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
 import com.chatchatabc.parking.domain.repository.RoleRepository
+import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
+import com.chatchatabc.parking.domain.specification.UserSpecification
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
 import org.springframework.core.io.InputStreamResource
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -27,12 +30,50 @@ import java.time.LocalDateTime
 @RequestMapping("/api/user")
 class UserController(
     private val userService: UserService,
+    private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
     private val userBanHistoryLogRepository: UserBanHistoryLogRepository,
     private val fileStorageService: FileStorageService,
 ) {
     private val userMapper = Mappers.getMapper(UserMapper::class.java)
+
+    /**
+     * Get User
+     */
+    @Operation(
+        summary = "Get User",
+        description = "Get User"
+    )
+    @GetMapping("/{id}")
+    fun getUser(@PathVariable id: String) = id.user.toResponse()
+
+    /**
+     * Get list of users
+     */
+    @Operation(
+        summary = "Get Users",
+        description = "Get Users"
+    )
+    @GetMapping
+    fun getUsers(
+        pageable: Pageable,
+        @RequestParam params: Map<String, String>
+    ) = runCatching {
+        val spec = UserSpecification()
+            .withParams(params)
+
+        // Filter by verified using params
+        // 0: not verified
+        if (params["verified"] == "0") {
+            spec.and(UserSpecification.notVerified())
+        }
+        // 1: verified
+        else if (params["verified"] == "1") {
+            spec.and(UserSpecification.verified())
+        }
+        userRepository.findAll(spec, pageable).toResponse()
+    }.getOrElse { it.toErrorResponse() }
 
     /**
      * Create user
@@ -56,18 +97,6 @@ class UserController(
         userMapper.mapRequestToUser(req, user)
         userService.saveUser(user).toResponse()
     }.getOrElse { it.toErrorResponse() }
-
-    /**
-     * Update User Request
-     */
-    data class UserUpdateRequest(
-        val email: String?,
-        val username: String?,
-        val firstName: String?,
-        val lastName: String?,
-        val phone: String?,
-        val roles: List<String>?
-    )
 
     /**
      * Update user

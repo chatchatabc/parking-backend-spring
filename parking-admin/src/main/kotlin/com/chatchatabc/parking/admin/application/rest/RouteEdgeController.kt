@@ -2,6 +2,7 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.RouteEdgeMapper
 import com.chatchatabc.parking.domain.model.RouteEdge
+import com.chatchatabc.parking.domain.repository.RouteEdgeRepository
 import com.chatchatabc.parking.domain.routeEdge
 import com.chatchatabc.parking.domain.routeNode
 import com.chatchatabc.parking.domain.service.RouteEdgeService
@@ -9,14 +10,36 @@ import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/route-edge")
 class RouteEdgeController(
     private val routeEdgeService: RouteEdgeService,
+    private val routeEdgeRepository: RouteEdgeRepository
 ) {
     private val routeEdgeMapper = Mappers.getMapper(RouteEdgeMapper::class.java)
+
+    /**
+     * Get Route Edges
+     */
+    @Operation(
+        summary = "Get Route Edges",
+        description = "Get Route Edges"
+    )
+    @GetMapping
+    fun getRouteEdges(pageable: Pageable) = run { routeEdgeRepository.findAll(pageable).toResponse() }
+
+    /**
+     * Get Route Edge by ID
+     */
+    @Operation(
+        summary = "Get Route Edge by ID",
+        description = "Get Route Edge by ID"
+    )
+    @GetMapping("/{id}")
+    fun getRouteEdge(@PathVariable id: Long) = run { id.routeEdge.toResponse() }
 
     /**
      * Create Route Edges data class

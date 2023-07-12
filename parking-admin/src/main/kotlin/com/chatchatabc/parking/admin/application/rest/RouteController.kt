@@ -6,23 +6,78 @@ import com.chatchatabc.parking.domain.model.RouteEdge
 import com.chatchatabc.parking.domain.model.RouteNode
 import com.chatchatabc.parking.domain.repository.RouteEdgeRepository
 import com.chatchatabc.parking.domain.repository.RouteNodeRepository
+import com.chatchatabc.parking.domain.repository.RouteRepository
 import com.chatchatabc.parking.domain.route
+import com.chatchatabc.parking.domain.routeEdges
 import com.chatchatabc.parking.domain.service.RouteService
+import com.chatchatabc.parking.domain.specification.RouteSpecification
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.mapstruct.factory.Mappers
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/route")
 class RouteController(
     private val routeService: RouteService,
+    private val routeRepository: RouteRepository,
     private val routeNodeRepository: RouteNodeRepository,
     private val routeEdgeRepository: RouteEdgeRepository
 ) {
     private val routeMapper = Mappers.getMapper(RouteMapper::class.java)
+
+    /**
+     * Get Routes
+     */
+    @Operation(
+        summary = "Get Routes",
+        description = "Get Routes"
+    )
+    @GetMapping
+    fun getRoutes(
+        pageable: Pageable,
+        @RequestParam params: Map<String, String>
+    ) = run {
+        val spec = RouteSpecification.withKeyword(params["keyword"] ?: "")
+        routeRepository.findAll(spec, pageable).toResponse()
+    }
+
+    /**
+     * Route Nodes and Edges data class
+     */
+    data class RouteNodesAndEdges(
+        val nodes: List<RouteNode>,
+        val edges: List<RouteEdge>
+    )
+
+    /**
+     * Get Route nodes and edges by route identifier
+     */
+    @Operation(
+        summary = "Get Route nodes and edges by route identifier",
+        description = "Get Route nodes and edges by route identifier"
+    )
+    @GetMapping("/nodes-and-edges/{id}/")
+    fun getRouteNodesAndEdges(
+        @PathVariable id: String
+    ) = run {
+        val edges = id.route.id.routeEdges
+        val nodes = routeNodeRepository.findAllByIdIn(edges.flatMap { listOf(it.nodeFrom, it.nodeTo) }.toSet())
+        RouteNodesAndEdges(nodes, edges).toResponse()
+    }
+
+    /**
+     * Get Route by ID
+     */
+    @Operation(
+        summary = "Get Route by ID",
+        description = "Get Route by ID"
+    )
+    @GetMapping("/{id}")
+    fun getRoute(@PathVariable id: String) = run { id.route.toResponse() }
 
     /**
      * Create Route
