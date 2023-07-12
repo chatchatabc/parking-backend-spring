@@ -1,6 +1,4 @@
 type Query {
-    getRoles(page: Int size: Int): RoleList!
-
     getUserLoginLogs(page: Int size: Int): UserLoginLogList!
     getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
 
