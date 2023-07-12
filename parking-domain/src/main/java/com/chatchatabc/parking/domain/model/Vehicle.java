@@ -28,6 +28,7 @@ public class Vehicle {
         public static final int RIGHT = 4;
     }
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
