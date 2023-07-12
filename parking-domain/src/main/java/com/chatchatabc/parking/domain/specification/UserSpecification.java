@@ -4,7 +4,7 @@ import com.chatchatabc.parking.domain.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification extends GenericSpecification<User> {
-    public static Specification<User> withKeyword(String keyword) {
+    public Specification<User> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
             return builder.or(
