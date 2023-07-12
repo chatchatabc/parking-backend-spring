@@ -4,12 +4,6 @@ type Query {
     getParkingLotByUser(id: String!): ParkingLot
     getUserByParkingLot(id: String!): User
     getParkingLotImageKeysByParkingLot(page: Int size: Int id: String!): [String]
-
-    getInvoices(page: Int size: Int keyword: String sortField: String sortBy: Int): InvoiceList!
-    getInvoice(id: String!): Invoice
-    getInvoicesByVehicle(page: Int size: Int, id: String!): InvoiceList!
-    getInvoicesByParkingLot(page: Int size: Int, id: String!): InvoiceList!
-    getInvoicesByUser(page: Int size: Int, id: String!): InvoiceList!
 }
 
 type Mutation {
