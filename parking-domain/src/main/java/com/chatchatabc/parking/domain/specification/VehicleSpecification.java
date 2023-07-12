@@ -4,7 +4,7 @@ import com.chatchatabc.parking.domain.model.Vehicle;
 import org.springframework.data.jpa.domain.Specification;
 
 public class VehicleSpecification extends GenericSpecification<Vehicle> {
-    public static Specification<Vehicle> withKeyword(String keyword) {
+    public Specification<Vehicle> withKeyword(String keyword) {
         return (root, query, builder) -> {
             String pattern = "%" + keyword.toLowerCase() + "%";
             return builder.or(
