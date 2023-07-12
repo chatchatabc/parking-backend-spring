@@ -2,7 +2,9 @@ package com.chatchatabc.parking.admin.application.rest
 
 import com.chatchatabc.parking.admin.application.mapper.VehicleBrandMapper
 import com.chatchatabc.parking.domain.model.VehicleBrand
+import com.chatchatabc.parking.domain.repository.VehicleBrandRepository
 import com.chatchatabc.parking.domain.service.VehicleBrandService
+import com.chatchatabc.parking.domain.specification.VehicleBrandSpecification
 import com.chatchatabc.parking.domain.user
 import com.chatchatabc.parking.domain.vehicleBrand
 import com.chatchatabc.parking.infra.service.FileStorageService
@@ -11,6 +13,7 @@ import com.chatchatabc.parking.web.common.application.toResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletResponse
 import org.mapstruct.factory.Mappers
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
@@ -19,10 +22,45 @@ import java.security.Principal
 @RequestMapping("/api/vehicle-brand")
 class VehicleBrandController(
     private val vehicleBrandService: VehicleBrandService,
+    private val vehicleBrandRepository: VehicleBrandRepository,
     private val fileStorageService: FileStorageService
 ) {
     private val vehicleBrandMapper = Mappers.getMapper(VehicleBrandMapper::class.java)
     private val namespace = "vehicle-brand"
+
+    /**
+     * Get Vehicle Brand by Identifier
+     */
+    @Operation(
+        summary = "Get Vehicle Brand",
+        description = "Get Vehicle Brand"
+    )
+    @GetMapping("/{id}")
+    fun getVehicleBrand(@PathVariable id: String) = id.vehicleBrand.toResponse()
+
+    /**
+     * Get Vehicle Brands
+     */
+    @Operation(
+        summary = "Get Vehicle Brands",
+        description = "Get Vehicle Brands"
+    )
+    @GetMapping
+    fun getVehicleBrands(
+        pageable: Pageable,
+        @RequestParam params: Map<String, String>
+    ) = run {
+        val spec = VehicleBrandSpecification()
+            .withParams(params)
+
+        // Search with Keyword
+        if (params.containsKey("keyword")) {
+            val keyword = params["keyword"]
+            spec.or(VehicleBrandSpecification().withKeyword(keyword))
+        }
+
+        vehicleBrandRepository.findAll(spec, pageable).toResponse()
+    }
 
     /**
      * Admin create Vehicle Brand
