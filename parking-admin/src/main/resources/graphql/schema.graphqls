@@ -1,7 +1,4 @@
 type Query {
-    getUserLoginLogs(page: Int size: Int): UserLoginLogList!
-    getUserLoginLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
-
     getUserLogoutLogs(page: Int size: Int): UserLogoutLogList!
     getUserLogoutLogsByUser(page: Int size: Int, id: String!): UserLoginLogList!
     getUserLogoutLogsByUsername(page: Int size: Int, username: String!): UserLoginLogList!
