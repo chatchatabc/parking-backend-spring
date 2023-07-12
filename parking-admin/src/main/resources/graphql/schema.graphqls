@@ -40,8 +40,6 @@ type Query {
     getReports(page: Int size: Int): ReportList!
     getReportById(id: Int!): Report
     getReportStatuses(page: Int size: Int id: Int!): ReportStatusList!
-
-    getDashboardPieGraph: DashboardPieGraph
 }
 
 type Mutation {
