@@ -248,7 +248,6 @@ class VehicleController(
     fun getVehicleImage(
         @PathVariable id: String,
         @PathVariable side: String,
-        principal: Principal,
         response: HttpServletResponse
     ) = runCatching {
         val vehicle = id.vehicle
