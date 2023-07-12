@@ -58,6 +58,8 @@ public class SecurityConfig {
                     // Allow public access for vehicle brand logos
                     auth.requestMatchers("/api/vehicle-brand/logo/**").permitAll();
 
+                    // Expose Image Routes for Vehicles
+                    auth.requestMatchers("/api/vehicle/image/**").permitAll();
                     // Routes for Vehicle
                     auth.requestMatchers("/api/vehicle/**").authenticated();
 
@@ -85,6 +87,7 @@ public class SecurityConfig {
 
                     // Permit Actuator
                     // TODO: Add auth in the future
+                    auth.requestMatchers("/actuator/**").permitAll();
                     auth.requestMatchers("/actuator/**").permitAll();
 
                     // TODO: Temporarily allow request to images
