@@ -68,7 +68,6 @@ public class GenericSpecification<T> implements Specification<T> {
         Predicate predicate = cb.conjunction();
 
         for (Criteria param : params) {
-            System.out.println(param.key() + " " + param.operation() + " " + param.value());
             try {
                 switch (param.operation()) {
                     case "like" ->
