@@ -14,10 +14,6 @@ type Query {
     getInvoicesByVehicle(page: Int size: Int, id: String!): InvoiceList!
     getInvoicesByParkingLot(page: Int size: Int, id: String!): InvoiceList!
     getInvoicesByUser(page: Int size: Int, id: String!): InvoiceList!
-
-    getReports(page: Int size: Int): ReportList!
-    getReportById(id: Int!): Report
-    getReportStatuses(page: Int size: Int id: Int!): ReportStatusList!
 }
 
 type Mutation {
