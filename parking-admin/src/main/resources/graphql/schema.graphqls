@@ -7,9 +7,6 @@ type Query {
     getRoute(id: String): Route
     getRouteNodesAndEdges(id: String): RouteNodesAndEdges
 
-    getRouteEdges(page: Int size: Int): RouteEdgeList!
-    getRouteEdge(id: Int): RouteEdge
-
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
     getParkingLotByUser(id: String!): ParkingLot
