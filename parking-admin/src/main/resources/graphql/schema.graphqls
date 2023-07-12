@@ -3,10 +3,6 @@ type Query {
     getJeepney(id: String): Jeepney
     getJeepneysByRoute(page: Int size: Int, id: String!): JeepneyList!
 
-    getRoutes(page: Int size: Int keyword: String sortField: String sortBy: Int): RouteList!
-    getRoute(id: String): Route
-    getRouteNodesAndEdges(id: String): RouteNodesAndEdges
-
     getParkingLots(page: Int size: Int verified: Int keyword: String sortField: String sortBy: Int): ParkingLotList!
     getParkingLot(id: String!): ParkingLot
     getParkingLotByUser(id: String!): ParkingLot
