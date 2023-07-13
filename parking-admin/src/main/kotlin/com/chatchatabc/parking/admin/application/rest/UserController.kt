@@ -10,6 +10,7 @@ import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
 import com.chatchatabc.parking.domain.service.UserService
 import com.chatchatabc.parking.domain.specification.UserSpecification
 import com.chatchatabc.parking.domain.user
+import com.chatchatabc.parking.domain.vehicle
 import com.chatchatabc.parking.infra.service.FileStorageService
 import com.chatchatabc.parking.web.common.application.toErrorResponse
 import com.chatchatabc.parking.web.common.application.toResponse
@@ -264,6 +265,20 @@ class UserController(
         @PathVariable id: String
     ) = runCatching {
         id.parkingLot.owner.user.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
+    /**
+     * Get User by Vehicle Identification
+     */
+    @Operation(
+        summary = "Get User by Vehicle Identifier",
+        description = "Get User by Vehicle Identifier"
+    )
+    @GetMapping("/vehicle/{id}")
+    fun getUserByVehicle(
+        @PathVariable id: String
+    ) = runCatching {
+        id.vehicle.owner.user.toResponse()
     }.getOrElse { it.toErrorResponse() }
 
 }
