@@ -78,7 +78,7 @@ class ParkingLotController(
         description = "Get User by Parking Lot Identifier"
     )
     @GetMapping("/user/{id}")
-    fun getUserByParkingLot(@PathVariable id: String) = run { id.parkingLot.owner.toResponse() }
+    fun getUserByParkingLot(@PathVariable id: String) = run { id.parkingLot.owner.user.toResponse() }
 
     /**
      * Get Parking Lot by User Identifier
@@ -295,4 +295,15 @@ class ParkingLotController(
     }.getOrElse {
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
     }
+
+//    @GetMapping("/owner/{parkingLotUuid}")
+//    fun getUserByParkingLotUuid(
+//        @PathVariable parkingLotUuid: String
+//    ) = runCatching {
+//        val ownerId = parkingLotUuid.parkingLot.owner
+//        val user = ownerId.user
+//        user.toResponse()
+//    }.getOrElse {
+//        it.toErrorResponse()
+//    }
 }
