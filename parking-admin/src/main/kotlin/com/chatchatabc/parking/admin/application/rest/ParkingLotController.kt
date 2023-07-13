@@ -74,21 +74,14 @@ class ParkingLotController(
      * Get User by Parking Lot Identifier
      */
     @Operation(
-        summary = "Get User by Parking Lot Identifier",
-        description = "Get User by Parking Lot Identifier"
-    )
-    @GetMapping("/user/{id}")
-    fun getUserByParkingLot(@PathVariable id: String) = run { id.parkingLot.owner.user.toResponse() }
-
-    /**
-     * Get Parking Lot by User Identifier
-     */
-    @Operation(
         summary = "Get Parking Lot by User Identifier",
         description = "Get Parking Lot by User Identifier"
     )
-    @GetMapping("/user/{id}/parking-lot")
-    fun getParkingLotByUser(@PathVariable id: String) = run { id.user.userUuid.parkingLotByOwner.toResponse() }
+    @GetMapping("/user/{id}")
+    fun getParkingLotByUser(@PathVariable id: String) = run {
+        val user = id.user
+        parkingLotRepository.findByOwner(user.id).toResponse()
+    }
 
     /**
      * Get Parking Lot Image Keys
