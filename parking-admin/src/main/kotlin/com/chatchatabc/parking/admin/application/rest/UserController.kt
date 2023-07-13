@@ -3,6 +3,7 @@ package com.chatchatabc.parking.admin.application.rest
 import com.chatchatabc.parking.admin.application.mapper.UserMapper
 import com.chatchatabc.parking.domain.model.User
 import com.chatchatabc.parking.domain.model.log.UserBanHistoryLog
+import com.chatchatabc.parking.domain.parkingLot
 import com.chatchatabc.parking.domain.repository.RoleRepository
 import com.chatchatabc.parking.domain.repository.UserRepository
 import com.chatchatabc.parking.domain.repository.log.UserBanHistoryLogRepository
@@ -250,4 +251,19 @@ class UserController(
         response.sendError(HttpServletResponse.SC_NOT_FOUND)
         ResponseEntity<InputStreamResource>(HttpStatus.NOT_FOUND)
     }
+
+    /**
+     * Get User by Parking Lot Identification
+     */
+    @Operation(
+        summary = "Get User by Parking Lot Identifier",
+        description = "Get User by Parking Lot Identifier"
+    )
+    @GetMapping("/parking-lot/{id}")
+    fun getUserByParkingLot(
+        @PathVariable id: String
+    ) = runCatching {
+        id.parkingLot.owner.user.toResponse()
+    }.getOrElse { it.toErrorResponse() }
+
 }
